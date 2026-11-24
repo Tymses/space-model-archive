@@ -78,3 +78,5 @@
 .action-link{border:0;font-family:inherit;cursor:pointer}.action-link:focus-visible{outline:3px solid #91bce0;outline-offset:3px}
 
 .scaling-reference-source{display:inline-block;margin-top:7px;color:var(--accent);font-size:11px;font-weight:650;text-decoration:none}.scaling-reference-source:hover{text-decoration:underline}
+
+.reference-lookup{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-low);display:grid;gap:9px}.reference-lookup label,.reference-value-row label{display:grid;gap:6px;color:var(--muted);font-size:11px}.reference-lookup .field-hint{margin:0}.lookup-button{justify-self:start;border:1px solid var(--line);border-radius:100px;background:var(--surface);color:var(--ink);padding:8px 13px;font:inherit;font-size:11px;font-weight:650;cursor:pointer}.lookup-button:hover{border-color:var(--accent)}.reference-value-row{display:grid;grid-template-columns:minmax(0,1fr) 105px;gap:10px}.reference-value-row select{width:100%}
