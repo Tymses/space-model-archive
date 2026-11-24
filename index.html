@@ -51,7 +51,7 @@
     </aside>
   </div>
   <section class="scale-panel" id="scale-panel">
-  <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The 3D preview measures the loaded model. Enter its real-world size and intended scale to calculate a printable size.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
+  <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The 3D preview measures the loaded model. Enter the real-world length of the model’s longest axis and the intended scale to calculate a printable size.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
   <div class="scale-grid">
     <div class="scale-controls">
       <label class="control-label" for="printer-profile">Printer profile</label>
@@ -62,7 +62,7 @@
         <label>Height (mm)<input class="scale-input" id="bed-z" type="number" min="1" value="256"></label>
       </div>
       <div class="dimension-inputs">
-        <label>Real-world length (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
+        <label>Real-world longest axis (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
         <label>Scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
       </div>
       <p class="field-hint">Leave either scale field empty to check the model at its source-file size. Unknown real dimensions are never guessed.</p>
