@@ -432,52 +432,195 @@ loadExpandedCatalogs();
 })();
 
 /* Independent scaling workspace: archive models and local uploads use the same geometry engine. */
+/* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
- const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4},referenceFactors={mm:1,cm:10,m:1000,km:1000000};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrl=null,token=0;
- const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:2}),dims=d=>d.map(fmt).join(" × ")+" mm";
- function clear(){token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}renderer=null;controls=null;camera=null;scene=null;root=null;active=null;if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null;}}
- async function ensure(){if(THREE)return;const b="https://cdn.jsdelivr.net/npm/three@0.170.0/";const [t,s,o,p,g,c]=await Promise.all([import(b+"build/three.module.js"),import(b+"examples/jsm/loaders/STLLoader.js"),import(b+"examples/jsm/loaders/OBJLoader.js"),import(b+"examples/jsm/loaders/PLYLoader.js"),import(b+"examples/jsm/loaders/GLTFLoader.js"),import(b+"examples/jsm/controls/OrbitControls.js")]);THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls};}
+ const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrl=null,token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false;
+ const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
+ const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
+ function clear(){
+  token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
+  renderer=null;controls=null;camera=null;scene=null;root=null;active=null;
+  if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null;}
+ }
+ async function ensure(){
+  if(THREE)return;const b="https://cdn.jsdelivr.net/npm/three@0.170.0/";
+  const [t,s,o,p,g,c]=await Promise.all([import(b+"build/three.module.js"),import(b+"examples/jsm/loaders/STLLoader.js"),import(b+"examples/jsm/loaders/OBJLoader.js"),import(b+"examples/jsm/loaders/PLYLoader.js"),import(b+"examples/jsm/loaders/GLTFLoader.js"),import(b+"examples/jsm/controls/OrbitControls.js")]);
+  THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls};
+ }
  function volume(){return $id("scaling-printer-profile").value==="p2s"?[256,256,256]:["x","y","z"].map(a=>Number($id("scaling-bed-"+a).value));}
  function rotations(d){return [[d[0],d[1],d[2]],[d[0],d[2],d[1]],[d[1],d[0],d[2]],[d[1],d[2],d[0]],[d[2],d[0],d[1]],[d[2],d[1],d[0]]];}
  function best(d,b){let factor=0,orientation=null;for(const p of rotations(d)){const f=Math.min(...p.map((v,i)=>b[i]/v));if(f>factor){factor=f;orientation=p;}}return {factor,orientation};}
- function updatePreview(f){if(root&&active){root.scale.setScalar(active.unitFactor*f);if(camera&&active.maxSize){const m=active.maxSize*f;camera.position.set(m*1.7,m*1.3,m*1.9);camera.near=Math.max(m/10000,.001);camera.far=Math.max(m*100,1000);camera.updateProjectionMatrix();}}}
+ function standards(minimum){
+  const values=[];for(let p=0;p<=15;p++){const base=10**p;for(const n of [1,2,5]){const v=n*base;if(v>=minimum&&v<=1e15)values.push(v);}}
+  return [...new Set(values)].sort((a,b)=>a-b);
+ }
+ function updatePreview(factor){
+  if(!root||!active)return;root.scale.setScalar(active.unitFactor*factor);
+  if(camera&&active.maxSize){const m=active.maxSize*factor;camera.position.set(m*1.7,m*1.3,m*1.9);camera.near=Math.max(m/10000,.001);camera.far=Math.max(m*100,1000);camera.updateProjectionMatrix();}
+ }
+ function renderFit(title,description,fits){
+  const result=$id("scaling-fit-result");result.classList.toggle("is-fit",!!fits);result.classList.toggle("is-no-fit",fits===false);
+  $id("scaling-fit-title").textContent=title;$id("scaling-fit-description").textContent=description;
+ }
  function update(){
   if(!active)return;
-  const source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),realText=$id("scaling-real-length").value.trim(),denText=$id("scaling-denominator").value.trim(),real=Number(realText)*referenceFactors[$id("scaling-real-unit").value],den=Number(denText),origDiaText=$id("scaling-original-diameter").value.trim(),scaleDiaText=$id("scaling-scale-diameter").value.trim(),origDia=Number(origDiaText)*referenceFactors[$id("scaling-original-diameter-unit").value],scaleDia=Number(scaleDiaText),usingDiameter=!!(origDiaText||scaleDiaText),b=volume(),valid=b.every(v=>Number.isFinite(v)&&v>0),fit=valid?best(source,b):{factor:0,orientation:null};
-  let factor=1,rec="",original=null,selected=denText&&den>0?den:null;
-  if(usingDiameter){
-   if(!origDiaText||!scaleDiaText||!(origDia>0)||!(scaleDia>0)){rec="<strong>Diameter scaling</strong><p>Enter both a valid original diameter and a desired scale diameter greater than zero.</p>";}
-   else{original=origDia/scaleDia;factor=scaleDia/longest;rec="<strong>Diameter-based scale</strong><p>Target print diameter: <b>"+fmt(scaleDia)+" mm</b>. Calculated scale: <b>1:"+fmt(original)+"</b>. The model is resized so its current longest geometry dimension equals the requested print diameter.</p>";}
-  }else if(realText&&!(real>0))rec="<strong>Scale recommendations</strong><p>Enter a real-world length greater than zero.</p>";
-  else if(denText&&(!realText||!(real>0)||!(den>0)))rec="<strong>Scale recommendations</strong><p>Enter a verified real-world length before choosing a scale denominator.</p>";
-  else if(realText&&real>0){original=real/longest;const minDen=fit.factor>0?original/fit.factor:Infinity,standard=[1,2,5,10,20,25,50,100,200,250,500,1000,2000,5000,10000],choices=standard.filter(n=>n>=minDen),suggested=choices[0]||null,chosen=selected||suggested;if(chosen){factor=original/chosen;rec="<strong>Suggested scales</strong><p>Largest standard scale that fits: <b>"+(suggested?"1:"+fmt(suggested):"none up to 1:10,000")+"</b>"+(selected?" · selected: 1:"+fmt(selected):"")+".</p><ul>"+choices.slice(0,6).map(n=>"<li>1:"+fmt(n)+" · "+dims(source.map(v=>v*original/n))+"</li>").join("")+"</ul>";}else{factor=fit.factor;rec="<strong>Suggested scales</strong><p>No standard scale up to 1:10,000 fits. Try a larger printer or split the model.</p>";}}
-  else{factor=fit.factor>0?fit.factor:1;rec="<strong>Suggested size</strong><p>No real-world reference length is linked. The largest geometry-only size that fits is <b>"+fmt(factor*100)+"%</b> of the source dimensions ("+dims(source.map(v=>v*factor))+"). Add a verified reference length or use diameter scaling.</p>";}
-  if(selected&&original&&!usingDiameter)factor=original/selected;
-  const print=source.map(v=>v*factor),fitNow=valid?best(print,b):{factor:0,orientation:null},fits=valid&&fitNow.factor>=1-1e-9;
-  $id("scaling-source-dimensions").textContent=dims(source);$id("scaling-print-dimensions").textContent=dims(print);$id("scaling-original-scale").textContent=original?"1:"+fmt(original):"Unknown — reference length not set";$id("scaling-recommendations").innerHTML=rec;$id("scaling-orientation").textContent="Best axis-aligned orientation: "+(fit.orientation?dims(fit.orientation):"—");
-  $id("scaling-fit-result").classList.toggle("is-fit",!!fits);$id("scaling-fit-result").classList.toggle("is-no-fit",valid&&!fits);
-  if(!valid){$id("scaling-fit-title").textContent="Check build volume";$id("scaling-fit-description").textContent="All three printer dimensions must be greater than zero.";}else if(fits){$id("scaling-fit-title").textContent="Fits the selected build volume";$id("scaling-fit-description").textContent="A 90° axis-aligned orientation fits inside "+dims(b)+". "+(fitNow.orientation?"Oriented dimensions: "+dims(fitNow.orientation):"");}else{$id("scaling-fit-title").textContent="Does not fit at this scale";$id("scaling-fit-description").textContent="The model exceeds the selected build volume ("+dims(b)+"). Choose a smaller scale or use the suggested size.";}
-  $id("scaling-measurement-state").textContent="Geometry measured";$id("scaling-reference-hint").textContent=usingDiameter?"Scale is calculated from the entered original diameter and desired print diameter.":"Original scale calculated from the supplied real-world longest axis, when provided.";updatePreview(factor);
+  const source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+  $id("scaling-source-dimensions").textContent=dims(source);
+  if(!realLongestKm||!(realLongestKm>0)){
+   $id("scaling-original-scale").textContent="Not determined";$id("scaling-original-dimensions").textContent=dims(source);
+   $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
+   $id("scaling-recommendations").innerHTML="<p>Find the object above to retrieve its measured physical axes and calculate the real scale.</p>";
+   renderFit("Real-world dimensions missing","The model geometry is measured, but no verified physical extent is linked yet.",null);
+   $id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";
+   updatePreview(1);return;
+  }
+  const originalDenominator=realLongestKm*1e6/longest;
+  $id("scaling-original-scale").textContent="1:"+fmt(originalDenominator);
+  $id("scaling-original-dimensions").textContent=dims(source);
+  if(!validBed){
+   renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);return;
+  }
+  const fit=best(source,bed),minimum=originalDenominator/fit.factor;
+  const choices=standards(minimum),selected=selectedDenominator&&choices.includes(selectedDenominator)?selectedDenominator:(choices[0]||null);
+  selectedDenominator=selected;
+  if(!selected){
+   $id("scaling-selected-scale").textContent="No standard scale found";
+   $id("scaling-print-dimensions").textContent="—";
+   $id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";
+   renderFit("No standard scale fits","Try splitting the model or selecting a larger build volume.",false);updatePreview(1);return;
+  }
+  const factor=originalDenominator/selected,print=source.map(v=>v*factor),fitNow=best(print,bed),fits=fitNow.factor>=1-1e-9;
+  $id("scaling-selected-scale").textContent="1:"+fmt(selected);
+  $id("scaling-print-dimensions").textContent=dims(print);
+  $id("scaling-recommendations").innerHTML=choices.slice(0,6).map((den,i)=>{
+   const size=source.map(v=>v*originalDenominator/den),isSelected=den===selected;
+   return '<button type="button" class="scaling-scale-option'+(isSelected?' is-selected':'')+'" data-denominator="'+den+'"><strong>1:'+fmt(den)+'</strong><span>'+dims(size)+'</span><small>'+(i===0?'Largest recommended size':isSelected?'Selected scale':'Smaller print')+'</small></button>';
+  }).join("");
+  $id("scaling-orientation").textContent="Best orientation: "+(fitNow.orientation?dims(fitNow.orientation):"—");
+  renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The model fits after a 90° axis-aligned rotation.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);
+  updatePreview(factor);
  }
  function resize(){if(!renderer||!camera)return;const w=stage.clientWidth||640,h=stage.clientHeight||360;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);}
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
- async function load(file,format,model=null,url=null){
-  clear();const my=token;$id("scaling-measurement-state").textContent="Loading geometry…";$id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;$id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
-  if(file){objectUrl=URL.createObjectURL(file);url=objectUrl;}
-  try{await ensure();if(my!==token)return;scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);camera=new THREE.PerspectiveCamera(38,(stage.clientWidth||640)/(stage.clientHeight||360),.01,1e9);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));stage.replaceChildren(renderer.domElement);renderer.domElement.style.cssText="display:block;width:100%;height:100%;touch-action:none";scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);
-   let object;if(format==="GLB")object=(await new L.GLB().loadAsync(url)).scene;else if(format==="OBJ")object=await new L.OBJ().loadAsync(url);else{const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));}
-   if(my!==token){renderer.dispose();return;}object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");root=new THREE.Group();root.position.copy(center).multiplyScalar(-1);root.add(object);scene.add(root);
-   const unit=format==="GLB"?"m":"mm";$id("scaling-units").value=unit;active={raw:[size.x,size.y,size.z],unitFactor:unitFactors[unit]};root.scale.setScalar(active.unitFactor);const max=Math.max(...active.raw)*active.unitFactor;active.maxSize=max;camera.position.set(max*1.7,max*1.3,max*1.9);camera.near=Math.max(max/10000,.001);camera.far=Math.max(max*100,1000);camera.updateProjectionMatrix();controls=new L.Orbit(camera,renderer.domElement);controls.enableDamping=true;resize();animate();$id("scaling-file-state").textContent=file?"Local upload":"Archive model";$id("scaling-measurement-state").textContent="Geometry measured";update();
-  }catch(err){if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Try a single-file STL, OBJ, PLY or GLB. Some source hosts block browser previews.</p></div>';$id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";$id("scaling-fit-title").textContent="Could not measure model";$id("scaling-fit-description").textContent="No fit or scale result is shown until geometry can be loaded.";}
+ function setLookupStatus(message,isError=false){const el=$id("scaling-lookup-status");el.textContent=message;el.classList.toggle("is-error",isError);}
+ function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB"}){
+  realAxesKm=axesKm;realLongestKm=longestAxisKm;realSourceUrl=sourceUrl;realObjectName=name;
+  $id("scaling-object-result").hidden=false;$id("scaling-object-name").textContent=name;
+  $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v)+" km").join(" × ");
+  $id("scaling-object-longest").textContent=fmt(longestAxisKm)+" km";
+  const link=$id("scaling-reference-source");link.href=sourceUrl;link.textContent="Open "+sourceLabel+" record ↗";
+  selectedDenominator=null;update();
  }
- window.addEventListener("sma-scaling-open",e=>{const model=e.detail?.model;clear();$id("scaling-real-length").value="";$id("scaling-real-unit").value="km";$id("scaling-reference-url").value="";$id("scaling-object-query").value="";$id("scaling-reference-source").hidden=true;$id("scaling-denominator").value="";$id("scaling-original-diameter").value="";$id("scaling-original-diameter-unit").value="km";$id("scaling-scale-diameter").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
-  if(model&&["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){const verified=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;$id("scaling-object-query").value=model.name||"";$id("scaling-real-length").value=verified?String(model.realLongestAxisKm):"";$id("scaling-real-unit").value="km";$id("scaling-reference-url").value=verified?(model.realDimensionUrl||""):"";$id("scaling-reference-hint").textContent=verified?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check its source before relying on it.":"No verified real-world dimension is linked; no value has been guessed.";const sourceLink=$id("scaling-reference-source");sourceLink.hidden=!(verified&&model.realDimensionUrl);if(!sourceLink.hidden)sourceLink.href=model.realDimensionUrl;load(null,model.format,model,model.file);}
-  else{$id("scaling-reference-source").hidden=true;$id("scaling-model-name").textContent="Upload your own model";$id("scaling-format").textContent="LOCAL FILE";$id("scaling-file-state").textContent="No model loaded";$id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-original-scale").textContent="Unknown";$id("scaling-fit-title").textContent="Awaiting model dimensions";$id("scaling-fit-description").textContent="Choose a local STL, OBJ, PLY or GLB file.";$id("scaling-recommendations").innerHTML="<strong>Scale recommendations</strong><p>Load a model to calculate printable dimensions and recommended scales.</p>";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Select an archive model or upload your own 3D file.</p></div>';}}
- );
- $id("scaling-file").addEventListener("change",e=>{const file=e.target.files?.[0];if(!file)return;const ext=file.name.split(".").pop().toUpperCase();if(!["STL","OBJ","PLY","GLB"].includes(ext)){$id("scaling-file-state").textContent="Unsupported file";return;}$id("scaling-real-length").value="";$id("scaling-real-unit").value="km";$id("scaling-reference-url").value="";$id("scaling-denominator").value="";$id("scaling-original-diameter").value="";$id("scaling-original-diameter-unit").value="km";$id("scaling-scale-diameter").value="";load(file,ext);});
+ function parseExtent(parameter){
+  if(!parameter||parameter.value===undefined)return null;
+  const unit=String(parameter.units||"km").trim().toLowerCase(),factor=unit==="km"?1:unit==="m"||unit==="meter"||unit==="meters"?0.001:unit==="au"?149597870.7:null;
+  if(!factor)return null;
+  const values=String(parameter.value).match(/[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?/g)||[];
+  if(values.length<2||values.length>3)return null;
+  const axes=values.map(Number).map(v=>v*factor);
+  if(axes.some(v=>!Number.isFinite(v)||v<=0))return null;
+  return axes;
+ }
+ async function lookupObject(query,quiet=false){
+  const q=(query||"").trim();if(!q||lookupBusy)return;
+  if(!proxyUrl){setLookupStatus("JPL-Suche noch nicht verbunden. Einmalig den kostenlosen Proxy einrichten (siehe Einrichtungshinweis im Repository).",true);return;}
+  lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;setLookupStatus("Suche bei JPL nach "+q+" …");
+  try{
+   const url=new URL(proxyUrl);url.searchParams.set("sstr",q);
+   const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
+   if(!response.ok)throw new Error("Proxy antwortet mit HTTP "+response.status);
+   const data=await response.json();
+   if(data.code===300||Array.isArray(data.list)){
+    const matches=data.list||[];const names=matches.slice(0,5).map(x=>x.fullname||x.name||x.des).filter(Boolean);
+    throw new Error("Mehrere Treffer. Bitte genauer suchen"+(names.length?": "+names.join(", "):"."));
+   }
+   if(data.code||data.error||!data.object)throw new Error(data.message||data.error||"JPL konnte das Objekt nicht eindeutig finden.");
+   const params=Array.isArray(data.phys_par)?data.phys_par:[];
+   const extent=params.find(p=>String(p.name||"").toLowerCase()==="extent");
+   const axes=parseExtent(extent);
+   const sbdbUrl="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr="+encodeURIComponent(data.object.fullname||q);
+   if(!axes){
+    const diameter=params.find(p=>["diameter","diam"].includes(String(p.name||"").toLowerCase()));
+    if(diameter)throw new Error("JPL kennt einen Durchmesser, aber keine verwendbare extent-Angabe. Ein Durchmesser allein reicht hier nicht für die automatische Maßstabsbestimmung.");
+    throw new Error("Für dieses Objekt liefert JPL keine verwertbare zwei- oder dreiachsige extent-Messung.");
+   }
+   const longest=Math.max(...axes),name=data.object.fullname||data.object.shortname||q;
+   showDimensions({name,axesKm:axes,longestAxisKm:longest,sourceUrl:sbdbUrl});
+   setLookupStatus("Physikalische Achsen gefunden. Originalmaßstab und Druckmaßstäbe wurden berechnet.");
+  }catch(error){setLookupStatus(error.message||"JPL-Suche fehlgeschlagen.",true);if(!quiet)renderFit("Keine verifizierte Maßstabsgrundlage",error.message||"JPL-Suche fehlgeschlagen.",null);}
+  finally{lookupBusy=false;$id("scaling-jpl-lookup").disabled=false;}
+ }
+ async function load(file,format,model=null,url=null){
+  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
+  $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
+  $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
+  $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
+  if(file){objectUrl=URL.createObjectURL(file);url=objectUrl;}
+  try{
+   await ensure();const my=token;if(my!==token)return;
+   scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);
+   camera=new THREE.PerspectiveCamera(38,(stage.clientWidth||640)/(stage.clientHeight||360),.01,1e9);
+   renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+   stage.replaceChildren(renderer.domElement);renderer.domElement.style.cssText="display:block;width:100%;height:100%;touch-action:none";
+   scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);
+   let object;if(format==="GLB")object=(await new L.GLB().loadAsync(url)).scene;else if(format==="OBJ")object=await new L.OBJ().loadAsync(url);else{const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));}
+   if(my!==token){renderer.dispose();return;}
+   object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+   if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");
+   root=new THREE.Group();root.position.copy(center).multiplyScalar(-1);root.add(object);scene.add(root);
+   const unit=format==="GLB"?"m":"mm";$id("scaling-units").value=unit;
+   active={raw:[size.x,size.y,size.z],unitFactor:unitFactors[unit]};root.scale.setScalar(active.unitFactor);
+   const max=Math.max(...active.raw)*active.unitFactor;active.maxSize=max;
+   camera.position.set(max*1.7,max*1.3,max*1.9);camera.near=Math.max(max/10000,.001);camera.far=Math.max(max*100,1000);camera.updateProjectionMatrix();
+   controls=new L.Orbit(camera,renderer.domElement);controls.enableDamping=true;resize();animate();
+   $id("scaling-file-state").textContent=file?"Local upload":"Archive model";$id("scaling-measurement-state").textContent="Geometry measured";update();
+   if(model&&Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0){
+    const axes=Array.isArray(model.realDimensionsKm)&&model.realDimensionsKm.length>=2?model.realDimensionsKm:[model.realLongestAxisKm];
+    showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source"});
+    setLookupStatus("Vorhandene verifizierte SMA-Messung verwendet.");
+   }else{
+    const query=model?.name||$id("scaling-object-query").value.trim();
+    if(query){$id("scaling-object-query").value=query;await lookupObject(query,true);}
+    else setLookupStatus(proxyUrl?"Gib den Namen, die Nummer oder Bezeichnung des Objekts ein.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.");
+   }
+  }catch(err){
+   const my=token;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Try a single-file STL, OBJ, PLY or GLB. Some source hosts block browser previews.</p></div>';
+   $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
+   renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
+  }
+ }
+ function resetWorkspace(){
+  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
+  $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
+  $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
+  $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";
+  $id("scaling-original-scale").textContent="Waiting for dimensions";$id("scaling-original-dimensions").textContent="—";
+  $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
+  $id("scaling-recommendations").innerHTML="<p>Load a model and identify its object to calculate scale suggestions.</p>";
+  renderFit("Awaiting model and object dimensions","The model is checked against the selected printer once its real-world dimensions are found.",null);
+  $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload a downloaded STL, OBJ, PLY or GLB model.</p></div>';
+  setLookupStatus(proxyUrl?"Searches JPL for physical axes (extent), not just an average diameter.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.",!proxyUrl);
+ }
+ window.addEventListener("sma-scaling-open",e=>{
+  const model=e.detail?.model;resetWorkspace();
+  if(model&&["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
+   $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
+  }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
+ });
+ $id("scaling-file").addEventListener("change",e=>{
+  const file=e.target.files?.[0];if(!file)return;const ext=file.name.split(".").pop().toUpperCase();
+  if(!["STL","OBJ","PLY","GLB"].includes(ext)){$id("scaling-file-state").textContent="Unsupported file";return;}
+  $id("scaling-object-query").value="";load(file,ext);
+ });
  $id("scaling-units").addEventListener("change",()=>{if(!active)return;active.unitFactor=unitFactors[$id("scaling-units").value];root.scale.setScalar(active.unitFactor);update();});
- ["scaling-real-length","scaling-denominator","scaling-bed-x","scaling-bed-y","scaling-bed-z","scaling-original-diameter","scaling-scale-diameter"].forEach(id=>$id(id).addEventListener("input",update));$id("scaling-original-diameter-unit").addEventListener("change",update);$id("scaling-real-unit").addEventListener("change",update);$id("scaling-reference-url").addEventListener("input",()=>{const u=$id("scaling-reference-url").value.trim(),a=$id("scaling-reference-source");a.hidden=!/^https?:\/\//i.test(u);if(!a.hidden)a.href=u;});$id("scaling-jpl-lookup").addEventListener("click",()=>{const q=$id("scaling-object-query").value.trim();if(!q){$id("scaling-object-query").focus();return;}window.open("https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr="+encodeURIComponent(q),"_blank","noopener");});
- $id("scaling-printer-profile").addEventListener("change",()=>{$id("scaling-custom-volume").hidden=$id("scaling-printer-profile").value!=="custom";update();});
+ $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value));
+ $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value);}});
+ $id("scaling-recommendations").addEventListener("click",e=>{
+  const button=e.target.closest("[data-denominator]");if(!button)return;
+  selectedDenominator=Number(button.dataset.denominator);update();
+ });
+ ["scaling-bed-x","scaling-bed-y","scaling-bed-z"].forEach(id=>$id(id).addEventListener("input",()=>{selectedDenominator=null;update();}));
+ $id("scaling-printer-profile").addEventListener("change",()=>{$id("scaling-custom-volume").hidden=$id("scaling-printer-profile").value!=="custom";selectedDenominator=null;update();});
 })();
