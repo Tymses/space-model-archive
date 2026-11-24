@@ -3,12 +3,15 @@
   "repository": "https://github.com/nasa/NASA-3D-Resources",
   "branch": "master",
   "indexedAt": "2026-11-24",
-  "sourceFileCount": 618,
+  "sourceFileCount": 650,
   "formatCounts": {
     "GLB": 257,
+    "LWO": 4,
     "BLEND": 13,
     "3DS": 4,
+    "7Z": 27,
     "FBX": 2,
+    "VSP3": 1,
     "STL": 342
   },
   "files": [
@@ -471,6 +474,20 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ben Franklin: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ben%20Franklin/Ben%20Franklin.glb",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ben%20Franklin",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-914aa91a86c7",
+      "name": "Ben Franklin",
+      "category": "spacecraft",
+      "kind": "Spacecraft / mission model",
+      "source": "NASA 3D Resources",
+      "size": "2.65 MB",
+      "format": "LWO",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Ben Franklin: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ben%20Franklin/Ben%20Franklin.lwo",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ben%20Franklin",
       "changed": "Source repository"
     },
@@ -1511,6 +1528,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-d92af7180252",
+      "name": "Hubble Space Telescope (B)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "6.75 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Hubble Space Telescope (B): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(B)/Hubble%20Space%20Telescope%20(B).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20Space%20Telescope%20(B)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-915d70497e56",
       "name": "Hubble Space Telescope (B)",
       "category": "spacecraft",
@@ -1791,6 +1822,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-6c1b57395065",
+      "name": "International Space Station (ISS) (C) (High Res)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "23.65 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "International Space Station (ISS) (C) (High Res): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(C)%20(High%20Res)/International%20Space%20Station%20(ISS)%20(C)%20(High%20Res).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/International%20Space%20Station%20(ISS)%20(C)%20(High%20Res)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-c838f9ad2207",
       "name": "International Space Station (ISS)",
       "category": "spacecraft",
@@ -1858,6 +1903,20 @@
       "credit": "JSC Mission Control Room: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/JSC%20Mission%20Control%20Room/JSC%20Mission%20Control%20Room.glb",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/JSC%20Mission%20Control%20Room",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-76e8d0e04384",
+      "name": "James Webb Space Telescope (A)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "63.21 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "James Webb Space Telescope (A): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)/James%20Webb%20Space%20Telescope%20(A).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)",
       "changed": "Source repository"
     },
     {
@@ -2967,6 +3026,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-ad7d128d3fc0",
+      "name": "Block 1 (GNC markings)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "13.51 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Space Launch System Block 1: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Launch%20System%20Block%201/Block%201%20(GNC%20markings).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Launch%20System%20Block%201",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-205e6d514451",
       "name": "Space Shuttle (A)",
       "category": "spacecraft",
@@ -3359,6 +3432,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-92dd9fc64668",
+      "name": "TOPEX Poseidon",
+      "category": "spacecraft",
+      "kind": "Spacecraft / mission model",
+      "source": "NASA 3D Resources",
+      "size": "331 kB",
+      "format": "LWO",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "TOPEX-Poseidon: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/TOPEX-Poseidon/TOPEX-Poseidon.lwo",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/TOPEX-Poseidon",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-e6aa9170cdf3",
       "name": "Tall Dish (dish)",
       "category": "spacecraft",
@@ -3499,6 +3586,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-55080b1bf545",
+      "name": "Total Ozone Mapping Spectrometer (TOMS)",
+      "category": "spacecraft",
+      "kind": "Spacecraft / mission model",
+      "source": "NASA 3D Resources",
+      "size": "506 kB",
+      "format": "LWO",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Total Ozone Mapping Spectrometer (TOMS): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS)/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS).lwo",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-09e24f6213e5",
       "name": "Tracking and Data Relay Satellites (TDRS) (A)",
       "category": "spacecraft",
@@ -3593,6 +3694,20 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TRDS) (E): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E).glb",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-1ad0f131e089",
+      "name": "Tracking and Data Relay Satellites (TRDS) (E)",
+      "category": "spacecraft",
+      "kind": "Spacecraft / mission model",
+      "source": "NASA 3D Resources",
+      "size": "921 kB",
+      "format": "LWO",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Tracking and Data Relay Satellites (TRDS) (E): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E).lwo",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)",
       "changed": "Source repository"
     },
@@ -3845,6 +3960,20 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "X-57: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.glb",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/X-57",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-1b9a809402d2",
+      "name": "X 57",
+      "category": "spacecraft",
+      "kind": "Spacecraft / mission model",
+      "source": "NASA 3D Resources",
+      "size": "4.42 MB",
+      "format": "VSP3",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "X-57: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.vsp3",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/X-57",
       "changed": "Source repository"
     },
@@ -4227,6 +4356,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-93fd907d5ab0",
+      "name": "Cassini",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "481 kB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Cassini: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Cassini/Cassini.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Cassini",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-bb61784e8668",
       "name": "Chandra base",
       "category": "spacecraft",
@@ -4465,6 +4608,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-8ef70b45301f",
+      "name": "Parts",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "2.74 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Curiosity Rover (Detailed): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Rover%20(Detailed)/Parts.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Rover%20(Detailed)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-1c9e900bf38d",
       "name": "Curiosity (200uM)",
       "category": "spacecraft",
@@ -4475,6 +4632,20 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover (Simplified): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Rover%20(Simplified)/Curiosity%20(200uM).stl",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Rover%20(Simplified)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-c5658fd7396c",
+      "name": "Parts",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "1.24 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Curiosity Rover (Simplified): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Rover%20(Simplified)/Parts.7z",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Rover%20(Simplified)",
       "changed": "Source repository"
     },
@@ -6061,6 +6232,104 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-2b9a3b9e9aa7",
+      "name": "IC 443 (Jellyfish Nebula) Blastwave",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "10.78 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Blastwave.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-9c253c8ea786",
+      "name": "IC 443 (Jellyfish Nebula) Ejecta and torus",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "22.92 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Ejecta%20and%20torus.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-4f719881b271",
+      "name": "IC 443 (Jellyfish Nebula) Ejecta cross section with PWN and torus",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "26.88 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Ejecta%20cross%20section%20with%20PWN%20and%20torus.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-05055ff16079",
+      "name": "IC 443 (Jellyfish Nebula) Ejecta cross section with PWN",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "20.39 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Ejecta%20cross%20section%20with%20PWN.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-f84e975f2224",
+      "name": "IC 443 (Jellyfish Nebula) Ejecta torus blast",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "33.70 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Ejecta%20torus%20blast.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-0f9a22e94882",
+      "name": "IC 443 (Jellyfish Nebula) Ejecta",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "16.43 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Ejecta.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-7455ce71bc49",
+      "name": "IC 443 (Jellyfish Nebula) Molecular cloud torus",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "6.51 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "IC 443 (Jellyfish Nebula): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)/IC%20443%20(Jellyfish%20Nebula)%20Molecular%20cloud%20torus.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/IC%20443%20(Jellyfish%20Nebula)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-eb9424b67645",
       "name": "001   FTC",
       "category": "spacecraft",
@@ -6366,6 +6635,20 @@
       "credit": "International Sun-Earth Explorer-3: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/International%20Sun-Earth%20Explorer-3/Thruster.stl",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/International%20Sun-Earth%20Explorer-3",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-8efab70d6328",
+      "name": "James Webb Space Telescope (Mirror) Parts",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "170 kB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "James Webb Space Telescope (Mirror): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/James%20Webb%20Space%20Telescope%20(Mirror)/James%20Webb%20Space%20Telescope%20(Mirror)%20Parts.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/James%20Webb%20Space%20Telescope%20(Mirror)",
       "changed": "Source repository"
     },
     {
@@ -7083,6 +7366,34 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-b1f7b0cbc635",
+      "name": "Mars 2020 Perseverance Rover assembly instructions",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "4.85 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover%20assembly%20instructions.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%202020%20Perseverance%20Rover",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-6526a4a33aa3",
+      "name": "Mars 2020 Perseverance Rover parts",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "4.60 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover%20parts.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%202020%20Perseverance%20Rover",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-64f68d37ee68",
       "name": "Mars 2020 sample tube",
       "category": "spacecraft",
@@ -7374,6 +7685,90 @@
       "credit": "NASA Insignia: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NASA%20Insignia/NASA%20Insignia%20(stand).stl",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NASA%20Insignia",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-796622d462a9",
+      "name": "NGC1566 (part 1)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "2.62 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC1566: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC1566/NGC1566%20(part%201).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC1566",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-8b8d488dffa8",
+      "name": "NGC1566 (part 2)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "2.05 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC1566: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC1566/NGC1566%20(part%202).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC1566",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-5fd545bc19b2",
+      "name": "NGC3344 (part 1)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "3.62 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC3344: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC3344/NGC3344%20(part%201).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC3344",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-64a6e8fe20b5",
+      "name": "NGC3344 (part 2)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "4.08 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC3344: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC3344/NGC3344%20(part%202).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC3344",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-4b5a62f570cf",
+      "name": "NGC602 (part 1)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "2.62 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC602: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC602/NGC602%20(part%201).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC602",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-b4ee9f7df885",
+      "name": "NGC602 (part 2)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "2.05 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "NGC602: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/NGC602/NGC602%20(part%202).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/NGC602",
       "changed": "Source repository"
     },
     {
@@ -8175,6 +8570,20 @@
       "changed": "Source repository"
     },
     {
+      "id": "nasa-auto-07b7a64ff20e",
+      "name": "Space Launch System (SLS)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "24.35 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Space Launch System (SLS): NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Space%20Launch%20System%20(SLS)/Space%20Launch%20System%20(SLS).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Space%20Launch%20System%20(SLS)",
+      "changed": "Source repository"
+    },
+    {
       "id": "nasa-auto-0cf014a08998",
       "name": "Tycho Supernova Remnant (left inner)",
       "category": "spacecraft",
@@ -8648,6 +9057,48 @@
       "credit": "Voyager: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Voyager/stand.stl",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Voyager",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-195c59e0269d",
+      "name": "Westerlund 2",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "7.30 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Westerlund 2: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Westerlund%202/Westerlund%202.7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Westerlund%202",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-4b4ee1b6f04b",
+      "name": "Whirlpool Galaxy (part 1)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "4.26 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Whirlpool Galaxy: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Whirlpool%20Galaxy/Whirlpool%20Galaxy%20(part%201).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Whirlpool%20Galaxy",
+      "changed": "Source repository"
+    },
+    {
+      "id": "nasa-auto-b175b3fe8c78",
+      "name": "Whirlpool Galaxy (part 2)",
+      "category": "spacecraft",
+      "kind": "Model package / archive",
+      "source": "NASA 3D Resources",
+      "size": "4.57 MB",
+      "format": "7Z",
+      "license": "NASA usage guidelines; check asset-specific notes",
+      "credit": "Whirlpool Galaxy: NASA 3D Resources",
+      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Whirlpool%20Galaxy/Whirlpool%20Galaxy%20(part%202).7z",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Whirlpool%20Galaxy",
       "changed": "Source repository"
     },
     {
