@@ -48,6 +48,12 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
 - The curated asteroid set links to original object pages rather than direct OBJ/PLY endpoints. The source confirms that model downloads are available on those pages; exact file names, variants and sizes remain on the source page and are not guessed in SMA. The source site does not document an API. Wikimedia Commons documents a predictable media URL pattern but also notes that filenames and suffixes vary, so SMA uses the source page until each direct endpoint can be verified. The 37 moon entries remain accessible through the source catalogue page.
 
+## Automated real-world dimension research
+
+A first Python research pipeline for the 256 curated numbered asteroids is available in `tools/dimensions/`. It queries the official JPL Small-Body Database API, accepts only exact numbered-object matches, and writes tri-/bi-axial `extent` results to the separate candidate file `data/real-world-dimension-candidates.json`. Effective diameters are recorded separately and are never treated as longest axes.
+
+GitHub Actions can run the scanner weekly or manually. Existing verified dimensions are skipped. The scanner does not modify `data/real-world-dimensions.json`; candidate values must be reviewed before they can affect scale calculations. See [the dimension research guide](tools/dimensions/README.md).
+
 ## Run locally
 
 Open `index.html` in a modern browser. No build step or package installation is required. The 3D preview uses Google's `model-viewer` web component loaded from a CDN.
