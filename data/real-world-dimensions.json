@@ -5,19 +5,24 @@
   "method": "Only explicit three-axis extents or authoritative longest-axis measurements are stored. Mean/equivalent diameters are not substituted for a longest axis.",
   "records": {
     "spaceradar-map-asteroid-arrokoth": {
-      "longestAxisKm": 35.4,
+      "longestAxisKm": 35.95,
       "dimensionsKm": [
-        35.4,
+        35.95,
         19.9,
-        9.8
+        9.75
       ],
-      "source": "NASA New Horizons / DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+      "source": "Frieger et al. / published Arrokoth shape dimensions",
+      "sourceUrl": "https://doi.org/10.1051/0004-6361/202347742"
     },
     "spaceradar-map-asteroid-bennu": {
       "longestAxisKm": 0.565,
-      "source": "NASA OSIRIS-REx / NASA asteroid fact sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+      "dimensionsKm": [
+        0.565,
+        0.535,
+        0.508
+      ],
+      "source": "Nolan et al. (2013), Bennu radar/lightcurve shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
     },
     "spaceradar-map-asteroid-didymos": {
       "longestAxisKm": 0.851,
@@ -33,10 +38,11 @@
       "longestAxisKm": 33,
       "dimensionsKm": [
         33,
+        13,
         13
       ],
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+      "source": "NASA/JPL NEAR Eros dimensions",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/"
     },
     "spaceradar-map-asteroid-geographos": {
       "longestAxisKm": 5,
@@ -79,14 +85,14 @@
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
     },
     "spaceradar-map-asteroid-lutetia": {
-      "longestAxisKm": 132,
+      "longestAxisKm": 124,
       "dimensionsKm": [
-        132,
+        124,
         101,
-        76
+        80
       ],
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+      "source": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "spaceradar-map-asteroid-ryugu": {
       "longestAxisKm": 1.004,
@@ -120,8 +126,13 @@
     },
     "spaceradar-map-asteroid-vesta": {
       "longestAxisKm": 572.6,
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
     },
     "spaceradar-map-comet-67p": {
       "longestAxisKm": 4.34,
@@ -258,15 +269,23 @@
     "spaceradar-map-asteroid-mithra": null,
     "nasa-auto-f79542a6d5b4": {
       "longestAxisKm": 0.565,
-      "source": "NASA OSIRIS-REx / NASA asteroid fact sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-bennu"
+      "dimensionsKm": [
+        0.565,
+        0.535,
+        0.508
+      ],
+      "source": "Nolan et al. (2013), Bennu radar/lightcurve shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
     },
     "nasa-auto-ff4aab9bcf60": {
       "longestAxisKm": 0.565,
-      "source": "NASA OSIRIS-REx / NASA asteroid fact sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-bennu"
+      "dimensionsKm": [
+        0.565,
+        0.535,
+        0.508
+      ],
+      "source": "Nolan et al. (2013), Bennu radar/lightcurve shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
     },
     "nasa-auto-f84d462f8582": {
       "longestAxisKm": 5,
@@ -276,8 +295,7 @@
         2.1
       ],
       "source": "3D Asteroid Catalogue physical extent",
-      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos",
-      "matchedFrom": "spaceradar-map-asteroid-geographos"
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
     },
     "nasa-auto-fb3429e7d081": {
       "longestAxisKm": 276,
@@ -287,8 +305,7 @@
         78
       ],
       "source": "Shepard et al. (2018), JPL radar shape model",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-kleopatra"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
     },
     "nasa-auto-b8695242df58": {
       "longestAxisKm": 0.535,
@@ -298,32 +315,47 @@
         0.209
       ],
       "source": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-itokawa"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "nasa-auto-78df0a2081b4": {
       "longestAxisKm": 572.6,
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-vesta"
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
     },
     "nasa-auto-38a02f2bca05": {
       "longestAxisKm": 572.6,
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-vesta"
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
     },
     "nasa-auto-380f1c7a9c07": {
       "longestAxisKm": 572.6,
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-vesta"
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
     },
     "nasa-auto-0ed6559d669b": {
       "longestAxisKm": 572.6,
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-vesta"
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
     },
     "nasa-auto-31350ad33013": {
       "longestAxisKm": 4.6,
@@ -333,18 +365,17 @@
         1.9
       ],
       "source": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-toutatis"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "nasa-auto-62a3387878bf": {
       "longestAxisKm": 33,
       "dimensionsKm": [
         33,
+        13,
         13
       ],
-      "source": "DLR Solar System brochure",
-      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-eros"
+      "source": "NASA/JPL NEAR Eros dimensions",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/"
     },
     "nasa-auto-8e7ae3c8e46e": {
       "longestAxisKm": 0.7,
@@ -354,8 +385,7 @@
         0.5
       ],
       "source": "Swinburne Astronomy Online asteroid dimensions summary",
-      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-golevka"
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
     },
     "jpl-radar-kleopatra-ostro": {
       "longestAxisKm": 276,
@@ -365,8 +395,7 @@
         78
       ],
       "source": "Shepard et al. (2018), JPL radar shape model",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-kleopatra"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
     },
     "jpl-radar-geographos": {
       "longestAxisKm": 5,
@@ -376,8 +405,7 @@
         2.1
       ],
       "source": "3D Asteroid Catalogue physical extent",
-      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos",
-      "matchedFrom": "spaceradar-map-asteroid-geographos"
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
     },
     "jpl-radar-toutatis": {
       "longestAxisKm": 4.6,
@@ -387,8 +415,7 @@
         1.9
       ],
       "source": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-toutatis"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "jpl-radar-toutatis-hires": {
       "longestAxisKm": 4.6,
@@ -398,8 +425,7 @@
         1.9
       ],
       "source": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
-      "matchedFrom": "spaceradar-map-asteroid-toutatis"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "jpl-radar-golevka": {
       "longestAxisKm": 0.7,
@@ -409,8 +435,7 @@
         0.5
       ],
       "source": "Swinburne Astronomy Online asteroid dimensions summary",
-      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf",
-      "matchedFrom": "spaceradar-map-asteroid-golevka"
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
     },
     "nasa-auto-0368af278787": null,
     "nasa-auto-505427f6b0b0": null,
