@@ -634,8 +634,8 @@
     {
       "id": "nasa-auto-b069389eeada",
       "name": "Cloud Aerosol Lidar and Infrared Pathfinder Satellite (CALIPSO)",
-      "category": "small-bodies",
-      "kind": "Small-body model",
+      "category": "spacecraft",
+      "kind": "Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "524 kB",
       "format": "GLB",
