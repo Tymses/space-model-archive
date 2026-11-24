@@ -272,8 +272,7 @@
         1.5
       ],
       "source": "Magri et al. (2011), radar and photometric shape model; maximum diameters",
-      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777",
-      "longestAxisUncertaintyKm": 0.19
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
     },
     "spaceradar-map-asteroid-donaldjohanson": null,
     "spaceradar-map-asteroid-mithra": {
@@ -465,8 +464,7 @@
         1.5
       ],
       "source": "Magri et al. (2011), radar and photometric shape model; maximum diameters",
-      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777",
-      "longestAxisUncertaintyKm": 0.19
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
     },
     "nasa-auto-505427f6b0b0": {
       "longestAxisKm": 2.35,
@@ -499,30 +497,39 @@
       "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus"
     },
     "jpl-radar-ra-shalom": null,
-    "jpl-radar-1996-hw1": null,
+    "jpl-radar-1996-hw1": {
+      "longestAxisKm": 3.8,
+      "dimensionsKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "source": "Magri et al. (2011), radar and photometric shape model; maximum diameters",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
+    },
     "jpl-radar-1992-sk": null,
     "jpl-radar-wt24": null,
     "jpl-radar-ml14": null,
     "jpl-radar-yorp": null,
     "jpl-radar-kw4-alpha": {
-      "longestAxisKm": 1.532,
+      "longestAxisKm": 1.5,
       "dimensionsKm": [
-        1.532,
-        1.495,
-        1.347
+        1.5,
+        1.5,
+        1.3
       ],
-      "source": "Ostro et al. (2006), 1999 KW4 Alpha principal-axis dimensions",
-      "sourceUrl": "https://iawn.astro.umd.edu/obscamp/1999KW4/1999KW4_properties.shtml"
+      "source": "Ostro et al. (2006), JPL Goldstone radar planning page; major axes of Alpha",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
     },
     "jpl-radar-kw4-beta": {
-      "longestAxisKm": 0.571,
+      "longestAxisKm": 0.57,
       "dimensionsKm": [
-        0.571,
-        0.463,
-        0.349
+        0.57,
+        0.46,
+        0.35
       ],
-      "source": "Ostro et al. (2006), 1999 KW4 Beta principal-axis dimensions",
-      "sourceUrl": "https://iawn.astro.umd.edu/obscamp/1999KW4/1999KW4_properties.shtml"
+      "source": "Ostro et al. (2006), JPL Goldstone radar planning page; major axes of Beta",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
     },
     "jpl-radar-ky26": null,
     "jpl-radar-ce26-alpha": {
@@ -546,17 +553,6 @@
       "source": "Busch et al. (2011), 2008 EV5 radar shape model maximum principal-axis dimensions",
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf",
       "longestAxisUncertaintyKm": 0.05
-    },
-    "jpl-radar-nereus": {
-      "longestAxisKm": 0.51,
-      "dimensionsKm": [
-        0.51,
-        0.33,
-        0.241
-      ],
-      "source": "Brozovic et al. (2009), preferred radar shape model principal-axis dimensions",
-      "sourceUrl": "https://doi.org/10.1016/j.icarus.2008.12.029",
-      "longestAxisUncertaintyKm": 0.02
     }
   }
 }
