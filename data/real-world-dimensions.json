@@ -2,7 +2,7 @@
   "source": "Verified physical longest-axis dimensions for model/body matches",
   "units": "km",
   "indexedAt": "2026-11-24",
-  "method": "Only object-specific longest-axis values from published shape-model dimensions or explicitly reported physical extents are stored. Equivalent/mean diameters are not substituted. Uncertainty is retained where the cited source reports it. Values are in km and converted to mm in the UI.",
+  "method": "Only object-specific longest-axis values from published shape-model dimensions or explicitly reported physical extents are stored. Equivalent/mean diameters are not substituted. Uncertainty is retained where the cited source reports it. Values are in km and converted to mm in the UI. Duplicate catalogue records for the same numbered asteroid reuse the identical cited physical measurement; no effective-diameter-only estimate is promoted to a verified longest axis.",
   "records": {
     "spaceradar-map-asteroid-arrokoth": {
       "longestAxisKm": 35.95,
@@ -553,6 +553,106 @@
       "source": "Busch et al. (2011), 2008 EV5 radar shape model maximum principal-axis dimensions",
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf",
       "longestAxisUncertaintyKm": 0.05
+    },
+    "3dac-asteroid-4": {
+      "longestAxisKm": 572.6,
+      "dimensionsKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "source": "NASA PDS Vesta physical characteristics (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
+    },
+    "3dac-asteroid-21": {
+      "longestAxisKm": 124,
+      "dimensionsKm": [
+        124,
+        101,
+        80
+      ],
+      "source": "NASA Asteroid Fact Sheet (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "3dac-asteroid-216": {
+      "longestAxisKm": 276,
+      "dimensionsKm": [
+        276,
+        94,
+        78
+      ],
+      "source": "Shepard et al. (2018), JPL radar shape model (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
+    },
+    "3dac-asteroid-433": {
+      "longestAxisKm": 33,
+      "dimensionsKm": [
+        33,
+        13,
+        13
+      ],
+      "source": "NASA/JPL NEAR Eros dimensions (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/"
+    },
+    "3dac-asteroid-1620": {
+      "longestAxisKm": 5,
+      "dimensionsKm": [
+        5,
+        2,
+        2.1
+      ],
+      "source": "3D Asteroid Catalogue physical extent (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
+    },
+    "3dac-asteroid-4179": {
+      "longestAxisKm": 4.26,
+      "dimensionsKm": [
+        4.26,
+        2.03,
+        1.7
+      ],
+      "source": "3D Asteroid Catalogue physical characteristics; extent of radar shape model (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/4179-Toutatis"
+    },
+    "3dac-asteroid-6489": {
+      "longestAxisKm": 0.7,
+      "dimensionsKm": [
+        0.7,
+        0.59,
+        0.5
+      ],
+      "source": "Swinburne Astronomy Online asteroid dimensions summary (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
+    },
+    "3dac-asteroid-25143": {
+      "longestAxisKm": 0.535,
+      "dimensionsKm": [
+        0.535,
+        0.294,
+        0.209
+      ],
+      "source": "NASA Asteroid Fact Sheet (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "3dac-asteroid-101955": {
+      "longestAxisKm": 0.565,
+      "dimensionsKm": [
+        0.565,
+        0.535,
+        0.508
+      ],
+      "source": "Nolan et al. (2013), Bennu radar/lightcurve shape model (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
+    },
+    "3dac-asteroid-486958": {
+      "longestAxisKm": 35.95,
+      "dimensionsKm": [
+        35.95,
+        19.9,
+        9.75
+      ],
+      "source": "Frieger et al. / published Arrokoth shape dimensions (same numbered object; reused for curated catalogue entry)",
+      "sourceUrl": "https://doi.org/10.1051/0004-6361/202347742"
     }
   }
 }
