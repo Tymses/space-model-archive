@@ -7606,8 +7606,8 @@
     {
       "id": "nasa-auto-1f315d9c3ca0",
       "name": "Moon (far side)",
-      "category": "spacecraft",
-      "kind": "Spacecraft / mission model",
+      "category": "moons",
+      "kind": "Natural satellite model",
       "source": "NASA 3D Resources",
       "size": "11.79 MB",
       "format": "STL",
@@ -7620,8 +7620,8 @@
     {
       "id": "nasa-auto-767caeca6863",
       "name": "Moon (near side)",
-      "category": "spacecraft",
-      "kind": "Spacecraft / mission model",
+      "category": "moons",
+      "kind": "Natural satellite model",
       "source": "NASA 3D Resources",
       "size": "11.79 MB",
       "format": "STL",
