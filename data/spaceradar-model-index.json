@@ -1,9 +1,11 @@
 {
-  "source": "Space Radar Models",
+  "source": "Space Radar Models and map assets",
   "repository": "https://github.com/Sara-Managed-Projects/space-radar",
   "sourceCatalogue": "https://models.spaceradar.ai/",
   "indexedAt": "2026-11-24",
-  "sourceFileCount": 203,
+  "officialCatalogueCount": 203,
+  "additionalMapAssetCount": 108,
+  "sourceFileCount": 311,
   "files": [
     {
       "id": "spaceradar-aehf",
@@ -76,6 +78,258 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-apollo-csm",
+      "name": "Apollo Csm",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "135 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "Apollo Soyuz (NASA 3D Resources, `3D Models/Apollo Soyuz`; NASA has no other Apollo command and service module): its CSM cut out and rescaled, then the high-gain antenna, the windows, the docking ring and probe, the SM's beams, radiators and fairing drawn by Space Radar from NASA's Apollo 9 and Apollo 17 photographs (public domain); and since 1.7.0 bay 4 of the SM (the outer panel as its own part, the shelf, tanks and torn Mylar behind it) drawn from NASA's Apollo 13 photograph AS13-59-8500 (public domain). The terms: \"All of these assets are free to download and use\" (science.nasa.gov/3d-resources, read 2026-10-28) Used for: the Command and Service Module of the Apollo Moments (no object on the map wears it yet)",
+      "file": "https://www.spaceradar.ai/models/apollo-csm.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-aqua",
+      "name": "Aqua",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "76 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Aqua (B) Used for: NORAD 27424 (AQUA)",
+      "file": "https://www.spaceradar.ai/models/aqua.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-1996hw1",
+      "name": "1996hw1 asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "16 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the radar shape model (Magri et al. 2011). Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 8567 1996 HW1",
+      "file": "https://www.spaceradar.ai/models/asteroid-1996hw1.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-arrokoth",
+      "name": "Arrokoth asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "248 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model and albedo map: Porter, S. (2024), Arrokoth shape model (v1.0) with Gobat, C., Enke, B., Crombie, M.K., Keeney, B. and Parker, J.Wm., New Horizons LORRI data, NASA Planetary Data System. Source: https://pds-smallbodies.astro.umd.edu/holdings/pds4-nh_derived:arrokoth_shapemodel_porter2024-v1.0/arrokoth_porter_2024_v01.obj and albedo_arrokoth4_fp36h2_masked1.png. Licence: CC0 by NASA policy (https://science.data.nasa.gov/about/license, read 2026-10-29): data from a NASA-led mission \"are licensed as Creative Commons Zero\" unless marked otherwise, and New Horizons was NASA's and the product states no restriction Used for: 486958 Arrokoth",
+      "file": "https://www.spaceradar.ai/models/asteroid-arrokoth.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-bennu",
+      "name": "Bennu asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "24 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "1999 RQ36 asteroid Used for: Bennu, and the asteroid class",
+      "file": "https://www.spaceradar.ai/models/asteroid-bennu.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-didymos",
+      "name": "Didymos asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "61 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "The DART team's shape models of Didymos (v003) and Dimorphos (v004): Daly, R.T. et al. (2023), DART Shapemodel Archive Bundle, NASA PDS Small Bodies Node, doi:10.26007/96fn-p578. CC0 under NASA's science data policy Used for: 65803 Didymos and its moon Dimorphos",
+      "file": "https://www.spaceradar.ai/models/asteroid-didymos.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-donaldjohanson",
+      "name": "Donaldjohanson asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "160 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Lucy mission, DLR team (Preusker, Mottola et al.), SPICE DSK lcy_donj_k548_iso20m_v10 (stereophotogrammetry and contour fitting), NASA NAIF; Marchi et al. (2025), Science, in the kernel's own reference. Source: https://naif.jpl.nasa.gov/pub/naif/pds/pds4/lucy/lucy_spice/spice_kernels/dsk/lcy_donj_k548_iso20m_v10.bds. Licence: CC0 by NASA policy (https://science.data.nasa.gov/about/license, read 2026-10-29): data from a NASA-led mission \"are licensed as Creative Commons Zero\" unless marked otherwise, and Lucy was NASA's and the product states no restriction Used for: 52246 Donaldjohanson",
+      "file": "https://www.spaceradar.ai/models/asteroid-donaldjohanson.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-eros",
+      "name": "Eros asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "22 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Gaskell Eros Shape Model V1.1 (NASA PDS, not NASA 3D Resources): Gaskell, R. (2021), doi:10.26033/d0gq-9427. CC0 under NASA's science data policy Used for: 433 Eros",
+      "file": "https://www.spaceradar.ai/models/asteroid-eros.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-geographos",
+      "name": "Geographos asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "51 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the radar shape model (Hudson and Ostro). Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 1620 Geographos",
+      "file": "https://www.spaceradar.ai/models/asteroid-geographos.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-golevka",
+      "name": "Golevka asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "24 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the radar shape model (Hudson et al. 2000). Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 6489 Golevka",
+      "file": "https://www.spaceradar.ai/models/asteroid-golevka.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-itokawa",
+      "name": "Itokawa asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "57 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Gaskell Itokawa Shape Model V1.1 (NASA PDS Small Bodies Node): Gaskell, R. et al. (2021), doi:10.26033/3b2j-yy57, from Hayabusa's AMICA images. ISAS Data Policy (as for Ryugu), credit \"ISAS/JAXA\" Used for: 25143 Itokawa",
+      "file": "https://www.spaceradar.ai/models/asteroid-itokawa.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-kleopatra",
+      "name": "Kleopatra asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "23 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the radar shape model (Ostro et al. 2000). Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 216 Kleopatra",
+      "file": "https://www.spaceradar.ai/models/asteroid-kleopatra.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-lutetia",
+      "name": "Lutetia asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "216 kB",
+      "format": "GLB",
+      "license": "No explicit licence stated upstream",
+      "credit": "Shape model: Jorda, L., Gaskell, R., Kaasalainen, M. and Carry, B.; Farnham, T.L. (2013), Plate shape model of asteroid 21 Lutetia V1.0, RO-A-OSINAC/OSIWAC-5-LUTETIA-SHAPE-V1.0, NASA Planetary Data System; Sierks et al. (2011), Science 334, 487 (Rosetta OSIRIS images). Source: https://pds-smallbodies.astro.umd.edu/holdings/ro-a-osinac_osiwac-5-lutetia-shape-v1.0/data/lutetia_098k_cart.wrl. Licence: No licence is stated. The dataset's AAREADME and catalog name none, and ESA's Planetary Science Archive (https://www.cosmos.esa.int/web/psa/psa-acknowledgement, read 2026-10-29) states acknowledgement terms only: \"Please acknowledge the Principal Investigator(s) as well as the ESA Planetary Science Archive\", and for the shape models it points to the product label's CITATION_DESC. NASA's science data licence (https://science.data.nasa.gov/about/license) puts CC0 on data from NASA-led missions and says of all other data that it is \"provided as is\"; Rosetta was ESA's. Used here with the label's own credit, as the data are published openly by NASA's PDS Used for: 21 Lutetia",
+      "file": "https://www.spaceradar.ai/models/asteroid-lutetia.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-mithra",
+      "name": "Mithra asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "33 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the radar shape model. Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 4486 Mithra",
+      "file": "https://www.spaceradar.ai/models/asteroid-mithra.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-ryugu",
+      "name": "Ryugu asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "57 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Hayabusa2's SPC shape model of Ryugu, `ryugu_shape_spc_49k_v20200323` (JAXA's PDS4 archive DARTS, Hayabusa2 SPICE bundle, doi:10.17597/isas.darts/hyb2-00600; Watanabe et al. 2019, Science 364, 268). ISAS Data Policy: open data \"can be used free of charge, either for commercial or non-commercial purposes. They may be copied, forwarded or modified\", credit \"ISAS/JAXA\" Used for: 162173 Ryugu",
+      "file": "https://www.spaceradar.ai/models/asteroid-ryugu.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-steins",
+      "name": "Steins asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "95 kB",
+      "format": "GLB",
+      "license": "No explicit licence stated upstream",
+      "credit": "Shape model: Farnham, T.L. and Jorda, L. (2013), Shape model of asteroid 2867 Steins, RO-A-OSINAC/OSIWAC-5-STEINS-SHAPE-V1.0, NASA Planetary Data System; Jorda et al. (2012), Icarus 221, 1089 (Rosetta OSIRIS images). Source: https://pds-smallbodies.astro.umd.edu/holdings/ro-a-osinac_osiwac-5-steins-shape-v1.0/data/steins_cart.wrl. Licence: No licence is stated. The dataset's AAREADME and catalog name none, and ESA's Planetary Science Archive (https://www.cosmos.esa.int/web/psa/psa-acknowledgement, read 2026-10-29) states acknowledgement terms only: \"Please acknowledge the Principal Investigator(s) as well as the ESA Planetary Science Archive\", and for the shape models it points to the product label's CITATION_DESC. NASA's science data licence (https://science.data.nasa.gov/about/license) puts CC0 on data from NASA-led missions and says of all other data that it is \"provided as is\"; Rosetta was ESA's. Used here with the label's own credit, as the data are published openly by NASA's PDS Used for: 2867 Steins",
+      "file": "https://www.spaceradar.ai/models/asteroid-steins.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-toutatis",
+      "name": "Toutatis asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "64 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "3D model: NASA (NASA 3D Resources, 3D Printing collection), made from the Goldstone radar shape model (Hudson and Ostro). Source: https://github.com/nasa/NASA-3D-Resources. Licence: Public domain (NASA media usage guidelines) Used for: 4179 Toutatis",
+      "file": "https://www.spaceradar.ai/models/asteroid-toutatis.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-asteroid-vesta",
+      "name": "Vesta asteroid shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "50 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "NOT from NASA 3D Resources since 2026-10-07: DLR's stereo height model of Vesta from Dawn's Framing Camera pictures (`Vesta_Dawn_HAMO_DTM_DLR_Global_48ppd`, hosted by USGS Astrogeology, <https://planetarymaps.usgs.gov/mosaic/Vesta_Dawn_HAMO_DTM_DLR_Global_48ppd.lbl>), credit NASA/JPL-Caltech/UCLA/MPS/DLR/IDA; thinned to 3 072 triangles and given texture coordinates by `scripts/shape-to-glb.py`, so that it can wear DLR's mosaic on the same grid of longitudes. Licence as the mosaic's (section 2): NASA's media guidelines; the height model was made at DLR Used for: 4 Vesta",
+      "file": "https://www.spaceradar.ai/models/asteroid-vesta.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-astrosat",
       "name": "AstroSat",
       "category": "spacecraft",
@@ -101,6 +355,20 @@
       "credit": "Atlas V Centaur: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/atlas5-centaur.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=atlas5-centaur",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-aura",
+      "name": "Aura",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "22 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Aura (A) Used for: NORAD 28376 (AURA)",
+      "file": "https://www.spaceradar.ai/models/aura.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -314,6 +582,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-bus-ssl1300",
+      "name": "Bus Ssl1300",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "82 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Space Systems Loral (SSL-1300) Used for: DEFAULT for the geostationary ring -- several hundred unnamed commercial satellites",
+      "file": "https://www.spaceradar.ai/models/bus-ssl1300.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-calipso",
+      "name": "Calipso",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "267 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Cloud-Aerosol Lidar and Infrared Pathfinder Satellite (CALIPSO) Used for: catalogue name CALIPSO",
+      "file": "https://www.spaceradar.ai/models/calipso.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-cartosat-2",
       "name": "Cartosat-2",
       "category": "spacecraft",
@@ -325,6 +621,20 @@
       "credit": "Cartosat-2: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/cartosat-2.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=cartosat-2",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-cassini",
+      "name": "Cassini",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "171 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Cassini-Huygens (A) Used for: Horizons -82 (Cassini, 1997 to 2017)",
+      "file": "https://www.spaceradar.ai/models/cassini.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -367,6 +677,20 @@
       "credit": "Centaur D: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/centaur-d.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=centaur-d",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-chandra",
+      "name": "Chandra",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "148 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Chandra X-ray Observatory Used for: NORAD 25867 (CXO)",
+      "file": "https://www.spaceradar.ai/models/chandra.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -426,6 +750,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-cloudsat",
+      "name": "Cloudsat",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "206 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "CloudSat (A) Used for: catalogue name CLOUDSAT",
+      "file": "https://www.spaceradar.ai/models/cloudsat.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-comet-67p",
+      "name": "Comet 67p shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "727 kB",
+      "format": "GLB",
+      "license": "No explicit licence stated upstream",
+      "credit": "Shape model: Gaskell, R., Jorda, L., Capanna, C., Hviid, S. and Gutierrez, P., SPC SHAP5 cartesian plate model for comet 67P/C-G, RO-C-MULTI-5-67P-SHAPE-V2.0, NASA Planetary Data System and ESA Planetary Science Archive, 2017 (from Rosetta OSIRIS images). Source: https://pds-smallbodies.astro.umd.edu/holdings/ro-c-multi-5-67p-shape-v2.0/data/triplate/spc_lam_psi/shap5/cg_spc_shap5_199k_cart.wrl. Licence: No licence is stated. The dataset's AAREADME and catalog name none, and ESA's Planetary Science Archive (https://www.cosmos.esa.int/web/psa/psa-acknowledgement, read 2026-10-29) states acknowledgement terms only: \"Please acknowledge the Principal Investigator(s) as well as the ESA Planetary Science Archive\", and for the shape models it points to the product label's CITATION_DESC. NASA's science data licence (https://science.data.nasa.gov/about/license) puts CC0 on data from NASA-led missions and says of all other data that it is \"provided as is\"; Rosetta was ESA's. Used here with the label's own credit, as the data are published openly by NASA's PDS Used for: 67P/Churyumov-Gerasimenko",
+      "file": "https://www.spaceradar.ai/models/comet-67p.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-cosmo-skymed",
       "name": "COSMO-SkyMed",
       "category": "spacecraft",
@@ -482,20 +834,6 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-cubesat-12u",
-      "name": "CubeSat 12U",
-      "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "21 kB",
-      "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "CubeSat 12U: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/cubesat-12u.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-12u",
-      "changed": "Source repository index"
-    },
-    {
       "id": "spaceradar-cubesat-12u-wings",
       "name": "CubeSat 12U with wings",
       "category": "spacecraft",
@@ -507,6 +845,20 @@
       "credit": "CubeSat 12U with wings: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/cubesat-12u-wings.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-12u-wings",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-cubesat-12u",
+      "name": "CubeSat 12U",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "21 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "CubeSat 12U: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/cubesat-12u.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-12u",
       "changed": "Source repository index"
     },
     {
@@ -538,6 +890,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-cubesat-3u-wings",
+      "name": "CubeSat 3U with wings",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "24 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "CubeSat 3U with wings: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/cubesat-3u-wings.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-3u-wings",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-cubesat-3u",
       "name": "CubeSat 3U",
       "category": "spacecraft",
@@ -552,17 +918,17 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-cubesat-3u-wings",
-      "name": "CubeSat 3U with wings",
+      "id": "spaceradar-cubesat-6u-wings",
+      "name": "CubeSat 6U with wings",
       "category": "spacecraft",
       "kind": "Spacecraft model",
       "source": "Space Radar",
       "size": "24 kB",
       "format": "GLB",
       "license": "CC BY 4.0",
-      "credit": "CubeSat 3U with wings: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/cubesat-3u-wings.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-3u-wings",
+      "credit": "CubeSat 6U with wings: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/cubesat-6u-wings.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-6u-wings",
       "changed": "Source repository index"
     },
     {
@@ -580,17 +946,31 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-cubesat-6u-wings",
-      "name": "CubeSat 6U with wings",
+      "id": "spaceradar-map-curiosity",
+      "name": "Curiosity",
       "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "24 kB",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "241 kB",
       "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "CubeSat 6U with wings: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/cubesat-6u-wings.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=cubesat-6u-wings",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"Curiosity 3D Model\" (2019) Used for: <https://science.nasa.gov/resource/curiosity-3d-model/>",
+      "file": "https://www.spaceradar.ai/models/curiosity.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-cygnss",
+      "name": "Cygnss",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "34 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Cyclone Global Navigation Satellite System (CYGNSS) Used for: NORAD 41884-41891, the seven CYGNSS microsatellites still in the catalogue",
+      "file": "https://www.spaceradar.ai/models/cygnss.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -619,6 +999,34 @@
       "credit": "DAMPE: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/dampe.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=dampe",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-dawn",
+      "name": "Dawn",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "116 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Dawn Used for: Horizons -203 (Dawn, 2007 to 2018)",
+      "file": "https://www.spaceradar.ai/models/dawn.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-deep-impact",
+      "name": "Deep Impact",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "73 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Deep Impact (EPOXI) (NASA/Brian E. Kumanchik; NASA/Christian A. Lopez) Used for: Horizons -140 (Deep Impact, 2005 to 2013)",
+      "file": "https://www.spaceradar.ai/models/deep-impact.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -661,6 +1069,62 @@
       "credit": "Crew Dragon: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/dragon-crew.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=dragon-crew",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-dscovr",
+      "name": "Dscovr",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "96 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Deep Space Climate Observatory (DSCOVR) (Triana) Used for: catalogue names containing DSCOVR",
+      "file": "https://www.spaceradar.ai/models/dscovr.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-dsn34",
+      "name": "Dsn34",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "151 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Deep Space Network 34-meter Used for: the dss-25 antenna, which is 34 m and was wrongly drawn with the 70 m model",
+      "file": "https://www.spaceradar.ai/models/dsn34.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-dsn70",
+      "name": "Dsn70",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "149 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Deep Space Network 70-meter Used for: DEFAULT for ground sites of class `dish`",
+      "file": "https://www.spaceradar.ai/models/dsn70.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-dwarf-ceres",
+      "name": "Ceres dwarf-planet shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "50 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Ceres SPC Shape Model Dataset V1.0 (NASA PDS, not NASA 3D Resources): Park, R.S. and Buccino, D.R. (2018), DAWN-A-FC2-5-CERESSHAPESPC-V1.0. CC0 under NASA's science data policy. Since 2026-10-07 with texture coordinates (longitude and latitude of each vertex), for the map in section 2 Used for: 1 Ceres",
+      "file": "https://www.spaceradar.ai/models/dwarf-ceres.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -762,6 +1226,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-europa-clipper",
+      "name": "Europa Clipper",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "212 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"Europa Clipper 3D Model\" (2022) Used for: <https://science.nasa.gov/resource/europa-clipper-3d-model/>",
+      "file": "https://www.spaceradar.ai/models/europa-clipper.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-falcon9-stage1",
       "name": "Falcon 9 first stage",
       "category": "spacecraft",
@@ -832,6 +1310,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-fermi",
+      "name": "Fermi",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "142 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Fermi Gamma-ray Large Area Space Telescope Used for: NORAD 33053 (FGRST (GLAST))",
+      "file": "https://www.spaceradar.ai/models/fermi.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-formosat-7",
       "name": "FORMOSAT-7 (COSMIC-2)",
       "category": "spacecraft",
@@ -899,6 +1391,20 @@
       "credit": "Galileo's atmospheric probe: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/galileo-probe.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=galileo-probe",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-galileo",
+      "name": "Galileo",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "76 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Galileo Used for: Horizons -77 (Galileo, 1989 to 2003)",
+      "file": "https://www.spaceradar.ai/models/galileo.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1028,6 +1534,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-goes",
+      "name": "Goes",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "124 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Geostationary Operational Environmental Satellites Used for: catalogue names containing GOES",
+      "file": "https://www.spaceradar.ai/models/goes.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-gosat",
       "name": "GOSAT",
       "category": "spacecraft",
@@ -1039,6 +1559,20 @@
       "credit": "GOSAT: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/gosat.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=gosat",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-gpm",
+      "name": "Gpm",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "162 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Global Precipitation Measurement Used for: NORAD 39574 (GPM-CORE)",
+      "file": "https://www.spaceradar.ai/models/gpm.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1081,6 +1615,20 @@
       "credit": "GPS Block IIR: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/gps-iir.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=gps-iir",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-grace",
+      "name": "Grace",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "17 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Gravity Recovery and Climate Experiment (GRACE) (B) Used for: NORAD 43476 and 43477 (GRACE-FO 1 and 2), drawn as their sister ship",
+      "file": "https://www.spaceradar.ai/models/grace.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1154,6 +1702,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-hinode",
+      "name": "Hinode",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "103 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Hinode (Solar-B) Used for: NORAD 29479 (HINODE (SOLAR-B))",
+      "file": "https://www.spaceradar.ai/models/hinode.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-hitomi",
       "name": "Hitomi",
       "category": "spacecraft",
@@ -1182,20 +1744,6 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-hubble",
-      "name": "Hubble Space Telescope",
-      "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "408 kB",
-      "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "Hubble Space Telescope: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/hubble.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=hubble",
-      "changed": "Source repository index"
-    },
-    {
       "id": "spaceradar-hubble-sts31",
       "name": "Hubble at release (STS-31, 1990)",
       "category": "spacecraft",
@@ -1207,6 +1755,20 @@
       "credit": "Hubble at release (STS-31, 1990): Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/hubble-sts31.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=hubble-sts31",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-hubble",
+      "name": "Hubble Space Telescope",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "408 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "Hubble Space Telescope: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/hubble.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=hubble",
       "changed": "Source repository index"
     },
     {
@@ -1224,6 +1786,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-icesat2",
+      "name": "Icesat2",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "290 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (A) Used for: NORAD 43613 (ICESAT-2)",
+      "file": "https://www.spaceradar.ai/models/icesat2.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-iceye",
       "name": "ICEYE",
       "category": "spacecraft",
@@ -1235,6 +1811,34 @@
       "credit": "ICEYE: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/iceye.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=iceye",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-icon",
+      "name": "Icon",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "207 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Ionospheric Connection Explorer (ICON) Used for: NORAD 44628 (ICON)",
+      "file": "https://www.spaceradar.ai/models/icon.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-ingenuity",
+      "name": "Ingenuity",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "86 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Ingenuity Mars Helicopter Used for: the Ingenuity site at Valinor Hills",
+      "file": "https://www.spaceradar.ai/models/ingenuity.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1263,6 +1867,20 @@
       "credit": "INSAT-3D: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/insat-3d.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=insat-3d",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-insight",
+      "name": "Insight",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "267 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "InSight Cruise Lander Used for: the InSight landing site at Elysium Planitia",
+      "file": "https://www.spaceradar.ai/models/insight.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1308,6 +1926,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-iss",
+      "name": "Iss",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "280 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "International Space Station (ISS) (D) (IGOAL) Used for: NORAD 25544",
+      "file": "https://www.spaceradar.ai/models/iss.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-ixpe",
       "name": "IXPE",
       "category": "spacecraft",
@@ -1319,6 +1951,34 @@
       "credit": "IXPE: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/ixpe.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=ixpe",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-jason-3",
+      "name": "Jason 3",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "109 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"Jason-3 3D Model\" (2020) Used for: <https://sealevel.jpl.nasa.gov/resources/94/jason-3-3d-model/>",
+      "file": "https://www.spaceradar.ai/models/jason-3.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-jason",
+      "name": "Jason",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "123 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Ocean Surface Topography Mission (OSTM Jason-2) Used for: NORAD 33105 (JASON-2 (OSTM)), the craft itself; until 2026-10-15 also Jason-3 as its sister ship, which now wears JPL's own model ([3b-13](#3b-13-five-agencies-own-models--europa-clipper-smap-jason-3-curiosity-sorce-2026-10-15))",
+      "file": "https://www.spaceradar.ai/models/jason.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1336,6 +1996,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-juno",
+      "name": "Juno",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "146 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Juno (B) Used for: Horizons -61",
+      "file": "https://www.spaceradar.ai/models/juno.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-jwst",
+      "name": "Jwst",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "477 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "James Webb Space Telescope (A), re-baked with its mirror and sunshield in true materials (release 1.3.0, W3-a) Used for: Horizons -170 (James Webb Space Telescope)",
+      "file": "https://www.spaceradar.ai/models/jwst.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-kanopus-v",
       "name": "Kanopus-V",
       "category": "spacecraft",
@@ -1347,6 +2035,20 @@
       "credit": "Kanopus-V: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/kanopus-v.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=kanopus-v",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-kepler",
+      "name": "Kepler",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "96 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Kepler (A) Used for: Horizons -227 (Kepler)",
+      "file": "https://www.spaceradar.ai/models/kepler.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1420,6 +2122,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-landsat",
+      "name": "Landsat",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "69 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Landsat 7 Used for: NORAD 25682 (Landsat 7)",
+      "file": "https://www.spaceradar.ai/models/landsat.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-landsat8",
+      "name": "Landsat8",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "177 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Landsat 8 Used for: NORAD 39084, 49260 (Landsat 8, 9)",
+      "file": "https://www.spaceradar.ai/models/landsat8.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-lares",
       "name": "LARES",
       "category": "spacecraft",
@@ -1462,6 +2192,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-lro",
+      "name": "Lro",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "187 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Lunar Reconnaissance Orbiter (A) Used for: Horizons -85",
+      "file": "https://www.spaceradar.ai/models/lro.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-lucy",
       "name": "Lucy",
       "category": "spacecraft",
@@ -1487,6 +2231,20 @@
       "credit": "Luna 16: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/luna-16.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=luna-16",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-lunar-module",
+      "name": "Lunar Module",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "240 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "Apollo Lunar Module (NASA), cut into its descent and ascent stages (public domain: \"These assets are free and without copyright\", NASA 3D Resources README, read 2026-10-28) Used for: the Apollo 11, 12, 14, 15, 16 and 17 landing sites -- one vehicle design, six descent stages -- and the Apollo 11 Moment",
+      "file": "https://www.spaceradar.ai/models/lunar-module.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1560,6 +2318,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-maven",
+      "name": "Maven",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "179 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mars Atmosphere and Volatile EvolutioN (MAVEN) (B) Used for: Horizons -202 (MAVEN, on its last tracked orbit of Mars; no contact since 6 December 2025)",
+      "file": "https://www.spaceradar.ai/models/maven.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-mengtian",
       "name": "Mengtian",
       "category": "spacecraft",
@@ -1571,6 +2343,20 @@
       "credit": "Mengtian: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/mengtian.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=mengtian",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-mer",
+      "name": "Mer",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "38 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mars Exploration Rover - Opportunity (MER-B) Used for: the Opportunity site, and the Spirit site as its twin",
+      "file": "https://www.spaceradar.ai/models/mer.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1602,20 +2388,6 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-metop",
-      "name": "MetOp",
-      "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "45 kB",
-      "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "MetOp: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/metop.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=metop",
-      "changed": "Source repository index"
-    },
-    {
       "id": "spaceradar-metop-sg-a",
       "name": "MetOp-SG A",
       "category": "spacecraft",
@@ -1627,6 +2399,20 @@
       "credit": "MetOp-SG A: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/metop-sg-a.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=metop-sg-a",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-metop",
+      "name": "MetOp",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "45 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "MetOp: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/metop.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=metop",
       "changed": "Source repository index"
     },
     {
@@ -1669,6 +2455,188 @@
       "credit": "Midori-II (ADEOS-II): Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/midori-2.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=midori-2",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-mms",
+      "name": "Mms",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "177 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Magnetospheric Multiscale (MMS) (B) Used for: NORAD 40482-40485 (MMS 1 to MMS 4)",
+      "file": "https://www.spaceradar.ai/models/mms.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-atlas",
+      "name": "Atlas moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "74 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Atlas, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-atlas.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-calypso",
+      "name": "Calypso moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "77 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Calypso, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-calypso.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-daphnis",
+      "name": "Daphnis moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "75 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Daphnis, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-daphnis.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-epimetheus",
+      "name": "Epimetheus moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "77 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Epimetheus, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-epimetheus.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-helene",
+      "name": "Helene moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "79 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Helene, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-helene.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-hyperion",
+      "name": "Hyperion moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "79 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Hyperion, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-hyperion.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-janus",
+      "name": "Janus moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "78 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Janus, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-janus.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-pan",
+      "name": "Pan moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "76 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Pan, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-pan.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-pandora",
+      "name": "Pandora moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "76 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Pandora, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-pandora.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-prometheus",
+      "name": "Prometheus moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "76 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Prometheus, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-prometheus.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-moon-telesto",
+      "name": "Telesto moon shape model",
+      "category": "small-bodies",
+      "kind": "Small-body shape model",
+      "source": "Space Radar map assets",
+      "size": "77 kB",
+      "format": "GLB",
+      "license": "CC0 (see source attribution)",
+      "credit": "Shape model: Thomas, P., Joseph, J. and Ansty, T. (2018), Saturn Small Moon Shape Models V1.0, NASA Planetary Data System, doi:10.26033/ewy3-jy61, from Cassini ISS images. Source: https://sbn.psi.edu/pds/shape-models/ (the OBJ copy of the plate model). Licence: public domain (NASA PDS data; CC0 under NASA's science data policy) Used for: Telesto, Saturn",
+      "file": "https://www.spaceradar.ai/models/moon-telesto.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-mro",
+      "name": "Mro",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "121 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mars Reconnaissance Orbiter (MRO) (C) Used for: Horizons -74",
+      "file": "https://www.spaceradar.ai/models/mro.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1742,6 +2710,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-near",
+      "name": "Near",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "88 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "NEAR Shoemaker Used for: Horizons -93 (NEAR Shoemaker, 1996 to 2001)",
+      "file": "https://www.spaceradar.ai/models/near.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-new-horizons",
+      "name": "New Horizons",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "151 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "New Horizons: NASA's printable body and RTG parts (science.nasa.gov/3d-resources/new-horizons, read 2026-10-20; the page names no author), assembled by us; the dish, its tripod and feed rebuilt from NASA's own 1/12 drawings on the same page (readme.pdf), colours ours from NASA's photographs ([3b-15](#3b-15-release-130-crewed-craft-and-nasa-flagships--tiangong-shenzhou-orbital-module-themis-new-horizons-2026-10-20)) Used for: Horizons -98 (New Horizons)",
+      "file": "https://www.spaceradar.ai/models/new-horizons.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-nisar",
       "name": "NISAR",
       "category": "spacecraft",
@@ -1784,20 +2780,6 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-o3b",
-      "name": "O3b",
-      "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "50 kB",
-      "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "O3b: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/o3b.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=o3b",
-      "changed": "Source repository index"
-    },
-    {
       "id": "spaceradar-o3b-mpower",
       "name": "O3b mPOWER",
       "category": "spacecraft",
@@ -1809,6 +2791,20 @@
       "credit": "O3b mPOWER: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/o3b-mpower.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=o3b-mpower",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-o3b",
+      "name": "O3b",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "50 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "O3b: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/o3b.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=o3b",
       "changed": "Source repository index"
     },
     {
@@ -1840,6 +2836,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-oco2",
+      "name": "Oco2",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "189 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Orbiting Carbon Observatory (OCO) 2 Used for: catalogue name OCO 2",
+      "file": "https://www.spaceradar.ai/models/oco2.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-odysseus",
       "name": "Odysseus (Nova-C)",
       "category": "spacecraft",
@@ -1851,6 +2861,20 @@
       "credit": "Odysseus (Nova-C): Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/odysseus.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=odysseus",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-odyssey",
+      "name": "Odyssey",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "95 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mars Odyssey Used for: Horizons -53 (Mars Odyssey)",
+      "file": "https://www.spaceradar.ai/models/odyssey.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1868,6 +2892,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-orion-esm",
+      "name": "Orion Esm",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "489 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "the launch abort system, three fairing panels, four solar arrays, the European Service Module, the crew module Used for: NASA/JPL Eyes on the Solar System, <https://eyes.nasa.gov/assets/static/models/sc_artemis/artemis_ii.gltf> (crew module, service module, arrays); and the same NASA 3D Resources Blender file (abort system, ogive, fairing panels)",
+      "file": "https://www.spaceradar.ai/models/orion-esm.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-osiris-rex",
+      "name": "Osiris Rex",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "171 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Origins, Spectral Interpretation, Resource Identification, and Security - Regolith Explorer (OSIRIS-REx) Used for: Horizons -64 (OSIRIS-APEX, the same spacecraft on its second mission)",
+      "file": "https://www.spaceradar.ai/models/osiris-rex.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-pace",
       "name": "PACE",
       "category": "spacecraft",
@@ -1879,6 +2931,34 @@
       "credit": "PACE: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/pace.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=pace",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-pad",
+      "name": "Pad",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "74 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mobile Launcher Used for: DEFAULT for every launch pad -- 17 today, more with each Launch Library refresh",
+      "file": "https://www.spaceradar.ai/models/pad.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-parker",
+      "name": "Parker",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "180 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Parker Solar Probe Used for: Horizons -96",
+      "file": "https://www.spaceradar.ai/models/parker.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1896,6 +2976,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-perseverance",
+      "name": "Perseverance",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "256 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Mars 2020 Perseverance Rover Used for: Jezero crater on Mars (until 2026-10-15 also Gale crater, as the kind of thing; Gale now wears NASA's own Curiosity, [3b-13](#3b-13-five-agencies-own-models--europa-clipper-smap-jason-3-curiosity-sorce-2026-10-15))",
+      "file": "https://www.spaceradar.ai/models/perseverance.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-phoenix",
       "name": "Phoenix Mars lander",
       "category": "spacecraft",
@@ -1907,6 +3001,20 @@
       "credit": "Phoenix Mars lander: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/phoenix.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=phoenix",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-pioneer",
+      "name": "Pioneer",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "89 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Pioneer 10 Used for: Horizons -23 and -24 (Pioneer 10, and Pioneer 11, its sister craft)",
+      "file": "https://www.spaceradar.ai/models/pioneer.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -1935,6 +3043,20 @@
       "credit": "Pléiades: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/pleiades.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=pleiades",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-poes",
+      "name": "Poes",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "162 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Polar Operational Environmental Satellite (POES) Used for: NOAA 15, NOAA 18, NOAA 19 — the bus they share",
+      "file": "https://www.spaceradar.ai/models/poes.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2106,6 +3228,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-radarsat1",
+      "name": "Radarsat1",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "57 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Radar Satellite-1 (RADARSAT-1), by NASA/Christopher R. Meaney Used for: NORAD 23710 (RADARSAT-1); in no layer the app loads today",
+      "file": "https://www.spaceradar.ai/models/radarsat1.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-rcm",
       "name": "RADARSAT Constellation",
       "category": "spacecraft",
@@ -2162,6 +3298,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-roman",
+      "name": "Roman",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "162 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Nancy Grace Roman Space Telescope (B) Used for: Horizons -211 (Nancy Grace Roman Space Telescope)",
+      "file": "https://www.spaceradar.ai/models/roman.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-rosetta",
+      "name": "Rosetta",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "125 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Rosetta Used for: Horizons -226 (Rosetta, 2004 to 2016)",
+      "file": "https://www.spaceradar.ai/models/rosetta.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-saocom",
       "name": "SAOCOM",
       "category": "spacecraft",
@@ -2187,6 +3351,20 @@
       "credit": "Satellogic NewSat: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/satellogic-newsat.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=satellogic-newsat",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-saturn-v",
+      "name": "Saturn V",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "182 kB",
+      "format": "GLB",
+      "license": "Public domain (see NASA/source usage notes)",
+      "credit": "Saturn V (NASA/Michael D. Carbajal), cut into its eleven separable parts, with the J-2 engines and the launch escape tower added by Space Radar (public domain: \"These assets are free and without copyright\", NASA 3D Resources README, read 2026-10-28) Used for: the Saturn V on Launch Complex 39A (`saturn-v-lc-39a`) and the stack of the Apollo 11 Moment",
+      "file": "https://www.spaceradar.ai/models/saturn-v.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2218,6 +3396,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-sdo",
+      "name": "Sdo",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "113 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Solar Dynamics Observatory Used for: NORAD 36395 (SDO)",
+      "file": "https://www.spaceradar.ai/models/sdo.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-seasat",
       "name": "Seasat",
       "category": "spacecraft",
@@ -2229,6 +3421,20 @@
       "credit": "Seasat: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/seasat.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=seasat",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-seastar",
+      "name": "Seastar",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "12 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "SeaStar Used for: NORAD 24883 (ORBVIEW 2 (SEASTAR))",
+      "file": "https://www.spaceradar.ai/models/seastar.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2288,6 +3494,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-sentinel6",
+      "name": "Sentinel6",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "102 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Jason Continuity of Service (Sentinel-6) Used for: NORAD 46984 (SENTINEL-6A); and 66514 (SENTINEL-6B), its twin of the same design",
+      "file": "https://www.spaceradar.ai/models/sentinel6.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-sert-2",
       "name": "SERT 2",
       "category": "spacecraft",
@@ -2299,20 +3519,6 @@
       "credit": "SERT 2: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/sert-2.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=sert-2",
-      "changed": "Source repository index"
-    },
-    {
-      "id": "spaceradar-shenzhou",
-      "name": "Shenzhou",
-      "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "66 kB",
-      "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "Shenzhou: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/shenzhou.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=shenzhou",
       "changed": "Source repository index"
     },
     {
@@ -2330,6 +3536,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-shenzhou",
+      "name": "Shenzhou",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "66 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "Shenzhou: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/shenzhou.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=shenzhou",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-shuttle-orbiter",
+      "name": "Shuttle Orbiter",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "236 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "the DFI pallet of STS-1 split into a part of its own (`scripts/shuttle/split-dfi-pallet.mjs`), so that STS-31's bay can leave it out Used for: NASA 3D Resources, as in 3b-r171",
+      "file": "https://www.spaceradar.ai/models/shuttle-orbiter.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-shuttle-rms",
       "name": "Space Shuttle robot arm",
       "category": "spacecraft",
@@ -2341,6 +3575,34 @@
       "credit": "Space Shuttle robot arm: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/shuttle-rms.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=shuttle-rms",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-shuttle-stack",
+      "name": "Shuttle Stack",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "130 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Space Shuttle (A) (NASA/Michael D. Carbajal): the orbiter on its tank and boosters Used for: the Space Shuttle on Launch Complex 39B (`shuttle-lc-39b`)",
+      "file": "https://www.spaceradar.ai/models/shuttle-stack.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-shuttle-sts-stack",
+      "name": "Shuttle Sts Stack",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "87 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "the white external tank with its attach beams, struts and lines; the two solid rocket boosters, white with a dark nozzle Used for: NASA 3D Resources, `3D Models/Space Shuttle Parts` (the files named External tank and Solid Rocket Booster), <https://github.com/nasa/NASA-3D-Resources>",
+      "file": "https://www.spaceradar.ai/models/shuttle-sts-stack.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2372,6 +3634,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-sls-block1",
+      "name": "Sls Block1",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "543 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "the two five-segment boosters, the core stage with its four RS-25s, the launch vehicle stage adapter, the ICPS with its Orion stage adapter Used for: NASA 3D Resources, `3D Models/Space Launch System Block 1` (`Block 1 (GNC markings).7z`, a Blender file), <https://github.com/nasa/NASA-3D-Resources>",
+      "file": "https://www.spaceradar.ai/models/sls-block1.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-smap",
+      "name": "Smap",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "170 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"SMAP 3D Model\" Used for: <https://smap.jpl.nasa.gov/resources/99/smap-3d-model/>",
+      "file": "https://www.spaceradar.ai/models/smap.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-smos",
       "name": "SMOS",
       "category": "spacecraft",
@@ -2386,6 +3676,34 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-soho",
+      "name": "Soho",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "29 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Solar and Heliospheric Observatory Used for: Horizons -21",
+      "file": "https://www.spaceradar.ai/models/soho.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-sorce",
+      "name": "Sorce",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "102 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"Solar Radiation and Climate Experiment (SORCE)\" Used for: <https://github.com/nasa/NASA-3D-Resources>",
+      "file": "https://www.spaceradar.ai/models/sorce.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-soyuz-ms",
       "name": "Soyuz MS",
       "category": "spacecraft",
@@ -2397,6 +3715,20 @@
       "credit": "Soyuz MS: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/soyuz-ms.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=soyuz-ms",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-spitzer",
+      "name": "Spitzer",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "166 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Spitzer Space Telescope Used for: Horizons -79 (Spitzer)",
+      "file": "https://www.spaceradar.ai/models/spitzer.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2428,6 +3760,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-stardust",
+      "name": "Stardust",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "111 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Stardust (NASA/Brian E. Kumanchik; NASA/Christian A. Lopez) Used for: Horizons -29 (Stardust, 1999 to 2011)",
+      "file": "https://www.spaceradar.ai/models/stardust.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-starlette",
       "name": "Starlette",
       "category": "spacecraft",
@@ -2456,6 +3802,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-stereo",
+      "name": "Stereo",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "138 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Solar TErrestrial RElations Observatory (STEREO) Used for: Horizons -234 (STEREO-A)",
+      "file": "https://www.spaceradar.ai/models/stereo.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-strix",
       "name": "StriX",
       "category": "spacecraft",
@@ -2470,17 +3830,17 @@
       "changed": "Source repository index"
     },
     {
-      "id": "spaceradar-surveyor",
-      "name": "Surveyor 1",
+      "id": "spaceradar-map-suomi",
+      "name": "Suomi",
       "category": "spacecraft",
-      "kind": "Spacecraft model",
-      "source": "Space Radar",
-      "size": "60 kB",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "27 kB",
       "format": "GLB",
-      "license": "CC BY 4.0",
-      "credit": "Surveyor 1: Space Radar (spaceradar.ai), CC BY 4.0",
-      "file": "https://www.spaceradar.ai/models/surveyor.glb",
-      "sourceUrl": "https://www.spaceradar.ai/model/?id=surveyor",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Suomi National Polar-orbiting Partnership (Suomi NPP) Used for: NORAD 37849 (SUOMI NPP)",
+      "file": "https://www.spaceradar.ai/models/suomi.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2495,6 +3855,20 @@
       "credit": "Surveyor 3: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/surveyor-3.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=surveyor-3",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-surveyor",
+      "name": "Surveyor 1",
+      "category": "spacecraft",
+      "kind": "Spacecraft model",
+      "source": "Space Radar",
+      "size": "60 kB",
+      "format": "GLB",
+      "license": "CC BY 4.0",
+      "credit": "Surveyor 1: Space Radar (spaceradar.ai), CC BY 4.0",
+      "file": "https://www.spaceradar.ai/models/surveyor.glb",
+      "sourceUrl": "https://www.spaceradar.ai/model/?id=surveyor",
       "changed": "Source repository index"
     },
     {
@@ -2526,6 +3900,76 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-swas",
+      "name": "Swas",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "92 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "\"Submillimeter Wave Astronomy Satellite (SWAS)\" Used for: NASA's own file, <https://science.nasa.gov/3d-resources/submillimeter-wave-astronomy-satellite-swas/> and <https://github.com/nasa/NASA-3D-Resources> (\"Source NASA/Christopher R. Meaney\")",
+      "file": "https://www.spaceradar.ai/models/swas.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-swift",
+      "name": "Swift",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "147 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Swift Used for: NORAD 28485 (SWIFT)",
+      "file": "https://www.spaceradar.ai/models/swift.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-swot",
+      "name": "Swot",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "112 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "No separate model attribution row found in the source credits.",
+      "file": "https://www.spaceradar.ai/models/swot.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-tdrs",
+      "name": "Tdrs",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "11 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Tracking and Data Relay Satellites (TDRS) (A) Used for: catalogue names containing TDRS",
+      "file": "https://www.spaceradar.ai/models/tdrs.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-terra",
+      "name": "Terra",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "20 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Terra Used for: NORAD 25994 (TERRA)",
+      "file": "https://www.spaceradar.ai/models/terra.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-terrasar-x",
       "name": "TerraSAR-X",
       "category": "spacecraft",
@@ -2537,6 +3981,34 @@
       "credit": "TerraSAR-X: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/terrasar-x.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=terrasar-x",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-tess",
+      "name": "Tess",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "162 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Transiting Exoplanet Survey Satellite (TESS) (A) Used for: NORAD 43435 (TESS)",
+      "file": "https://www.spaceradar.ai/models/tess.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-themis",
+      "name": "Themis",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "105 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Time History of Events and Macroscale Interactions During Substorms (THEMIS); its booms drawn shorter ([3b-15](#3b-15-release-130-crewed-craft-and-nasa-flagships--tiangong-shenzhou-orbital-module-themis-new-horizons-2026-10-20)) Used for: NORAD 30580, 30797, 30798 (THEMIS A, D, E)",
+      "file": "https://www.spaceradar.ai/models/themis.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2610,6 +4082,20 @@
       "changed": "Source repository index"
     },
     {
+      "id": "spaceradar-map-tselina2",
+      "name": "Tselina2",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "113 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Tselina-2 Used for: the eighteen Tselina-2 ELINT satellites in the catalogue, by NORAD id",
+      "file": "https://www.spaceradar.ai/models/tselina2.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "changed": "Source repository index"
+    },
+    {
       "id": "spaceradar-umbra",
       "name": "Umbra",
       "category": "spacecraft",
@@ -2649,6 +4135,20 @@
       "credit": "ViaSat-3: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/viasat-3.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=viasat-3",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-viking-lander",
+      "name": "Viking Lander",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "163 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Viking Lander Used for: the Viking 1 and Viking 2 landing sites",
+      "file": "https://www.spaceradar.ai/models/viking-lander.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
@@ -2733,6 +4233,20 @@
       "credit": "Vostok ejection seat: Space Radar (spaceradar.ai), CC BY 4.0",
       "file": "https://www.spaceradar.ai/models/vostok-seat.glb",
       "sourceUrl": "https://www.spaceradar.ai/model/?id=vostok-seat",
+      "changed": "Source repository index"
+    },
+    {
+      "id": "spaceradar-map-voyager",
+      "name": "Voyager",
+      "category": "spacecraft",
+      "kind": "Spacecraft / planetary map asset",
+      "source": "Space Radar map assets",
+      "size": "143 kB",
+      "format": "GLB",
+      "license": "See source-specific attribution; licence not inferred",
+      "credit": "Voyager Probe (A) Used for: Horizons -31, -32",
+      "file": "https://www.spaceradar.ai/models/voyager.glb",
+      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
       "changed": "Source repository index"
     },
     {
