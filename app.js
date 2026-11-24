@@ -22,7 +22,7 @@ const CATEGORIES={
  ]},
  moons:{title:"Moons",description:"Natural satellites of planets and dwarf planets, including irregular moons and their shape models.",sources:[
   {name:"Space Radar moon shape models",entryType:"catalogue",type:"Natural satellite shape models",description:"11 individually downloadable GLB shape models of Saturn moons, with source-specific attribution.",url:"https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",source:"Space Radar"},
-  {name:"NASA 3D Resources",entryType:"catalogue",type:"3D model catalogue",description:"NASA model archive includes lunar and planetary-body assets; individual downloadable files are indexed where verified.",url:"https://science.nasa.gov/3d-resources/",source:"NASA"},
+  {name:"NASA 3D Resources",entryType:"catalogue",type:"3D model catalogue",description:"Includes two downloadable STL globe models of the Moon (near and far side), alongside other lunar and planetary-body assets.",url:"https://science.nasa.gov/3d-resources/",source:"NASA"},
   {name:"3D Asteroid Catalogue",entryType:"catalogue",type:"Moon shape-model catalogue",description:"The source reports shape models of moons as part of its 3,079-model catalogue. SMA has not yet indexed those individual moon OBJ/PLY downloads.",url:"https://3d-asteroids.space/",source:"3D Asteroid Catalogue"}
  ]},
  "height-maps":{title:"Height maps",description:"Elevation data, digital terrain models and tools for turning real topography into printable geometry. This is a data and generation collection, not a catalogue of individual object models.",sources:[
