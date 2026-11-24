@@ -1,0 +1,260 @@
+{
+  "source": "Verified physical longest-axis dimensions for model/body matches",
+  "units": "km",
+  "indexedAt": "2026-11-24",
+  "method": "Only explicit three-axis extents or authoritative longest-axis measurements are stored. Mean/equivalent diameters are not substituted for a longest axis.",
+  "records": {
+    "spaceradar-map-asteroid-arrokoth": {
+      "longestAxisKm": 35.4,
+      "dimensionsKm": [
+        35.4,
+        19.9,
+        9.8
+      ],
+      "source": "NASA New Horizons / DLR Solar System brochure",
+      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+    },
+    "spaceradar-map-asteroid-bennu": {
+      "longestAxisKm": 0.565,
+      "source": "NASA OSIRIS-REx / NASA asteroid fact sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "spaceradar-map-asteroid-didymos": {
+      "longestAxisKm": 0.851,
+      "dimensionsKm": [
+        0.851,
+        0.849,
+        0.62
+      ],
+      "source": "Ren et al., A&A 692, A62 (2024)",
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+    },
+    "spaceradar-map-asteroid-eros": {
+      "longestAxisKm": 33,
+      "dimensionsKm": [
+        33,
+        13
+      ],
+      "source": "DLR Solar System brochure",
+      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+    },
+    "spaceradar-map-asteroid-geographos": {
+      "longestAxisKm": 5,
+      "dimensionsKm": [
+        5,
+        2,
+        2.1
+      ],
+      "source": "3D Asteroid Catalogue physical extent",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
+    },
+    "spaceradar-map-asteroid-golevka": {
+      "longestAxisKm": 0.7,
+      "dimensionsKm": [
+        0.7,
+        0.59,
+        0.5
+      ],
+      "source": "Swinburne Astronomy Online asteroid dimensions summary",
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
+    },
+    "spaceradar-map-asteroid-itokawa": {
+      "longestAxisKm": 0.535,
+      "dimensionsKm": [
+        0.535,
+        0.294,
+        0.209
+      ],
+      "source": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "spaceradar-map-asteroid-kleopatra": {
+      "longestAxisKm": 276,
+      "dimensionsKm": [
+        276,
+        94,
+        78
+      ],
+      "source": "Shepard et al. (2018), JPL radar shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
+    },
+    "spaceradar-map-asteroid-lutetia": {
+      "longestAxisKm": 132,
+      "dimensionsKm": [
+        132,
+        101,
+        76
+      ],
+      "source": "DLR Solar System brochure",
+      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+    },
+    "spaceradar-map-asteroid-ryugu": {
+      "longestAxisKm": 1.004,
+      "dimensionsKm": [
+        1.004,
+        1,
+        0.875
+      ],
+      "source": "Ren et al., A&A 692, A62 (2024)",
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+    },
+    "spaceradar-map-asteroid-steins": {
+      "longestAxisKm": 6.8,
+      "dimensionsKm": [
+        6.8,
+        5.7,
+        4.4
+      ],
+      "source": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "spaceradar-map-asteroid-toutatis": {
+      "longestAxisKm": 4.6,
+      "dimensionsKm": [
+        4.6,
+        2.4,
+        1.9
+      ],
+      "source": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    "spaceradar-map-asteroid-vesta": {
+      "longestAxisKm": 572.6,
+      "source": "DLR Solar System brochure",
+      "sourceUrl": "https://solarsystem.dlr.de/images/PDFs/Broschuere_2024_print.pdf"
+    },
+    "spaceradar-map-comet-67p": {
+      "longestAxisKm": 4.34,
+      "dimensionsKm": [
+        4.34,
+        2.6,
+        2.12
+      ],
+      "source": "Lorek & Johansen, A&A 683, A38 (2024)",
+      "sourceUrl": "https://curis.ku.dk/ws/portalfiles/portal/389918081/aa47742_23.pdf"
+    },
+    "spaceradar-map-dwarf-ceres": {
+      "longestAxisKm": 964.4,
+      "dimensionsKm": [
+        964.4,
+        964.2,
+        891.8
+      ],
+      "source": "NASA PDS Ceres physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:dwarf_planet.1_ceres"
+    },
+    "spaceradar-map-moon-atlas": {
+      "longestAxisKm": 20,
+      "dimensionsKm": [
+        20,
+        18,
+        9
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-calypso": {
+      "longestAxisKm": 15,
+      "dimensionsKm": [
+        15,
+        12,
+        7
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-daphnis": {
+      "longestAxisKm": 4.3,
+      "dimensionsKm": [
+        4.3,
+        4.1,
+        3.2
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-epimetheus": {
+      "longestAxisKm": 65,
+      "dimensionsKm": [
+        65,
+        57,
+        53
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-helene": {
+      "longestAxisKm": 22,
+      "dimensionsKm": [
+        22,
+        19,
+        13
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-hyperion": {
+      "longestAxisKm": 180,
+      "dimensionsKm": [
+        180,
+        133,
+        103
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-janus": {
+      "longestAxisKm": 102,
+      "dimensionsKm": [
+        102,
+        93,
+        76
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-pan": {
+      "longestAxisKm": 17,
+      "dimensionsKm": [
+        17,
+        16,
+        10
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-pandora": {
+      "longestAxisKm": 52,
+      "dimensionsKm": [
+        52,
+        41,
+        32
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-prometheus": {
+      "longestAxisKm": 68,
+      "dimensionsKm": [
+        68,
+        40,
+        30
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-moon-telesto": {
+      "longestAxisKm": 16,
+      "dimensionsKm": [
+        16,
+        12,
+        10
+      ],
+      "source": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
+    },
+    "spaceradar-map-asteroid-1996hw1": null,
+    "spaceradar-map-asteroid-donaldjohanson": null,
+    "spaceradar-map-asteroid-mithra": null
+  }
+}
