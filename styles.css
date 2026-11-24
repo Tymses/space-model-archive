@@ -57,8 +57,9 @@
 .dropdown-heading .overline{margin:0}
 .dropdown-heading strong{font-size:17px;font-weight:650;letter-spacing:-.02em}
 .group-count{color:var(--muted);font-size:11px;white-space:nowrap}
-.dropdown-chevron{color:var(--muted);font-size:21px;transition:transform .18s}
-.collection-dropdown[open] .dropdown-chevron{transform:rotate(180deg)}
+.dropdown-chevron{width:20px;height:20px;flex:0 0 20px;display:grid;place-items:center;color:var(--muted)}
+.dropdown-chevron::before{content:"";width:7px;height:7px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:translateY(-2px) rotate(45deg);transition:transform .18s}
+.collection-dropdown[open] .dropdown-chevron::before{transform:translateY(2px) rotate(225deg)}
 .collection-dropdown>.result-grid{padding:0 16px 16px}
 .collection-dropdown>summary:hover{background:rgba(127,127,127,.045)}
 #sources-group .result-card{background:#f8f9fa;border-style:dashed;box-shadow:none}
