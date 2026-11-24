@@ -2,8 +2,8 @@
   "source": "NASA/JPL Radar Astronomy asteroid shape models",
   "sourceCatalogue": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
   "indexedAt": "2026-11-24",
-  "verifiedDirectOBJCount": 20,
-  "otherListedFormats": 6,
+  "verifiedDirectOBJCount": 19,
+  "otherListedFormats": 7,
   "files": [
     {
       "id": "jpl-radar-kleopatra-ostro",
@@ -100,20 +100,6 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/hirestoutatis.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
-      "changed": "JPL index last updated 2024-08-10"
-    },
-    {
-      "id": "jpl-radar-mithra",
-      "name": "4486 Mithra",
-      "category": "small-bodies",
-      "kind": "Radar-derived asteroid shape model",
-      "source": "NASA/JPL Radar Astronomy",
-      "size": "Not listed",
-      "format": "OBJ",
-      "license": "No licence stated on the model index; check source terms",
-      "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
-      "file": "https://echo.jpl.nasa.gov/asteroids/shapes/Mithra.v1.PA.prograde.mod.obj",
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
       "changed": "JPL index last updated 2024-08-10"
     },
