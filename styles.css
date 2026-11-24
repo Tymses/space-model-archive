@@ -48,17 +48,23 @@
 .category-divider:after{content:"";height:1px;flex:1;background:var(--line)}
 .category-card[data-category="height-maps"]{grid-column:1/-1;min-height:126px;border-style:dashed;background:linear-gradient(110deg,#f4f7f4,var(--surface) 58%);border-color:#cbd8ce}
 .category-card[data-category="height-maps"] .category-icon{background:#e7efe8;color:#53765b}
-.collection-results{display:flex;flex-direction:column;gap:30px}
-.collection-group{min-width:0}
-.collection-group-heading{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:4px 0 13px;padding-bottom:11px;border-bottom:1px solid var(--line)}
-.collection-group-heading .overline{margin:0 0 5px}
-.collection-group-heading h2{margin:0;font-size:19px;letter-spacing:-.025em}
+.collection-results{display:flex;flex-direction:column;gap:11px}
+.collection-dropdown{min-width:0;border:1px solid var(--line);border-radius:13px;background:var(--surface);overflow:hidden}
+.collection-dropdown[hidden]{display:none}
+.collection-dropdown>summary{display:flex;align-items:center;gap:16px;padding:16px 18px;cursor:pointer;list-style:none;user-select:none}
+.collection-dropdown>summary::-webkit-details-marker{display:none}
+.dropdown-heading{display:grid;gap:4px;flex:1}
+.dropdown-heading .overline{margin:0}
+.dropdown-heading strong{font-size:17px;font-weight:650;letter-spacing:-.02em}
 .group-count{color:var(--muted);font-size:11px;white-space:nowrap}
-.sources-group .collection-group-heading{border-bottom-style:dashed}
-.sources-group .result-card{background:#f8f9fa;border-style:dashed;box-shadow:none}
-.sources-group .result-card:hover{background:#fff}
-.sources-group .source-card-generator{background:#fffaf1}
-.sources-group .source-card-data{background:#f5f9f5}
+.dropdown-chevron{color:var(--muted);font-size:21px;transition:transform .18s}
+.collection-dropdown[open] .dropdown-chevron{transform:rotate(180deg)}
+.collection-dropdown>.result-grid{padding:0 16px 16px}
+.collection-dropdown>summary:hover{background:rgba(127,127,127,.045)}
+#sources-group .result-card{background:#f8f9fa;border-style:dashed;box-shadow:none}
+#sources-group .result-card:hover{background:#fff}
+#generators-group .result-card{background:#fffaf1}
+#sources-group .source-card-data{background:#f5f9f5}
 .category-card[data-category="height-maps"]:hover{background:#eef4ef;border-color:#9eaf9f}
 @media(max-width:600px){.category-card[data-category="height-maps"]{grid-column:1;min-height:150px}.collection-results{gap:24px}.collection-group-heading h2{font-size:17px}}
 
