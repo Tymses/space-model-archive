@@ -32,3 +32,12 @@
 .brand-mark svg{display:block;width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.35;stroke-linecap:round}
 .brand-mark .brand-core{fill:currentColor;stroke:none}
 .brand-mark .brand-satellite{fill:#d97735;stroke:none}
+
+/* Distinguish downloadable model records from catalogues and on-demand generators */
+.model-type{background:#e4edf5;color:#245b83}
+.source-kind{background:#eef0f3;color:#59616b}
+.source-card-generator .source-kind{background:#fff0dc;color:#86551d}
+.source-card-data .source-kind{background:#e8f1e9;color:#386348}
+.source-card-viewer .source-kind{background:#eee9f7;color:#604c85}
+.source-card-generator{border-style:dashed}
+.model-card{border-top:2px solid #8eacc5}
