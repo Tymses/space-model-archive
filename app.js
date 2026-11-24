@@ -122,7 +122,7 @@ function renderCollection(){
  if(!total)modelGrid.innerHTML='<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.</div>';
  $("#collection-footnote").textContent="Downloadable files and packages are kept separate from catalogues, data sources and generators. Generator tools create new geometry from your settings; they are not individual model downloads."+(expandedCatalogCounts.nasa||expandedCatalogCounts.spaceRadar||expandedCatalogCounts.jpl?" Indexed files: NASA "+expandedCatalogCounts.nasa+"; Space Radar "+expandedCatalogCounts.spaceRadar+"; JPL Radar OBJ "+expandedCatalogCounts.jpl+". The 29 NASA terrain files in Height Maps are cross-listed, not extra downloads.":"")+(expandedCatalogCounts.errors.length?" Some local indexes could not be loaded: "+expandedCatalogCounts.errors.join("; "):"");
 }
-function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+model.file+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=model.format!=="GLB";$("#scale-panel").hidden=model.format!=="GLB";const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";$("#scale-range").oninput=e=>{const v=Number(e.target.value);$("#scale-value").textContent=v.toFixed(2)+"×";if(viewer)viewer.scale=v+" "+v+" "+v;};const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Real-world dimensions","Not provided by source"],["Real-world scale","Not provided by source"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↧</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent=model.format==="STL"?"STL mesh file: this is the broadly compatible slicer format. Check scale, wall thickness and orientation in your slicer.":model.format==="7Z"?"This is a compressed model package. Extract it first; the archive may contain several printable parts or assembly instructions.":model.format.includes("STEP")?"STEP CAD file: extract the compressed file if needed, then import the STEP into a compatible CAD tool or slicer.":["OBJ","GLB","FBX","BLEND","3DS","LWO","VSP3"].includes(model.format)?"This is a 3D mesh or project format, not a guaranteed slicer-ready file. If your slicer cannot import it, open it in suitable 3D software and export STL or 3MF. Mesh-to-STEP conversion is not presented as a clean CAD solid.":"No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
+function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+model.file+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=!["GLB","STL"].includes(model.format);const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Real-world dimensions","Not provided by source"],["Original scale","Calculated below when real dimensions are known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↧</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent=model.format==="STL"?"STL mesh file: preview and dimensions are read from its triangle mesh. STL does not store units; SMA interprets the coordinates as millimetres for the preview and fit estimate. Verify the intended scale in your slicer.":model.format==="7Z"?"This is a compressed model package. Extract it first; the archive may contain several printable parts or assembly instructions.":model.format.includes("STEP")?"STEP CAD file: extract the compressed file if needed, then import the STEP into a compatible CAD tool or slicer.":["OBJ","GLB","FBX","BLEND","3DS","LWO","VSP3"].includes(model.format)?"This is a 3D mesh or project format, not a guaranteed slicer-ready file. If your slicer cannot import it, open it in suitable 3D software and export STL or 3MF. Mesh-to-STEP conversion is not presented as a clean CAD solid.":"No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
 function routeAbout(push=true){setView("about");setCrumbs([{label:"Home",href:"#home"},{label:"About"}]);if(push)history.pushState({view:"about"},"","#about");window.scrollTo(0,0);}
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>routeCollection(b.dataset.category)));
 $("#model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-model]");if(b)routeModel(b.dataset.model);});
@@ -185,7 +185,10 @@ loadExpandedCatalogs();
 (function initPrintAssessment(){
   const $id = id => document.getElementById(id);
   let activeViewer = null;
+  let activeSTLMesh = null;
   let baseDimensions = null;
+  let threeRenderer = null;
+  let threeControls = null;
 
   function number(id){ return Number($id(id).value); }
   function volume(){
@@ -214,7 +217,7 @@ loadExpandedCatalogs();
       $id("fit-description").textContent = "Enter both the real-world length and the scale denominator, or clear both fields.";
       $id("print-dimensions").textContent = "—";
       $id("scale-factor").textContent = "Recommended size factor: —";
-      if (activeViewer) activeViewer.scale = "1 1 1";
+      applyPreviewScale(1);
       return;
     }
     if (hasReal && hasDenom) {
@@ -250,7 +253,11 @@ loadExpandedCatalogs();
       $id("fit-title").textContent = "Does not fit at this scale";
       $id("fit-description").textContent = "At least one dimension exceeds the selected build volume (" + bed.map(fmt).join(" × ") + " mm). Consider scaling down or splitting the model.";
     }
-    if (activeViewer) activeViewer.scale = factor + " " + factor + " " + factor;
+    applyPreviewScale(factor);
+  }
+  function applyPreviewScale(factor){
+    if(activeViewer) activeViewer.scale=factor+" "+factor+" "+factor;
+    if(activeSTLMesh) activeSTLMesh.scale.setScalar(factor);
   }
   function measureViewer(){
     if (!activeViewer || typeof activeViewer.getDimensions !== "function") return;
@@ -268,17 +275,53 @@ loadExpandedCatalogs();
       $id("fit-description").textContent = "The source preview could not expose its geometry bounds. No fit result is shown.";
     }
   }
-  function attachViewer(){
-    activeViewer = document.querySelector("#preview-stage model-viewer");
-    baseDimensions = null;
-    if (!activeViewer) return;
-    activeViewer.scale = "1 1 1";
-    $id("preview-controls").hidden = true;
-    $id("measurement-state").textContent = "Measuring model…";
-    $id("model-dimensions").textContent = "Waiting for 3D preview…";
-    $id("print-dimensions").textContent = "—";
-    activeViewer.addEventListener("load",measureViewer,{once:true});
-    if (activeViewer.loaded) measureViewer();
+  async function attachViewer(){
+    activeViewer=document.querySelector("#preview-stage model-viewer");
+    activeSTLMesh=null; baseDimensions=null;
+    if(!activeViewer){
+      const model=currentModel;
+      if(!model||model.format!=="STL")return;
+      $id("measurement-state").textContent="Loading STL…";
+      try{
+        const [THREE,loaderModule,controlsModule]=await Promise.all([
+          import("https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"),
+          import("https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/loaders/STLLoader.js"),
+          import("https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js")
+        ]);
+        if(currentModel!==model)return;
+        const stage=$id("preview-stage"),scene=new THREE.Scene();
+        scene.background=new THREE.Color(0xf0f3f6);
+        const camera=new THREE.PerspectiveCamera(38,stage.clientWidth/360,0.1,100000);
+        const renderer=new THREE.WebGLRenderer({antialias:true});
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(stage.clientWidth,360);stage.replaceChildren(renderer.domElement);
+        renderer.domElement.style.cssText="display:block;width:100%;height:360px;touch-action:none";
+        scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));
+        const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);
+        const geometry=await new loaderModule.STLLoader().loadAsync(model.file);
+        if(currentModel!==model){renderer.dispose();return;}
+        geometry.computeBoundingBox();
+        const size=new THREE.Vector3();geometry.boundingBox.getSize(size);
+        const center=new THREE.Vector3();geometry.boundingBox.getCenter(center);geometry.translate(-center.x,-center.y,-center.z);
+        activeSTLMesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.15,roughness:.55}));scene.add(activeSTLMesh);
+        const maxDim=Math.max(size.x,size.y,size.z)||1;
+        camera.position.set(maxDim*1.7,maxDim*1.3,maxDim*1.9);camera.near=Math.max(maxDim/1000,.001);camera.far=maxDim*100;camera.updateProjectionMatrix();
+        const controls=new controlsModule.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;
+        threeRenderer=renderer;threeControls=controls;baseDimensions=[size.x,size.y,size.z].map(Math.abs);
+        $id("measurement-state").textContent="STL measured · units assumed mm";
+        $id("model-dimensions").textContent=baseDimensions.map(fmt).join(" × ")+" mm";updateAssessment();
+        const animate=()=>{if(currentModel!==model)return;requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};animate();
+        $id("scale-range").oninput=e=>{const v=Number(e.target.value);$id("scale-value").textContent=v.toFixed(2)+"×";applyPreviewScale(v);};
+      }catch(error){
+        $id("measurement-state").textContent="STL preview unavailable";$id("model-dimensions").textContent="Could not load STL geometry";
+        $id("fit-title").textContent="Preview or measurement unavailable";$id("fit-description").textContent="The STL may block cross-origin access or use an unsupported encoding. Download it to inspect it in your slicer.";
+        const msg=$id("stl-preview-loading");if(msg)msg.textContent="STL preview could not be loaded. Check the download in your slicer.";
+      }
+      return;
+    }
+    activeViewer.scale="1 1 1";$id("measurement-state").textContent="Measuring model…";
+    $id("model-dimensions").textContent="Waiting for 3D preview…";$id("print-dimensions").textContent="—";
+    activeViewer.addEventListener("load",measureViewer,{once:true});if(activeViewer.loaded)measureViewer();
+    $id("scale-range").oninput=e=>{const v=Number(e.target.value);$id("scale-value").textContent=v.toFixed(2)+"×";applyPreviewScale(v);};
   }
   $id("printer-profile").addEventListener("change",()=>{
     $id("custom-volume").hidden = $id("printer-profile").value !== "custom";
