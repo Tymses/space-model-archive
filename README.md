@@ -15,7 +15,7 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 
 - Four collections: Spacecraft, Planetary features, Asteroids & comets, and Height maps.
 - Collection search with source and type filters.
-- NASA 3D Resources is indexed from its complete public `3D Models` and `3D Printing` Git tree: 618 individual files (257 GLB, 342 STL, 13 BLEND, 4 3DS and 2 FBX) in the 2026-11-24 snapshot, each with a direct original-file link. 29 planetary STL records are also cross-listed in Height Maps.
+- NASA 3D Resources is indexed from its complete public `3D Models` and `3D Printing` Git tree: 650 individual files (257 GLB, 342 STL, 27 7Z packages, 13 BLEND, 4 3DS, 4 LWO, 2 FBX and 1 VSP3) in the 2026-11-24 snapshot, each with a direct original-file link. 29 planetary STL records are also cross-listed in Height Maps.
 - Space Radar is indexed from its public repository: all 203 models in its official GLB catalogue plus 108 additional GLB map assets (including 29 small-body shape models). File sizes and per-model attribution notes are stored in `data/spaceradar-model-index.json`.
 - NASA/JPL Radar Astronomy contributes 19 individually indexed direct OBJ downloads from its radar-derived asteroid shape-model list, stored in `data/jpl-asteroid-index.json`.
 - Source cards are explicitly classified as model catalogues, scientific data catalogues, viewers or on-demand generators. Terrain Print and NASA Solar System Treks are generators, not fixed model libraries.
