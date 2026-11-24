@@ -1,9 +1,10 @@
 const CATEGORIES={
  spacecraft:{title:"Spacecraft",description:"Satellites, probes, landers, crewed vehicles and space stations.",sources:[
-  {name:"Space Radar Models",entryType:"catalogue",type:"3D model catalogue",description:"203 spacecraft models. GLB downloads, licence and source credit are provided per model.",url:"https://models.spaceradar.ai/",source:"Space Radar"},
+  {name:"Space Radar Models",entryType:"catalogue",type:"3D model catalogue",description:"203 individually downloadable spacecraft GLB models, with file size, licence and credit per model.",url:"https://models.spaceradar.ai/",source:"Space Radar"},
   {name:"ESA Sci-Fleet",entryType:"catalogue",type:"Interactive 3D catalogue",description:"Explore ESA science satellites across the Solar System.",url:"https://scifleet.esa.int/",source:"ESA"},
   {name:"NASA 3D Resources",entryType:"catalogue",type:"3D model catalogue",description:"NASA mission models, including spacecraft, rockets, rovers and instruments.",url:"https://science.nasa.gov/3d-resources/",source:"NASA"},
   {name:"Satellites & Probes",entryType:"catalogue",type:"3D model catalogue",description:"Spacecraft and satellite GLB models from models.codelove.in.",url:"https://models.codelove.in/models/category/space/",source:"models.codelove.in"},
+  {name:"Space Radar map assets",entryType:"catalogue",type:"Additional GLB model files",description:"Additional spacecraft and mission GLB assets used by Space Radar's map, beyond its 203-model public catalogue.",url:"https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",source:"Space Radar"},
   {name:"Cosmographia",entryType:"viewer",type:"Scientific visualisation",description:"SPICE-enhanced models and visualisations for Solar System exploration.",url:"https://naif.jpl.nasa.gov/naif/cosmographia.html",source:"NASA/JPL"}
  ]},
  planetary:{title:"Planetary features",description:"Craters, mountains, valleys, volcanoes and other surface features.",sources:[
@@ -14,6 +15,7 @@ const CATEGORIES={
  ]},
  "small-bodies":{title:"Asteroids & comets",description:"Shape models and surface data for asteroids, comets, dwarf planets and small moons.",sources:[
   {name:"3D Asteroid Catalogue",entryType:"catalogue",type:"Shape-model catalogue",description:"Interactive catalogue of asteroid, comet, dwarf-planet and moon shape models with physical and orbital data.",url:"https://3d-asteroids.space/",source:"3D Asteroid Catalogue"},
+  {name:"Space Radar shape models",entryType:"catalogue",type:"Small-body shape models",description:"29 additional downloadable GLB shape models for asteroids, comets, Ceres and Saturn's small moons, each with source-specific attribution.",url:"https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",source:"Space Radar"},
   {name:"NASA Solar System Treks",entryType:"generator",type:"Terrain generator",description:"Bennu, Ceres, Ryugu and Vesta are among the bodies with pre-generated 3D globe print files.",url:"https://trek.nasa.gov/#",source:"NASA/JPL"},
   {name:"NASA Astromaterials 3D",entryType:"catalogue",type:"Sample model catalogue",description:"3D models of lunar samples and Antarctic meteorites; useful for printable space-rock specimens.",url:"https://ares.jsc.nasa.gov/astromaterials3d/",source:"NASA"}
  ]},
@@ -135,27 +137,11 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("https://dus32w6mqcntr.cloudfront.net/assets/pack.json");
+    const response = await fetch("./data/spaceradar-model-index.json");
     if (!response.ok) throw new Error("Space Radar index HTTP " + response.status);
     const index = await response.json();
-    for (const item of index.files || []) {
-      if (item.kind !== "model" || !item.url) continue;
-      addCatalogModel({
-        id: "spaceradar-" + item.id,
-        name: item.name,
-        category: "spacecraft",
-        kind: "Spacecraft model",
-        source: "Space Radar",
-        size: item.kb ? item.kb + " kB" : "Not listed",
-        format: "GLB",
-        license: item.licence || "See original source",
-        credit: item.credit || item.name + ": Space Radar (spaceradar.ai)",
-        file: item.url,
-        sourceUrl: "https://models.spaceradar.ai/",
-        changed: item.changed || "Not listed"
-      });
-    }
-    expandedCatalogCounts.spaceRadar = (index.files || []).filter(x => x.kind === "model").length;
+    for (const model of index.files || []) addCatalogModel(model);
+    expandedCatalogCounts.spaceRadar = index.sourceFileCount || 0;
   } catch (error) {
     expandedCatalogCounts.errors.push("Space Radar index: " + error.message);
   }
