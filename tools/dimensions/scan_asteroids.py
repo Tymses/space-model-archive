@@ -150,7 +150,7 @@ def run(limit: int | None = None, delay: float = 0.35) -> dict[str, Any]:
     already_verified = existing_numbered_objects(dimensions)
     retrieved = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     candidates: dict[str, Any] = {}
-    counts = {"scanned": 0, "alreadyVerified": 0, "extentCandidates": 0,
+    counts = {"scanned": 0, "queried": 0, "alreadyVerified": 0, "extentCandidates": 0,
               "diameterOnly": 0, "noUsableDimension": 0, "notMatched": 0, "errors": 0}
 
     for model in models:
@@ -161,8 +161,9 @@ def run(limit: int | None = None, delay: float = 0.35) -> dict[str, Any]:
         if number in already_verified:
             counts["alreadyVerified"] += 1
             continue
-        if limit is not None and counts["scanned"] > limit:
+        if limit is not None and counts["queried"] >= limit:
             break
+        counts["queried"] += 1
         try:
             payload = request_sbdb(number)
             candidate = build_candidate(model, payload, retrieved)
