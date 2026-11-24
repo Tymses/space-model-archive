@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f8fa">
-<meta name="description" content="A curated archive of traceable 3D models of spacecraft, planetary features, asteroids, comets and terrain.">
+<meta name="description" content="A curated archive of traceable 3D models of spacecraft, planetary features, asteroids, comets, moons and terrain.">
 <title>Space Model Archive</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
@@ -19,12 +19,14 @@
 <div class="breadcrumb-wrap"><nav class="breadcrumbs" id="breadcrumbs" aria-label="Breadcrumb"><span>Home</span></nav></div>
 <main id="main">
 <section class="home-view" id="home-view">
-  <div class="page-heading"><div><p class="overline">SPACE MODEL ARCHIVE</p><h1>Explore the archive</h1><p class="subheading">Choose a collection to get started.</p></div><span class="archive-count">04 collections</span></div>
+  <div class="page-heading"><div><p class="overline">SPACE MODEL ARCHIVE</p><h1>Explore the archive</h1><p class="subheading">Choose a collection to get started.</p></div><span class="archive-count">05 collections</span></div>
   <div class="category-grid" id="category-grid">
     <button class="category-card" data-category="spacecraft"><span class="category-index">01</span><span class="category-icon" aria-hidden="true">⌁</span><span class="category-name">Spacecraft</span><span class="category-desc">Satellites, probes, landers and crewed vehicles</span><span class="category-arrow" aria-hidden="true">↗</span></button>
     <button class="category-card" data-category="planetary"><span class="category-index">02</span><span class="category-icon" aria-hidden="true">◒</span><span class="category-name">Planetary features</span><span class="category-desc">Craters, mountains, valleys and surface landmarks</span><span class="category-arrow" aria-hidden="true">↗</span></button>
     <button class="category-card" data-category="small-bodies"><span class="category-index">03</span><span class="category-icon" aria-hidden="true">✺</span><span class="category-name">Asteroids &amp; comets</span><span class="category-desc">Small bodies, their shapes, surfaces and missions</span><span class="category-arrow" aria-hidden="true">↗</span></button>
-    <button class="category-card" data-category="height-maps"><span class="category-index">04</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Height maps</span><span class="category-desc">Elevation data and printable terrain models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="moons"><span class="category-index">04</span><span class="category-icon" aria-hidden="true">◕</span><span class="category-name">Moons</span><span class="category-desc">Natural satellites and their shape models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <div class="category-divider"><span>Terrain data &amp; generation</span></div>
+    <button class="category-card" data-category="height-maps"><span class="category-index">05 · DATA COLLECTION</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Height maps</span><span class="category-desc">Elevation data and tools for creating printable terrain — not individual object models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
   </div>
 </section>
 <section class="collection-view" id="collection-view" hidden>
@@ -34,7 +36,7 @@
     <label class="filter-field"><span>Source</span><select id="source-filter"><option value="all">All sources</option></select></label>
     <label class="filter-field"><span>Type</span><select id="type-filter"><option value="all">All types</option></select></label>
   </div>
-  <div class="result-grid" id="result-grid"></div>
+  <div class="collection-results"><section class="collection-group" id="models-group"><div class="collection-group-heading"><div><p class="overline">MODEL FILES</p><h2>Downloadable models</h2></div><span class="group-count" id="model-result-count"></span></div><div class="result-grid" id="model-grid"></div></section><section class="collection-group sources-group" id="sources-group"><div class="collection-group-heading"><div><p class="overline">REFERENCE &amp; TOOLS</p><h2>Sources &amp; tools</h2></div><span class="group-count" id="source-result-count"></span></div><div class="result-grid" id="source-grid"></div></section></div>
   <p class="collection-footnote" id="collection-footnote"></p>
 </section>
 <section class="detail-view" id="detail-view" hidden>
