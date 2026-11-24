@@ -1,0 +1,80 @@
+{
+  "source": "NASA PDS Small Bodies Node and Zenodo",
+  "files": [
+    {
+      "id": "pds-stooke-shape-models",
+      "name": "Stooke Small Body Shape Models — PDS4 archive",
+      "category": "small-bodies",
+      "kind": "Comet / asteroid shape-model archive",
+      "source": "NASA PDS",
+      "size": "252 kB",
+      "format": "ZIP",
+      "license": "NASA PDS dataset terms; check archive documentation",
+      "credit": "Philip Stooke; NASA Planetary Data System Small Bodies Node",
+      "file": "https://sbnarchive.psi.edu/pds4/non_mission/small_bodies.stooke.shape-models.zip",
+      "sourceUrl": "https://sbn.psi.edu/pds/resource/stkshape.html",
+      "changed": "PDS page checked 2026-11-24",
+      "downloadDirect": true
+    },
+    {
+      "id": "pds-tempel1-shape-models",
+      "name": "9P/Tempel 1 — Deep Impact / Stardust shape-model archive",
+      "category": "small-bodies",
+      "kind": "Comet shape-model archive",
+      "source": "NASA PDS",
+      "size": "3.0 MB",
+      "format": "ZIP",
+      "license": "NASA PDS dataset; see archive documentation",
+      "credit": "Farnham and Thomas; NASA Planetary Data System",
+      "file": "https://pdssbn.astro.umd.edu/holdings/dif-c-hriv_its_mri-5-tempel1-shape-v2.0/DOWNLOAD/",
+      "sourceUrl": "https://pdssbn.astro.umd.edu/holdings/dif-c-hriv_its_mri-5-tempel1-shape-v2.0/dataset.shtml",
+      "changed": "PDS page checked 2026-11-24",
+      "downloadDirect": true
+    },
+    {
+      "id": "zenodo-nwa869-impact",
+      "name": "NWA 869 meteorite fragments — hypervelocity impact (L01.zip)",
+      "category": "small-bodies",
+      "kind": "Meteorite fragment OBJ archive",
+      "source": "Zenodo / Czech Academy of Sciences",
+      "size": "199.8 MB",
+      "format": "ZIP",
+      "license": "See Zenodo record",
+      "credit": "David Čapek; Astronomical Institute of the Czech Academy of Sciences; DOI 10.5281/zenodo.14850374",
+      "file": "https://zenodo.org/records/14850374",
+      "sourceUrl": "https://zenodo.org/records/14850374",
+      "changed": "2025-02-13",
+      "downloadDirect": false
+    },
+    {
+      "id": "zenodo-nwa869-explosive",
+      "name": "NWA 869 meteorite fragments — explosive fragmentation (L02.zip)",
+      "category": "small-bodies",
+      "kind": "Meteorite fragment OBJ archive",
+      "source": "Zenodo / Czech Academy of Sciences",
+      "size": "197.6 MB",
+      "format": "ZIP",
+      "license": "See Zenodo record",
+      "credit": "David Čapek; Astronomical Institute of the Czech Academy of Sciences; DOI 10.5281/zenodo.14850374",
+      "file": "https://zenodo.org/records/14850374",
+      "sourceUrl": "https://zenodo.org/records/14850374",
+      "changed": "2025-02-13",
+      "downloadDirect": false
+    },
+    {
+      "id": "zenodo-terrestrial-rock",
+      "name": "Kunětická hora rock fragments — explosive fragmentation (T01.zip)",
+      "category": "small-bodies",
+      "kind": "Terrestrial rock fragment OBJ archive",
+      "source": "Zenodo / Czech Academy of Sciences",
+      "size": "56.8 MB",
+      "format": "ZIP",
+      "license": "See Zenodo record",
+      "credit": "David Čapek; Astronomical Institute of the Czech Academy of Sciences; DOI 10.5281/zenodo.14850374",
+      "file": "https://zenodo.org/records/14850374",
+      "sourceUrl": "https://zenodo.org/records/14850374",
+      "changed": "2025-02-13",
+      "downloadDirect": false
+    }
+  ]
+}
