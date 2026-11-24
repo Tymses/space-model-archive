@@ -66,3 +66,108 @@ document.querySelector(".brand").addEventListener("click",e=>{e.preventDefault()
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName)&&!collection.hidden){e.preventDefault();$("#search-input").focus();}});
 window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")routeHome(false);else if(s.view==="collection")routeCollection(s.key,false);else if(s.view==="detail")routeModel(s.id,false);else if(s.view==="about")routeAbout(false);});
 routeHome(false);
+
+// --- SMA print preparation: live model dimensions, scale and printer fit ---
+(function initPrintAssessment(){
+  const $id = id => document.getElementById(id);
+  let activeViewer = null;
+  let baseDimensions = null;
+
+  function number(id){ return Number($id(id).value); }
+  function volume(){
+    if ($id("printer-profile").value === "p2s") return [256,256,256];
+    return [number("bed-x"),number("bed-y"),number("bed-z")];
+  }
+  function fmt(v){ return v.toFixed(v >= 100 ? 1 : 2).replace(/\.0$/,""); }
+  function fitsSomeRotation(size, bed){
+    const rotations = [
+      [size[0],size[1],size[2]],[size[0],size[2],size[1]],
+      [size[1],size[0],size[2]],[size[1],size[2],size[0]],
+      [size[2],size[0],size[1]],[size[2],size[1],size[0]]
+    ];
+    return rotations.some(r => r.every((v,i) => v <= bed[i]));
+  }
+  function updateAssessment(){
+    if (!baseDimensions) return;
+    const real = number("real-length");
+    const denominator = number("scale-denominator");
+    let factor = 1;
+    const hasReal = $id("real-length").value.trim() !== "";
+    const hasDenom = $id("scale-denominator").value.trim() !== "";
+    if (hasReal !== hasDenom) {
+      $id("fit-title").textContent = "Scale information incomplete";
+      $id("fit-description").textContent = "Enter both the real-world length and the scale denominator, or clear both fields.";
+      $id("print-dimensions").textContent = "—";
+      $id("scale-factor").textContent = "Recommended size factor: —";
+      return;
+    }
+    if (hasReal && hasDenom) {
+      if (!(real > 0) || !(denominator > 0)) {
+        $id("fit-title").textContent = "Check the scale values";
+        $id("fit-description").textContent = "Both values must be greater than zero.";
+        return;
+      }
+      const targetLongest = real / denominator;
+      factor = targetLongest / Math.max(...baseDimensions);
+    }
+    const size = baseDimensions.map(v => v * factor);
+    const bed = volume();
+    $id("model-dimensions").textContent = baseDimensions.map(fmt).join(" × ") + " mm";
+    $id("print-dimensions").textContent = size.map(fmt).join(" × ") + " mm";
+    $id("scale-factor").textContent = "Recommended size factor: " + (factor*100).toFixed(2) + "% of source geometry";
+    const validBed = bed.every(v => Number.isFinite(v) && v > 0);
+    const fit = validBed && fitsSomeRotation(size,bed);
+    const result = $id("fit-result");
+    result.classList.toggle("is-fit",!!fit);
+    result.classList.toggle("is-no-fit",validBed && !fit);
+    if (!validBed) {
+      $id("fit-title").textContent = "Enter a valid build volume";
+      $id("fit-description").textContent = "All three printer dimensions must be greater than zero.";
+    } else if (fit) {
+      $id("fit-title").textContent = "Fits within the selected build volume";
+      $id("fit-description").textContent = "At least one 90° axis-aligned orientation fits inside " + bed.map(fmt).join(" × ") + " mm.";
+    } else {
+      $id("fit-title").textContent = "Does not fit at this scale";
+      $id("fit-description").textContent = "At least one dimension exceeds the selected build volume (" + bed.map(fmt).join(" × ") + " mm). Consider scaling down or splitting the model.";
+    }
+    if (activeViewer) activeViewer.scale = factor + " " + factor + " " + factor;
+  }
+  function measureViewer(){
+    if (!activeViewer || typeof activeViewer.getDimensions !== "function") return;
+    try {
+      const d = activeViewer.getDimensions();
+      if (!d || ![d.x,d.y,d.z].every(Number.isFinite)) throw new Error("No dimensions");
+      // glTF and model-viewer use metres; the archive displays millimetres.
+      baseDimensions = [d.x,d.y,d.z].map(v => Math.abs(v)*1000);
+      $id("measurement-state").textContent = "Geometry measured";
+      updateAssessment();
+    } catch (_) {
+      $id("measurement-state").textContent = "Dimensions unavailable";
+      $id("model-dimensions").textContent = "Could not read model dimensions";
+      $id("fit-title").textContent = "Automatic measurement unavailable";
+      $id("fit-description").textContent = "The source preview could not expose its geometry bounds. No fit result is shown.";
+    }
+  }
+  function attachViewer(){
+    activeViewer = document.querySelector("#preview-stage model-viewer");
+    baseDimensions = null;
+    if (!activeViewer) return;
+    activeViewer.scale = "1 1 1";
+    $id("measurement-state").textContent = "Measuring model…";
+    $id("model-dimensions").textContent = "Waiting for 3D preview…";
+    $id("print-dimensions").textContent = "—";
+    activeViewer.addEventListener("load",measureViewer,{once:true});
+    if (activeViewer.loaded) measureViewer();
+  }
+  $id("printer-profile").addEventListener("change",()=>{
+    $id("custom-volume").hidden = $id("printer-profile").value !== "custom";
+    updateAssessment();
+  });
+  ["bed-x","bed-y","bed-z","real-length","scale-denominator"].forEach(id=>$id(id).addEventListener("input",updateAssessment));
+  $id("result-grid").addEventListener("click",e=>{
+    if (e.target.closest("[data-model]")) setTimeout(attachViewer,0);
+  });
+  window.addEventListener("popstate",()=>setTimeout(()=>{
+    if (!document.querySelector("#detail-view[hidden]")) attachViewer();
+  },0));
+})();
