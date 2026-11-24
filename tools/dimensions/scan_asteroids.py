@@ -26,8 +26,8 @@ VERIFIED = ROOT / "data/real-world-dimensions.json"
 OUTPUT = ROOT / "data/real-world-dimension-candidates.json"
 API = "https://ssd-api.jpl.nasa.gov/sbdb.api"
 USER_AGENT = "SpaceModelArchive-DimensionResearch/1.0 (GitHub Actions; public research index)"
-NUMBER_RE = re.compile(r"^\\s*\\(?(\\d+)\\)?(?:\\s|$)")
-VALUE_RE = re.compile(r"[-+]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)(?:[eE][-+]?\\d+)?")
+NUMBER_RE = re.compile(r"^\${ch}*\\(?(\${ch}+)\\)?(?:\${ch}|$)")
+VALUE_RE = re.compile(r"[-+]?(?:\${ch}+(?:\\.\${ch}*)?|\\.\${ch}+)(?:[eE][-+]?\${ch}+)?")
 UNIT_TO_KM = {"km": 1.0, "m": 0.001, "meter": 0.001, "meters": 0.001}
 
 
@@ -137,7 +137,7 @@ def build_candidate(model: dict[str, Any], payload: dict[str, Any], retrieved: s
 def existing_numbered_objects(dimensions: dict[str, Any]) -> set[str]:
     found: set[str] = set()
     for key, value in (dimensions.get("records") or {}).items():
-        match = re.search(r"(?:3dac-asteroid-|asteroid-)(\\d+)$", key)
+        match = re.search(r"(?:3dac-asteroid-|asteroid-)(\${ch}+)$", key)
         if match and isinstance(value, dict) and value.get("longestAxisKm"):
             found.add(match.group(1))
     return found
