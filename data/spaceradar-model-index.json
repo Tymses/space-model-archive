@@ -88,7 +88,7 @@
       "license": "Public domain (see NASA/source usage notes)",
       "credit": "Apollo Soyuz (NASA 3D Resources, `3D Models/Apollo Soyuz`; NASA has no other Apollo command and service module): its CSM cut out and rescaled, then the high-gain antenna, the windows, the docking ring and probe, the SM's beams, radiators and fairing drawn by Space Radar from NASA's Apollo 9 and Apollo 17 photographs (public domain); and since 1.7.0 bay 4 of the SM (the outer panel as its own part, the shelf, tanks and torn Mylar behind it) drawn from NASA's Apollo 13 photograph AS13-59-8500 (public domain). The terms: \"All of these assets are free to download and use\" (science.nasa.gov/3d-resources, read 2026-10-28) Used for: the Command and Service Module of the Apollo Moments (no object on the map wears it yet)",
       "file": "https://www.spaceradar.ai/models/apollo-csm.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -102,7 +102,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Aqua (B) Used for: NORAD 27424 (AQUA)",
       "file": "https://www.spaceradar.ai/models/aqua.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -368,7 +368,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Aura (A) Used for: NORAD 28376 (AURA)",
       "file": "https://www.spaceradar.ai/models/aura.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -592,7 +592,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Space Systems Loral (SSL-1300) Used for: DEFAULT for the geostationary ring -- several hundred unnamed commercial satellites",
       "file": "https://www.spaceradar.ai/models/bus-ssl1300.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -606,7 +606,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Cloud-Aerosol Lidar and Infrared Pathfinder Satellite (CALIPSO) Used for: catalogue name CALIPSO",
       "file": "https://www.spaceradar.ai/models/calipso.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -634,7 +634,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Cassini-Huygens (A) Used for: Horizons -82 (Cassini, 1997 to 2017)",
       "file": "https://www.spaceradar.ai/models/cassini.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -690,7 +690,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Chandra X-ray Observatory Used for: NORAD 25867 (CXO)",
       "file": "https://www.spaceradar.ai/models/chandra.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -760,7 +760,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "CloudSat (A) Used for: catalogue name CLOUDSAT",
       "file": "https://www.spaceradar.ai/models/cloudsat.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -956,7 +956,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"Curiosity 3D Model\" (2019) Used for: <https://science.nasa.gov/resource/curiosity-3d-model/>",
       "file": "https://www.spaceradar.ai/models/curiosity.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/resource/curiosity-3d-model/",
       "changed": "Source repository index"
     },
     {
@@ -970,7 +970,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Cyclone Global Navigation Satellite System (CYGNSS) Used for: NORAD 41884-41891, the seven CYGNSS microsatellites still in the catalogue",
       "file": "https://www.spaceradar.ai/models/cygnss.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1012,7 +1012,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Dawn Used for: Horizons -203 (Dawn, 2007 to 2018)",
       "file": "https://www.spaceradar.ai/models/dawn.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1026,7 +1026,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Deep Impact (EPOXI) (NASA/Brian E. Kumanchik; NASA/Christian A. Lopez) Used for: Horizons -140 (Deep Impact, 2005 to 2013)",
       "file": "https://www.spaceradar.ai/models/deep-impact.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1082,7 +1082,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Deep Space Climate Observatory (DSCOVR) (Triana) Used for: catalogue names containing DSCOVR",
       "file": "https://www.spaceradar.ai/models/dscovr.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1096,7 +1096,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Deep Space Network 34-meter Used for: the dss-25 antenna, which is 34 m and was wrongly drawn with the 70 m model",
       "file": "https://www.spaceradar.ai/models/dsn34.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-34-meter/",
       "changed": "Source repository index"
     },
     {
@@ -1110,7 +1110,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Deep Space Network 70-meter Used for: DEFAULT for ground sites of class `dish`",
       "file": "https://www.spaceradar.ai/models/dsn70.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-70-meter/",
       "changed": "Source repository index"
     },
     {
@@ -1236,7 +1236,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"Europa Clipper 3D Model\" (2022) Used for: <https://science.nasa.gov/resource/europa-clipper-3d-model/>",
       "file": "https://www.spaceradar.ai/models/europa-clipper.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/resource/europa-clipper-3d-model/",
       "changed": "Source repository index"
     },
     {
@@ -1320,7 +1320,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Fermi Gamma-ray Large Area Space Telescope Used for: NORAD 33053 (FGRST (GLAST))",
       "file": "https://www.spaceradar.ai/models/fermi.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1404,7 +1404,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Galileo Used for: Horizons -77 (Galileo, 1989 to 2003)",
       "file": "https://www.spaceradar.ai/models/galileo.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1544,7 +1544,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Geostationary Operational Environmental Satellites Used for: catalogue names containing GOES",
       "file": "https://www.spaceradar.ai/models/goes.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1572,7 +1572,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Global Precipitation Measurement Used for: NORAD 39574 (GPM-CORE)",
       "file": "https://www.spaceradar.ai/models/gpm.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1628,7 +1628,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Gravity Recovery and Climate Experiment (GRACE) (B) Used for: NORAD 43476 and 43477 (GRACE-FO 1 and 2), drawn as their sister ship",
       "file": "https://www.spaceradar.ai/models/grace.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1712,7 +1712,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Hinode (Solar-B) Used for: NORAD 29479 (HINODE (SOLAR-B))",
       "file": "https://www.spaceradar.ai/models/hinode.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1796,7 +1796,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (A) Used for: NORAD 43613 (ICESAT-2)",
       "file": "https://www.spaceradar.ai/models/icesat2.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1824,7 +1824,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Ionospheric Connection Explorer (ICON) Used for: NORAD 44628 (ICON)",
       "file": "https://www.spaceradar.ai/models/icon.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1838,7 +1838,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Ingenuity Mars Helicopter Used for: the Ingenuity site at Valinor Hills",
       "file": "https://www.spaceradar.ai/models/ingenuity.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1880,7 +1880,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "InSight Cruise Lander Used for: the InSight landing site at Elysium Planitia",
       "file": "https://www.spaceradar.ai/models/insight.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1936,7 +1936,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "International Space Station (ISS) (D) (IGOAL) Used for: NORAD 25544",
       "file": "https://www.spaceradar.ai/models/iss.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -1964,7 +1964,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"Jason-3 3D Model\" (2020) Used for: <https://sealevel.jpl.nasa.gov/resources/94/jason-3-3d-model/>",
       "file": "https://www.spaceradar.ai/models/jason-3.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://sealevel.jpl.nasa.gov/resources/94/jason-3-3d-model/",
       "changed": "Source repository index"
     },
     {
@@ -1978,7 +1978,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Ocean Surface Topography Mission (OSTM Jason-2) Used for: NORAD 33105 (JASON-2 (OSTM)), the craft itself; until 2026-10-15 also Jason-3 as its sister ship, which now wears JPL's own model ([3b-13](#3b-13-five-agencies-own-models--europa-clipper-smap-jason-3-curiosity-sorce-2026-10-15))",
       "file": "https://www.spaceradar.ai/models/jason.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2006,7 +2006,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Juno (B) Used for: Horizons -61",
       "file": "https://www.spaceradar.ai/models/juno.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2020,7 +2020,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "James Webb Space Telescope (A), re-baked with its mirror and sunshield in true materials (release 1.3.0, W3-a) Used for: Horizons -170 (James Webb Space Telescope)",
       "file": "https://www.spaceradar.ai/models/jwst.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2048,7 +2048,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Kepler (A) Used for: Horizons -227 (Kepler)",
       "file": "https://www.spaceradar.ai/models/kepler.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2132,7 +2132,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Landsat 7 Used for: NORAD 25682 (Landsat 7)",
       "file": "https://www.spaceradar.ai/models/landsat.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2146,7 +2146,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Landsat 8 Used for: NORAD 39084, 49260 (Landsat 8, 9)",
       "file": "https://www.spaceradar.ai/models/landsat8.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2202,7 +2202,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Lunar Reconnaissance Orbiter (A) Used for: Horizons -85",
       "file": "https://www.spaceradar.ai/models/lro.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2244,7 +2244,7 @@
       "license": "Public domain (see NASA/source usage notes)",
       "credit": "Apollo Lunar Module (NASA), cut into its descent and ascent stages (public domain: \"These assets are free and without copyright\", NASA 3D Resources README, read 2026-10-28) Used for: the Apollo 11, 12, 14, 15, 16 and 17 landing sites -- one vehicle design, six descent stages -- and the Apollo 11 Moment",
       "file": "https://www.spaceradar.ai/models/lunar-module.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2328,7 +2328,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mars Atmosphere and Volatile EvolutioN (MAVEN) (B) Used for: Horizons -202 (MAVEN, on its last tracked orbit of Mars; no contact since 6 December 2025)",
       "file": "https://www.spaceradar.ai/models/maven.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2356,7 +2356,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mars Exploration Rover - Opportunity (MER-B) Used for: the Opportunity site, and the Spirit site as its twin",
       "file": "https://www.spaceradar.ai/models/mer.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2468,7 +2468,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Magnetospheric Multiscale (MMS) (B) Used for: NORAD 40482-40485 (MMS 1 to MMS 4)",
       "file": "https://www.spaceradar.ai/models/mms.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2636,7 +2636,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mars Reconnaissance Orbiter (MRO) (C) Used for: Horizons -74",
       "file": "https://www.spaceradar.ai/models/mro.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2720,7 +2720,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "NEAR Shoemaker Used for: Horizons -93 (NEAR Shoemaker, 1996 to 2001)",
       "file": "https://www.spaceradar.ai/models/near.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2734,7 +2734,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "New Horizons: NASA's printable body and RTG parts (science.nasa.gov/3d-resources/new-horizons, read 2026-10-20; the page names no author), assembled by us; the dish, its tripod and feed rebuilt from NASA's own 1/12 drawings on the same page (readme.pdf), colours ours from NASA's photographs ([3b-15](#3b-15-release-130-crewed-craft-and-nasa-flagships--tiangong-shenzhou-orbital-module-themis-new-horizons-2026-10-20)) Used for: Horizons -98 (New Horizons)",
       "file": "https://www.spaceradar.ai/models/new-horizons.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2846,7 +2846,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Orbiting Carbon Observatory (OCO) 2 Used for: catalogue name OCO 2",
       "file": "https://www.spaceradar.ai/models/oco2.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2874,7 +2874,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mars Odyssey Used for: Horizons -53 (Mars Odyssey)",
       "file": "https://www.spaceradar.ai/models/odyssey.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2902,7 +2902,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "the launch abort system, three fairing panels, four solar arrays, the European Service Module, the crew module Used for: NASA/JPL Eyes on the Solar System, <https://eyes.nasa.gov/assets/static/models/sc_artemis/artemis_ii.gltf> (crew module, service module, arrays); and the same NASA 3D Resources Blender file (abort system, ogive, fairing panels)",
       "file": "https://www.spaceradar.ai/models/orion-esm.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://eyes.nasa.gov/assets/static/models/sc_artemis/artemis_ii.gltf",
       "changed": "Source repository index"
     },
     {
@@ -2916,7 +2916,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Origins, Spectral Interpretation, Resource Identification, and Security - Regolith Explorer (OSIRIS-REx) Used for: Horizons -64 (OSIRIS-APEX, the same spacecraft on its second mission)",
       "file": "https://www.spaceradar.ai/models/osiris-rex.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2944,7 +2944,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mobile Launcher Used for: DEFAULT for every launch pad -- 17 today, more with each Launch Library refresh",
       "file": "https://www.spaceradar.ai/models/pad.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2958,7 +2958,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Parker Solar Probe Used for: Horizons -96",
       "file": "https://www.spaceradar.ai/models/parker.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -2986,7 +2986,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Mars 2020 Perseverance Rover Used for: Jezero crater on Mars (until 2026-10-15 also Gale crater, as the kind of thing; Gale now wears NASA's own Curiosity, [3b-13](#3b-13-five-agencies-own-models--europa-clipper-smap-jason-3-curiosity-sorce-2026-10-15))",
       "file": "https://www.spaceradar.ai/models/perseverance.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3014,7 +3014,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Pioneer 10 Used for: Horizons -23 and -24 (Pioneer 10, and Pioneer 11, its sister craft)",
       "file": "https://www.spaceradar.ai/models/pioneer.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3056,7 +3056,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Polar Operational Environmental Satellite (POES) Used for: NOAA 15, NOAA 18, NOAA 19 — the bus they share",
       "file": "https://www.spaceradar.ai/models/poes.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3238,7 +3238,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Radar Satellite-1 (RADARSAT-1), by NASA/Christopher R. Meaney Used for: NORAD 23710 (RADARSAT-1); in no layer the app loads today",
       "file": "https://www.spaceradar.ai/models/radarsat1.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3308,7 +3308,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Nancy Grace Roman Space Telescope (B) Used for: Horizons -211 (Nancy Grace Roman Space Telescope)",
       "file": "https://www.spaceradar.ai/models/roman.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3322,7 +3322,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Rosetta Used for: Horizons -226 (Rosetta, 2004 to 2016)",
       "file": "https://www.spaceradar.ai/models/rosetta.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3364,7 +3364,7 @@
       "license": "Public domain (see NASA/source usage notes)",
       "credit": "Saturn V (NASA/Michael D. Carbajal), cut into its eleven separable parts, with the J-2 engines and the launch escape tower added by Space Radar (public domain: \"These assets are free and without copyright\", NASA 3D Resources README, read 2026-10-28) Used for: the Saturn V on Launch Complex 39A (`saturn-v-lc-39a`) and the stack of the Apollo 11 Moment",
       "file": "https://www.spaceradar.ai/models/saturn-v.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3406,7 +3406,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Solar Dynamics Observatory Used for: NORAD 36395 (SDO)",
       "file": "https://www.spaceradar.ai/models/sdo.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3434,7 +3434,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "SeaStar Used for: NORAD 24883 (ORBVIEW 2 (SEASTAR))",
       "file": "https://www.spaceradar.ai/models/seastar.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3504,7 +3504,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Jason Continuity of Service (Sentinel-6) Used for: NORAD 46984 (SENTINEL-6A); and 66514 (SENTINEL-6B), its twin of the same design",
       "file": "https://www.spaceradar.ai/models/sentinel6.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3560,7 +3560,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "the DFI pallet of STS-1 split into a part of its own (`scripts/shuttle/split-dfi-pallet.mjs`), so that STS-31's bay can leave it out Used for: NASA 3D Resources, as in 3b-r171",
       "file": "https://www.spaceradar.ai/models/shuttle-orbiter.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3588,7 +3588,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Space Shuttle (A) (NASA/Michael D. Carbajal): the orbiter on its tank and boosters Used for: the Space Shuttle on Launch Complex 39B (`shuttle-lc-39b`)",
       "file": "https://www.spaceradar.ai/models/shuttle-stack.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3602,7 +3602,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "the white external tank with its attach beams, struts and lines; the two solid rocket boosters, white with a dark nozzle Used for: NASA 3D Resources, `3D Models/Space Shuttle Parts` (the files named External tank and Solid Rocket Booster), <https://github.com/nasa/NASA-3D-Resources>",
       "file": "https://www.spaceradar.ai/models/shuttle-sts-stack.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3644,7 +3644,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "the two five-segment boosters, the core stage with its four RS-25s, the launch vehicle stage adapter, the ICPS with its Orion stage adapter Used for: NASA 3D Resources, `3D Models/Space Launch System Block 1` (`Block 1 (GNC markings).7z`, a Blender file), <https://github.com/nasa/NASA-3D-Resources>",
       "file": "https://www.spaceradar.ai/models/sls-block1.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3658,7 +3658,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"SMAP 3D Model\" Used for: <https://smap.jpl.nasa.gov/resources/99/smap-3d-model/>",
       "file": "https://www.spaceradar.ai/models/smap.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://smap.jpl.nasa.gov/resources/99/smap-3d-model/",
       "changed": "Source repository index"
     },
     {
@@ -3686,7 +3686,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Solar and Heliospheric Observatory Used for: Horizons -21",
       "file": "https://www.spaceradar.ai/models/soho.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3700,7 +3700,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"Solar Radiation and Climate Experiment (SORCE)\" Used for: <https://github.com/nasa/NASA-3D-Resources>",
       "file": "https://www.spaceradar.ai/models/sorce.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3728,7 +3728,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Spitzer Space Telescope Used for: Horizons -79 (Spitzer)",
       "file": "https://www.spaceradar.ai/models/spitzer.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3770,7 +3770,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Stardust (NASA/Brian E. Kumanchik; NASA/Christian A. Lopez) Used for: Horizons -29 (Stardust, 1999 to 2011)",
       "file": "https://www.spaceradar.ai/models/stardust.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3812,7 +3812,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Solar TErrestrial RElations Observatory (STEREO) Used for: Horizons -234 (STEREO-A)",
       "file": "https://www.spaceradar.ai/models/stereo.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3840,7 +3840,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Suomi National Polar-orbiting Partnership (Suomi NPP) Used for: NORAD 37849 (SUOMI NPP)",
       "file": "https://www.spaceradar.ai/models/suomi.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3910,7 +3910,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "\"Submillimeter Wave Astronomy Satellite (SWAS)\" Used for: NASA's own file, <https://science.nasa.gov/3d-resources/submillimeter-wave-astronomy-satellite-swas/> and <https://github.com/nasa/NASA-3D-Resources> (\"Source NASA/Christopher R. Meaney\")",
       "file": "https://www.spaceradar.ai/models/swas.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/submillimeter-wave-astronomy-satellite-swas/",
       "changed": "Source repository index"
     },
     {
@@ -3924,7 +3924,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Swift Used for: NORAD 28485 (SWIFT)",
       "file": "https://www.spaceradar.ai/models/swift.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3938,7 +3938,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "No separate model attribution row found in the source credits.",
       "file": "https://www.spaceradar.ai/models/swot.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://swot.jpl.nasa.gov/resources/86/swot-3d-model/",
       "changed": "Source repository index"
     },
     {
@@ -3952,7 +3952,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Tracking and Data Relay Satellites (TDRS) (A) Used for: catalogue names containing TDRS",
       "file": "https://www.spaceradar.ai/models/tdrs.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3966,7 +3966,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Terra Used for: NORAD 25994 (TERRA)",
       "file": "https://www.spaceradar.ai/models/terra.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -3994,7 +3994,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Transiting Exoplanet Survey Satellite (TESS) (A) Used for: NORAD 43435 (TESS)",
       "file": "https://www.spaceradar.ai/models/tess.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -4008,7 +4008,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Time History of Events and Macroscale Interactions During Substorms (THEMIS); its booms drawn shorter ([3b-15](#3b-15-release-130-crewed-craft-and-nasa-flagships--tiangong-shenzhou-orbital-module-themis-new-horizons-2026-10-20)) Used for: NORAD 30580, 30797, 30798 (THEMIS A, D, E)",
       "file": "https://www.spaceradar.ai/models/themis.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -4092,7 +4092,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Tselina-2 Used for: the eighteen Tselina-2 ELINT satellites in the catalogue, by NORAD id",
       "file": "https://www.spaceradar.ai/models/tselina2.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -4148,7 +4148,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Viking Lander Used for: the Viking 1 and Viking 2 landing sites",
       "file": "https://www.spaceradar.ai/models/viking-lander.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
@@ -4246,7 +4246,7 @@
       "license": "See source-specific attribution; licence not inferred",
       "credit": "Voyager Probe (A) Used for: Horizons -31, -32",
       "file": "https://www.spaceradar.ai/models/voyager.glb",
-      "sourceUrl": "https://github.com/Sara-Managed-Projects/space-radar/blob/main/CREDITS.md",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository index"
     },
     {
