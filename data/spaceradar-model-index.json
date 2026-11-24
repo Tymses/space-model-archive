@@ -2474,8 +2474,8 @@
     {
       "id": "spaceradar-map-moon-atlas",
       "name": "Atlas moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "74 kB",
       "format": "GLB",
@@ -2488,8 +2488,8 @@
     {
       "id": "spaceradar-map-moon-calypso",
       "name": "Calypso moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "77 kB",
       "format": "GLB",
@@ -2502,8 +2502,8 @@
     {
       "id": "spaceradar-map-moon-daphnis",
       "name": "Daphnis moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "75 kB",
       "format": "GLB",
@@ -2516,8 +2516,8 @@
     {
       "id": "spaceradar-map-moon-epimetheus",
       "name": "Epimetheus moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "77 kB",
       "format": "GLB",
@@ -2530,8 +2530,8 @@
     {
       "id": "spaceradar-map-moon-helene",
       "name": "Helene moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "79 kB",
       "format": "GLB",
@@ -2544,8 +2544,8 @@
     {
       "id": "spaceradar-map-moon-hyperion",
       "name": "Hyperion moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "79 kB",
       "format": "GLB",
@@ -2558,8 +2558,8 @@
     {
       "id": "spaceradar-map-moon-janus",
       "name": "Janus moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "78 kB",
       "format": "GLB",
@@ -2572,8 +2572,8 @@
     {
       "id": "spaceradar-map-moon-pan",
       "name": "Pan moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "76 kB",
       "format": "GLB",
@@ -2586,8 +2586,8 @@
     {
       "id": "spaceradar-map-moon-pandora",
       "name": "Pandora moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "76 kB",
       "format": "GLB",
@@ -2600,8 +2600,8 @@
     {
       "id": "spaceradar-map-moon-prometheus",
       "name": "Prometheus moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "76 kB",
       "format": "GLB",
@@ -2614,8 +2614,8 @@
     {
       "id": "spaceradar-map-moon-telesto",
       "name": "Telesto moon shape model",
-      "category": "small-bodies",
-      "kind": "Small-body shape model",
+      "category": "moons",
+      "kind": "Natural satellite shape model",
       "source": "Space Radar map assets",
       "size": "77 kB",
       "format": "GLB",
@@ -4361,5 +4361,6 @@
       "sourceUrl": "https://www.spaceradar.ai/model/?id=zhurong",
       "changed": "Source repository index"
     }
-  ]
+  ],
+  "moonShapeModelCount": 11
 }
