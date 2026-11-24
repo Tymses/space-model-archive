@@ -44,7 +44,8 @@
       "file": "https://zenodo.org/records/14850374",
       "sourceUrl": "https://zenodo.org/records/14850374",
       "changed": "2025-02-13",
-      "downloadDirect": false
+      "downloadDirect": false,
+      "downloadText": "Open Zenodo file list ↗"
     },
     {
       "id": "zenodo-nwa869-explosive",
@@ -59,7 +60,8 @@
       "file": "https://zenodo.org/records/14850374",
       "sourceUrl": "https://zenodo.org/records/14850374",
       "changed": "2025-02-13",
-      "downloadDirect": false
+      "downloadDirect": false,
+      "downloadText": "Open Zenodo file list ↗"
     },
     {
       "id": "zenodo-terrestrial-rock",
@@ -74,7 +76,8 @@
       "file": "https://zenodo.org/records/14850374",
       "sourceUrl": "https://zenodo.org/records/14850374",
       "changed": "2025-02-13",
-      "downloadDirect": false
+      "downloadDirect": false,
+      "downloadText": "Open Zenodo file list ↗"
     }
   ]
 }
