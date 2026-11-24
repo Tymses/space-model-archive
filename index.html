@@ -36,7 +36,11 @@
     <label class="filter-field"><span>Source</span><select id="source-filter"><option value="all">All sources</option></select></label>
     <label class="filter-field"><span>Type</span><select id="type-filter"><option value="all">All types</option></select></label>
   </div>
-  <div class="collection-results"><section class="collection-group" id="models-group"><div class="collection-group-heading"><div><p class="overline">MODEL FILES</p><h2>Downloadable models</h2></div><span class="group-count" id="model-result-count"></span></div><div class="result-grid" id="model-grid"></div></section><section class="collection-group sources-group" id="sources-group"><div class="collection-group-heading"><div><p class="overline">REFERENCE &amp; TOOLS</p><h2>Sources &amp; tools</h2></div><span class="group-count" id="source-result-count"></span></div><div class="result-grid" id="source-grid"></div></section></div>
+  <div class="collection-results collection-dropdowns">
+    <details class="collection-dropdown" id="models-group"><summary><span class="dropdown-heading"><span class="overline">MODEL FILES</span><strong>Downloadable models</strong></span><span class="group-count" id="model-result-count"></span><span class="dropdown-chevron" aria-hidden="true">⌄</span></summary><div class="result-grid" id="model-grid"></div></details>
+    <details class="collection-dropdown" id="sources-group"><summary><span class="dropdown-heading"><span class="overline">REFERENCE</span><strong>Sources</strong></span><span class="group-count" id="source-result-count"></span><span class="dropdown-chevron" aria-hidden="true">⌄</span></summary><div class="result-grid" id="source-grid"></div></details>
+    <details class="collection-dropdown" id="generators-group"><summary><span class="dropdown-heading"><span class="overline">TOOLS</span><strong>Generators</strong></span><span class="group-count" id="generator-result-count"></span><span class="dropdown-chevron" aria-hidden="true">⌄</span></summary><div class="result-grid" id="generator-grid"></div></details>
+  </div>
   <p class="collection-footnote" id="collection-footnote"></p>
 </section>
 <section class="detail-view" id="detail-view" hidden>
