@@ -15,11 +15,11 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 
 - Four collections: Spacecraft, Planetary features, Asteroids & comets, and Height maps.
 - Collection search with source and type filters.
-- NASA 3D Resources is indexed from its complete public `3D Models` and `3D Printing` Git tree: 599 individual GLB/STL files in the 2026-11-24 snapshot, each with a direct original-file link. 29 planetary STL records are also cross-listed in Height Maps.
-- Space Radar's full 203-model GLB catalogue is imported from its machine-readable `pack.json` at runtime; it is not limited to the hand-picked examples.
+- NASA 3D Resources is indexed from its complete public `3D Models` and `3D Printing` Git tree: 618 individual files (257 GLB, 342 STL, 13 BLEND, 4 3DS and 2 FBX) in the 2026-11-24 snapshot, each with a direct original-file link. 29 planetary STL records are also cross-listed in Height Maps.
+- Space Radar is indexed from its public repository: all 203 models in its official GLB catalogue plus 108 additional GLB map assets (including 29 small-body shape models). File sizes and per-model attribution notes are stored in `data/spaceradar-model-index.json`.
 - Source cards are explicitly classified as model catalogues, scientific data catalogues, viewers or on-demand generators. Terrain Print and NASA Solar System Treks are generators, not fixed model libraries.
 - A verified native STEP assembly for the ESA ExoMy rover is listed separately; its source notes warn that purchased-component geometry may have different reuse rights.
-- NASA GLB models have an in-browser 3D preview; NASA STL files have direct downloads and source attribution. The NASA index is stored at `data/nasa-model-index.json` and can be regenerated from the public Git tree.
+- NASA GLB models have an in-browser 3D preview; NASA STL files have direct downloads and source attribution. The NASA index is stored at `data/nasa-model-index.json` and can be regenerated from the public Git tree. The Space Radar index is stored at `data/spaceradar-model-index.json` and can be rebuilt from its `site/model/models.json`, `site/models/` files and `CREDITS.md`.
 - NASA terrain and asteroid print files are discoverable in the planetary, small-bodies and height-map collections.
 - NASA Solar System Treks is linked at https://trek.nasa.gov/#. It remains an interactive terrain generator: users choose a location and export a print file from the Trek portal.
 - Model detail pages show source credit, file format, file size, licence/use guidance and original download link where available.
@@ -37,7 +37,7 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - STL files are provided as direct downloads; the current in-browser preview and automatic geometry measurement are for GLB files only.
 - Scaling is a recommendation only. The original source file is not modified; apply the scale in your own slicer.
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
-- Other source catalogues remain linked separately where they do not provide a stable direct model file. A catalogue count is not the same as a count of downloadable, printable meshes; for example, the asteroid catalogue's database count includes many objects without a verified downloadable shape file.
+- Other source catalogues remain linked separately where they do not provide a stable direct model file. Source totals are snapshots of the indexed repositories, not a claim that every model in the wider scientific literature or every page in every external catalogue has a downloadable mesh. A catalogue count is not the same as a count of downloadable, printable meshes; for example, the asteroid catalogue's database count includes many objects without a verified downloadable shape file.
 
 ## Run locally
 
