@@ -95,16 +95,22 @@ routeHome(false);
     const hasReal = $id("real-length").value.trim() !== "";
     const hasDenom = $id("scale-denominator").value.trim() !== "";
     if (hasReal !== hasDenom) {
+      $id("fit-result").classList.remove("is-fit","is-no-fit");
       $id("fit-title").textContent = "Scale information incomplete";
       $id("fit-description").textContent = "Enter both the real-world length and the scale denominator, or clear both fields.";
       $id("print-dimensions").textContent = "—";
       $id("scale-factor").textContent = "Recommended size factor: —";
+      if (activeViewer) activeViewer.scale = "1 1 1";
       return;
     }
     if (hasReal && hasDenom) {
       if (!(real > 0) || !(denominator > 0)) {
+        $id("fit-result").classList.remove("is-fit","is-no-fit");
         $id("fit-title").textContent = "Check the scale values";
         $id("fit-description").textContent = "Both values must be greater than zero.";
+        $id("print-dimensions").textContent = "—";
+        $id("scale-factor").textContent = "Recommended size factor: —";
+        if (activeViewer) activeViewer.scale = "1 1 1";
         return;
       }
       const targetLongest = real / denominator;
@@ -153,6 +159,7 @@ routeHome(false);
     baseDimensions = null;
     if (!activeViewer) return;
     activeViewer.scale = "1 1 1";
+    $id("preview-controls").hidden = true;
     $id("measurement-state").textContent = "Measuring model…";
     $id("model-dimensions").textContent = "Waiting for 3D preview…";
     $id("print-dimensions").textContent = "—";
