@@ -525,6 +525,7 @@ loadExpandedCatalogs();
  }
  async function lookupObject(query,quiet=false){
   const q=(query||"").trim();if(!q||lookupBusy)return;
+  const lookupToken=token;
   if(!proxyUrl){setLookupStatus("JPL-Suche noch nicht verbunden. Einmalig den kostenlosen Proxy einrichten (siehe Einrichtungshinweis im Repository).",true);return;}
   lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;setLookupStatus("Suche bei JPL nach "+q+" …");
   try{
@@ -532,6 +533,7 @@ loadExpandedCatalogs();
    const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
    if(!response.ok)throw new Error("Proxy antwortet mit HTTP "+response.status);
    const data=await response.json();
+   if(lookupToken!==token)return;
    if(data.code===300||Array.isArray(data.list)){
     const matches=data.list||[];const names=matches.slice(0,5).map(x=>x.fullname||x.name||x.des).filter(Boolean);
     throw new Error("Mehrere Treffer. Bitte genauer suchen"+(names.length?": "+names.join(", "):"."));
@@ -549,17 +551,17 @@ loadExpandedCatalogs();
    const longest=Math.max(...axes),name=data.object.fullname||data.object.shortname||q;
    showDimensions({name,axesKm:axes,longestAxisKm:longest,sourceUrl:sbdbUrl});
    setLookupStatus("Physikalische Achsen gefunden. Originalmaßstab und Druckmaßstäbe wurden berechnet.");
-  }catch(error){setLookupStatus(error.message||"JPL-Suche fehlgeschlagen.",true);if(!quiet)renderFit("Keine verifizierte Maßstabsgrundlage",error.message||"JPL-Suche fehlgeschlagen.",null);}
+  }catch(error){if(lookupToken!==token)return;setLookupStatus(error.message||"JPL-Suche fehlgeschlagen.",true);if(!quiet)renderFit("Keine verifizierte Maßstabsgrundlage",error.message||"JPL-Suche fehlgeschlagen.",null);}
   finally{lookupBusy=false;$id("scaling-jpl-lookup").disabled=false;}
  }
  async function load(file,format,model=null,url=null){
-  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
+  clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
   if(file){objectUrl=URL.createObjectURL(file);url=objectUrl;}
   try{
-   await ensure();const my=token;if(my!==token)return;
+   await ensure();if(my!==token)return;
    scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);
    camera=new THREE.PerspectiveCamera(38,(stage.clientWidth||640)/(stage.clientHeight||360),.01,1e9);
    renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
@@ -586,7 +588,7 @@ loadExpandedCatalogs();
     else setLookupStatus(proxyUrl?"Gib den Namen, die Nummer oder Bezeichnung des Objekts ein.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.");
    }
   }catch(err){
-   const my=token;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Try a single-file STL, OBJ, PLY or GLB. Some source hosts block browser previews.</p></div>';
+   if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Try a single-file STL, OBJ, PLY or GLB. Some source hosts block browser previews.</p></div>';
    $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
