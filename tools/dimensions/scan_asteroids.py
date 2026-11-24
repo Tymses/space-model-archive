@@ -197,7 +197,7 @@ def run(limit: int | None = None, delay: float = 0.35) -> dict[str, Any]:
         "candidates": candidates,
     }
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\\n", encoding="utf-8")
+    OUTPUT.write_text(json.dumps(output, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(counts, indent=2))
     print(f"Wrote {len(candidates)} candidate records to {OUTPUT.relative_to(ROOT)}")
     return output
