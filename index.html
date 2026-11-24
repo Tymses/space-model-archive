@@ -50,7 +50,33 @@
       <div class="detail-actions" id="detail-actions"></div>
     </aside>
   </div>
-  <section class="print-panel"><div><p class="overline">PRINT INFORMATION</p><h2>Print assessment</h2><p id="print-note">No print assessment has been submitted for this model yet.</p></div><div class="print-status"><span class="status-dot"></span><span>Not yet assessed</span></div></section>
+  <section class="scale-panel" id="scale-panel">
+  <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The 3D preview measures the loaded model. Enter its real-world size and intended scale to calculate a printable size.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
+  <div class="scale-grid">
+    <div class="scale-controls">
+      <label class="control-label" for="printer-profile">Printer profile</label>
+      <select id="printer-profile" class="scale-input"><option value="p2s">Bambu Lab P2S · 256 × 256 × 256 mm</option><option value="custom">Custom build volume</option></select>
+      <div class="custom-volume" id="custom-volume" hidden>
+        <label>Width (mm)<input class="scale-input" id="bed-x" type="number" min="1" value="256"></label>
+        <label>Depth (mm)<input class="scale-input" id="bed-y" type="number" min="1" value="256"></label>
+        <label>Height (mm)<input class="scale-input" id="bed-z" type="number" min="1" value="256"></label>
+      </div>
+      <div class="dimension-inputs">
+        <label>Real-world length (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
+        <label>Scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
+      </div>
+      <p class="field-hint">Leave either scale field empty to check the model at its source-file size. Unknown real dimensions are never guessed.</p>
+    </div>
+    <div class="scale-results">
+      <div class="dimension-summary"><span>Loaded model dimensions</span><strong id="model-dimensions">Waiting for 3D preview…</strong></div>
+      <div class="dimension-summary"><span>Calculated print dimensions</span><strong id="print-dimensions">—</strong></div>
+      <div class="fit-result" id="fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="fit-title">Awaiting model dimensions</strong><p id="fit-description">The fit check starts when the 3D model has loaded.</p></div></div>
+      <p class="scale-factor" id="scale-factor">Recommended size factor: —</p>
+    </div>
+  </div>
+  <p class="scale-disclaimer">This is a geometric bounding-box check, not a slicing simulation. It tests axis-aligned 90° rotations and does not account for brim, supports, clips or printer-specific usable-area margins. The original download is not modified; apply the suggested scale in your slicer.</p>
+</section>
+<section class="print-panel"><div><p class="overline">PRINT INFORMATION</p><h2>Print assessment</h2><p id="print-note">No print assessment has been submitted for this model yet.</p></div><div class="print-status"><span class="status-dot"></span><span>Not yet assessed</span></div></section>
   <section class="source-panel"><div><p class="overline">PROVENANCE</p><h2>Original source</h2></div><p id="source-credit"></p><a id="source-link" href="#" target="_blank" rel="noopener">Open original source ↗</a></section>
 </section>
 <section class="about-view" id="about-view" hidden><p class="overline">ABOUT SMA</p><h1>A clear index for space models.</h1><p class="subheading">Space Model Archive organises links to original 3D model sources. The goal is to make geometry easier to discover while keeping provenance, scale, dimensions and licensing transparent.</p><p>Models remain hosted by their original providers wherever possible. SMA does not include a slicer: users prepare and slice files in their own software. Print assessments will only appear when supported by actual test data.</p><a href="#home" class="text-back">← Back to home</a></section>
