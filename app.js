@@ -139,7 +139,7 @@ const NASA_FILES=[
 for(const [id,name,category,kind,path,bytes,format] of NASA_FILES){
  const folder=path.slice(0,path.lastIndexOf("/"));
  const file="https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/"+encodeURI(path);
- const sourceUrl="https://github.com/nasa/NASA-3D-Resources/tree/master/"+encodeURI(folder);
+ const sourceUrl="https://science.nasa.gov/3d-resources/";
  MODELS.push({id,name,category,kind,source:"NASA",size:bytes>=1e6?(bytes/1e6).toFixed(1)+" MB":Math.round(bytes/1e3)+" kB",format,license:"NASA usage guidelines",credit:name+": NASA 3D Resources",file,sourceUrl,changed:"NASA archive"});
 }
 
