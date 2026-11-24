@@ -64,10 +64,10 @@
         <label>Height (mm)<input class="scale-input" id="bed-z" type="number" min="1" value="256"></label>
       </div>
       <div class="dimension-inputs">
-        <label>Real-world longest axis (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
-        <label>Scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
+        <label>Verified real-world longest axis (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
+        <label>Desired scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
       </div>
-      <p class="field-hint">Leave either scale field empty to check the model at its source-file size. Unknown real dimensions are never guessed.</p>
+      <p class="field-hint">Enter only the real-world dimension to get an automatic recommendation. Add a desired denominator to test a specific scale. Real dimensions are never guessed.</p>
     </div>
     <div class="scale-results">
       <div class="dimension-summary"><span>Loaded model dimensions</span><strong id="model-dimensions">Waiting for 3D preview…</strong></div>
