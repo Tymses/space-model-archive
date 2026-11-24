@@ -205,55 +205,57 @@ loadExpandedCatalogs();
     return rotations.some(r => r.every((v,i) => v <= bed[i]));
   }
   function updateAssessment(){
-    if (!baseDimensions) return;
-    const real = number("real-length");
-    const denominator = number("scale-denominator");
-    let factor = 1;
-    const hasReal = $id("real-length").value.trim() !== "";
-    const hasDenom = $id("scale-denominator").value.trim() !== "";
-    if (hasReal !== hasDenom) {
-      $id("fit-result").classList.remove("is-fit","is-no-fit");
-      $id("fit-title").textContent = "Scale information incomplete";
-      $id("fit-description").textContent = "Enter both the real-world length and the scale denominator, or clear both fields.";
-      $id("print-dimensions").textContent = "—";
-      $id("scale-factor").textContent = "Recommended size factor: —";
-      applyPreviewScale(1);
-      return;
+    if(!baseDimensions)return;
+    const real=number("real-length"),denominator=number("scale-denominator");
+    const hasReal=$id("real-length").value.trim()!=="",hasDenom=$id("scale-denominator").value.trim()!=="";
+    const bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+    const longest=Math.max(...baseDimensions);
+    let factor=1,originalScale=null,recommendations="";
+    if(hasReal&&!(real>0)){
+      $id("fit-title").textContent="Check the real-world dimension";$id("fit-description").textContent="Enter a value greater than zero.";
+      $id("print-dimensions").textContent="—";$id("scale-factor").textContent="Recommended size factor: —";return;
     }
-    if (hasReal && hasDenom) {
-      if (!(real > 0) || !(denominator > 0)) {
-        $id("fit-result").classList.remove("is-fit","is-no-fit");
-        $id("fit-title").textContent = "Check the scale values";
-        $id("fit-description").textContent = "Both values must be greater than zero.";
-        $id("print-dimensions").textContent = "—";
-        $id("scale-factor").textContent = "Recommended size factor: —";
-        if (activeViewer) activeViewer.scale = "1 1 1";
-        return;
+    if(hasDenom&&(!hasReal||!(denominator>0))){
+      $id("fit-title").textContent="Scale denominator needs a real dimension";$id("fit-description").textContent="Enter the verified real-world longest-axis dimension, or clear the desired scale.";
+      $id("print-dimensions").textContent="—";$id("scale-factor").textContent="Recommended size factor: —";return;
+    }
+    if(hasReal){
+      originalScale=real/longest;
+      const maxFitFactor=validBed?maximumFitFactor(baseDimensions,bed):0;
+      const minDenominator=maxFitFactor>0?originalScale/maxFitFactor:Infinity;
+      const standard=[1,2,5,10,20,25,50,100,200,250,500,1000,2000,5000,10000];
+      const choices=standard.filter(n=>n>=minDenominator);
+      const recommended=choices[0]||null;
+      const chosen=hasDenom?denominator:recommended;
+      if(chosen===null){
+        recommendations="<strong>Scale recommendations</strong><p>No standard scale from 1:1 to 1:10,000 fits this build volume. Consider splitting the model or using a larger printer.</p>";
+        factor=1;
+      }else{
+        factor=originalScale/chosen;
+        const list=choices.slice(0,5).map(n=>"<li>1:"+n.toLocaleString("en-US")+" · "+fmt(originalScale/n*longest)+" mm long</li>").join("");
+        recommendations="<strong>Scale recommendations</strong><p>Largest standard scale that fits: <b>1:"+recommended.toLocaleString("en-US")+"</b>"+(hasDenom?" · showing your selected scale 1:"+denominator.toLocaleString("en-US"):"")+".</p><ul>"+list+"</ul>";
       }
-      const targetLongest = real / denominator;
-      factor = targetLongest / Math.max(...baseDimensions);
+      $id("spec-list").querySelectorAll(".spec-row").forEach(row=>{if(row.querySelector("dt")?.textContent==="Original scale")row.querySelector("dd").textContent="1:"+originalScale.toFixed(2);});
+    }else{
+      factor=1;
+      recommendations="<strong>Scale recommendations</strong><p>Enter the model’s verified real-world longest-axis dimension to calculate its original scale and recommended model scales. Without it, only source-file dimensions can be checked.</p>";
+      $id("spec-list").querySelectorAll(".spec-row").forEach(row=>{if(row.querySelector("dt")?.textContent==="Original scale")row.querySelector("dd").textContent="Unknown — real-world dimension not supplied";});
     }
-    const size = baseDimensions.map(v => v * factor);
-    const bed = volume();
-    $id("model-dimensions").textContent = baseDimensions.map(fmt).join(" × ") + " mm";
-    $id("print-dimensions").textContent = size.map(fmt).join(" × ") + " mm";
-    $id("scale-factor").textContent = "Recommended size factor: " + (factor*100).toFixed(2) + "% of source geometry";
-    const validBed = bed.every(v => Number.isFinite(v) && v > 0);
-    const fit = validBed && fitsSomeRotation(size,bed);
-    const result = $id("fit-result");
-    result.classList.toggle("is-fit",!!fit);
-    result.classList.toggle("is-no-fit",validBed && !fit);
-    if (!validBed) {
-      $id("fit-title").textContent = "Enter a valid build volume";
-      $id("fit-description").textContent = "All three printer dimensions must be greater than zero.";
-    } else if (fit) {
-      $id("fit-title").textContent = "Fits within the selected build volume";
-      $id("fit-description").textContent = "At least one 90° axis-aligned orientation fits inside " + bed.map(fmt).join(" × ") + " mm.";
-    } else {
-      $id("fit-title").textContent = "Does not fit at this scale";
-      $id("fit-description").textContent = "At least one dimension exceeds the selected build volume (" + bed.map(fmt).join(" × ") + " mm). Consider scaling down or splitting the model.";
-    }
+    const size=baseDimensions.map(v=>v*factor);
+    $id("model-dimensions").textContent=baseDimensions.map(fmt).join(" × ")+" mm";
+    $id("print-dimensions").textContent=size.map(fmt).join(" × ")+" mm";
+    $id("scale-factor").textContent="Model size: "+(factor*100).toFixed(2)+"% of source geometry"+(originalScale?" · original file scale 1:"+originalScale.toFixed(2):"");
+    $id("scale-recommendations").innerHTML=recommendations;
+    const fit=validBed&&fitsSomeRotation(size,bed),result=$id("fit-result");
+    result.classList.toggle("is-fit",!!fit);result.classList.toggle("is-no-fit",validBed&&!fit);
+    if(!validBed){$id("fit-title").textContent="Enter a valid build volume";$id("fit-description").textContent="All three printer dimensions must be greater than zero.";}
+    else if(fit){$id("fit-title").textContent="Fits within the selected build volume";$id("fit-description").textContent="At least one 90° axis-aligned orientation fits inside "+bed.map(fmt).join(" × ")+" mm.";}
+    else{$id("fit-title").textContent="Does not fit at this scale";$id("fit-description").textContent="The model exceeds the selected build volume ("+bed.map(fmt).join(" × ")+" mm). Try a smaller scale or split the model.";}
     applyPreviewScale(factor);
+  }
+  function maximumFitFactor(size,bed){
+    const rotations=[[size[0],size[1],size[2]],[size[0],size[2],size[1]],[size[1],size[0],size[2]],[size[1],size[2],size[0]],[size[2],size[0],size[1]],[size[2],size[1],size[0]]];
+    return Math.max(...rotations.map(r=>Math.min(...r.map((v,i)=>bed[i]/v))));
   }
   function applyPreviewScale(factor){
     if(activeViewer) activeViewer.scale=factor+" "+factor+" "+factor;
@@ -328,7 +330,7 @@ loadExpandedCatalogs();
     updateAssessment();
   });
   ["bed-x","bed-y","bed-z","real-length","scale-denominator"].forEach(id=>$id(id).addEventListener("input",updateAssessment));
-  $id("result-grid").addEventListener("click",e=>{
+  $id("model-grid").addEventListener("click",e=>{
     if (e.target.closest("[data-model]")) setTimeout(attachViewer,0);
   });
   window.addEventListener("popstate",()=>setTimeout(()=>{
