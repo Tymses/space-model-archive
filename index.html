@@ -53,7 +53,7 @@
     </aside>
   </div>
   <section class="scale-panel" id="scale-panel">
-  <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The 3D preview measures the loaded model. Enter the real-world length of the model’s longest axis and the intended scale to calculate a printable size.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
+  <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The preview measures the source geometry. Enter a verified real-world dimension to calculate the source file’s original scale and receive print-scale recommendations for the selected build volume.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
   <div class="scale-grid">
     <div class="scale-controls">
       <label class="control-label" for="printer-profile">Printer profile</label>
@@ -73,7 +73,7 @@
       <div class="dimension-summary"><span>Loaded model dimensions</span><strong id="model-dimensions">Waiting for 3D preview…</strong></div>
       <div class="dimension-summary"><span>Calculated print dimensions</span><strong id="print-dimensions">—</strong></div>
       <div class="fit-result" id="fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="fit-title">Awaiting model dimensions</strong><p id="fit-description">The fit check starts when the 3D model has loaded.</p></div></div>
-      <p class="scale-factor" id="scale-factor">Recommended size factor: —</p>
+      <p class="scale-factor" id="scale-factor">Recommended size factor: —</p><div class="scale-recommendations" id="scale-recommendations"><strong>Scale recommendations</strong><p>Load a model and enter its real-world longest-axis dimension to calculate the original scale and printable alternatives.</p></div>
     </div>
   </div>
   <p class="scale-disclaimer">This is a geometric bounding-box check, not a slicing simulation. It tests axis-aligned 90° rotations and does not account for brim, supports, clips or printer-specific usable-area margins. The original download is not modified; apply the suggested scale in your slicer.</p>
