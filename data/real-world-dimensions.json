@@ -2,7 +2,7 @@
   "source": "Verified physical longest-axis dimensions for model/body matches",
   "units": "km",
   "indexedAt": "2026-11-24",
-  "method": "Only explicit three-axis extents or authoritative longest-axis measurements are stored. Mean/equivalent diameters are not substituted for a longest axis.",
+  "method": "Only object-specific longest-axis values from published shape-model dimensions or explicitly reported physical extents are stored. Equivalent/mean diameters are not substituted. Uncertainty is retained where the cited source reports it. Values are in km and converted to mm in the UI.",
   "records": {
     "spaceradar-map-asteroid-arrokoth": {
       "longestAxisKm": 35.95,
@@ -115,14 +115,14 @@
       "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
     },
     "spaceradar-map-asteroid-toutatis": {
-      "longestAxisKm": 4.6,
+      "longestAxisKm": 4.26,
       "dimensionsKm": [
-        4.6,
-        2.4,
-        1.9
+        4.26,
+        2.03,
+        1.7
       ],
-      "source": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+      "source": "3D Asteroid Catalogue physical characteristics; extent of radar shape model",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/4179-Toutatis"
     },
     "spaceradar-map-asteroid-vesta": {
       "longestAxisKm": 572.6,
@@ -264,9 +264,29 @@
       "source": "NASA Saturnian Satellite Fact Sheet",
       "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html"
     },
-    "spaceradar-map-asteroid-1996hw1": null,
+    "spaceradar-map-asteroid-1996hw1": {
+      "longestAxisKm": 3.8,
+      "dimensionsKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "source": "Magri et al. (2011), radar and photometric shape model; maximum diameters",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777",
+      "longestAxisUncertaintyKm": 0.19
+    },
     "spaceradar-map-asteroid-donaldjohanson": null,
-    "spaceradar-map-asteroid-mithra": null,
+    "spaceradar-map-asteroid-mithra": {
+      "longestAxisKm": 2.35,
+      "dimensionsKm": [
+        2.35,
+        1.65,
+        1.44
+      ],
+      "source": "Brozovic et al. (2010), prograde radar shape-model maximum dimensions",
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2010.01.035",
+      "longestAxisUncertaintyKm": 0.15
+    },
     "nasa-auto-f79542a6d5b4": {
       "longestAxisKm": 0.565,
       "dimensionsKm": [
@@ -437,20 +457,106 @@
       "source": "Swinburne Astronomy Online asteroid dimensions summary",
       "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
     },
-    "nasa-auto-0368af278787": null,
-    "nasa-auto-505427f6b0b0": null,
-    "jpl-radar-betulia": null,
-    "jpl-radar-bacchus": null,
+    "nasa-auto-0368af278787": {
+      "longestAxisKm": 3.8,
+      "dimensionsKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "source": "Magri et al. (2011), radar and photometric shape model; maximum diameters",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777",
+      "longestAxisUncertaintyKm": 0.19
+    },
+    "nasa-auto-505427f6b0b0": {
+      "longestAxisKm": 2.35,
+      "dimensionsKm": [
+        2.35,
+        1.65,
+        1.44
+      ],
+      "source": "Brozovic et al. (2010), prograde radar shape-model maximum dimensions",
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2010.01.035",
+      "longestAxisUncertaintyKm": 0.15
+    },
+    "jpl-radar-betulia": {
+      "longestAxisKm": 6.59,
+      "dimensionsKm": [
+        6.59
+      ],
+      "source": "Magri et al. (2007), maximum breadth of radar-derived shape model",
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2006.08.004",
+      "longestAxisUncertaintyKm": 0.66
+    },
+    "jpl-radar-bacchus": {
+      "longestAxisKm": 1.11,
+      "dimensionsKm": [
+        1.11,
+        0.53,
+        0.5
+      ],
+      "source": "3D Asteroid Catalogue physical characteristics; extent for radar-based shape model",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus"
+    },
     "jpl-radar-ra-shalom": null,
     "jpl-radar-1996-hw1": null,
     "jpl-radar-1992-sk": null,
     "jpl-radar-wt24": null,
     "jpl-radar-ml14": null,
     "jpl-radar-yorp": null,
-    "jpl-radar-kw4-alpha": null,
-    "jpl-radar-kw4-beta": null,
+    "jpl-radar-kw4-alpha": {
+      "longestAxisKm": 1.532,
+      "dimensionsKm": [
+        1.532,
+        1.495,
+        1.347
+      ],
+      "source": "Ostro et al. (2006), 1999 KW4 Alpha principal-axis dimensions",
+      "sourceUrl": "https://iawn.astro.umd.edu/obscamp/1999KW4/1999KW4_properties.shtml"
+    },
+    "jpl-radar-kw4-beta": {
+      "longestAxisKm": 0.571,
+      "dimensionsKm": [
+        0.571,
+        0.463,
+        0.349
+      ],
+      "source": "Ostro et al. (2006), 1999 KW4 Beta principal-axis dimensions",
+      "sourceUrl": "https://iawn.astro.umd.edu/obscamp/1999KW4/1999KW4_properties.shtml"
+    },
     "jpl-radar-ky26": null,
-    "jpl-radar-ce26-alpha": null,
-    "jpl-radar-2008ev5": null
+    "jpl-radar-ce26-alpha": {
+      "longestAxisKm": 3.65,
+      "dimensionsKm": [
+        3.65,
+        3.65,
+        3.26
+      ],
+      "source": "Shepard et al. (2006), 2002 CE26 radar shape model maximum dimensions",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2002CE26/shepard.etal.2006.2002ce26.pdf",
+      "longestAxisUncertaintyKm": 0.365
+    },
+    "jpl-radar-2008ev5": {
+      "longestAxisKm": 0.42,
+      "dimensionsKm": [
+        0.42,
+        0.41,
+        0.39
+      ],
+      "source": "Busch et al. (2011), 2008 EV5 radar shape model maximum principal-axis dimensions",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf",
+      "longestAxisUncertaintyKm": 0.05
+    },
+    "jpl-radar-nereus": {
+      "longestAxisKm": 0.51,
+      "dimensionsKm": [
+        0.51,
+        0.33,
+        0.241
+      ],
+      "source": "Brozovic et al. (2009), preferred radar shape model principal-axis dimensions",
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2008.12.029",
+      "longestAxisUncertaintyKm": 0.02
+    }
   }
 }
