@@ -101,7 +101,7 @@ function setCrumbs(items){crumb.innerHTML=items.map((item,i)=>i===items.length-1
 function routeHome(push=true){currentCategory=null;currentModel=null;setView("home");setCrumbs([{label:"Home"}]);if(push)history.pushState({view:"home"},"","#home");window.scrollTo(0,0);}
 function routeCollection(key,push=true){if(!CATEGORIES[key])return;currentCategory=key;currentModel=null;setView("collection");$("#collection-title").textContent=CATEGORIES[key].title;$("#collection-description").textContent=CATEGORIES[key].description;$("#collection-overline").textContent="COLLECTION / "+key.replace("-"," ").toUpperCase();$("#search-input").value="";populateFilters();renderCollection();setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[key].title}]);if(push)history.pushState({view:"collection",key},"","#"+key);window.scrollTo(0,0);}
 function populateFilters(){const all=[...MODELS.filter(m=>m.category===currentCategory),...CATEGORIES[currentCategory].sources];const sources=[...new Set(all.map(x=>x.source))].sort();const types=[...new Set(all.map(x=>x.kind||x.type))].sort();$("#source-filter").innerHTML='<option value="all">All sources</option>'+sources.map(x=>'<option>'+x+'</option>').join("");$("#type-filter").innerHTML='<option value="all">All types</option>'+types.map(x=>'<option>'+x+'</option>').join("");}
-function renderCollection(){const q=$("#search-input").value.trim().toLowerCase(),source=$("#source-filter").value,type=$("#type-filter").value;const models=MODELS.filter(x=>x.category===currentCategory&&[x.name,x.kind,x.source,x.credit].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type));const sources=CATEGORIES[currentCategory].sources.filter(x=>[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));const cards=[...models.map(x=>({kind:"model",data:x})),...sources.map(x=>({kind:"source",data:x}))];$("#result-count").textContent=cards.length+" results";$("#result-grid").innerHTML=cards.length?cards.map(({kind,data})=>kind==="model"?'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Downloadable model</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.format+' model · '+data.size+' · '+data.license+'</p><div class="card-bottom"><small>Original file · source credited</small><button class="card-action" data-model="'+data.id+'">View details →</button></div></article>':'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({generator:'Generator',catalogue:'Model catalogue',data:'Data catalogue',viewer:'Viewer'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Provides elevation or map data':'Browse source models and information')+'</small><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':'Open source ↗')+'</a></div></article>').join(""):'<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.</div>';$("#collection-footnote").textContent="Model cards are individual downloadable files. Generator cards create a new model from your selected region or settings; catalogues and data sources are kept separate when they do not provide one stable model file.";}
+function renderCollection(){const q=$("#search-input").value.trim().toLowerCase(),source=$("#source-filter").value,type=$("#type-filter").value;const models=MODELS.filter(x=>x.category===currentCategory&&[x.name,x.kind,x.source,x.credit].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type));const sources=CATEGORIES[currentCategory].sources.filter(x=>[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));const cards=[...models.map(x=>({kind:"model",data:x})),...sources.map(x=>({kind:"source",data:x}))];$("#result-count").textContent=cards.length+" results";$("#result-grid").innerHTML=cards.length?cards.map(({kind,data})=>kind==="model"?'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Downloadable model</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.format+' model · '+data.size+' · '+data.license+'</p><div class="card-bottom"><small>Original file · source credited</small><button class="card-action" data-model="'+data.id+'">View details →</button></div></article>':'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({generator:'Generator',catalogue:'Model catalogue',data:'Data catalogue',viewer:'Viewer'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Provides elevation or map data':'Browse source models and information')+'</small><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':'Open source ↗')+'</a></div></article>').join(""):'<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.</div>';$("#collection-footnote").textContent="Model cards are individual downloadable files. Generator cards create a new model from your selected region or settings; catalogues and data sources are kept separate when they do not provide one stable model file."+(expandedCatalogCounts.nasa||expandedCatalogCounts.spaceRadar?" Indexed files: NASA "+expandedCatalogCounts.nasa+"; Space Radar "+expandedCatalogCounts.spaceRadar+".":"")+(expandedCatalogCounts.errors.length?" Some live indexes could not be loaded: "+expandedCatalogCounts.errors.join("; "):"");}
 function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+model.file+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=model.format!=="GLB";$("#scale-panel").hidden=model.format!=="GLB";const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";$("#scale-range").oninput=e=>{const v=Number(e.target.value);$("#scale-value").textContent=v.toFixed(2)+"×";if(viewer)viewer.scale=v+" "+v+" "+v;};const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Real-world dimensions","Not provided by source"],["Real-world scale","Not provided by source"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↧</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent="No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
 function routeAbout(push=true){setView("about");setCrumbs([{label:"Home",href:"#home"},{label:"About"}]);if(push)history.pushState({view:"about"},"","#about");window.scrollTo(0,0);}
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>routeCollection(b.dataset.category)));
@@ -112,6 +112,60 @@ document.querySelector(".brand").addEventListener("click",e=>{e.preventDefault()
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName)&&!collection.hidden){e.preventDefault();$("#search-input").focus();}});
 window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")routeHome(false);else if(s.view==="collection")routeCollection(s.key,false);else if(s.view==="detail")routeModel(s.id,false);else if(s.view==="about")routeAbout(false);});
 routeHome(false);
+
+// Load complete source indexes rather than a small hand-picked sample.
+const expandedCatalogCounts = { nasa: 0, spaceRadar: 0, errors: [] };
+function addCatalogModel(model) {
+  const normalizedFile = model.file ? decodeURI(model.file) : "";
+  const exists = MODELS.some(existing =>
+    existing.id === model.id ||
+    (normalizedFile && existing.file && decodeURI(existing.file) === normalizedFile)
+  );
+  if (!exists) MODELS.push(model);
+}
+async function loadExpandedCatalogs() {
+  try {
+    const response = await fetch("./data/nasa-model-index.json");
+    if (!response.ok) throw new Error("NASA index HTTP " + response.status);
+    const index = await response.json();
+    for (const model of index.files || []) addCatalogModel(model);
+    expandedCatalogCounts.nasa = index.sourceFileCount || 0;
+  } catch (error) {
+    expandedCatalogCounts.errors.push("NASA index: " + error.message);
+  }
+
+  try {
+    const response = await fetch("https://dus32w6mqcntr.cloudfront.net/assets/pack.json");
+    if (!response.ok) throw new Error("Space Radar index HTTP " + response.status);
+    const index = await response.json();
+    for (const item of index.files || []) {
+      if (item.kind !== "model" || !item.url) continue;
+      addCatalogModel({
+        id: "spaceradar-" + item.id,
+        name: item.name,
+        category: "spacecraft",
+        kind: "Spacecraft model",
+        source: "Space Radar",
+        size: item.kb ? item.kb + " kB" : "Not listed",
+        format: "GLB",
+        license: item.licence || "See original source",
+        credit: item.credit || item.name + ": Space Radar (spaceradar.ai)",
+        file: item.url,
+        sourceUrl: "https://models.spaceradar.ai/",
+        changed: item.changed || "Not listed"
+      });
+    }
+    expandedCatalogCounts.spaceRadar = (index.files || []).filter(x => x.kind === "model").length;
+  } catch (error) {
+    expandedCatalogCounts.errors.push("Space Radar index: " + error.message);
+  }
+
+  if (currentCategory) {
+    populateFilters();
+    renderCollection();
+  }
+}
+loadExpandedCatalogs();
 
 // --- SMA print preparation: live model dimensions, scale and printer fit ---
 (function initPrintAssessment(){
