@@ -46,14 +46,17 @@ function extractAxes(text) {
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
   const number = "(?:\\d+(?:\\.\\d+)?|\\.\\d+)";
   const patterns = [
+    new RegExp("(" + number + ")\\s*(?:x|by|,|×)\\s*(" + number + ")(?:\\s*(?:x|by|,|×)\\s*(" + number + "))?\\s*" + unit, "i"),
     new RegExp("(" + number + ")\\s*" + unit + "\\s*(?:x|by|,|×)\\s*(" + number + ")\\s*" + unit + "(?:\\s*(?:x|by|,|×)\\s*(" + number + ")\\s*" + unit + ")?", "i"),
     new RegExp("(?:dimensions|extent|measures|measuring|size|approximately|about|length)\\D{0,35}(" + number + ")\\s*" + unit + "\\D{1,15}(" + number + ")\\s*" + unit, "i")
   ];
-  for (const re of patterns) {
-    const match = s.match(re);
+  for (let patternIndex=0; patternIndex<patterns.length; patternIndex++) {
+    const match = s.match(patterns[patternIndex]);
     if (!match) continue;
     let vals = [];
-    if (match[5] && match[6]) {
+    if (patternIndex===0) {
+      const u=match[4];vals=[{v:Number(match[1]),u},{v:Number(match[2]),u}];if(match[3])vals.push({v:Number(match[3]),u});
+    } else if (match[5] && match[6]) {
       vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]},{v:Number(match[5]),u:match[6]}];
     } else if (match[3] && match[4]) {
       vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]}];
