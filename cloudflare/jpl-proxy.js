@@ -53,10 +53,9 @@ function extractAxes(text) {
     const match = s.match(re);
     if (!match) continue;
     let vals = [];
-    if (match.length >= 7 && match[3] && match[4]) {
-      vals = [{v:Number(match[2]),u:match[3]},{v:Number(match[4]),u:match[5]}];
-      if (match[6] && match[7]) vals.push({v:Number(match[6]),u:match[7]});
-    } else if (match.length >= 5 && match[2] && match[3]) {
+    if (match[5] && match[6]) {
+      vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]},{v:Number(match[5]),u:match[6]}];
+    } else if (match[3] && match[4]) {
       vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]}];
     }
     const factor = u => /^(km|kilometer|kilometre)/i.test(u) ? 1 : /^(cm)/i.test(u) ? 0.00001 : /^(mm)/i.test(u) ? 0.000001 : /^(ft|feet)/i.test(u) ? 0.0003048 : /^(m|meter|metre)/i.test(u) ? 0.001 : null;
