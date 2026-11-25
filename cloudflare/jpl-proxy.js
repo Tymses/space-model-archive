@@ -125,7 +125,7 @@ async function fetchCatalogueHtml(value) {
   let response, pageTarget = page;
   for (let hop = 0; hop <= 3; hop++) {
     response = await fetch(pageTarget.toString(), {
-      headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.0)" },
+      headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.1)", "Referer": (current?.page || requested).origin + "/", "Origin": (current?.page || requested).origin },
       redirect: "manual", cf: { cacheTtl: 900 }
     });
     if (![301,302,303,307,308].includes(response.status)) break;
