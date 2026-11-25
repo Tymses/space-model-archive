@@ -325,6 +325,17 @@
       ],
       "sourceLabel": "Busch et al. (2011), radar shape-model dimensions",
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf"
+    },
+    {
+      "name": "1996 HW1",
+      "aliases": [],
+      "axesKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
     }
   ]
 }
