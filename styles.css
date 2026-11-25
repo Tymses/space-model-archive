@@ -198,3 +198,10 @@
 .scaling-output-panel .scale-disclaimer{margin-top:16px}
 @media(max-width:900px){.scaling-workspace{grid-template-columns:1fr}.scaling-preview-stage{height:360px}}
 @media(max-width:650px){.scaling-scale-summary{grid-template-columns:1fr}.scaling-scale-options{grid-template-columns:repeat(2,minmax(0,1fr))}.scaling-search-row{grid-template-columns:1fr}.scaling-geometry-line{grid-template-columns:1fr auto}.scaling-geometry-line label{grid-column:1/-1;justify-content:space-between}.scaling-output-panel{padding:16px}}
+
+
+/* Scaled geometry export */
+.scaling-export-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0 8px;padding-top:16px;border-top:1px solid var(--line)}
+.scaling-export-row>span{font-size:11px;color:var(--muted)}
+.scaling-export-button{border:0;cursor:pointer;background:var(--accent);color:white;font:inherit;font-size:12px;font-weight:700;padding:11px 16px;border-radius:9px}
+.scaling-export-button:hover{filter:brightness(.95)}
