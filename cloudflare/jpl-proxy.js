@@ -88,12 +88,15 @@ function extractUncertainty(text) {
 }
 function confidence(candidate, query) {
   const host = hostOf(candidate.url), q = norm(query), text = norm(candidate.title + " " + candidate.snippet);
+  const generic = new Set(["moon","mars","earth","sun","jupiter","saturn","planet","asteroid","comet","rover","satellite","spacecraft","model"]);
+  const identityStrong = !!q && !generic.has(q) && (text.includes(q) || candidate.sourceTextHasName);
   let score = sourceWeight(host);
-  if (q && text.includes(q)) score += 24;
+  if (identityStrong && text.includes(q)) score += 24;
   else if (q && q.split(" ").filter(w => w.length > 2 && text.includes(w)).length >= Math.min(2, q.split(" ").length)) score += 12;
   if (candidate.axesKm) score += 27;
   if (candidate.pageChecked) score += 8;
   if (candidate.sourceTextHasName) score += 8;
+  candidate.identityStrong = identityStrong;
   return Math.min(99, score);
 }
 async function searchWeb(query, category) {
@@ -158,7 +161,7 @@ async function research(query, category) {
     query, category:category||"general", searched:true, engine:"DuckDuckGo public web index",
     candidates:results,
     best:best && best.score >= 78 ? best : null,
-    autoAccept:!!best && best.score >= 78 && (sourceWeight(best.source)>=29 || independentAgreement>=1) && !conflictingStrong,
+    autoAccept:!!best && best.identityStrong && best.score >= 78 && (sourceWeight(best.source)>=29 || independentAgreement>=1) && !conflictingStrong,
     conflictingStrong,
     agreementCount:independentAgreement,
     note:"Evidence score is a source-quality heuristic, not a statistical probability. Search coverage depends on publicly indexed pages and pages accessible to the Worker."
