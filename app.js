@@ -778,7 +778,7 @@ loadExpandedCatalogs();
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
-   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-6",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-7",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
    const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
    const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
    return found.length===1?found[0]:null;
@@ -862,9 +862,6 @@ loadExpandedCatalogs();
     setResearchState("complete","A matching source-backed scientific record was found.");
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
-   }
-   if(expectedCategory&&expectedCategory!=="small-bodies"){
-    throw new Error("No source-verified dimensions are indexed yet for this "+expectedCategory+" model. The model's category was recognized, but its own physical footprint/configuration still needs a reliable source.");
    }
    if(!proxyUrl){
     if(await applyCuratedFallback([q],expectedCategory))return;
