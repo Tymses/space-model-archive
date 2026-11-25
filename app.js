@@ -528,9 +528,9 @@ loadExpandedCatalogs();
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
-   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-4",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-5",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
    const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
-   const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory)&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
+   const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
    return found.length===1?found[0]:null;
   }catch(error){curatedDimensionsPromise=null;return null;}
  }
@@ -556,7 +556,7 @@ loadExpandedCatalogs();
     const longest=Math.max(...directRecord.axesKm);
     showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference"});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
-    setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":"Moon dimensions")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
+    setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
    }
    if(expectedCategory&&expectedCategory!=="small-bodies"){
