@@ -494,20 +494,6 @@
           "priority": 2,
           "knownCoverage": "Portals include Earth's Moon, Phobos, Europa, Ganymede, Io, Callisto, Titan and Icy Moons Treks.",
           "nextAction": "Inventory downloadable whole-body/region geometry and supported exports for each moon portal."
-        },
-        {
-          "id": "jaxa-ryugu-moons",
-          "name": "JAXA DARTS / JADE2",
-          "url": "https://jade2.darts.isas.jaxa.jp/about",
-          "publisher": "JAXA/ISAS DARTS",
-          "type": "mission shape-model archive",
-          "formats": [
-            "SPICE DSK"
-          ],
-          "status": "candidate",
-          "priority": 3,
-          "knownCoverage": "JADE2 documents global shape models for Ryugu; included here as a cross-category archive discovery endpoint, not as a moon source.",
-          "nextAction": "Do not import Ryugu under Moons; use this source for small bodies only. Revisit this entry when adding cross-category source links."
         }
       ]
     },
