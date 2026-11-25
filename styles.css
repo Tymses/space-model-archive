@@ -317,3 +317,7 @@
 .remote-resolution-loader[hidden]{display:none}
 .remote-resolution-loader .research-scan{flex:0 0 92px}
 .remote-resolution-loader .research-copy{flex:1}
+
+/* Compact total page-view counter in the top navigation */
+.view-counter{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface-low);color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+@media(max-width:650px){.top-actions{gap:12px}.view-counter{padding:4px 7px;font-size:11px}}
