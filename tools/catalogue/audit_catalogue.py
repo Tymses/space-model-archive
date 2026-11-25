@@ -18,6 +18,7 @@ INDEXES = [
     "data/jpl-asteroid-index.json",
     "data/small-body-package-index.json",
     "data/asteroid-curated-index.json",
+    "data/moon-catalogue-index.json",
 ]
 NUMBERED = re.compile(r"^\s*\((\d+)\)\s*")
 
