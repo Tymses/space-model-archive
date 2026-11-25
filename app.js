@@ -288,7 +288,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   const added=[];
   files.forEach((file,index)=>{
    const size=file.sizeBytes?file.sizeBytes>=1000000?(file.sizeBytes/1000000).toFixed(1)+" MB":Math.round(file.sizeBytes/1000)+" kB":"Size not reported";
-   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
+   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
    added.push(variant);addCatalogModel(variant);
   });
   statusNode.textContent=added.length+" erreichbare Modelldatei(en) gefunden. Die Varianten wurden in „Downloadable Models“ übernommen; der reine Seitenverweis wurde entfernt.";
@@ -748,17 +748,17 @@ loadExpandedCatalogs();
  }
  function simplifySearchTerm(value){
   let text=String(value||"").normalize("NFKC").replace(/\.[^.]+$/,"");
-  text=text.replace(/\(([^)]*)\)/g,(match,inside)=>/^\s*(?:#?\d+|v?\d+(?:[._-]\d+)*|copy|final|duplicate|low[ _-]?poly|high[ _-]?poly)\s*$/i.test(inside)?" ":" "+inside+" ");
-  text=text.replace(/\b(?:3d|model|mesh|download|print|final|low[ _-]?poly|high[ _-]?poly|export|copy|duplicate|version|ver|scene|object|group|root|scan|scanned|render|textured|decimated)\b/gi," ");
+  text=text.replace(/\(\s*#?\d+\s*\)/g," ");
+  text=text.replace(/^\s*#?\d{1,6}\s+(?=[\p{L}])/u," ");
+  text=text.replace(/\b(?:3d|model|mesh|download|print|final|low[ _-]?poly|high[ _-]?poly|export|copy|duplicate|version|ver|scene|object|group|root|scan|scanned|render|textured|decimated|variant|shape|file)\b/gi," ");
+  text=text.replace(/\b(?:obj|ply|glb|gltf|stl|step|stp|fbx|blend|3ds|lwo|vsp3)\b/gi," ");
   text=text.replace(/[–—−_]+/g," ").replace(/[|,:;]+/g," ");
-  text=text.replace(/[^\p{L}\p{N}\s/'-]/gu," ");
-  text=text.replace(/\s+/g," ").trim();
+  text=text.replace(/[^\p{L}\p{N}\s/'-]/gu," ").replace(/\s+/g," ").trim();
   text=text.replace(/^(?:(?:the|of|asteroid|minor planet|comet|dwarf planet|moon|natural satellite|satellite|planet|spacecraft|space telescope)\s+)+/i,"");
-  text=text.replace(/^\(\d{1,7}\)\s+/,"");
-  text=text.replace(/\s+\(?\d{1,7}\)?$/,"");
-  text=text.replace(/([\p{L}]{4,})\d{1,4}$/u,"$1");
-  text=text.replace(/\b(?:v\d+(?:[._-]\d+)*|rev(?:ision)?\s*\d+|copy\s*\d+|final\s*\d*)\b/gi," ");
-  text=text.replace(/\s+/g," ").replace(/^[-/' ]+|[-/' ]+$/g,"").trim();
+  text=text.replace(/\s+#?\d{1,6}$/,"");
+  const tokens=text.split(/\s+/).filter(Boolean),seen=new Set(),unique=[];
+  for(const token of tokens){const key=token.toLocaleLowerCase();if(!seen.has(key)){seen.add(key);unique.push(token);}}
+  text=unique.join(" ").replace(/([\p{L}]{4,})\d{1,4}$/u,"$1").trim();
   return /^(?:model|mesh|object|scene|untitled|download|file|unknown)$/i.test(text)?"":text;
  }
  function normalizeObjectQuery(value){
@@ -784,7 +784,7 @@ loadExpandedCatalogs();
   return true;
  }
  function deriveSearchTerm(model,file,object){
-  const candidates=[model?.name,file?.name,$id("scaling-object-query").value];
+  const candidates=[model?.objectSearchName,model?.name,file?.name,$id("scaling-object-query").value];
   for(const candidate of candidates){
    const simplified=simplifySearchTerm(candidate);
    if(simplified&&simplified.length>2)return simplified;
