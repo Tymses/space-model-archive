@@ -179,7 +179,7 @@ function renderCollection(){
   description:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download.",
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
- const remotePageUrls=new Set([...MODELS.filter(x=>x.remoteCandidate||x.remoteUnavailable).map(x=>x.remotePageUrl),...resolvedRemotePages]);
+ const remotePageUrls=new Set([...MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl),...resolvedRemotePages]);
  const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
@@ -260,15 +260,19 @@ function remoteCatalogueRecord(model) {
  } catch {}
 }
 async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, button) {
- button.disabled=true;statusNode.textContent="Suche konkrete OBJ-/PLY-Dateien auf der Originalseite …";
+ button.disabled=true;button.textContent="Searching…";statusNode.textContent="Originalseite und mögliche Objekt-Unterseiten werden durchsucht …";
+  const loader=document.createElement("div");loader.className="scaling-research-panel remote-resolution-loader";loader.setAttribute("role","status");loader.setAttribute("aria-live","polite");
+  loader.innerHTML='<div class="research-scan" aria-hidden="true"><svg viewBox="0 0 160 104"><defs><pattern id="remote-research-grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width=".7"/></pattern><pattern id="remote-research-zoom-grid" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M6 0H0V6" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width=".8"/></pattern></defs><rect x="8" y="10" width="144" height="84" rx="10" fill="url(#remote-research-grid)" stroke="currentColor" stroke-opacity=".16"/><path class="research-scan-line" d="M12 28H148"/><g class="research-magnifier"><circle cx="76" cy="48" r="25" fill="#f7f8fa" fill-opacity=".78" stroke="currentColor" stroke-width="2.5"/><circle cx="76" cy="48" r="20" fill="url(#remote-research-zoom-grid)"/><path d="M94 66L113 85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M94 66L113 85" fill="none" stroke="#f7f8fa" stroke-width="2" stroke-linecap="round"/><circle cx="76" cy="48" r="3" fill="currentColor" opacity=".55"/></g></svg></div><div class="research-copy"><strong>Searching for model files…</strong><span>Checking the object page, catalogue links and embedded download references. Each candidate is tested before it is offered.</span></div>';
+  loader.hidden=false;variantsNode.before(loader);
  try {
-  const response=await fetch(workerActionUrl("resolve",model.remotePageUrl),{headers:{Accept:"application/json"}});
+  const resolveUrl=new URL(workerActionUrl("resolve",model.remotePageUrl));resolveUrl.searchParams.set("name",model.name);const response=await fetch(resolveUrl.toString(),{headers:{Accept:"application/json"}});
   const result=await response.json();
   if(!response.ok)throw new Error(result.detail||result.error||("HTTP "+response.status));
-  const files=Array.isArray(result.files)?result.files:[];
+  loader.hidden=true;const files=Array.isArray(result.files)?result.files:[];
   if(!files.length) {
    model.remoteCandidate=false;model.remoteUnavailable=true;
-   statusNode.textContent="Keine erreichbare Modelldatei gefunden. Der Eintrag bleibt als Quellenverweis erhalten.";
+   statusNode.textContent="Keine direkt verlinkte Modelldatei gefunden. Der Eintrag wurde aus den Remote-Kandidaten in „Sources“ verschoben; du kannst die Originalseite dort weiterhin öffnen.";
+   button.hidden=true;
    if(currentCategory)renderCollection();button.hidden=true;return;
   }
   resolvedRemotePages.add(model.remotePageUrl);
@@ -280,7 +284,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    added.push(variant);addCatalogModel(variant);
   });
   statusNode.textContent=added.length+" erreichbare Modelldatei(en) gefunden. Die Varianten wurden in „Downloadable Models“ übernommen; der reine Seitenverweis wurde entfernt.";
-  button.hidden=true;variantsNode.replaceChildren();
+  button.hidden=true;button.textContent="Files found";variantsNode.replaceChildren();
   added.forEach(variant=>{
    const row=document.createElement("div");row.className="remote-variant-row";
    const label=document.createElement("span");label.textContent=variant.name+" · "+variant.format+" · "+variant.size;
@@ -302,7 +306,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   });
   if(currentCategory)renderCollection();
  } catch(error) {
-  statusNode.textContent="Dateiabruf fehlgeschlagen: "+error.message+" Der Quellenverweis bleibt erhalten.";button.disabled=false;
+  loader.hidden=true;statusNode.textContent="Dateisuche fehlgeschlagen: "+error.message+" Der Kandidat bleibt erhalten. Du kannst die Suche erneut starten.";button.disabled=false;button.textContent="Try again";
  }
 }
 
