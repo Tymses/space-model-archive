@@ -128,7 +128,7 @@ async function resolveCataloguePage(value) {
       }
       if (!probe.ok && probe.status !== 206) { try { await probe.body.cancel(); } catch {} continue; }
       if ((probe.headers.get('Content-Type') || '').toLowerCase().includes('text/html')) { try { await probe.body.cancel(); } catch {} continue; }
-      file.url = probeUrl; file.sizeBytes = Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
+      file.url = probeUrl; const rangeTotal = (probe.headers.get('Content-Range') || '').split('/').pop(); file.sizeBytes = Number(rangeTotal) || Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
       try { await probe.body.cancel(); } catch {}
     } catch {}
   }
