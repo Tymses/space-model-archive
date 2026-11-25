@@ -1,0 +1,607 @@
+{
+  "schemaVersion": 1,
+  "title": "SPACEMESHER source registry",
+  "purpose": "Inventory of known public source catalogues, scientific archives and terrain generators that can contribute space-related 3D geometry. This is a discovery register, not a claim that every source has already been harvested.",
+  "lastReviewed": "2026-11-25",
+  "completenessPrinciple": "Track each source separately from imported records. Record its published scope, access method, licence/provenance requirements, import status and next action. Never treat a linked catalogue page or a terrain generator as an individually imported model.",
+  "statusDefinitions": {
+    "indexed": "A source index is already present in this repository; coverage may still be partial.",
+    "partial": "Some objects or files are represented, but the source has a larger catalogue or unimported variants.",
+    "linked": "The source is linked in the UI or documentation, but its contents are not systematically indexed.",
+    "candidate": "A relevant public source discovered during source inventory; compatibility and harvesting method still need assessment."
+  },
+  "categories": {
+    "spacecraft": {
+      "scope": "Spacecraft, satellites, probes, landers, rovers, crewed vehicles, stations, instruments and mission hardware.",
+      "sources": [
+        {
+          "id": "nasa-3d-resources",
+          "name": "NASA 3D Resources",
+          "url": "https://science.nasa.gov/3d-resources/",
+          "publisher": "NASA",
+          "type": "downloadable model catalogue",
+          "formats": [
+            "GLB",
+            "STL",
+            "3DS",
+            "BLEND",
+            "FBX",
+            "LWO",
+            "VSP3",
+            "other"
+          ],
+          "status": "indexed",
+          "priority": 1,
+          "knownCoverage": "Repository index currently contains 650 NASA source files; NASA's live catalogue is filterable by model type, 3D-printable assets, topic and format.",
+          "nextAction": "Refresh the complete Git-backed source listing and classify all files by object and collection."
+        },
+        {
+          "id": "space-radar",
+          "name": "Space Radar Models and map assets",
+          "url": "https://models.spaceradar.ai/",
+          "secondaryUrl": "https://www.spaceradar.ai/",
+          "publisher": "Space Radar",
+          "type": "downloadable model catalogue and map asset collection",
+          "formats": [
+            "GLB"
+          ],
+          "status": "indexed",
+          "priority": 1,
+          "knownCoverage": "Repository index contains 311 assets across spacecraft, small bodies and moons; the official spacecraft catalogue and additional map assets are distinct subsets.",
+          "nextAction": "Reconcile official catalogue count, map assets and credits; do not classify all 311 as spacecraft."
+        },
+        {
+          "id": "codelove-space",
+          "name": "models.codelove.in — Space collection",
+          "url": "https://models.codelove.in/models/category/space/",
+          "secondaryUrl": "https://models.codelove.in/models/collection/satellites/",
+          "publisher": "models.codelove.in",
+          "type": "downloadable model catalogue",
+          "formats": [
+            "GLB"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Live catalogue reports 586 space models in 10 collections; Satellites & Probes collection reports about 180 models. Public-domain/CC0 claims must be checked per item.",
+          "nextAction": "Inspect catalogue API and enumerate records, categories, file URLs and per-model licence metadata."
+        },
+        {
+          "id": "esa-scifleet",
+          "name": "ESA Science Satellite Fleet (Sci-Fleet)",
+          "url": "https://scifleet.esa.int/",
+          "publisher": "European Space Agency",
+          "type": "interactive 3D spacecraft catalogue",
+          "formats": [
+            "3D web assets; downloadable formats to verify"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Catalogue lists ESA science missions including ARIEL, BepiColombo, Cassini-Huygens, Euclid, Gaia, Hubble, JUICE, Mars Express, Rosetta and others.",
+          "nextAction": "Inspect download controls/network assets and determine which models are legally and technically retrievable."
+        },
+        {
+          "id": "esa-satellite-models",
+          "name": "ESA Satellite Models",
+          "url": "https://www.esa.int/Education/Expedition_Home/Satellite_models",
+          "publisher": "European Space Agency",
+          "type": "3D-printable satellite model catalogue",
+          "formats": [
+            "Download formats to verify"
+          ],
+          "status": "candidate",
+          "priority": 2,
+          "knownCoverage": "ESA education resource presents printable satellite models, including CHEOPS.",
+          "nextAction": "Enumerate individual models and check source files and reuse terms."
+        },
+        {
+          "id": "cosmographia",
+          "name": "NASA/JPL Cosmographia",
+          "url": "https://naif.jpl.nasa.gov/naif/cosmographia.html",
+          "publisher": "NASA/JPL NAIF",
+          "type": "scientific 3D visualisation and model ecosystem",
+          "formats": [
+            "SPICE kernels",
+            "DSK",
+            "model formats vary"
+          ],
+          "status": "linked",
+          "priority": 2,
+          "knownCoverage": "Scientific visualisation ecosystem using SPICE-enhanced Solar System geometry and mission models.",
+          "nextAction": "Identify distributable mesh/DSK assets and distinguish model geometry from ephemeris and visualisation packages."
+        }
+      ]
+    },
+    "planetary": {
+      "scope": "Planetary landforms, craters, mountains, valleys, volcanoes, surface regions and derived terrain meshes.",
+      "sources": [
+        {
+          "id": "solar-system-treks",
+          "name": "NASA Solar System Treks",
+          "url": "https://trek.nasa.gov/home/",
+          "secondaryUrl": "https://trek.jpl.nasa.gov/",
+          "publisher": "NASA/JPL",
+          "type": "surface data portal and on-demand terrain generator",
+          "formats": [
+            "3D print files",
+            "DEM-derived terrain",
+            "map layers"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Portals cover planets, moons and asteroids. NASA documents pre-generated whole-globe print files for Bennu, Ceres, Ryugu and Vesta; users can select local features for 3D printing.",
+          "nextAction": "Enumerate every portal, available terrain export, whole-body print file and supported map layer. Treat user-generated regions as generator outputs, not pre-existing catalogue records."
+        },
+        {
+          "id": "usgs-astropedia",
+          "name": "USGS Astropedia",
+          "url": "https://astrogeology.usgs.gov/search",
+          "publisher": "USGS Astrogeology Science Center",
+          "type": "planetary cartographic data catalogue",
+          "formats": [
+            "GeoTIFF",
+            "ISIS",
+            "PDS",
+            "map products; DEM availability varies"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Planetary maps, mosaics and elevation/cartographic products across multiple bodies.",
+          "nextAction": "Search and enumerate DEM and topographic products separately from image-only map products."
+        },
+        {
+          "id": "usgs-map-a-planet",
+          "name": "USGS Map-a-Planet",
+          "url": "https://www.usgs.gov/special-topics/planetary-geologic-mapping/map-planet-astrogeology-cloud-processing",
+          "publisher": "USGS Astrogeology Science Center",
+          "type": "map processing service",
+          "formats": [
+            "ISIS",
+            "PDS3",
+            "GeoTIFF",
+            "JPEG",
+            "PNG"
+          ],
+          "status": "candidate",
+          "priority": 2,
+          "knownCoverage": "Selects global or regional image mosaics from Astropedia and exports processed map imagery; not itself a 3D mesh catalogue.",
+          "nextAction": "Assess whether output imagery can be paired with elevation data to create reproducible terrain models."
+        },
+        {
+          "id": "pds-geosciences",
+          "name": "NASA PDS Geosciences Node",
+          "url": "https://pds-geosciences.wustl.edu/dataserv/default.htm",
+          "publisher": "NASA Planetary Data System",
+          "type": "scientific planetary data archive",
+          "formats": [
+            "PDS3",
+            "PDS4",
+            "DEM and instrument-specific formats"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "Includes lunar LOLA, GRAIL, Apollo, Kaguya, Clementine, Mercury MESSENGER, Mars and other mission holdings; selected products include high-resolution topography and DEMs.",
+          "nextAction": "Build a product-level inventory of usable DEMs and elevation grids, with body, resolution, coordinate system and licence."
+        },
+        {
+          "id": "terrain-print",
+          "name": "Terrain Print",
+          "url": "https://triunitystudios.com/web-projects/terrain-print/",
+          "publisher": "Guillem Poy",
+          "type": "on-demand terrain generator",
+          "formats": [
+            "STL or generated mesh; verify current exports"
+          ],
+          "status": "linked",
+          "priority": 3,
+          "knownCoverage": "Generator for terrain from elevation data; not a static model library.",
+          "nextAction": "Document supported input sources, export formats and limits; keep separate from indexed model counts."
+        },
+        {
+          "id": "nasa-3d-planetary",
+          "name": "NASA 3D Resources — planetary assets",
+          "url": "https://science.nasa.gov/3d-resources/",
+          "publisher": "NASA",
+          "type": "downloadable model catalogue",
+          "formats": [
+            "GLB",
+            "STL",
+            "3DS",
+            "BLEND",
+            "FBX",
+            "LWO",
+            "VSP3",
+            "other"
+          ],
+          "status": "indexed",
+          "priority": 2,
+          "knownCoverage": "NASA index already includes planetary feature and surface-related files, but many NASA entries are spacecraft or generic mission objects.",
+          "nextAction": "Reclassify NASA files using source metadata and identify all actual surface-feature geometry."
+        }
+      ]
+    },
+    "small-bodies": {
+      "scope": "Asteroids, comets, dwarf planets, meteoroids and meteorite specimens; preserve separate object identity and every available shape-model variant.",
+      "sources": [
+        {
+          "id": "3d-asteroids",
+          "name": "3D Asteroid Catalogue",
+          "url": "https://3d-asteroids.space/",
+          "asteroidsUrl": "https://3d-asteroids.space/asteroids/",
+          "publisher": "3D Asteroid Catalogue",
+          "type": "small-body shape-model catalogue",
+          "formats": [
+            "OBJ",
+            "PLY",
+            "textures"
+          ],
+          "status": "partial",
+          "priority": 1,
+          "knownCoverage": "Source reports 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons, 3,079 shape models and 54 textures. Repository currently contains a curated selection of 256 numbered asteroids plus selected comet/dwarf-planet links.",
+          "nextAction": "Harvest the complete object index and every per-object model variant, file format, size, texture and attribution; do not stop at 256 curated objects."
+        },
+        {
+          "id": "pds-sbn-asteroids",
+          "name": "NASA PDS Small Bodies Node — asteroid data sets",
+          "url": "https://sbn.psi.edu/pds/archive/asteroids.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific shape-model archive",
+          "formats": [
+            "OBJ",
+            "DSK",
+            "PDS bundles",
+            "other"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Archive lists Bennu, Vesta, Ceres, Eros, Itokawa, Phobos, Mimas, Dione, Tethys, Phoebe, Lutetia, Steins, Arrokoth and multiple optical/radar model collections.",
+          "nextAction": "Enumerate every shape/DTM product and download individual meshes where directly available; keep source dataset and model variants distinct."
+        },
+        {
+          "id": "pds-sbn-optical",
+          "name": "PDS SBN Small Body Optical Shape Models (Thomas)",
+          "url": "https://sbn.psi.edu/pds/resource/oshape.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific shape-model dataset",
+          "formats": [
+            "PDS4",
+            "PDS3",
+            "mesh/grid products"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Includes Ida, Gaspra, Mathilde, Vesta, Phobos, Deimos, Hyperion, Janus and Epimetheus.",
+          "nextAction": "Extract and catalogue each body model and its variants from the PDS4/PDS3 bundle."
+        },
+        {
+          "id": "pds-sbn-radar",
+          "name": "PDS SBN Small Body Radar Shape Models (Hudson)",
+          "url": "https://sbn.psi.edu/pds/resource/rshape.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific shape-model dataset",
+          "formats": [
+            "PDS4",
+            "PDS3",
+            "polyhedral meshes"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Includes Kleopatra, Geographos, Bacchus, Toutatis, Castalia, Golevka, 1998 KY26, 52760 and Itokawa.",
+          "nextAction": "Extract and catalogue every model and resolution from the bundle."
+        },
+        {
+          "id": "pds-stooke",
+          "name": "PDS SBN Stooke Small Body Shape Models",
+          "url": "https://sbn.psi.edu/pds/resource/stkshape.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific shape-model dataset",
+          "formats": [
+            "PDS4",
+            "PDS3",
+            "mesh products"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Includes Ida, Mathilde, Gaspra, comet Halley and moons Amalthea, Thebe, Larissa, Proteus, Janus, Epimetheus, Prometheus and Pandora.",
+          "nextAction": "Extract all individual body meshes; classify comet and asteroid objects here, moons under the Moons category, while retaining common source provenance."
+        },
+        {
+          "id": "pds-67p",
+          "name": "NASA PDS Rosetta 67P Shape Models V2.0",
+          "url": "https://pds.nasa.gov/ds-view/pds/viewDataset.jsp?dsid=RO-C-MULTI-5-67P-SHAPE-V2.0",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "mission shape-model dataset",
+          "formats": [
+            "PDS4",
+            "mesh products"
+          ],
+          "status": "partial",
+          "priority": 1,
+          "knownCoverage": "Contains multiple Rosetta OSIRIS and NAVCAM shape models; dataset was updated with additional SPG and SPC models in 2026.",
+          "nextAction": "Enumerate all model products and reference frames; compare with the 3D Asteroid Catalogue to preserve distinct variants."
+        },
+        {
+          "id": "jpl-radar",
+          "name": "NASA/JPL Radar Astronomy Shape Models",
+          "url": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+          "publisher": "NASA/JPL",
+          "type": "radar-derived asteroid mesh catalogue",
+          "formats": [
+            "OBJ"
+          ],
+          "status": "indexed",
+          "priority": 2,
+          "knownCoverage": "Repository index currently includes 19 direct OBJ records.",
+          "nextAction": "Recheck the current source listing and include every newly available target and model version."
+        },
+        {
+          "id": "jaxa-itokawa",
+          "name": "JAXA DARTS — Itokawa Gaskell Shape Model",
+          "url": "https://darts.isas.jaxa.jp/datasets/darts:hayabusa-itokawa-shape-model-gaskell",
+          "publisher": "JAXA/ISAS DARTS",
+          "type": "mission shape-model archive",
+          "formats": [
+            "STL.GZ",
+            "TRI.GZ",
+            "TXT.GZ"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "Public directory contains multiple numbered STL, TRI and TXT model files for asteroid Itokawa.",
+          "nextAction": "Enumerate all model resolutions and document units, coordinate frame and conversion requirements."
+        },
+        {
+          "id": "jaxa-ryugu",
+          "name": "JAXA DARTS — Hayabusa2 Ryugu Shape Models",
+          "url": "https://data.darts.isas.jaxa.jp/pub/hayabusa2/paper/Watanabe_2019/README.html",
+          "secondaryUrl": "https://jade2.darts.isas.jaxa.jp/about",
+          "publisher": "JAXA/ISAS DARTS",
+          "type": "mission shape-model archive",
+          "formats": [
+            "OBJ",
+            "SPICE DSK"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "Published Ryugu shape variants include 3M, 800k, 200k and 49k polygon OBJ models; JADE2 links global DSK shape models.",
+          "nextAction": "Enumerate official downloadable variants and preserve their resolution lineage."
+        },
+        {
+          "id": "nasa-astromaterials",
+          "name": "NASA Astromaterials 3D",
+          "url": "https://ares.jsc.nasa.gov/astromaterials3d/",
+          "publisher": "NASA Johnson Space Center",
+          "type": "scanned specimen 3D catalogue",
+          "formats": [
+            "OBJ ZIP",
+            "textured meshes"
+          ],
+          "status": "partial",
+          "priority": 2,
+          "knownCoverage": "Apollo lunar samples and Antarctic meteorites; current repository includes 17 linked Antarctic meteorite sample pages, not the complete collection.",
+          "nextAction": "Enumerate all sample records and retrieve sample-specific full/low-resolution OBJ downloads and metadata. Keep lunar samples cross-listed with lunar material rather than classifying them as asteroids."
+        },
+        {
+          "id": "zenodo-nwa869",
+          "name": "Zenodo — NWA 869 and rock-fragment meshes",
+          "url": "https://zenodo.org/",
+          "publisher": "Zenodo dataset authors",
+          "type": "research mesh dataset",
+          "formats": [
+            "OBJ ZIP"
+          ],
+          "status": "partial",
+          "priority": 3,
+          "knownCoverage": "Repository currently links three ZIP archives reporting 868 OBJ meshes; two are NWA 869 meteorite fragments and one is terrestrial rock fragments.",
+          "nextAction": "Resolve DOI and dataset files, enumerate meshes and separate extraterrestrial specimens from terrestrial comparison material."
+        }
+      ]
+    },
+    "moons": {
+      "scope": "Natural satellites as astronomical bodies and their global or regional shape models; not spacecraft sent to moons.",
+      "sources": [
+        {
+          "id": "3d-asteroids-moons",
+          "name": "3D Asteroid Catalogue — moons",
+          "url": "https://3d-asteroids.space/",
+          "publisher": "3D Asteroid Catalogue",
+          "type": "natural-satellite shape-model catalogue",
+          "formats": [
+            "OBJ",
+            "PLY",
+            "textures"
+          ],
+          "status": "partial",
+          "priority": 1,
+          "knownCoverage": "Source reports 37 moons; repository currently has 13 Moon-category records across NASA and Space Radar indexes, with the 37-object listing not yet fully imported.",
+          "nextAction": "Enumerate all 37 moon records and all shape-model variants; compare with PDS holdings."
+        },
+        {
+          "id": "pds-rings-moons",
+          "name": "NASA PDS Ring-Moon Systems Node",
+          "url": "https://pds-rings.seti.org/",
+          "publisher": "NASA Planetary Data System",
+          "type": "scientific planetary satellite data archive",
+          "formats": [
+            "PDS3",
+            "PDS4",
+            "SPICE",
+            "shape models and derived products"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "Archives data for Jupiter, Saturn, Uranus, Neptune and Pluto systems; OPUS supports searching surface geometry and PDS bundles include moon/ring products.",
+          "nextAction": "Identify all distributable satellite shape models and surface topography products; filter out image-only and geometry metadata products."
+        },
+        {
+          "id": "pds-saturn-shapes",
+          "name": "PDS SBN Saturn Satellite Shape Models",
+          "url": "https://sbn.psi.edu/pds/archive/asteroids.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific satellite shape-model archive",
+          "formats": [
+            "OBJ",
+            "PDS bundles"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "SBN archive lists Saturn satellite shape-model collections including Gaskell models of Dione, Mimas, Phoebe and Tethys, plus Stooke/Thomas moon models.",
+          "nextAction": "Extract every satellite mesh and version into the Moons category, with original dataset IDs."
+        },
+        {
+          "id": "pds-optical-moons",
+          "name": "PDS SBN Optical Shape Models — planetary satellites",
+          "url": "https://sbn.psi.edu/pds/resource/oshape.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific satellite shape-model dataset",
+          "formats": [
+            "PDS4",
+            "PDS3",
+            "mesh/grid products"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Includes Phobos, Deimos, Hyperion, Janus and Epimetheus.",
+          "nextAction": "Cross-list moon records from the common optical shape model bundle without duplicating the underlying source file."
+        },
+        {
+          "id": "pds-stooke-moons",
+          "name": "PDS SBN Stooke Shape Models — satellites",
+          "url": "https://sbn.psi.edu/pds/resource/stkshape.html",
+          "publisher": "NASA PDS Small Bodies Node",
+          "type": "scientific satellite shape-model dataset",
+          "formats": [
+            "PDS4",
+            "PDS3",
+            "mesh products"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Includes Amalthea, Thebe, Larissa, Proteus, Janus, Epimetheus, Prometheus and Pandora.",
+          "nextAction": "Cross-list every individual moon mesh in Moons while retaining source dataset and version."
+        },
+        {
+          "id": "solar-system-treks-moons",
+          "name": "NASA Solar System Treks — Moons",
+          "url": "https://trek.jpl.nasa.gov/",
+          "publisher": "NASA/JPL",
+          "type": "interactive surface portal and terrain export",
+          "formats": [
+            "DEM-derived terrain",
+            "3D print files",
+            "map layers"
+          ],
+          "status": "linked",
+          "priority": 2,
+          "knownCoverage": "Portals include Earth's Moon, Phobos, Europa, Ganymede, Io, Callisto, Titan and Icy Moons Treks.",
+          "nextAction": "Inventory downloadable whole-body/region geometry and supported exports for each moon portal."
+        },
+        {
+          "id": "jaxa-ryugu-moons",
+          "name": "JAXA DARTS / JADE2",
+          "url": "https://jade2.darts.isas.jaxa.jp/about",
+          "publisher": "JAXA/ISAS DARTS",
+          "type": "mission shape-model archive",
+          "formats": [
+            "SPICE DSK"
+          ],
+          "status": "candidate",
+          "priority": 3,
+          "knownCoverage": "JADE2 documents global shape models for Ryugu; included here as a cross-category archive discovery endpoint, not as a moon source.",
+          "nextAction": "Do not import Ryugu under Moons; use this source for small bodies only. Revisit this entry when adding cross-category source links."
+        }
+      ]
+    },
+    "height-maps": {
+      "scope": "Elevation grids, DEMs, topographic rasters and derived printable terrain meshes for planets, moons and small bodies.",
+      "sources": [
+        {
+          "id": "solar-system-treks-height",
+          "name": "NASA Solar System Treks — elevation and 3D print",
+          "url": "https://trek.nasa.gov/home/",
+          "publisher": "NASA/JPL",
+          "type": "DEM-backed terrain portal and generator",
+          "formats": [
+            "DEM services",
+            "3D print files",
+            "WMTS layers"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Surface portals include Moon, Mars, Mercury, Venus, Titan, Icy Moons, Phobos, Europa, Ganymede, Io, Callisto, Bennu, Ceres, Ryugu and Vesta. Whole-globe print files are explicitly documented for Bennu, Ceres, Ryugu and Vesta.",
+          "nextAction": "Inventory each body's available elevation products and downloadable print geometry; distinguish global DEMs from local regions."
+        },
+        {
+          "id": "pds-geosciences-dem",
+          "name": "NASA PDS Geosciences Node — topography and DEM holdings",
+          "url": "https://pds-geosciences.wustl.edu/dataserv/default.htm",
+          "publisher": "NASA Planetary Data System",
+          "type": "scientific elevation-data archive",
+          "formats": [
+            "PDS3",
+            "PDS4",
+            "DEM",
+            "raster/grid products"
+          ],
+          "status": "candidate",
+          "priority": 1,
+          "knownCoverage": "Mission holdings include lunar LOLA, GRAIL, Kaguya, Clementine and South Pole DEM products, plus Mars and Mercury data.",
+          "nextAction": "Enumerate actual DEM products, resolution, coverage, vertical datum, coordinate system and file access."
+        },
+        {
+          "id": "usgs-astropedia-dem",
+          "name": "USGS Astropedia — elevation and topography products",
+          "url": "https://astrogeology.usgs.gov/search",
+          "publisher": "USGS Astrogeology Science Center",
+          "type": "planetary map and elevation data catalogue",
+          "formats": [
+            "GeoTIFF",
+            "ISIS",
+            "PDS and other map products"
+          ],
+          "status": "linked",
+          "priority": 1,
+          "knownCoverage": "Planetary cartographic archive; product availability and elevation-vs-imagery distinction must be checked per record.",
+          "nextAction": "Query all planetary DEM/topography products and record direct data links and metadata."
+        },
+        {
+          "id": "pds-rings-dem",
+          "name": "NASA PDS Ring-Moon Systems Node — satellite topography",
+          "url": "https://pds-rings.seti.org/",
+          "publisher": "NASA Planetary Data System",
+          "type": "scientific satellite topography archive",
+          "formats": [
+            "PDS3",
+            "PDS4",
+            "DEM and shape products"
+          ],
+          "status": "candidate",
+          "priority": 2,
+          "knownCoverage": "Outer-planet systems archive includes geometry, ring and moon datasets; usable elevation products need product-level verification.",
+          "nextAction": "Search for actual elevation grids and DTM products, not just surface imagery or SPICE kernels."
+        },
+        {
+          "id": "terrain-print-height",
+          "name": "Terrain Print",
+          "url": "https://triunitystudios.com/web-projects/terrain-print/",
+          "publisher": "Guillem Poy",
+          "type": "on-demand terrain generator",
+          "formats": [
+            "STL or generated mesh; verify current exports"
+          ],
+          "status": "linked",
+          "priority": 3,
+          "knownCoverage": "Converts elevation sources into printable terrain; generator rather than an independent elevation-data source.",
+          "nextAction": "Record as a preparation tool, not as a source of new planetary DEMs."
+        }
+      ]
+    }
+  },
+  "auditNotes": [
+    "NASA 3D Resources and Space Radar are already indexed, but their category counts must not be confused with counts of unique celestial objects.",
+    "The 3D Asteroid Catalogue's published counts are source-reported and include 37 moons, 3,079 shape models and textures; current SPACEMESHER records are only a subset.",
+    "NASA PDS SBN has multiple distinct optical, radar, Stooke, comet and mission-specific shape-model datasets; each dataset may contain multiple body meshes and model variants.",
+    "NASA Solar System Treks is primarily a scientific surface-data portal and generator. It is not equivalent to a static downloadable model catalogue.",
+    "NASA Astromaterials 3D contains scanned lunar and meteorite specimens; specimens must not be conflated with whole-body asteroid/moon shape models.",
+    "Source inventory intentionally includes candidate sources that still need format, licence, direct-download and completeness checks."
+  ]
+}
