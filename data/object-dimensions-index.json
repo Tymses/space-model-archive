@@ -19,7 +19,8 @@
       "sourceUrl": "https://doi.org/10.3847/PSJ/acf75e",
       "secondarySourceUrl": "https://sbn.psi.edu/pds/resource/apophis_shape.html",
       "measurement": "Radar/light-curve shape-model axis estimate",
-      "note": "Pre-encounter design-reference axes; published uncertainty is approximately ±50 m. This is a literature fallback, not a JPL SBDB extent value."
+      "note": "Pre-encounter design-reference axes; published uncertainty is approximately ±50 m. This is a literature fallback, not a JPL SBDB extent value.",
+      "category": "small-bodies"
     },
     {
       "name": "(486958) Arrokoth",
@@ -35,7 +36,8 @@
         9.75
       ],
       "sourceLabel": "Published Arrokoth shape dimensions",
-      "sourceUrl": "https://doi.org/10.1051/0004-6361/202347742"
+      "sourceUrl": "https://doi.org/10.1051/0004-6361/202347742",
+      "category": "small-bodies"
     },
     {
       "name": "(101955) Bennu",
@@ -50,7 +52,8 @@
         0.508
       ],
       "sourceLabel": "Nolan et al. (2013), radar/light-curve shape model",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(65803) Didymos",
@@ -65,7 +68,8 @@
         0.62
       ],
       "sourceLabel": "Ren et al., Astronomy & Astrophysics (2024)",
-      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(433) Eros",
@@ -79,7 +83,8 @@
         13
       ],
       "sourceLabel": "NASA/JPL NEAR Eros dimensions",
-      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/"
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/",
+      "category": "small-bodies"
     },
     {
       "name": "(1620) Geographos",
@@ -93,7 +98,8 @@
         2.1
       ],
       "sourceLabel": "3D Asteroid Catalogue physical extent",
-      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos",
+      "category": "small-bodies"
     },
     {
       "name": "(6489) Golevka",
@@ -107,7 +113,8 @@
         0.5
       ],
       "sourceLabel": "Swinburne Astronomy Online asteroid dimensions summary",
-      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(25143) Itokawa",
@@ -122,7 +129,8 @@
         0.209
       ],
       "sourceLabel": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
+      "category": "small-bodies"
     },
     {
       "name": "(216) Kleopatra",
@@ -136,7 +144,8 @@
         78
       ],
       "sourceLabel": "Shepard et al. (2018), JPL radar shape model",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(21) Lutetia",
@@ -150,7 +159,8 @@
         80
       ],
       "sourceLabel": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
+      "category": "small-bodies"
     },
     {
       "name": "(162173) Ryugu",
@@ -165,7 +175,8 @@
         0.875
       ],
       "sourceLabel": "Ren et al., Astronomy & Astrophysics (2024)",
-      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(2867) Steins",
@@ -179,7 +190,8 @@
         4.4
       ],
       "sourceLabel": "NASA Asteroid Fact Sheet",
-      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html",
+      "category": "small-bodies"
     },
     {
       "name": "(4179) Toutatis",
@@ -194,7 +206,8 @@
         1.7
       ],
       "sourceLabel": "3D Asteroid Catalogue; radar shape-model extent",
-      "sourceUrl": "https://3d-asteroids.space/asteroids/4179-Toutatis"
+      "sourceUrl": "https://3d-asteroids.space/asteroids/4179-Toutatis",
+      "category": "small-bodies"
     },
     {
       "name": "(4) Vesta",
@@ -208,7 +221,8 @@
         446.4
       ],
       "sourceLabel": "NASA PDS Vesta physical characteristics",
-      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta",
+      "category": "small-bodies"
     },
     {
       "name": "(1) Ceres",
@@ -222,7 +236,8 @@
         891.8
       ],
       "sourceLabel": "NASA PDS Ceres physical characteristics",
-      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:dwarf_planet.1_ceres"
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:dwarf_planet.1_ceres",
+      "category": "small-bodies"
     },
     {
       "name": "(67P) Churyumov-Gerasimenko",
@@ -238,7 +253,8 @@
         2.12
       ],
       "sourceLabel": "Lorek & Johansen, Astronomy & Astrophysics (2024)",
-      "sourceUrl": "https://curis.ku.dk/ws/portalfiles/portal/389918081/aa47742_23.pdf"
+      "sourceUrl": "https://curis.ku.dk/ws/portalfiles/portal/389918081/aa47742_23.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(4486) Mithra",
@@ -252,7 +268,8 @@
         1.44
       ],
       "sourceLabel": "Brozovic et al. (2010), radar shape-model dimensions",
-      "sourceUrl": "https://doi.org/10.1016/j.icarus.2010.01.035"
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2010.01.035",
+      "category": "small-bodies"
     },
     {
       "name": "(2063) Bacchus",
@@ -266,7 +283,8 @@
         0.5
       ],
       "sourceLabel": "3D Asteroid Catalogue physical characteristics",
-      "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus"
+      "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus",
+      "category": "small-bodies"
     },
     {
       "name": "(66391) 1999 KW4 Alpha",
@@ -281,7 +299,8 @@
         1.3
       ],
       "sourceLabel": "Ostro et al. (2006), JPL Goldstone radar planning",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html",
+      "category": "small-bodies"
     },
     {
       "name": "(66391) 1999 KW4 Beta",
@@ -296,7 +315,8 @@
         0.35
       ],
       "sourceLabel": "Ostro et al. (2006), JPL Goldstone radar planning",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html",
+      "category": "small-bodies"
     },
     {
       "name": "2002 CE26",
@@ -310,7 +330,8 @@
         3.26
       ],
       "sourceLabel": "Shepard et al. (2006), radar shape model",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2002CE26/shepard.etal.2006.2002ce26.pdf"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2002CE26/shepard.etal.2006.2002ce26.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "(341843) 2008 EV5",
@@ -324,7 +345,8 @@
         0.39
       ],
       "sourceLabel": "Busch et al. (2011), radar shape-model dimensions",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf"
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf",
+      "category": "small-bodies"
     },
     {
       "name": "1996 HW1",
@@ -335,7 +357,8 @@
         1.5
       ],
       "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
-      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777",
+      "category": "small-bodies"
     },
     {
       "name": "Phobos",
@@ -752,7 +775,7 @@
       ],
       "axesKm": [
         0.02,
-        0.00164,
+        0.00127,
         0.00177
       ],
       "category": "spacecraft",
