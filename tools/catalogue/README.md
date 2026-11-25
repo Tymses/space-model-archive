@@ -44,7 +44,7 @@ From the repository root, run:
 python tools/catalogue/audit_catalogue.py
 ```
 
-The script reads the five index files and writes `data/catalogue-audit.json`. It reports index IDs, category counts, record types, source counts and conservatively matched numbered-asteroid variants. Review the generated diff before committing it.
+The script reads the five index files and writes `data/catalogue-audit.json`. It reports index IDs, category counts, record types, source counts and conservatively matched numbered-asteroid variants. Review the generated diff before committing it. Run the standard-library tests with `python -m unittest discover -s tools/catalogue/tests`.
 
 ## Next ingestion priorities
 
