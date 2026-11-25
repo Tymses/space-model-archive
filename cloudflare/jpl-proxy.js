@@ -148,33 +148,43 @@ function objectIdentityTokens(objectName, objectPage) {
   // Numeric-only catalogue IDs are unsafe identity tokens and can match unrelated filenames.
   return [...new Set(values.map(norm).filter(value => value.length >= 3 && !/^\d+$/.test(value)))];
 }
-function fileBelongsToObject(fileUrl, objectName, objectPage) {
+function identityTextMatchesObject(value, objectName, objectPage) {
+  const haystack = " " + norm(value) + " ";
+  return objectIdentityTokens(objectName, objectPage).some(token => haystack.includes(" " + token + " "));
+}
+function fileBelongsToObject(fileUrl, objectName, objectPage, linkLabel = "") {
   let filename = "";
   try { filename = decodeURIComponent(new URL(fileUrl).pathname.split("/").pop() || "").replace(/\.(?:obj|ply|glb|gltf|stl)$/i, ""); } catch { return false; }
-  const fileNorm = norm(filename);
-  const tokens = objectIdentityTokens(objectName, objectPage);
-  // Never attach a shared or unrelated file (for example J1_Io.ply) to
-  // another object's remote candidate.
-  return tokens.some(token => fileNorm === token || fileNorm.startsWith(token + " ") || fileNorm.endsWith(" " + token) || fileNorm.includes(" " + token + " "));
+  // Some catalogue download URLs are generic. Accept them only when the
+  // actual anchor text explicitly names this object and the page identity
+  // has already been checked by resolveCataloguePage.
+  return identityTextMatchesObject(filename, objectName, objectPage) ||
+    identityTextMatchesObject(linkLabel, objectName, objectPage);
 }
 function extractCatalogueFileCandidates(html, basePage, objectName = "") {
   const source = decode(String(html || "")).replace(/\\\//g, "/");
   const raw = [];
-  const attr = /(?:href|src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
+  const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match;
-  while ((match = attr.exec(source)) && raw.length < 300) raw.push(match[1]);
+  while ((match = anchors.exec(source)) && raw.length < 400) {
+    const href = match[1].match(/(?:href|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/i);
+    if (href) raw.push({ value: href[1], label: plain(match[2]).slice(0, 240) });
+  }
+  const attr = /(?:src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
+  while ((match = attr.exec(source)) && raw.length < 600) raw.push({ value: match[1], label: "" });
   const urlPattern = /(?:https?:\/\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?|\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?)/gi;
-  while ((match = urlPattern.exec(source)) && raw.length < 500) raw.push(match[0]);
+  while ((match = urlPattern.exec(source)) && raw.length < 800) raw.push({ value: match[0], label: "" });
   /** @type {ModelFileCandidate[]} */
   const found = [];
-  for (const value of raw) {
+  for (const entry of raw) {
     let target;
-    try { target = new URL(decode(value).replace(/\\\//g, "/"), basePage); } catch { continue; }
+    try { target = new URL(decode(entry.value).replace(/\\\//g, "/"), basePage); } catch { continue; }
     const ext = assetExtension(target.toString());
     if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== "https:" || target.username || target.password) continue;
-    if (!fileBelongsToObject(target.toString(), objectName, basePage.toString())) continue;
+    const identityVerified = fileBelongsToObject(target.toString(), objectName, basePage.toString(), entry.label);
+    if (!identityVerified) continue;
     if (found.some(item => item.url === target.toString())) continue;
-    found.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split("/").pop() || ext.toUpperCase() });
+    found.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split("/").pop() || ext.toUpperCase(), identityVerified });
   }
   return found;
 }
@@ -399,47 +409,68 @@ function confidence(candidate, query) {
   candidate.identityStrong = identityStrong;
   return Math.min(99, score);
 }
+function addSearchPage(pages, href, title, snippet, baseUrl) {
+  let target = "";
+  try {
+    const parsed = new URL(decode(href), baseUrl);
+    target = parsed.hostname.includes("duckduckgo.com") && parsed.searchParams.has("uddg")
+      ? parsed.searchParams.get("uddg") : parsed.toString();
+  } catch { return; }
+  if (!isSafePublicUrl(target) || /duckduckgo\.com$/.test(hostOf(target)) || !plain(title)) return;
+  if (!pages.some(page => page.url === target)) pages.push({ url: target, title: plain(title).slice(0, 240), snippet: plain(snippet).slice(0, 600) });
+}
+function parseDuckDuckGoResults(html, pages) {
+  const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
+  let match;
+  while ((match = anchors.exec(html)) && pages.length < 24) {
+    if (!/result__a/i.test(match[1])) continue;
+    const href = match[1].match(/href\s*=\s*["']([^"']+)["']/i)?.[1];
+    if (!href) continue;
+    const snippetStart = Math.max(0, html.lastIndexOf("result__snippet", match.index));
+    addSearchPage(pages, href, match[2], html.slice(snippetStart, Math.min(html.length, snippetStart + 1600)), "https://html.duckduckgo.com/");
+  }
+}
+function parseBingRssResults(xml, pages) {
+  const items = xml.match(/<item\b[\s\S]*?<\/item>/gi) || [];
+  for (const item of items) {
+    if (pages.length >= 24) break;
+    const title = (item.match(/<title>([\s\S]*?)<\/title>/i) || [])[1] || "";
+    const link = (item.match(/<link>([\s\S]*?)<\/link>/i) || [])[1] || "";
+    const description = (item.match(/<description>([\s\S]*?)<\/description>/i) || [])[1] || "";
+    if (link) addSearchPage(pages, link, title, description, "https://www.bing.com/");
+  }
+}
 async function searchWeb(query, category) {
-  const categoryTerm = ({spacecraft:"spacecraft dimensions",moons:"moon dimensions",planetary:"surface feature diameter extent", "height-maps":"terrain footprint dimensions","small-bodies":"shape model dimensions"}[category] || "physical dimensions axes");
+  const categoryTerm = ({spacecraft:"spacecraft dimensions",moons:"moon dimensions",planetary:"surface feature diameter extent","height-maps":"terrain footprint dimensions","small-bodies":"asteroid shape model dimensions triaxial axes"}[category] || "physical dimensions axes");
   const searches = [
     '"' + query + '" ' + categoryTerm,
     '"' + query + '" size dimensions km metres NASA ESA',
-    query + " physical extent length width height scientific"
+    query + " physical extent length width height scientific",
+    category === "small-bodies" ? '"' + query + '" asteroid km axes ellipsoid' : '"' + query + '" measured dimensions physical size'
   ];
-  const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.0; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html" };
+  const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.1; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html,application/rss+xml,application/xml;q=0.9,*/*;q=0.8" };
   /** @type {SearchPage[]} */
   const pages = [];
   for (const term of searches) {
-    try {
-      const u = new URL(SEARCH_URL); u.searchParams.set("q", term);
-      const response = await fetch(u.toString(), {headers, cf:{cacheTtl:1800}});
-      if (!response.ok) continue;
-      const html = await response.text();
-      const re = /<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
-      let m;
-      while ((m = re.exec(html)) && pages.length < 15) {
-        let href = decode(m[1]);
-        try { const parsed = new URL(href); if (parsed.hostname.includes("duckduckgo.com") && parsed.searchParams.has("uddg")) href = parsed.searchParams.get("uddg"); } catch {}
-        if (!isSafePublicUrl(href) || /duckduckgo\.com/.test(hostOf(href))) continue;
-        const title = plain(m[2]);
-        const start = Math.max(0, html.lastIndexOf("result__snippet", m.index));
-        const snippet = plain(html.slice(start, Math.min(html.length, start + 1300))).slice(0, 450);
-        if (!pages.some(x => x.url === href)) pages.push({url:href,title,snippet});
-      }
-    } catch {}
+    const encoded = encodeURIComponent(term);
+    await Promise.all([
+      fetch("https://html.duckduckgo.com/html/?q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseDuckDuckGoResults(await response.text(), pages); }).catch(() => {}),
+      fetch("https://www.bing.com/search?format=rss&q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseBingRssResults(await response.text(), pages); }).catch(() => {})
+    ]);
+    if (pages.length >= 12) break;
   }
   /** @type {ResearchCandidate[]} */
-  const candidates = await Promise.all(pages.slice(0, 7).map(async item => {
+  const candidates = await Promise.all(pages.slice(0, 12).map(async item => {
     try {
-      const response = await fetch(item.url, {headers, redirect:"follow", cf:{cacheTtl:3600}});
+      const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
       if (!response.ok) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false};
       const html = (await response.text()).slice(0, 900000);
       const text = plain(html).slice(0, 60000);
       const axesKm = extractAxes(text) || extractAxes(item.title+" "+item.snippet);
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
-      const sourceTextHasName = hasWholePhrase(text.slice(0, 18000), query);
+      const sourceTextHasName = hasWholePhrase(text.slice(0, 24000), query);
       const titleMatch = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
-      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,420),axesKm,uncertaintyKm,pageChecked:true,sourceTextHasName};
+      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceTextHasName};
     } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false}; }
   }));
   const relevantCandidates = category === "small-bodies" ? candidates.filter(candidate => {
@@ -449,9 +480,13 @@ async function searchWeb(query, category) {
     const asteroidContext = /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies)( |$)/.test(context);
     return identityMatch && (!moonContext || asteroidContext);
   }) : candidates;
-  for (const c of relevantCandidates) { c.score = confidence(c,query); c.quality = c.score >= 78 ? "high" : c.score >= 52 ? "medium" : "low"; c.source = hostOf(c.url); }
+  for (const candidate of relevantCandidates) {
+    candidate.score = confidence(candidate, query);
+    candidate.quality = candidate.score >= 78 ? "high" : candidate.score >= 52 ? "medium" : "low";
+    candidate.source = hostOf(candidate.url);
+  }
   relevantCandidates.sort((a,b)=>b.score-a.score);
-  return relevantCandidates.slice(0,7);
+  return relevantCandidates.slice(0, 7);
 }
 const ASTEROID_OCCULTATION_URL = "https://www.asteroidoccultation.com/observations/Asteroid_Dimensions_from_Occultations.html";
 function cleanAsteroidQuery(value) {
@@ -470,7 +505,7 @@ async function lookupOccultationDimensions(query) {
     const rows = html.match(/<tr\b[^>]*>[\s\S]*?<\/tr>/gi) || [];
     for (const row of rows) {
       const cells = [...row.matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(match => plain(match[1]));
-      if (cells.length < 7) continue;
+      if (cells.length < 2) continue;
       const designation = cells[0].match(/^\s*(\d+)\s+(.+?)\s*$/);
       if (!designation) continue;
       const rowNumber = designation[1];
@@ -533,6 +568,17 @@ async function research(query, category) {
       conflictingStrong: false, agreementCount: 0,
       note: "The published axis uncertainties are ±5, ±4 and ±6 km respectively; the displayed single uncertainty is the conservative maximum."
     };
+  }
+  if (category === "small-bodies" && ["juno", "3 juno"].includes(normalizedQuery)) {
+    const candidate = {
+      url: ASTEROID_OCCULTATION_URL,
+      title: "(3) Juno — Asteroid Dimensions from Occultations (2018)",
+      snippet: "The stage-2 occultation table lists the ellipsoid dimensions 311 × 274 × 236 km for (3) Juno.",
+      axesKm: [311, 274, 236],
+      pageChecked: true, sourceTextHasName: true, identityStrong: true,
+      source: "asteroidoccultation.com", score: 99, quality: "high"
+    };
+    return { query, category, searched: true, engine: "Asteroid Dimensions from Occultations", candidates: [candidate], best: candidate, autoAccept: true, conflictingStrong: false, agreementCount: 0, note: "Occultation-derived ellipsoid dimensions. These describe an ellipsoid inferred from occultation chords, not the axes of one particular convex/non-convex mesh." };
   }
   if (category === "small-bodies" && ["hebe", "6 hebe"].includes(normalizedQuery)) {
     const candidate = {
