@@ -863,6 +863,114 @@
       "measurement": "Approximate central spacecraft envelope",
       "configuration": "Central spacecraft without booms",
       "note": "NASA says the spacecraft without its booms fits approximately in a 4 m cube. Extended booms and antenna may make the complete model much larger."
+    },
+    {
+      "name": "Gale Crater terrain model",
+      "aliases": [
+        "Gale Crater",
+        "Curiosity Landing Site",
+        "Mars Gale Crater",
+        "Gale Crater (height-map collection)"
+      ],
+      "axesKm": [
+        200,
+        200
+      ],
+      "category": "height-maps",
+      "categoryAliases": [
+        "planetary"
+      ],
+      "sourceLabel": "NASA 3D Resources — Gale Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gale-crater/",
+      "measurement": "Published model footprint",
+      "configuration": "Default NASA STL size: about 11 cm across",
+      "note": "NASA states that the default-size STL covers approximately 200 km across. Terrain has 3× vertical exaggeration; horizontal footprint is used for scale."
+    },
+    {
+      "name": "Valles Marineris C terrain model",
+      "aliases": [
+        "Mars Valles Marineris C",
+        "Mars – Valles Marineris (C)",
+        "Mars   Valles Marineris (C)",
+        "Mars   Valles Marineris (C) (height-map collection)"
+      ],
+      "axesKm": [
+        1000,
+        1000
+      ],
+      "category": "height-maps",
+      "categoryAliases": [
+        "planetary"
+      ],
+      "sourceLabel": "NASA 3D Resources — Valles Marineris (C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris-c/",
+      "measurement": "Published model footprint",
+      "configuration": "Default NASA STL size: about 8 cm across",
+      "note": "NASA states that the model covers approximately 1,000 km across at the default size. Vertical exaggeration is not part of the horizontal scale."
+    },
+    {
+      "name": "Valles Marineris B terrain model",
+      "aliases": [
+        "Mars Valles Marineris B",
+        "Mars – Valles Marineris (B)",
+        "Mars   Valles Marineris (B)",
+        "Mars   Valles Marineris (B) (height-map collection)"
+      ],
+      "axesKm": [
+        3000,
+        600
+      ],
+      "category": "height-maps",
+      "categoryAliases": [
+        "planetary"
+      ],
+      "sourceLabel": "NASA 3D Resources — Valles Marineris (B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-valles-marineris/",
+      "measurement": "Published feature envelope",
+      "configuration": "NASA model with 2× vertical exaggeration",
+      "note": "NASA describes Valles Marineris as roughly 3,000 km long and up to 600 km wide; this is the feature envelope, not a separately published STL bounding box."
+    },
+    {
+      "name": "Moon surface near-side terrain model",
+      "aliases": [
+        "Moon near side",
+        "Moon (near side)",
+        "Moon near-side model"
+      ],
+      "axesKm": [
+        400,
+        400
+      ],
+      "category": "height-maps",
+      "categoryAliases": [
+        "planetary"
+      ],
+      "sourceLabel": "NASA 3D Resources — Moon",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon/",
+      "measurement": "Published model footprint",
+      "configuration": "Default NASA STL size: about 8 cm across",
+      "note": "NASA states that the near-side and far-side files each cover approximately 400 km on a side."
+    },
+    {
+      "name": "Moon surface far-side terrain model",
+      "aliases": [
+        "Moon far side",
+        "Moon (far side)",
+        "Moon far-side model"
+      ],
+      "axesKm": [
+        400,
+        400
+      ],
+      "category": "height-maps",
+      "categoryAliases": [
+        "planetary"
+      ],
+      "sourceLabel": "NASA 3D Resources — Moon",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon/",
+      "measurement": "Published model footprint",
+      "configuration": "Default NASA STL size: about 8 cm across",
+      "note": "NASA states that the near-side and far-side files each cover approximately 400 km on a side."
     }
   ]
 }
