@@ -40,3 +40,9 @@ The browser then reads the `extent` physical parameter, converts its axes to kil
 The Scaling workspace checks JPL SBDB `extent` first. If SBDB has no usable multi-axis extent (or the JPL lookup is temporarily unavailable), it checks `data/object-dimensions-index.json` for an exact object-name/number alias. This is a curated fallback of published shape-model or physical-axis measurements, not an unrestricted web search. Each match retains its source link, measurement description, and reported uncertainty where available. A mean/effective diameter is never silently converted into three axes.
 
 Add a fallback record only when its object identity, axis values, units, source, and uncertainty (if published) can be documented. Values in the index are in kilometres.
+
+## Object categories supported by Scaling
+
+Scaling uses the JPL SBDB proxy first for small bodies (asteroids and comets). For exact catalogue matches in the curated dimension index, moons and spacecraft use their category-specific published physical dimensions directly; this avoids accidentally resolving a moon or spacecraft name as an asteroid in SBDB.
+
+The curated index currently contains source-backed records for selected moons and spacecraft. Spacecraft records identify the configuration (for example, deployed or stowed, and whether booms/robotic arms are included). A missing record is reported as unavailable rather than guessed. Coverage is extended as new source-verified dimensions are added.
