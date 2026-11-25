@@ -179,7 +179,9 @@ function extractCatalogueFileCandidates(html, basePage, objectName = "") {
 }
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
   const wanted = norm(String(objectName || "").replace(/^\s*\(?#?\d+\)?\s*/i, ""));
-  const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop() || "");
+  const requestedSegments = new URL(requestedPage).pathname.split("/").filter(Boolean);
+  const requestedCategory = requestedSegments[0] || "";
+  const requestedSlug = norm(requestedSegments.pop() || "");
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
   while ((match = anchors.exec(html))) {
@@ -188,7 +190,7 @@ function findObjectPageFromListing(html, listingPage, objectName, requestedPage)
     let target; try { target = new URL(decode(hrefMatch[1]), listingPage); } catch { continue; }
     if (target.protocol !== "https:" || !CATALOGUE_HOSTS.has(target.hostname.toLowerCase())) continue;
     const segments = target.pathname.split("/").filter(Boolean);
-    if (segments.length !== 2 || !["asteroids","moons","comets","dwarf"].includes(segments[0])) continue;
+    if (segments.length !== 2 || segments[0] !== requestedCategory) continue;
     const label = norm(plain(match[2]) + " " + segments[1]);
     let score = 0;
     if (wanted && (" " + label + " ").includes(" " + wanted + " ")) score += 10;
