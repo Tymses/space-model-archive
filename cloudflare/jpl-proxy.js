@@ -272,6 +272,9 @@ async function resolveCataloguePage(value, objectName = "") {
       verified.push(file);
     } catch {}
   }
+  const dimensionText = current ? plain(current.html) : "";
+  const axesKm = extractAxes(dimensionText);
+  const uncertaintyKm = axesKm ? extractUncertainty(dimensionText) : null;
   return {
     page: (current?.page || requested).toString(),
     requestedPage: requested.toString(),
@@ -279,6 +282,10 @@ async function resolveCataloguePage(value, objectName = "") {
     searchedPages: [...new Set(searchedPages)],
     candidateCount: candidates.length,
     files: verified,
+    axesKm,
+    uncertaintyKm,
+    dimensionSourceUrl: (current?.page || requested).toString(),
+    dimensionSourceLabel: "3D Asteroid Catalogue",
     source: "3D Asteroid Catalogue"
   };
 }
