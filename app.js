@@ -190,11 +190,16 @@ routeHome(false);
 // Load complete source indexes rather than a small hand-picked sample.
 const expandedCatalogCounts = { nasa: 0, spaceRadar: 0, jpl: 0, smallBodyPackages: 0, errors: [] };
 function addCatalogModel(model) {
-  // Different catalogue entries may intentionally share one file URL:
-  // e.g. the same terrain mesh belongs in both Planetary and Height maps,
-  // while several archive records may link to one dataset landing page.
-  // Only stable catalogue IDs identify duplicate records.
-  const exists = MODELS.some(existing => existing.id === model.id);
+  // Keep the same asset when it represents a distinct category entry or a
+  // different archive record. Suppress only the same named model repeated
+  // under a different catalogue ID.
+  const name = String(model.name || "").trim().toLowerCase();
+  const exists = MODELS.some(existing =>
+    existing.id === model.id ||
+    (model.file && existing.file === model.file &&
+      existing.category === model.category &&
+      String(existing.name || "").trim().toLowerCase() === name)
+  );
   if (!exists) MODELS.push(model);
 }
 async function loadExpandedCatalogs() {
