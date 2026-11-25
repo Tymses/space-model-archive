@@ -53,3 +53,7 @@ The curated index currently contains source-backed records for selected moons an
 - **Moons:** exact-match NASA/PDS published shape dimensions; JPL SBDB is bypassed to avoid name collisions with asteroids.
 - **Spacecraft:** exact-match published envelope dimensions, with configuration notes (deployed/stowed, booms/arms included or excluded).
 - **Planetary terrain / height maps:** use the published horizontal footprint of the exact NASA terrain model where available (for example Gale Crater and selected Valles Marineris / lunar models). Vertical exaggeration is kept as a note and is not mistaken for horizontal scale. Other regions remain unavailable until their exact footprint is sourced; the parent planet diameter is never substituted.
+
+## Terrain / height-map coverage
+
+The terrain fallback index uses the published footprint of the exact source model where NASA provides one. Current examples include Gale Crater, Valles Marineris C, Tharsis, and the Apollo 11 landing-site relief. Vertical exaggeration is stored as a note and never multiplied into the horizontal footprint. For other terrain models, the exact region footprint must be documented before automatic scale calculation is enabled.
