@@ -855,7 +855,7 @@ loadExpandedCatalogs();
   try{
    const directRecord=await findCuratedDimensions([q],expectedCategory);
    if(lookupToken!==token)return;
-   if(directRecord&&directRecord.category!=="small-bodies"){
+   if(directRecord&&(directRecord.category!=="small-bodies"||["iris","7 iris"].includes(normalizeObjectQuery(q)))){
     const longest=Math.max(...directRecord.axesKm);
     showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
