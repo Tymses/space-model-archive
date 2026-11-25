@@ -243,7 +243,8 @@ async function resolveCataloguePage(value, objectName = "") {
     try {
       let probe, probeUrl = file.url;
       for (let hop = 0; hop <= 3; hop++) {
-        probe = await fetch(probeUrl, { headers: { Range: "bytes=0-8191", Accept: "*/*", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.0)" }, redirect: "manual", cf: { cacheTtl: 900 } });
+        const probeHeaders = { Range: "bytes=0-8191", Accept: "*/*", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.1)", "Referer": (current?.page || requested).origin + "/", "Origin": (current?.page || requested).origin };
+        probe = await fetch(probeUrl, { headers: probeHeaders, redirect: "manual", cf: { cacheTtl: 900 } });
         if (probe.status === 403 && probeHeaders.Range) { try { await probe.body?.cancel(); } catch {} delete probeHeaders.Range; probe = await fetch(probeUrl, { headers: probeHeaders, redirect: "manual", cf: { cacheTtl: 900 } }); }
         if (![301,302,303,307,308].includes(probe.status)) break;
         const location = probe.headers.get("Location");
