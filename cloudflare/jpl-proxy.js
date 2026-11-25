@@ -139,7 +139,23 @@ async function fetchCatalogueHtml(value) {
   return { page: pageTarget, html: (await response.text()).slice(0, 2500000) };
 }
 
-function extractCatalogueFileCandidates(html, basePage) {
+function objectIdentityTokens(objectName, objectPage) {
+  let slug = "";
+  try { slug = decodeURIComponent(new URL(objectPage).pathname.split("/").filter(Boolean).pop() || ""); } catch {}
+  const cleanedName = String(objectName || "").replace(/^[a-z]+\d+\s*/i, "").trim();
+  const values = [cleanedName, slug.replace(/^[a-z]+\d+[-_ ]*/i, ""), slug];
+  return [...new Set(values.map(norm).filter(value => value.length >= 2))];
+}
+function fileBelongsToObject(fileUrl, objectName, objectPage) {
+  let filename = "";
+  try { filename = decodeURIComponent(new URL(fileUrl).pathname.split("/").pop() || "").replace(/\.(?:obj|ply|glb|gltf|stl)$/i, ""); } catch { return false; }
+  const fileNorm = norm(filename);
+  const tokens = objectIdentityTokens(objectName, objectPage);
+  // Never attach a shared or unrelated file (for example J1_Io.ply) to
+  // another object's remote candidate.
+  return tokens.some(token => fileNorm === token || fileNorm.startsWith(token + " ") || fileNorm.endsWith(" " + token) || fileNorm.includes(" " + token + " "));
+}
+function extractCatalogueFileCandidates(html, basePage, objectName = "") {
   const source = decode(String(html || "")).replace(/\\\//g, "/");
   const raw = [];
   const attr = /(?:href|src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
@@ -153,14 +169,15 @@ function extractCatalogueFileCandidates(html, basePage) {
     try { target = new URL(decode(value).replace(/\\\//g, "/"), basePage); } catch { continue; }
     const ext = assetExtension(target.toString());
     if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== "https:" || target.username || target.password) continue;
+    if (!fileBelongsToObject(target.toString(), objectName, basePage.toString())) continue;
     if (found.some(item => item.url === target.toString())) continue;
     found.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split("/").pop() || ext.toUpperCase() });
   }
   return found;
 }
-
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
   const wanted = norm(String(objectName || "").replace(/^[a-z]+\d+\s*/i, ""));
+  const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop() || "");
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
   while ((match = anchors.exec(html))) {
@@ -192,7 +209,7 @@ async function resolveCataloguePage(value, objectName = "") {
     current = null;
     var firstError = error;
   }
-  let candidates = current ? extractCatalogueFileCandidates(current.html, current.page) : [];
+  let candidates = current ? extractCatalogueFileCandidates(current.html, current.page, objectName) : [];
   // Some catalogue pages render download buttons from embedded scripts or require
   // opening the object page from the main list. If the supplied page has no file
   // links, search the matching object link in its category index and inspect it.
@@ -208,7 +225,7 @@ async function resolveCataloguePage(value, objectName = "") {
           const object = await fetchCatalogueHtml(objectPage.toString());
           searchedPages.push(object.page.toString());
           current = object;
-          candidates = extractCatalogueFileCandidates(object.html, object.page);
+          candidates = extractCatalogueFileCandidates(object.html, object.page, objectName);
         }
       } catch (error) {
         if (!current && !firstError) firstError = error;
