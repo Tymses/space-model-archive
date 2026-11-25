@@ -7,6 +7,43 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:5500",
   "http://127.0.0.1:5500"
 ]);
+const ASSET_HOSTS = new Set([
+  "www.spaceradar.ai",
+  "models.spaceradar.ai",
+  "models.opensourcerobotics.dev"
+]);
+function validateAssetUrl(value) {
+  let url;
+  try { url = new URL(value); } catch { throw new Error("Invalid asset URL."); }
+  if (url.protocol !== "https:" || url.username || url.password || !ASSET_HOSTS.has(url.hostname.toLowerCase()) || (url.port && url.port !== "443")) {
+    throw new Error("Asset host is not on the approved source list.");
+  }
+  return url;
+}
+async function fetchApprovedAsset(value, request) {
+  let current = validateAssetUrl(value);
+  for (let hop = 0; hop <= 3; hop++) {
+    const upstreamHeaders = { "Accept": request.headers.get("Accept") || "*/*", "User-Agent": "SPACEMESHER-Preview/1.0" };
+    const range = request.headers.get("Range");
+    if (range) upstreamHeaders.Range = range;
+    const response = await fetch(current.toString(), { method: "GET", headers: upstreamHeaders, redirect: "manual", cf: { cacheTtl: 86400 } });
+    if ([301,302,303,307,308].includes(response.status)) {
+      const location = response.headers.get("Location");
+      if (!location || hop === 3) throw new Error("The model source returned too many redirects.");
+      current = validateAssetUrl(new URL(location, current).toString());
+      continue;
+    }
+    const headers = new Headers();
+    for (const name of ["Content-Type","Content-Length","Content-Range","Accept-Ranges","ETag","Last-Modified"]) {
+      const value = response.headers.get(name);
+      if (value) headers.set(name, value);
+    }
+    headers.set("Cache-Control", "public, max-age=3600");
+    headers.set("X-Content-Type-Options", "nosniff");
+    return new Response(response.body, { status: response.status, headers });
+  }
+  throw new Error("Unable to retrieve model asset.");
+}
 
 function cors(origin) {
   return {
@@ -176,6 +213,18 @@ export default {
     if (request.method === "OPTIONS") return new Response(null,{status:204,headers});
     if (request.method !== "GET") return new Response("Method not allowed",{status:405,headers});
     const incoming = new URL(request.url);
+    if (incoming.searchParams.get("action") === "asset") {
+      try {
+        const assetUrl = incoming.searchParams.get("url") || "";
+        if (!assetUrl || assetUrl.length > 2048) return new Response("A valid asset URL is required.", {status:400,headers});
+        const assetResponse = await fetchApprovedAsset(assetUrl, request);
+        const assetHeaders = new Headers(assetResponse.headers);
+        for (const [key,value] of Object.entries(headers)) assetHeaders.set(key,value);
+        return new Response(assetResponse.body,{status:assetResponse.status,headers:assetHeaders});
+      } catch (error) {
+        return new Response(String(error.message || "Asset proxy request failed."), {status:400,headers:{...headers,"X-Asset-Proxy-Error":"The Worker could not retrieve this model source.","Cache-Control":"no-store"}});
+      }
+    }
     const query = (incoming.searchParams.get("sstr") || incoming.searchParams.get("q") || "").trim();
     if (!query || query.length > 160) return json({error:"Provide an object or model name (max. 160 characters)."},400,headers);
     if (incoming.searchParams.get("action") === "research") {
