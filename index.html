@@ -7,42 +7,42 @@
 <meta name="description" content="SPACEMESHER — find, explore and prepare space-related 3D models for 3D printing.">
 <title>SPACEMESHER — Space-related 3D Models</title>
 <link rel="icon" href="assets/favicon.svg?v=20261125-2" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=20261125-12">
+<link rel="stylesheet" href="styles.css?v=20261125-13">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script src="config.js?v=20261125-3"></script>
-<script src="app.js?v=20261125-35" defer></script>
+<script src="app.js?v=20261125-36" defer></script>
 </head>
 <body>
 <header class="app-bar">
   <a class="brand" href="#home" aria-label="SPACEMESHER home"><img class="brand-mark" src="assets/spacemesher-mark.svg" alt=""><span class="brand-word">SPACEMESHER</span></a>
-  <nav class="top-actions" aria-label="Main navigation"><a href="#scaling" id="scaling-link">Scaling</a><a href="#about" id="about-link">About</a><a href="https://github.com/Tymses/space-model-archive" target="_blank" rel="noopener">Project <span aria-hidden="true">↗</span></a></nav>
+  <nav class="top-actions" aria-label="Main navigation"><a href="#scaling" id="scaling-link" title="Open the workspace to inspect a 3D file, calculate scale and check printer fit">Scaling &amp; 3D print</a><a href="#guide" id="guide-link">Guide</a><a href="https://github.com/Tymses/space-model-archive" target="_blank" rel="noopener">Project <span aria-hidden="true">↗</span></a></nav>
 </header>
 <div class="breadcrumb-wrap"><nav class="breadcrumbs" id="breadcrumbs" aria-label="Breadcrumb"><span>Home</span></nav></div>
 <main id="main">
 <section class="home-view" id="home-view">
-  <div class="page-heading"><div><p class="overline">SPACEMESHER</p><h1>Explore the archive</h1><p class="subheading">Choose a collection to get started.</p></div><span class="archive-count">05 collections</span></div>
+  <div class="page-heading"><div><p class="overline">SPACEMESHER</p><h1>Explore the archive</h1><p class="subheading">Choose a collection to explore 3D models, scientific data and tools.</p></div><span class="archive-count">05 collections</span></div>
   <div class="category-grid" id="category-grid">
-    <button class="category-card" data-category="spacecraft"><span class="category-index">01</span><span class="category-icon" aria-hidden="true">⌁</span><span class="category-name">Spacecraft</span><span class="category-desc">Satellites, probes, landers and crewed vehicles</span><span class="category-arrow" aria-hidden="true">↗</span></button>
-    <button class="category-card" data-category="planetary"><span class="category-index">02</span><span class="category-icon" aria-hidden="true">◒</span><span class="category-name">Planetary features</span><span class="category-desc">Craters, mountains, valleys and surface landmarks</span><span class="category-arrow" aria-hidden="true">↗</span></button>
-    <button class="category-card" data-category="small-bodies"><span class="category-index">03</span><span class="category-icon" aria-hidden="true">✺</span><span class="category-name">Asteroids &amp; comets</span><span class="category-desc">Small bodies, their shapes, surfaces and missions</span><span class="category-arrow" aria-hidden="true">↗</span></button>
-    <button class="category-card" data-category="moons"><span class="category-index">04</span><span class="category-icon" aria-hidden="true">◕</span><span class="category-name">Moons</span><span class="category-desc">Natural satellites and their shape models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="spacecraft" title="Explore 3D models of satellites, probes, landers and crewed spacecraft"><span class="category-index">01</span><span class="category-icon" aria-hidden="true">⌁</span><span class="category-name">Spacecraft</span><span class="category-desc">Satellites, probes, landers and crewed vehicles</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="planetary" title="Explore 3D models of planetary surface features and terrain"><span class="category-index">02</span><span class="category-icon" aria-hidden="true">◒</span><span class="category-name">Planetary features</span><span class="category-desc">Craters, mountains, valleys and surface landmarks</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="small-bodies" title="Explore asteroids, comets, dwarf planets and meteorite samples"><span class="category-index">03</span><span class="category-icon" aria-hidden="true">✺</span><span class="category-name">Asteroids &amp; comets</span><span class="category-desc">Small bodies, their shapes, surfaces and missions</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="moons" title="Explore natural satellites and their 3D shape models"><span class="category-index">04</span><span class="category-icon" aria-hidden="true">◕</span><span class="category-name">Moons</span><span class="category-desc">Natural satellites and their shape models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
     <div class="category-divider"><span>Terrain data &amp; generation</span></div>
-    <button class="category-card" data-category="height-maps"><span class="category-index">05 · DATA COLLECTION</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Height maps</span><span class="category-desc">Printable terrain meshes, elevation data and tools for creating 3D terrain</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="height-maps" title="Find elevation data and tools that turn planetary terrain into printable 3D geometry"><span class="category-index">05 · DATA COLLECTION</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Height maps</span><span class="category-desc">Printable terrain meshes, elevation data and tools for creating 3D terrain</span><span class="category-arrow" aria-hidden="true">↗</span></button>
   </div>
-  <a class="home-scaling-link" href="#scaling" id="home-scaling-link"><span><span class="overline">PRINT WORKSPACE</span><strong>Scaling &amp; 3D Print</strong><small>Scale archive models or upload your own 3D file.</small></span><span class="home-scaling-arrow" aria-hidden="true">↗</span></a>
+  <a class="home-scaling-link" href="#scaling" id="home-scaling-link" title="Upload your own 3D file or prepare an archive model for printing"><span><span class="overline">PRINT WORKSPACE</span><strong>Scaling &amp; 3D Print</strong><small>Scale archive models or upload your own 3D file.</small></span><span class="home-scaling-arrow" aria-hidden="true">↗</span></a>
 </section>
 <section class="collection-view" id="collection-view" hidden>
   <div class="page-heading collection-heading"><div><p class="overline" id="collection-overline">COLLECTION</p><h1 id="collection-title">Spacecraft</h1><p class="subheading" id="collection-description"></p></div><span class="archive-count" id="result-count"></span></div>
   <div class="collection-tools">
-    <label class="search-field"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search this collection" autocomplete="off"><kbd>/</kbd></label>
-    <label class="filter-field"><span>Source</span><select id="source-filter"><option value="all">All sources</option></select></label>
-    <label class="filter-field"><span>Type</span><select id="type-filter"><option value="all">All types</option></select></label>
+    <label class="search-field" title="Search model names, types and source descriptions. Press / to jump to search."><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search this collection" autocomplete="off" aria-label="Search this collection"><kbd>/</kbd></label>
+    <label class="filter-field" title="Show entries from one provider only"><span>Source</span><select id="source-filter"><option value="all">All sources</option></select></label>
+    <label class="filter-field" title="Narrow results by model, data or entry type"><span>Type</span><select id="type-filter"><option value="all">All types</option></select></label>
   </div>
   <div class="collection-results collection-dropdowns">
-    <details class="collection-dropdown" id="models-group"><summary><span class="dropdown-heading"><span class="overline">MODEL FILES</span><strong>Downloadable models</strong></span><span class="group-count" id="model-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="model-grid"></div></details>
-    <details class="collection-dropdown" id="remote-models-group"><summary><span class="dropdown-heading"><span class="overline">ON-DEMAND</span><strong>Remote model candidates</strong></span><span class="group-count" id="remote-model-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="remote-model-grid"></div></details>
-    <details class="collection-dropdown" id="sources-group"><summary><span class="dropdown-heading"><span class="overline">REFERENCE</span><strong>Sources</strong></span><span class="group-count" id="source-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="source-grid"></div></details>
-    <details class="collection-dropdown" id="generators-group"><summary><span class="dropdown-heading"><span class="overline">TOOLS</span><strong>Generators</strong></span><span class="group-count" id="generator-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="generator-grid"></div></details>
+    <details class="collection-dropdown" id="models-group"><summary title="Files with a checked direct model-file link. These can be downloaded from the archive entry."><span class="dropdown-heading"><span class="overline">MODEL FILES</span><strong>Downloadable models</strong></span><span class="group-count" id="model-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="model-grid"></div></details>
+    <details class="collection-dropdown" id="remote-models-group"><summary title="Object pages that may contain model files. Open one and use Find model files to check the original page."><span class="dropdown-heading"><span class="overline">ON-DEMAND</span><strong>Remote model candidates</strong></span><span class="group-count" id="remote-model-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="remote-model-grid"></div></details>
+    <details class="collection-dropdown" id="sources-group"><summary title="Original catalogues, scientific datasets and viewers. These are references, not necessarily direct model downloads."><span class="dropdown-heading"><span class="overline">REFERENCE</span><strong>Sources</strong></span><span class="group-count" id="source-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="source-grid"></div></details>
+    <details class="collection-dropdown" id="generators-group"><summary title="External tools that generate or export terrain and other 3D geometry from your settings."><span class="dropdown-heading"><span class="overline">TOOLS</span><strong>Generators</strong></span><span class="group-count" id="generator-result-count"></span><span class="dropdown-chevron" aria-hidden="true"></span></summary><div class="result-grid" id="generator-grid"></div></details>
   </div>
   <p class="collection-footnote" id="collection-footnote"></p>
 </section>
@@ -63,7 +63,7 @@
   <div class="scale-panel-heading"><div><p class="overline">PRINT PREPARATION</p><h2>Scale &amp; build-volume check</h2><p class="scale-intro">The preview measures the source geometry. Enter a verified real-world dimension to calculate the source file’s original scale and receive print-scale recommendations for the selected build volume.</p></div><span class="measurement-state" id="measurement-state">Measuring model…</span></div>
   <div class="scale-grid">
     <div class="scale-controls">
-      <label class="control-label" for="printer-profile">Printer profile</label>
+      <label class="control-label" for="printer-profile" title="Select the usable build volume of your printer. Choose Custom to enter your own dimensions.">Printer profile</label>
       <select id="printer-profile" class="scale-input"><option value="p2s">Bambu Lab P2S · 256 × 256 × 256 mm</option><option value="prusa-xl-5">Original Prusa XL 5-Toolhead · 360 × 360 × 360 mm</option><option value="centauri-carbon">ELEGOO Centauri Carbon · 256 × 256 × 256 mm</option><option value="custom">Custom build volume</option></select>
       <div class="custom-volume" id="custom-volume" hidden>
         <label>Width (mm)<input class="scale-input" id="bed-x" type="number" min="1" value="256"></label>
@@ -71,8 +71,8 @@
         <label>Height (mm)<input class="scale-input" id="bed-z" type="number" min="1" value="256"></label>
       </div>
       <div class="dimension-inputs">
-        <label>Verified real-world longest axis (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
-        <label>Desired scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
+        <label title="The largest published physical dimension of the real object, in millimetres. Leave blank if you cannot verify it.">Verified real-world longest axis (mm)<input class="scale-input" id="real-length" type="number" min="0.001" step="any" placeholder="e.g. 12200"></label>
+        <label title="Optional: enter a scale such as 100 for 1:100. Leave blank for an automatic recommendation.">Desired scale denominator (1 : n)<input class="scale-input" id="scale-denominator" type="number" min="0.001" step="any" placeholder="e.g. 100"></label>
       </div>
       <p class="field-hint">Enter only the real-world dimension to get an automatic recommendation. Add a desired denominator to test a specific scale. Real dimensions are never guessed.</p>
     </div>
@@ -98,7 +98,7 @@
       <div class="preview-toolbar"><span>3D MODEL</span><span id="scaling-format">UPLOAD A MODEL</span></div>
       <div class="scaling-preview-stage" id="scaling-preview-stage"><div class="preview-placeholder"><span>◈</span><p>Upload a downloaded STL, OBJ, PLY or GLB model.</p></div></div>
       <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model files</label><input id="scaling-file" type="file" multiple accept=".stl,.obj,.ply,.glb,.gltf,.bin,.mtl,.png,.jpg,.jpeg,.webp"><span>STL · OBJ · PLY · GLB · GLTF</span></div>
-      <div class="scaling-geometry-line"><span>Measured model size</span><strong id="scaling-source-dimensions">—</strong><label>File unit<select class="scale-input" id="scaling-units"><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option><option value="in">in</option></select></label></div>
+      <div class="scaling-geometry-line"><span>Measured model size</span><strong id="scaling-source-dimensions">—</strong><label title="STL, OBJ and PLY do not reliably store physical units. Choose the unit used by the file coordinates.">File unit<select class="scale-input" id="scaling-units"><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option><option value="in">in</option></select></label></div>
     </section>
     <section class="scaling-settings-panel">
       <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
@@ -110,7 +110,7 @@
       </section>
       <div class="scaling-object-search">
         <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
-        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button">Find dimensions</button></div>
+        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button" title="Search scientific records for the real object dimensions. Review the source before relying on a result.">Find dimensions</button></div>
         <p class="field-hint" id="scaling-lookup-status" aria-live="polite">The model name is detected automatically. Scientific databases are checked first, followed by broader public-web research.</p>
         <div class="scaling-research-panel" id="scaling-research-panel" hidden aria-live="polite">
           <div class="research-scan" aria-hidden="true">
@@ -135,7 +135,7 @@
       </div>
       <div class="scaling-printer-block">
         <div class="scaling-section-heading"><div><p class="overline">STEP 2</p><h2>Printer build volume</h2></div></div>
-        <label for="scaling-printer-profile">Printer</label>
+        <label for="scaling-printer-profile" title="The build volume limits the largest printable bounding box.">Printer</label>
         <select id="scaling-printer-profile" class="scale-input"><option value="p2s">Bambu Lab P2S · 256 × 256 × 256 mm</option><option value="prusa-xl-5">Original Prusa XL 5-Toolhead · 360 × 360 × 360 mm</option><option value="centauri-carbon">ELEGOO Centauri Carbon · 256 × 256 × 256 mm</option><option value="custom">Custom build volume</option></select>
         <div class="custom-volume" id="scaling-custom-volume" hidden>
           <label>Width (mm)<input class="scale-input" id="scaling-bed-x" type="number" min="1" value="256"></label>
@@ -162,11 +162,41 @@
     <div class="fit-result" id="scaling-fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="scaling-fit-title">Awaiting model and object dimensions</strong><p id="scaling-fit-description">The model is checked against the selected printer once its real-world dimensions are found.</p></div></div>
     <div class="scaling-recommendation-heading"><strong>Usual scales that fit your printer</strong><span id="scaling-orientation">—</span></div>
     <div class="scaling-scale-options" id="scaling-recommendations"><p>Load a model and identify its object to calculate scale suggestions.</p></div>
-    <div class="scaling-export-row"><button class="upload-button scaling-export-button" id="scaling-download-scaled" type="button">Download scaled STL</button><span>Exports the selected scale as a binary STL in millimetres.</span></div><p class="scale-disclaimer">The suggestions use the model's longest physical axis and six 90° axis-aligned orientations. This is a bounding-box check, not a slicing simulation. The exported STL contains the selected scale; the original source file remains unchanged.</p>
+    <div class="scaling-export-row"><button class="upload-button scaling-export-button" id="scaling-download-scaled" type="button" title="Export the selected scale as a new STL file in millimetres. The original file is unchanged.">Download scaled STL</button><span>Exports the selected scale as a binary STL in millimetres.</span></div><p class="scale-disclaimer">The suggestions use the model's longest physical axis and six 90° axis-aligned orientations. This is a bounding-box check, not a slicing simulation. The exported STL contains the selected scale; the original source file remains unchanged.</p>
   </section>
 </section>
-<section class="about-view" id="about-view" hidden><p class="overline">ABOUT SMA</p><h1>A clear index for space models.</h1><p class="subheading">Space Model Archive organises links to original 3D model sources. The goal is to make geometry easier to discover while keeping provenance, scale, dimensions and licensing transparent.</p><p>Models remain hosted by their original providers wherever possible. SMA does not include a slicer: users prepare and slice files in their own software. Print assessments will only appear when supported by actual test data.</p><a href="#home" class="text-back">← Back to home</a></section>
+<section class="about-view guide-view" id="about-view" hidden>
+  <p class="overline">SPACEMESHER GUIDE</p><h1>From space data to a physical model.</h1>
+  <p class="subheading">A compact guide to what this archive contains, where the models come from and how to turn a digital model into a print.</p>
+  <div class="guide-tabs" role="tablist" aria-label="Guide topics">
+    <button class="guide-tab is-active" id="guide-tab-purpose" role="tab" aria-selected="true" aria-controls="guide-panel-purpose" data-guide-tab="purpose">Purpose</button>
+    <button class="guide-tab" id="guide-tab-sources" role="tab" aria-selected="false" aria-controls="guide-panel-sources" data-guide-tab="sources">Sources</button>
+    <button class="guide-tab" id="guide-tab-generators" role="tab" aria-selected="false" aria-controls="guide-panel-generators" data-guide-tab="generators">Generators</button>
+    <button class="guide-tab" id="guide-tab-printing" role="tab" aria-selected="false" aria-controls="guide-panel-printing" data-guide-tab="printing">3D printing</button>
+  </div>
+  <div class="guide-panel" id="guide-panel-purpose" role="tabpanel" aria-labelledby="guide-tab-purpose">
+    <h2>What is SPACEMESHER?</h2><p>SPACEMESHER is an index for discovering space-related 3D geometry: spacecraft, planetary landscapes, asteroids, comets, moons and height maps. It brings together files and links from scientific institutions, mission teams and independent projects.</p>
+    <p>The archive helps you find a model, inspect its geometry, understand where it came from and—where reliable measurements exist—compare its scale with the real object. Original files remain with their providers whenever possible; SPACEMESHER links to them rather than claiming ownership.</p>
+    <p><strong>Important:</strong> a catalogue entry is not always a downloadable model. The separate sections tell you whether an entry is a verified file, a page to investigate, a source or a generator.</p>
+  </div>
+  <div class="guide-panel" id="guide-panel-sources" role="tabpanel" aria-labelledby="guide-tab-sources" hidden>
+    <h2>Where do the models come from?</h2><p>Sources include NASA and JPL, planetary data archives, research catalogues, ESA and independent 3D projects. Each entry links back to its original provider so you can check the dataset, licence, credits and available formats.</p>
+    <ul><li><strong>Downloadable models:</strong> a direct model file has been identified and checked.</li><li><strong>Remote model candidates:</strong> SPACEMESHER opens the original object page and checks whether usable OBJ/PLY files are available. Only files that pass the check are promoted to downloads.</li><li><strong>Sources:</strong> catalogues, scientific datasets and viewers. They may contain additional files, but are not necessarily direct downloads.</li></ul>
+    <p>Always read the original provider's licence and attribution terms before reusing or redistributing a model. A source link is not itself a licence grant.</p>
+  </div>
+  <div class="guide-panel" id="guide-panel-generators" role="tabpanel" aria-labelledby="guide-tab-generators" hidden>
+    <h2>What are generators?</h2><p>A generator creates geometry from selected data and settings instead of offering one fixed model file. For example, terrain tools can let you choose a planet, region, map resolution, vertical relief and tile size, then export a mesh for printing.</p>
+    <p>NASA Solar System Treks and Terrain Print are examples. Choose the world or terrain area in the external tool, configure the output and export the generated 3D file. The generator runs on its own provider's website; SPACEMESHER is the directory, not the generator itself.</p>
+  </div>
+  <div class="guide-panel" id="guide-panel-printing" role="tabpanel" aria-labelledby="guide-tab-printing" hidden>
+    <h2>The 3D-printing workflow</h2>
+    <ol class="print-workflow"><li><strong>Design / source data</strong><span>Create geometry in CAD or obtain a scientific model or terrain export.</span></li><li><strong>3D file</strong><span>Save or download a format such as STL, 3MF, OBJ, PLY, GLB or STEP. Not every format is accepted by every slicer.</span></li><li><strong>Slicer</strong><span>Open the model in software such as Bambu Studio, OrcaSlicer or PrusaSlicer. Orient it, choose material, layer height, supports and print settings.</span></li><li><strong>G-code</strong><span>The slicer converts the prepared model and settings into printer instructions (usually G-code).</span></li><li><strong>Transfer</strong><span>Send the G-code over the network or copy it to a memory card / USB drive, depending on the printer.</span></li><li><strong>Printer</strong><span>The printer reads the instructions and builds the object layer by layer.</span></li></ol>
+    <p><strong>SPACEMESHER does not include a slicer and does not send G-code to your printer.</strong> Its Scaling workspace previews geometry, calculates scale and checks a bounding box against a build volume. This is not a slicing simulation and cannot guarantee a successful print.</p>
+    <p><strong>Tip:</strong> GLB/glTF normally stores dimensions in metres. STL, OBJ and PLY may not specify units, so check the source documentation or choose the correct file unit yourself.</p>
+  </div>
+  <a href="#home" class="text-back">← Back to home</a>
+</section>
 </main>
-<footer class="footer"><span>SPACE MODEL ARCHIVE</span><span>Independent index · Original sources credited</span><a href="https://github.com/Tymses/space-model-archive" target="_blank" rel="noopener">GitHub ↗</a></footer>
+<footer class="footer"><span>SPACEMESHER</span><span>Independent index · Original sources credited</span><a href="https://github.com/Tymses/space-model-archive" target="_blank" rel="noopener">GitHub ↗</a></footer>
 </body>
 </html>
