@@ -161,7 +161,6 @@ function extractCatalogueFileCandidates(html, basePage) {
 
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
   const wanted = norm(String(objectName || "").replace(/^[a-z]+\d+\s*/i, ""));
-  const wanted = norm(String(objectName || "").replace(/^[a-z]+\d+\s*/i, ""));
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
   while ((match = anchors.exec(html))) {
