@@ -163,6 +163,7 @@ function extractCatalogueFileCandidates(html, basePage, objectName = "") {
   while ((match = attr.exec(source)) && raw.length < 300) raw.push(match[1]);
   const urlPattern = /(?:https?:\/\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?|\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?)/gi;
   while ((match = urlPattern.exec(source)) && raw.length < 500) raw.push(match[0]);
+  /** @type {ModelFileCandidate[]} */
   const found = [];
   for (const value of raw) {
     let target;
@@ -447,6 +448,7 @@ async function research(query, category) {
 
 export default {
   async fetch(request) {
+    const incoming = new URL(request.url);
     const origin = request.headers.get("Origin") || "";
     if (!ALLOWED_ORIGINS.has(origin)) return new Response("Origin not allowed", {status:403});
     const headers = cors(origin);
