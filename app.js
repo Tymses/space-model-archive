@@ -187,7 +187,7 @@ function renderCollection(){
   description:x.remoteUnavailable&&x.description?x.description:(["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download."),
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
- const remotePageUrls=new Set([...MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl),...resolvedRemotePages]);
+ const remotePageUrls=new Set(MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl));
  const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&matchesSearch(q,[x.name,x.type,x.description,x.source,x.url])&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
@@ -242,7 +242,7 @@ window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")ro
 routeHome(false);
 
 
-const resolvedRemotePages = new Set();
+// Remote model files are resolved per object and are never stored in a session cache.
 const MOON_PAGE_SLUGS = {
  "Moon":"E1-Moon","Io":"J1-Io","Europa":"J2-Europa","Ganymede":"J3-Ganymede","Callisto":"J4-Callisto","Amalthea":"J5-Amalthea","Thebe":"J14-Thebe",
  "Phobos":"M1-Phobos","Deimos":"M2-Deimos","Triton":"N1-Triton","Larissa":"N7-Larissa","Proteus":"N8-Proteus","Charon":"P1-Charon",
@@ -305,17 +305,15 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    if(currentCategory)renderCollection();
    return;
   }
-  resolvedRemotePages.add(model.remotePageUrl);
-  const parentIndex=MODELS.indexOf(model);if(parentIndex>=0)MODELS.splice(parentIndex,1);
-  const added=[];
-  files.forEach((file,index)=>{
+  // Keep resolved files local to this detail view. Do not mutate MODELS,
+  // promote variants into the collection, or reuse results for another object.
+  const variants=files.map((file,index)=>{
    const size=file.sizeBytes?file.sizeBytes>=1000000?(file.sizeBytes/1000000).toFixed(1)+" MB":Math.round(file.sizeBytes/1000)+" kB":"Size not reported";
-   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,realDimensionsKm:Array.isArray(result.axesKm)?result.axesKm:null,realLongestAxisKm:Array.isArray(result.axesKm)&&result.axesKm.length?Math.max(...result.axesKm):null,realDimensionUrl:result.dimensionSourceUrl||model.remotePageUrl,realDimensionSource:result.dimensionSourceLabel||"3D Asteroid Catalogue",realLongestAxisUncertaintyKm:Number.isFinite(result.uncertaintyKm)?result.uncertaintyKm:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
-   added.push(variant);addCatalogModel(variant);
+   return {...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",credit:model.credit||model.name+": 3D Asteroid Catalogue",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,realDimensionsKm:Array.isArray(result.axesKm)?result.axesKm:null,realLongestAxisKm:Array.isArray(result.axesKm)&&result.axesKm.length?Math.max(...result.axesKm):null,realDimensionUrl:result.dimensionSourceUrl||model.remotePageUrl,realDimensionSource:result.dimensionSourceLabel||"3D Asteroid Catalogue",realLongestAxisUncertaintyKm:Number.isFinite(result.uncertaintyKm)?result.uncertaintyKm:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
   });
-  statusNode.textContent=added.length+" erreichbare Modelldatei(en) gefunden. Die Varianten wurden in „Downloadable Models“ übernommen; der reine Seitenverweis wurde entfernt.";
+  statusNode.textContent=variants.length+" erreichbare Modelldatei(en) für "+model.name+" gefunden. Diese Treffer gelten nur für den geöffneten Eintrag und werden nicht zwischengespeichert.";
   button.hidden=true;button.textContent="Files found";variantsNode.replaceChildren();
-  added.forEach(variant=>{
+  variants.forEach(variant=>{
    const row=document.createElement("div");row.className="remote-variant-row";
    const label=document.createElement("span");label.textContent=variant.name+" · "+variant.format+" · "+variant.size;
    const preview=document.createElement("button");preview.type="button";preview.className="action-link";preview.textContent="Preview / Scaling";preview.addEventListener("click",()=>routeScaling(variant));
@@ -330,6 +328,11 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
      anchor.href=objectUrl;anchor.download=variant.name.replace(/[^a-z0-9_-]+/gi,"-")+"."+variant.format.toLowerCase();
      document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
     } catch(error) { statusNode.textContent="Download fehlgeschlagen: "+error.message; }
+    finally { download.disabled=false; }
+   });
+   row.append(label,preview,download);variantsNode.append(row);
+  });
+ } catch(error) { statusNode.textContent="Download fehlgeschlagen: "+error.message; }
     finally { download.disabled=false; }
    });
    row.append(label,preview,download);variantsNode.append(row);
