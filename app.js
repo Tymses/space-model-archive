@@ -276,7 +276,16 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   const resolveUrl=new URL(workerActionUrl("resolve",model.remotePageUrl));resolveUrl.searchParams.set("name",model.name);const response=await fetch(resolveUrl.toString(),{headers:{Accept:"application/json"}});
   const result=await response.json();
   if(!response.ok)throw new Error(result.detail||result.error||("HTTP "+response.status));
-  loader.hidden=true;const files=Array.isArray(result.files)?result.files:[];
+  loader.hidden=true;
+  const returnedFiles=Array.isArray(result.files)?result.files:[];
+  const expectedObjectName=normalizeSearchText(String(model.name||"").replace(/^\\s*\\(\\s*#?\\d+\\s*\\)\\s*/,"").replace(/^\\s*#?\\d+\\s+/,"")).trim();
+  const files=returnedFiles.filter(file=>{
+   const filename=normalizeSearchText([file.label,file.url].filter(Boolean).join(" "));
+   return expectedObjectName&&filename.includes(expectedObjectName);
+  });
+  if(returnedFiles.length&&!files.length){
+   throw new Error("The Worker returned "+returnedFiles.length+" file(s), but none of their filenames identify "+model.name+". Unrelated files were discarded.");
+  }
   if(!files.length) {
    // Preserve the original catalogue page as a source entry. Do not leave a
    // dead remote candidate or an empty file URL behind when no mesh passes
