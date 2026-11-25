@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "description": "Curated, source-backed physical axis dimensions used only when JPL SBDB does not provide a usable extent. Values are kilometres.",
+  "records": [
+    {
+      "name": "(99942) Apophis",
+      "aliases": [
+        "Apophis",
+        "99942 Apophis",
+        "2004 MN4"
+      ],
+      "axesKm": [
+        0.453,
+        0.315,
+        0.276
+      ],
+      "uncertaintyKm": 0.05,
+      "sourceLabel": "NASA/JPL OSIRIS-APEX study",
+      "sourceUrl": "https://doi.org/10.3847/PSJ/acf75e",
+      "secondarySourceUrl": "https://sbn.psi.edu/pds/resource/apophis_shape.html",
+      "measurement": "Radar/light-curve shape-model axis estimate",
+      "note": "Pre-encounter design-reference axes; published uncertainty is approximately ±50 m. This is a literature fallback, not a JPL SBDB extent value."
+    },
+    {
+      "name": "(486958) Arrokoth",
+      "aliases": [
+        "Arrokoth",
+        "486958 Arrokoth",
+        "2014 MU69",
+        "Ultima Thule"
+      ],
+      "axesKm": [
+        35.95,
+        19.9,
+        9.75
+      ],
+      "sourceLabel": "Published Arrokoth shape dimensions",
+      "sourceUrl": "https://doi.org/10.1051/0004-6361/202347742"
+    },
+    {
+      "name": "(101955) Bennu",
+      "aliases": [
+        "Bennu",
+        "101955 Bennu",
+        "1999 RQ36"
+      ],
+      "axesKm": [
+        0.565,
+        0.535,
+        0.508
+      ],
+      "sourceLabel": "Nolan et al. (2013), radar/light-curve shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/nolan.etal.2013.bennu.pdf"
+    },
+    {
+      "name": "(65803) Didymos",
+      "aliases": [
+        "Didymos",
+        "65803 Didymos",
+        "1996 GT"
+      ],
+      "axesKm": [
+        0.851,
+        0.849,
+        0.62
+      ],
+      "sourceLabel": "Ren et al., Astronomy & Astrophysics (2024)",
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+    },
+    {
+      "name": "(433) Eros",
+      "aliases": [
+        "Eros",
+        "433 Eros"
+      ],
+      "axesKm": [
+        33,
+        13,
+        13
+      ],
+      "sourceLabel": "NASA/JPL NEAR Eros dimensions",
+      "sourceUrl": "https://www.jpl.nasa.gov/images/pia02462-near-road-to-eros/"
+    },
+    {
+      "name": "(1620) Geographos",
+      "aliases": [
+        "Geographos",
+        "1620 Geographos"
+      ],
+      "axesKm": [
+        5,
+        2,
+        2.1
+      ],
+      "sourceLabel": "3D Asteroid Catalogue physical extent",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/1620-Geographos"
+    },
+    {
+      "name": "(6489) Golevka",
+      "aliases": [
+        "Golevka",
+        "6489 Golevka"
+      ],
+      "axesKm": [
+        0.7,
+        0.59,
+        0.5
+      ],
+      "sourceLabel": "Swinburne Astronomy Online asteroid dimensions summary",
+      "sourceUrl": "https://astronomy.swin.edu.au/sao/students/3D-pdfs/pdfs/asteroids.pdf"
+    },
+    {
+      "name": "(25143) Itokawa",
+      "aliases": [
+        "Itokawa",
+        "25143 Itokawa",
+        "1998 SF36"
+      ],
+      "axesKm": [
+        0.535,
+        0.294,
+        0.209
+      ],
+      "sourceLabel": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    {
+      "name": "(216) Kleopatra",
+      "aliases": [
+        "Kleopatra",
+        "216 Kleopatra"
+      ],
+      "axesKm": [
+        276,
+        94,
+        78
+      ],
+      "sourceLabel": "Shepard et al. (2018), JPL radar shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shepard.etal.2018.kleopatra.pdf"
+    },
+    {
+      "name": "(21) Lutetia",
+      "aliases": [
+        "Lutetia",
+        "21 Lutetia"
+      ],
+      "axesKm": [
+        124,
+        101,
+        80
+      ],
+      "sourceLabel": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    {
+      "name": "(162173) Ryugu",
+      "aliases": [
+        "Ryugu",
+        "162173 Ryugu",
+        "1999 JU3"
+      ],
+      "axesKm": [
+        1.004,
+        1,
+        0.875
+      ],
+      "sourceLabel": "Ren et al., Astronomy & Astrophysics (2024)",
+      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+    },
+    {
+      "name": "(2867) Steins",
+      "aliases": [
+        "Steins",
+        "2867 Steins"
+      ],
+      "axesKm": [
+        6.8,
+        5.7,
+        4.4
+      ],
+      "sourceLabel": "NASA Asteroid Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/asteroidfact.html"
+    },
+    {
+      "name": "(4179) Toutatis",
+      "aliases": [
+        "Toutatis",
+        "4179 Toutatis",
+        "1989 AC"
+      ],
+      "axesKm": [
+        4.26,
+        2.03,
+        1.7
+      ],
+      "sourceLabel": "3D Asteroid Catalogue; radar shape-model extent",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/4179-Toutatis"
+    },
+    {
+      "name": "(4) Vesta",
+      "aliases": [
+        "Vesta",
+        "4 Vesta"
+      ],
+      "axesKm": [
+        572.6,
+        557.2,
+        446.4
+      ],
+      "sourceLabel": "NASA PDS Vesta physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:asteroid.4_vesta"
+    },
+    {
+      "name": "(1) Ceres",
+      "aliases": [
+        "Ceres",
+        "1 Ceres"
+      ],
+      "axesKm": [
+        964.4,
+        964.2,
+        891.8
+      ],
+      "sourceLabel": "NASA PDS Ceres physical characteristics",
+      "sourceUrl": "https://arcnav.psi.edu/urn:nasa:pds:context:target:dwarf_planet.1_ceres"
+    },
+    {
+      "name": "(67P) Churyumov-Gerasimenko",
+      "aliases": [
+        "67P",
+        "67P Churyumov-Gerasimenko",
+        "Churyumov-Gerasimenko",
+        "Churyumov Gerasimenko"
+      ],
+      "axesKm": [
+        4.34,
+        2.6,
+        2.12
+      ],
+      "sourceLabel": "Lorek & Johansen, Astronomy & Astrophysics (2024)",
+      "sourceUrl": "https://curis.ku.dk/ws/portalfiles/portal/389918081/aa47742_23.pdf"
+    },
+    {
+      "name": "(4486) Mithra",
+      "aliases": [
+        "Mithra",
+        "4486 Mithra"
+      ],
+      "axesKm": [
+        2.35,
+        1.65,
+        1.44
+      ],
+      "sourceLabel": "Brozovic et al. (2010), radar shape-model dimensions",
+      "sourceUrl": "https://doi.org/10.1016/j.icarus.2010.01.035"
+    },
+    {
+      "name": "(2063) Bacchus",
+      "aliases": [
+        "Bacchus",
+        "2063 Bacchus"
+      ],
+      "axesKm": [
+        1.11,
+        0.53,
+        0.5
+      ],
+      "sourceLabel": "3D Asteroid Catalogue physical characteristics",
+      "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus"
+    },
+    {
+      "name": "(6489) 1991 JX",
+      "aliases": [
+        "1996 HW1",
+        "1996 HW1 asteroid"
+      ],
+      "axesKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
+    },
+    {
+      "name": "(66391) 1999 KW4 Alpha",
+      "aliases": [
+        "1999 KW4 Alpha",
+        "KW4 Alpha",
+        "Alpha 1999 KW4"
+      ],
+      "axesKm": [
+        1.5,
+        1.5,
+        1.3
+      ],
+      "sourceLabel": "Ostro et al. (2006), JPL Goldstone radar planning",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
+    },
+    {
+      "name": "(66391) 1999 KW4 Beta",
+      "aliases": [
+        "1999 KW4 Beta",
+        "KW4 Beta",
+        "Beta 1999 KW4"
+      ],
+      "axesKm": [
+        0.57,
+        0.46,
+        0.35
+      ],
+      "sourceLabel": "Ostro et al. (2006), JPL Goldstone radar planning",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
+    },
+    {
+      "name": "(8567) 1996 HW1",
+      "aliases": [
+        "1996 HW1",
+        "8567 1996 HW1"
+      ],
+      "axesKm": [
+        3.8,
+        1.6,
+        1.5
+      ],
+      "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
+      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
+    },
+    {
+      "name": "(10563) 1993 WD",
+      "aliases": [
+        "2002 CE26",
+        "2002 CE26 Alpha"
+      ],
+      "axesKm": [
+        3.65,
+        3.65,
+        3.26
+      ],
+      "sourceLabel": "Shepard et al. (2006), radar shape model",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2002CE26/shepard.etal.2006.2002ce26.pdf"
+    },
+    {
+      "name": "(341843) 2008 EV5",
+      "aliases": [
+        "2008 EV5",
+        "341843 2008 EV5"
+      ],
+      "axesKm": [
+        0.42,
+        0.41,
+        0.39
+      ],
+      "sourceLabel": "Busch et al. (2011), radar shape-model dimensions",
+      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/2008EV5/busch.etal.2011.2008ev5.pdf"
+    }
+  ]
+}
