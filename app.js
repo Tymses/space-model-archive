@@ -547,9 +547,13 @@ loadExpandedCatalogs();
    setLookupStatus((record.category==="spacecraft"?"Spacecraft dimensions":record.category==="moons"?"Moon dimensions":"JPL has no usable extent; using published dimensions")+" from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+(record.configuration?" Configuration: "+record.configuration+".":"")+uncertainty+note);
   return true;
  }
- function deriveSearchTerm(model,file){
-  const raw=model?.name||file?.name?.replace(/\.[^.]+$/,"")||$id("scaling-object-query").value;
-  return String(raw||"").replace(/[_.]+/g," ").replace(/\b(3d|model|mesh|download|print|final|low poly|high poly|export|copy|version\s*\d+)\b/gi," ").replace(/\s+/g," ").trim();
+ function deriveSearchTerm(model,file,object){
+  const clean=value=>String(value||"").replace(/\.[^.]+$/,"").replace(/[_.]+/g," ").replace(/\b(3d|model|mesh|download|print|final|low poly|high poly|export|copy|version\s*\d+|scene|object|group|root)\b/gi," ").replace(/\s+/g," ").trim();
+  const primary=clean(model?.name)||clean(file?.name)||clean($id("scaling-object-query").value);
+  if(primary&&primary.length>2&&!/^(model|mesh|object|scene|untitled|download)$/i.test(primary))return primary;
+  const labels=[];
+  if(object)object.traverse(node=>{const name=clean(node.name);if(name&&name.length>2&&!/^(mesh|object|scene|group|root|node|default)$/i.test(name)&&!labels.includes(name))labels.push(name);});
+  return labels.slice(0,3).join(" ").slice(0,140)||primary;
  }
  function setResearchState(state,message){
   const panel=$id("scaling-research-panel");if(!panel)return;
@@ -713,7 +717,7 @@ loadExpandedCatalogs();
     showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source"});
     setLookupStatus("Vorhandene verifizierte SMA-Messung verwendet.");
    }else{
-    const query=deriveSearchTerm(model,file)||$id("scaling-object-query").value.trim();
+    const query=deriveSearchTerm(model,file,object)||$id("scaling-object-query").value.trim();
     if(query){$id("scaling-object-query").value=query;await lookupObject(query,true,model?.category||null);}
     else setLookupStatus("No usable object name found in the model metadata or filename. Enter a name to search.");
    }
