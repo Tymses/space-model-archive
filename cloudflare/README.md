@@ -25,7 +25,9 @@ Archive previews and the Scaling workspace always request a model directly first
 
 The asset endpoint is deliberately not a general web proxy. It accepts HTTPS resources only from the hosts in `ASSET_HOSTS`, permits only GLB, glTF, STL, OBJ, PLY and their required `.bin`, `.mtl`, PNG, JPEG and WebP companion files, checks every redirect against the same list, rejects IP/local targets, and limits streamed responses to 75 MB. Add a source host only after confirming it is a public model host and redeploy the Worker. The endpoint preserves range/cache metadata and supplies a format-appropriate content type when the upstream response omits one.
 
-After deployment, a successful asset response includes `X-SMA-Asset-Proxy: 2026-11-25-hybrid`; this distinguishes the hardened hybrid Worker from the earlier asset proxy.
+The new `?action=resolve&url=<object-page>` endpoint is restricted to individual object pages on `3d-asteroids.space`. It extracts linked OBJ/PLY/GLB/glTF/STL assets, probes candidates with a one-byte Range request and returns only reachable file URLs. It does not treat a general catalogue index as a model and does not mirror files into GitHub. The browser can then fetch a selected asset through `?action=asset&url=<file-url>`.
+
+The asset allowlist now includes NASA's raw GitHub model files, JPL radar OBJ files and the 3D Asteroid Catalogue model host. After deployment, successful proxied assets include `X-SMA-Asset-Proxy: 2026-11-25-hybrid`.
 
 ## What the lookup does
 
