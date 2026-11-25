@@ -167,10 +167,18 @@ crumb.addEventListener("click",event=>{
 function routeHome(push=true){currentCategory=null;currentModel=null;setView("home");setCrumbs([{label:"Home"}]);if(push)history.pushState({view:"home"},"","#home");window.scrollTo(0,0);}
 function routeCollection(key,push=true){if(!CATEGORIES[key])return;currentCategory=key;currentModel=null;setView("collection");$("#collection-title").textContent=CATEGORIES[key].title;$("#collection-description").textContent=CATEGORIES[key].description;$("#collection-overline").textContent=key==="small-bodies"?"COLLECTION / ASTEROIDS & COMETS":"COLLECTION / "+key.replace("-"," ").toUpperCase();$("#search-input").value="";populateFilters();renderCollection();setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[key].title}]);if(push)history.pushState({view:"collection",key},"","#"+key);window.scrollTo(0,0);}
 function populateFilters(){const all=[...MODELS.filter(m=>m.category===currentCategory),...CATEGORIES[currentCategory].sources];const sources=[...new Set(all.map(x=>x.source))].sort();const types=[...new Set(all.map(x=>x.kind||x.type))].sort();$("#source-filter").innerHTML='<option value="all">All sources</option>'+sources.map(x=>'<option>'+x+'</option>').join("");$("#type-filter").innerHTML='<option value="all">All types</option>'+types.map(x=>'<option>'+x+'</option>').join("");}
+function normalizeSearchText(value){return String(value??"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
+function matchesSearch(query,values){
+ const terms=[...new Set(normalizeSearchText(query).split(/\\s+/).filter(Boolean))];
+ if(!terms.length)return true;
+ const haystack=normalizeSearchText(values.filter(value=>value!=null).join(" "));
+ const words=new Set(haystack.split(" "));
+ return terms.every(term=>/^\\d+$/.test(term)?words.has(term):haystack.includes(term));
+}
 function renderCollection(){
- const q=$("#search-input").value.trim().toLowerCase(),source=$("#source-filter").value,type=$("#type-filter").value;
+ const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
  const isDirectMesh=x=>x.downloadDirect!==false&&!["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
- const matchesModel=x=>x.category===currentCategory&&[x.name,x.kind,x.source,x.credit].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
+ const matchesModel=x=>x.category===currentCategory&&matchesSearch(q,[x.name,x.kind,x.source,x.credit,x.description,x.id,x.format,x.file,x.remotePageUrl])&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
  const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x));
  const remoteCandidates=MODELS.filter(x=>matchesModel(x)&&x.remoteCandidate);
  const modelReferences=MODELS.filter(x=>matchesModel(x)&&!isDirectMesh(x)&&!x.remoteCandidate).map(x=>({
@@ -180,7 +188,7 @@ function renderCollection(){
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
  const remotePageUrls=new Set([...MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl),...resolvedRemotePages]);
- const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
+ const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&matchesSearch(q,[x.name,x.type,x.description,x.source,x.url])&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
  const modelGroup=$("#models-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
