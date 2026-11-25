@@ -630,13 +630,26 @@ async function research(query, category) {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const incoming = new URL(request.url);
     const origin = request.headers.get("Origin") || "";
     if (!ALLOWED_ORIGINS.has(origin)) return new Response("Origin not allowed", {status:403});
     const headers = cors(origin);
     if (request.method === "OPTIONS") return new Response(null,{status:204,headers});
     if (request.method !== "GET") return new Response("Method not allowed",{status:405,headers});
+    if (incoming.searchParams.get("action") === "views") {
+      try {
+        await env.VIEW_COUNTER.prepare(
+          "CREATE TABLE IF NOT EXISTS page_views (id INTEGER PRIMARY KEY CHECK (id = 1), total INTEGER NOT NULL)"
+        ).run();
+        const row = await env.VIEW_COUNTER.prepare(
+          "INSERT INTO page_views (id, total) VALUES (1, 1) ON CONFLICT(id) DO UPDATE SET total = total + 1 RETURNING total"
+        ).first();
+        return json({ views: Number(row?.total) || 1 }, 200, { ...headers, "Cache-Control": "no-store" });
+      } catch (error) {
+        return json({ error: "View counter unavailable", detail: String(error.message || error) }, 503, { ...headers, "Cache-Control": "no-store" });
+      }
+    }
     if (incoming.searchParams.get('action') === 'resolve') {
       try {
         const pageUrl = incoming.searchParams.get('url') || '';
