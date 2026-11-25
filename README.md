@@ -1,4 +1,4 @@
-# SPACEMESHER (SPACEMESHER)
+# SPACEMESHER
 
 A minimal, source-linked archive for discovering space-related 3D models and preparing them for 3D printing.
 
