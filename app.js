@@ -646,7 +646,7 @@ loadExpandedCatalogs();
    object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
    if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");
    root=new THREE.Group();root.position.copy(center).multiplyScalar(-1);root.add(object);scene.add(root);
-   const unit=format==="GLB"?"m":"mm";$id("scaling-units").value=unit;
+   const unit=(format==="GLB"||format==="GLTF")?"m":"mm";$id("scaling-units").value=unit;
    active={raw:[size.x,size.y,size.z],unitFactor:unitFactors[unit]};root.scale.setScalar(active.unitFactor);
    const max=Math.max(...active.raw)*active.unitFactor;active.maxSize=max;
    camera.position.set(max*1.7,max*1.3,max*1.9);camera.near=Math.max(max/10000,.001);camera.far=Math.max(max*100,1000);camera.updateProjectionMatrix();
@@ -676,7 +676,7 @@ loadExpandedCatalogs();
   $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
   $id("scaling-recommendations").innerHTML="<p>Load a model and identify its object to calculate scale suggestions.</p>";
   renderFit("Awaiting model and object dimensions","The model is checked against the selected printer once its real-world dimensions are found.",null);
-  $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload a downloaded STL, OBJ, PLY or GLB model.</p></div>';
+  $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload STL, OBJ, PLY, GLB or GLTF model files.</p></div>';
   setLookupStatus(proxyUrl?"Searches JPL for physical axes (extent), not just an average diameter.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.",!proxyUrl);
  }
  window.addEventListener("sma-scaling-open",e=>{
@@ -690,7 +690,6 @@ loadExpandedCatalogs();
   const supported=["STL","OBJ","PLY","GLB","GLTF"],file=files.find(f=>supported.includes(f.name.split(".").pop().toUpperCase()));
   if(!file){$id("scaling-file-state").textContent="No supported model file selected";return;}
   const ext=file.name.split(".").pop().toUpperCase(),companions=files.filter(f=>f!==file);
-  if(ext==="GLTF"&&!companions.length){$id("scaling-file-state").textContent="Select the .gltf plus its .bin and texture files";return;}
   $id("scaling-object-query").value="";load(file,ext,null,null,companions);
  });
  $id("scaling-units").addEventListener("change",()=>{if(!active)return;active.unitFactor=unitFactors[$id("scaling-units").value];root.scale.setScalar(active.unitFactor);update();});
