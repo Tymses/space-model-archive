@@ -648,9 +648,16 @@ loadExpandedCatalogs();
    setLookupStatus("JPL physical axes found. Original scale and printer-fit suggestions have been calculated.");
   }catch(error){
    if(lookupToken!==token)return;
-   try{
-    if(proxyUrl){await runWebResearch(q,expectedCategory,lookupToken);return;}
-   }catch(researchError){setResearchState("complete","The web search failed. Check the Worker deployment.");}
+   if(proxyUrl){
+    try{await runWebResearch(q,expectedCategory,lookupToken);return;}
+    catch(researchError){
+     setResearchState("complete","The web search failed. Check that the updated Worker code has been deployed.");
+     setLookupStatus("Web research failed: "+(researchError.message||researchError),true);
+     if(!quiet)renderFit("No verified scale basis","The web research service could not return usable results.",null);
+     return;
+    }
+   }
+   setResearchState("complete","No Cloudflare Worker URL is configured. Add it in config.js to enable automatic research.");
    setLookupStatus(error.message||"Object lookup failed.",true);
    if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);
   }finally{
