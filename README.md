@@ -44,7 +44,7 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - STL and GLB files remain in their original formats when no native STEP file is provided. A mesh-to-STEP conversion is not presented as a proper CAD solid unless its quality is verified.
 - STEP support varies by slicer: Bambu Studio and PrusaSlicer support STEP import, while UltiMaker Cura's documented model formats do not list STEP. STL remains the broadly compatible fallback.
 - STL files are provided as direct downloads; the current in-browser preview and automatic geometry measurement are for GLB files only.
-- Scaling is a recommendation only. The original source file is not modified; apply the scale in your own slicer.
+- Scaling recommendations use the measured model geometry and verified physical dimensions. The original source file is not modified; the selected scale can be exported as a binary STL in millimetres.
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
 - The curated asteroid set links to original object pages rather than direct OBJ/PLY endpoints. The source confirms that model downloads are available on those pages; exact file names, variants and sizes remain on the source page and are not guessed in SPACEMESHER. The source site does not document an API. Wikimedia Commons documents a predictable media URL pattern but also notes that filenames and suffixes vary, so SPACEMESHER uses the source page until each direct endpoint can be verified. The 37 moon entries remain accessible through the source catalogue page.
 
