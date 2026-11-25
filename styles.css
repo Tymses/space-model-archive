@@ -311,6 +311,4 @@
 .print-workflow li::before{content:counter(workflow);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700}
 .print-workflow li strong{color:var(--ink);font-size:12px}
 .print-workflow li span{font-size:12px}
-.category-card[title],.home-scaling-link[title],.collection-dropdown>summary[title],label[title],button[title],a[title]{cursor:help}
-button[title],a[title]{cursor:pointer}
 @media(max-width:600px){.guide-tabs{gap:3px}.guide-tab{flex:1 1 calc(50% - 4px)}.print-workflow li{grid-template-columns:30px 1fr}.print-workflow li span{grid-column:2}.top-actions{gap:11px}.top-actions a{font-size:11px}}
