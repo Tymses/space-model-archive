@@ -140,17 +140,17 @@ async function fetchCatalogueHtml(value) {
 }
 
 function extractCatalogueFileCandidates(html, basePage) {
-  const source = decode(String(html || "")).replace(/\\\\\//g, "/");
+  const source = decode(String(html || "")).replace(/\\\//g, "/");
   const raw = [];
-  const attr = /(?:href|src|data-href|data-url|data-file|data-download)\\s*=\\s*["']([^"']+)["']/gi;
+  const attr = /(?:href|src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
   let match;
   while ((match = attr.exec(source)) && raw.length < 300) raw.push(match[1]);
-  const urlPattern = /(?:https?:\\/\\/[^"'\\s<>]+|\\/[^"'\\s<>]+)\\.(?:obj|ply|glb|gltf|stl)(?:\\?[^"'\\s<>]*)?/gi;
+  const urlPattern = /(?:https?:\/\/[^"'\s<>]+|\/[^"'\s<>]+)\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?/gi;
   while ((match = urlPattern.exec(source)) && raw.length < 500) raw.push(match[0]);
   const found = [];
   for (const value of raw) {
     let target;
-    try { target = new URL(decode(value).replace(/\\\\\//g, "/"), basePage); } catch { continue; }
+    try { target = new URL(decode(value).replace(/\\\//g, "/"), basePage); } catch { continue; }
     const ext = assetExtension(target.toString());
     if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== "https:" || target.username || target.password) continue;
     if (found.some(item => item.url === target.toString())) continue;
@@ -162,10 +162,10 @@ function extractCatalogueFileCandidates(html, basePage) {
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
   const wanted = norm(objectName);
   const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop());
-  const anchors = /<a\\b([^>]*)>([\\s\\S]*?)<\\/a>/gi;
+  const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
   while ((match = anchors.exec(html))) {
-    const hrefMatch = match[1].match(/href\\s*=\\s*["']([^"']+)["']/i);
+    const hrefMatch = match[1].match(/href\s*=\s*["']([^"']+)["']/i);
     if (!hrefMatch) continue;
     let target; try { target = new URL(decode(hrefMatch[1]), listingPage); } catch { continue; }
     if (target.protocol !== "https:" || !CATALOGUE_HOSTS.has(target.hostname.toLowerCase())) continue;
@@ -175,7 +175,7 @@ function findObjectPageFromListing(html, listingPage, objectName, requestedPage)
     let score = 0;
     if (wanted && label.includes(wanted)) score += 10;
     if (requestedSlug && norm(segments[1]) === requestedSlug) score += 12;
-    const code = requestedSlug.match(/^[a-z]+\\d+/);
+    const code = requestedSlug.match(/^[a-z]+\d+/);
     if (code && norm(segments[1]).includes(code[0])) score += 5;
     if (score > bestScore) { bestScore = score; best = target; }
   }
@@ -242,9 +242,9 @@ async function resolveCataloguePage(value, objectName = "") {
         if (first.value) sample = first.value.slice(0, 8192);
         await reader.cancel();
       } catch {}
-      const sampleText = new TextDecoder().decode(sample).replace(/^\\uFEFF/, "").trimStart();
+      const sampleText = new TextDecoder().decode(sample).replace(/^\uFEFF/, "").trimStart();
       if (file.format === "PLY" && !sampleText.startsWith("ply")) continue;
-      if (file.format === "OBJ" && !/(^|\\n)\\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\\s+/m.test(sampleText)) continue;
+      if (file.format === "OBJ" && /(^|\n)\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\s+/m.test(sampleText) === false) continue;
       if (file.format === "GLB" && new TextDecoder().decode(sample.slice(0, 4)) !== "glTF") continue;
       if (file.format === "GLTF" && (!sampleText.startsWith("{") || !sampleText.includes('"asset"'))) continue;
       if (file.format === "STL" && sample.length < 84) continue;
