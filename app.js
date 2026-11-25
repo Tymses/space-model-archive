@@ -645,7 +645,7 @@ loadExpandedCatalogs();
   }catch(error){
    if(lookupToken!==token)return;
    try{
-    if(proxyUrl){const found=await runWebResearch(q,expectedCategory,lookupToken);if(found)return;if($id("scaling-research-results").children.length)return;}
+    if(proxyUrl){await runWebResearch(q,expectedCategory,lookupToken);return;}
    }catch(researchError){setResearchState("complete","The web search failed. Check the Worker deployment.");}
    setLookupStatus(error.message||"Object lookup failed.",true);
    if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);
