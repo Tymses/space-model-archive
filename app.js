@@ -579,7 +579,7 @@ loadExpandedCatalogs();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:best.title||query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm});
+   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
@@ -754,7 +754,7 @@ loadExpandedCatalogs();
  $id("scaling-research-results").addEventListener("click",e=>{
   const button=e.target.closest("[data-research-index]");if(!button)return;
   const candidate=researchCandidates[Number(button.dataset.researchIndex)];if(!candidate?.axesKm)return;
-  showDimensions({name:candidate.title||$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm});
+  showDimensions({name:$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm});
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
