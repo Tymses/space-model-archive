@@ -288,7 +288,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   const added=[];
   files.forEach((file,index)=>{
    const size=file.sizeBytes?file.sizeBytes>=1000000?(file.sizeBytes/1000000).toFixed(1)+" MB":Math.round(file.sizeBytes/1000)+" kB":"Size not reported";
-   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
+   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,realDimensionsKm:Array.isArray(result.axesKm)?result.axesKm:null,realLongestAxisKm:Array.isArray(result.axesKm)&&result.axesKm.length?Math.max(...result.axesKm):null,realDimensionUrl:result.dimensionSourceUrl||model.remotePageUrl,realDimensionSource:result.dimensionSourceLabel||"3D Asteroid Catalogue",realLongestAxisUncertaintyKm:Number.isFinite(result.uncertaintyKm)?result.uncertaintyKm:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
    added.push(variant);addCatalogModel(variant);
   });
   statusNode.textContent=added.length+" erreichbare Modelldatei(en) gefunden. Die Varianten wurden in „Downloadable Models“ übernommen; der reine Seitenverweis wurde entfernt.";
@@ -630,9 +630,9 @@ loadExpandedCatalogs();
  }
  async function fetchRemoteResponse(sourceUrl,accept="model/gltf-binary,model/gltf+json,model/stl,application/octet-stream,*/*"){
   const sourceHost=(()=>{try{return new URL(sourceUrl).hostname.toLowerCase();}catch(_){return "";}})();
-  // Space Radar omits CORS headers. Never make a direct browser request to it:
-  // even a successful HTTP 200 response is unreadable to the page and logs a CORS error.
-  if(sourceHost==="www.spaceradar.ai"||sourceHost==="models.spaceradar.ai"){
+  // These catalogue asset hosts do not provide browser-readable CORS responses.
+  // Route them through the Worker immediately to avoid a guaranteed failing direct XHR.
+  if(sourceHost==="www.spaceradar.ai"||sourceHost==="models.spaceradar.ai"||sourceHost==="3d-asteroids.space"||sourceHost==="www.3d-asteroids.space"){
    if(!proxyUrl)throw new Error("Space Radar assets require the configured Cloudflare CORS proxy.");
    const response=await fetch(proxyAssetUrl(sourceUrl),{headers:{Accept:accept}});
    if(!response.ok)throw new Error("Cloudflare asset proxy returned HTTP "+response.status+".");
