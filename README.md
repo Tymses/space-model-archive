@@ -82,3 +82,8 @@ A one-time Cloudflare Worker setup is required because the JPL API does not enab
 GLB archive previews and all models opened in Scaling use a hybrid loading path: the browser fetches the original model URL first, then automatically retries through the configured Cloudflare Worker only if that direct request fails (for example, because the model host blocks CORS). Scaling measures the loaded mesh, and uses those same geometry bounds for its preview, original-scale calculation and printer-fit result. It supports GLB, glTF (including local or proxied `.bin`/texture companions), STL, OBJ (including `.mtl`/textures) and PLY.
 
 The Worker is not deployed by a GitHub push. To enable the fallback, manually replace the code in the deployed Cloudflare Worker with the complete current [`cloudflare/jpl-proxy.js`](cloudflare/jpl-proxy.js), select **Deploy**, and keep its resulting URL in [`config.js`](config.js). See [the deployment guide](cloudflare/README.md) for the fixed host allowlist, redirect, private-network and 75 MB safeguards.
+
+
+### Built-in printer profiles
+
+The print-fit checker and Scaling workspace include these build volumes: Bambu Lab P2S (256 × 256 × 256 mm), Original Prusa XL with five toolheads (360 × 360 × 360 mm), and ELEGOO Centauri Carbon (256 × 256 × 256 mm). A custom build-volume option remains available. Values are based on the manufacturers' published specifications.
