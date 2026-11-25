@@ -144,9 +144,9 @@ function objectIdentityTokens(objectName, objectPage) {
   let slug = "";
   try { slug = decodeURIComponent(new URL(objectPage).pathname.split("/").filter(Boolean).pop() || ""); } catch {}
   const cleanedName = String(objectName || "").replace(/^\s*\(?#?\d+\)?\s*/i, "").trim();
-  const values = [objectName, cleanedName, slug.replace(/^[a-z]+\\d+[-_ ]*/i, "")];
+  const values = [objectName, cleanedName, slug.replace(/^[a-z]+\d+[-_ ]*/i, "")];
   // Numeric-only catalogue IDs are unsafe identity tokens and can match unrelated filenames.
-  return [...new Set(values.map(norm).filter(value => value.length >= 3 && !/^\\d+$/.test(value)))];
+  return [...new Set(values.map(norm).filter(value => value.length >= 3 && !/^\d+$/.test(value)))];
 }
 function fileBelongsToObject(fileUrl, objectName, objectPage) {
   let filename = "";
@@ -215,7 +215,7 @@ async function resolveCataloguePage(value, objectName = "") {
     var firstError = error;
   }
   if (current && objectName) {
-    const expected = norm(String(objectName).replace(/^\\s*\\(\\s*#?\\d+\\s*\\)\\s*/, "").replace(/^\\s*#?\\d+\\s+/, ""));
+    const expected = norm(String(objectName).replace(/^\s*\(\s*#?\d+\s*\)\s*/, "").replace(/^\s*#?\d+\s+/, ""));
     const pageText = norm(plain(current.html));
     if (expected && !hasWholePhrase(pageText, expected)) {
       throw new Error("The loaded catalogue page does not identify the requested object (" + objectName + "). No files were accepted.");
