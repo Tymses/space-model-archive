@@ -524,7 +524,7 @@ loadExpandedCatalogs();
   return axes;
  }
  function normalizeObjectQuery(value){
-  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\\s+/g," ");
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
  }
  async function findCuratedDimensions(candidates){
   try{
