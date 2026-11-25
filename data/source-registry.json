@@ -236,8 +236,8 @@
           ],
           "status": "partial",
           "priority": 1,
-          "knownCoverage": "Source reports 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons, 3,079 shape models and 54 textures. Repository currently contains a curated selection of 256 numbered asteroids plus selected comet/dwarf-planet links.",
-          "nextAction": "Harvest the complete object index and every per-object model variant, file format, size, texture and attribution; do not stop at 256 curated objects."
+          "knownCoverage": "Source reports 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons, 3,079 shape models and 54 textures. SPACEMESHER currently has 256 numbered asteroid catalogue references, all 5 comet pages, both dwarf-planet pages (Ceres and Pluto), and 37 individually indexed moon catalogue references. Object-level direct file variants are still incomplete.",
+          "nextAction": "Harvest all asteroid object pages and every model variant; verify individual comet, dwarf-planet and moon detail URLs and direct file endpoints rather than treating parent catalogue links as downloads."
         },
         {
           "id": "pds-sbn-asteroids",
