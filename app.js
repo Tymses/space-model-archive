@@ -542,7 +542,7 @@ loadExpandedCatalogs();
   if(!selected){
    $id("scaling-selected-scale").textContent="No standard scale found";
    $id("scaling-print-dimensions").textContent="—";
-   $id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";
+   $id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";
    setGauge("printability",null,"No scale selected");
    renderFit("No standard scale fits","Try splitting the model or selecting a larger build volume.",false);updatePreview(1);return;
   }
