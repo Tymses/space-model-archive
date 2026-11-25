@@ -293,3 +293,24 @@
   cursor: wait;
   opacity: .6;
 }
+
+
+/* Compact contextual help and the tabbed SPACEMESHER guide */
+.guide-view{max-width:860px}
+.guide-tabs{display:flex;gap:6px;flex-wrap:wrap;margin:26px 0 0;padding:5px;border:1px solid var(--line);border-radius:14px;background:var(--surface-low)}
+.guide-tab{border:0;border-radius:10px;padding:9px 14px;background:transparent;color:var(--muted);font:inherit;font-size:12px;font-weight:650;cursor:pointer}
+.guide-tab:hover{color:var(--ink);background:rgba(127,127,127,.07)}
+.guide-tab.is-active{background:var(--surface);color:var(--accent);box-shadow:0 1px 4px rgba(20,30,40,.09)}
+.guide-panel{padding:22px 2px 8px;animation:appear .16s ease-out}
+.guide-panel h2{margin:0 0 12px;font-size:19px;letter-spacing:-.025em}
+.guide-panel p,.guide-panel li{color:var(--muted);font-size:13px;line-height:1.75}
+.guide-panel ul,.guide-panel ol{padding-left:22px}
+.guide-panel li{margin:7px 0}
+.print-workflow{list-style:none;counter-reset:workflow;padding:0!important;display:grid;gap:10px}
+.print-workflow li{counter-increment:workflow;display:grid;grid-template-columns:34px minmax(130px,.35fr) 1fr;gap:8px 12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.print-workflow li::before{content:counter(workflow);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:700}
+.print-workflow li strong{color:var(--ink);font-size:12px}
+.print-workflow li span{font-size:12px}
+.category-card[title],.home-scaling-link[title],.collection-dropdown>summary[title],label[title],button[title],a[title]{cursor:help}
+button[title],a[title]{cursor:pointer}
+@media(max-width:600px){.guide-tabs{gap:3px}.guide-tab{flex:1 1 calc(50% - 4px)}.print-workflow li{grid-template-columns:30px 1fr}.print-workflow li span{grid-column:2}.top-actions{gap:11px}.top-actions a{font-size:11px}}
