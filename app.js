@@ -278,7 +278,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   if(!response.ok)throw new Error(result.detail||result.error||("HTTP "+response.status));
   loader.hidden=true;
   const returnedFiles=Array.isArray(result.files)?result.files:[];
-  const expectedObjectName=normalizeSearchText(String(model.name||"").replace(/^\\s*\\(\\s*#?\\d+\\s*\\)\\s*/,"").replace(/^\\s*#?\\d+\\s+/,"")).trim();
+  const expectedObjectName=normalizeSearchText(String(model.name||"").replace(/^\s*\(\s*#?\d+\s*\)\s*/,"").replace(/^\s*#?\d+\s+/,"")).trim();
   const files=returnedFiles.filter(file=>{
    const filename=normalizeSearchText([file.label,file.url].filter(Boolean).join(" "));
    return expectedObjectName&&filename.includes(expectedObjectName);
