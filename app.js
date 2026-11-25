@@ -543,7 +543,8 @@ loadExpandedCatalogs();
   showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:record.uncertaintyKm});
   const uncertainty=Number.isFinite(record.uncertaintyKm)?" Published uncertainty: ±"+fmt(record.uncertaintyKm)+" km.":"";
   const note=record.note?" "+record.note:"";
-  setLookupStatus((record.category==="spacecraft"?"Spacecraft dimensions":record.category==="moons"?"Moon dimensions":"JPL has no usable extent; using published dimensions")+" from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+(record.configuration?" Configuration: "+record.configuration+".":"")+uncertainty+note);
+  setResearchState("complete","A matching record was found in the curated scientific dimensions index.");
+   setLookupStatus((record.category==="spacecraft"?"Spacecraft dimensions":record.category==="moons"?"Moon dimensions":"JPL has no usable extent; using published dimensions")+" from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+(record.configuration?" Configuration: "+record.configuration+".":"")+uncertainty+note);
   return true;
  }
  function deriveSearchTerm(model,file){
@@ -563,7 +564,7 @@ loadExpandedCatalogs();
   const panel=$id("scaling-research-results");if(!panel)return;
   panel.hidden=!researchCandidates.length;
   panel.innerHTML=researchCandidates.map((item,index)=>{
-   const axes=Array.isArray(item.axesKm)&&item.axesKm.length>=2?item.axesKm.map(v=>fmt(v)+" km").join(" × "):"No extractable dimensions";
+   const axes=Array.isArray(item.axesKm)&&item.axesKm.length>=2?item.axesKm.map(v=>fmt(v)+" km").join(" × ")+(Number.isFinite(item.uncertaintyKm)?" · published ± "+fmt(item.uncertaintyKm)+" km":" · uncertainty not stated"):"No extractable dimensions";
    return '<article class="research-candidate'+(autoAccepted&&index===0?' is-chosen':'')+'"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · source-quality score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Use these dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
   }).join("");
  }
