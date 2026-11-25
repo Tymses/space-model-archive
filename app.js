@@ -435,7 +435,7 @@ loadExpandedCatalogs();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null;
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[];
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
  function clear(){
@@ -505,11 +505,12 @@ loadExpandedCatalogs();
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
  function setLookupStatus(message,isError=false){const el=$id("scaling-lookup-status");el.textContent=message;el.classList.toggle("is-error",isError);}
- function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB"}){
+ function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote=""}){
   realAxesKm=axesKm;realLongestKm=longestAxisKm;realSourceUrl=sourceUrl;realObjectName=name;
   $id("scaling-object-result").hidden=false;$id("scaling-object-name").textContent=name;
   $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v)+" km").join(" × ");
   $id("scaling-object-longest").textContent=fmt(longestAxisKm)+" km";
+  const quality=$id("scaling-object-confidence");if(quality)quality.textContent=confidenceLabel+(confidenceNote?" · "+confidenceNote:"");
   const link=$id("scaling-reference-source");link.href=sourceUrl;link.textContent="Open "+sourceLabel+" record ↗";
   selectedDenominator=null;update();
  }
@@ -543,6 +544,47 @@ loadExpandedCatalogs();
   const note=record.note?" "+record.note:"";
   setLookupStatus((record.category==="spacecraft"?"Spacecraft dimensions":record.category==="moons"?"Moon dimensions":"JPL has no usable extent; using published dimensions")+" from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+(record.configuration?" Configuration: "+record.configuration+".":"")+uncertainty+note);
   return true;
+ }
+ function deriveSearchTerm(model,file){
+  const raw=model?.name||file?.name?.replace(/\.[^.]+$/,"")||$id("scaling-object-query").value;
+  return String(raw||"").replace(/[_.]+/g," ").replace(/\b(3d|model|mesh|download|print|final|low poly|high poly|export|copy|version\s*\d+)\b/gi," ").replace(/\s+/g," ").trim();
+ }
+ function setResearchState(state,message){
+  const panel=$id("scaling-research-panel");if(!panel)return;
+  panel.hidden=state==="hidden";panel.classList.toggle("is-searching",state==="searching");panel.classList.toggle("is-complete",state==="complete");
+  $id("scaling-research-title").textContent=state==="searching"?"Cloudflare Worker searching...":state==="complete"?"Research complete":"Research";
+  $id("scaling-research-detail").textContent=message||"Comparing scientific sources and published measurements.";
+ }
+ function qualityLabel(value){return value==="high"?"High evidence":value==="medium"?"Moderate evidence":"Limited evidence";}
+ function escapeResearch(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+ function renderResearchCandidates(candidates,autoAccepted=false){
+  researchCandidates=Array.isArray(candidates)?candidates:[];
+  const panel=$id("scaling-research-results");if(!panel)return;
+  panel.hidden=!researchCandidates.length;
+  panel.innerHTML=researchCandidates.map((item,index)=>{
+   const axes=Array.isArray(item.axesKm)&&item.axesKm.length>=2?item.axesKm.map(v=>fmt(v)+" km").join(" × "):"No extractable dimensions";
+   return '<article class="research-candidate'+(autoAccepted&&index===0?' is-chosen':'')+'"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · evidence score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Use these dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
+  }).join("");
+ }
+ async function runWebResearch(query,expectedCategory,lookupToken){
+  if(!proxyUrl){setResearchState("complete","Web research requires the Cloudflare Worker URL in config.js.");return false;}
+  setResearchState("searching","Searching the public web index, opening promising sources and comparing published dimensions.");
+  setLookupStatus("Cloudflare Worker searching...");
+  const url=new URL(proxyUrl);url.searchParams.set("action","research");url.searchParams.set("q",query);if(expectedCategory)url.searchParams.set("category",expectedCategory);
+  const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
+  if(!response.ok)throw new Error("Web research returned HTTP "+response.status);
+  const result=await response.json();if(lookupToken!==token)return false;
+  renderResearchCandidates(result.candidates||[],!!result.autoAccept);
+  if(result.autoAccept&&result.best?.axesKm){
+   const best=result.best;
+   showDimensions({name:best.title||query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment"});
+   setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
+   setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
+   return true;
+  }
+  setResearchState("complete",result.candidates?.length?"No single result met the automatic-selection threshold. Review the most promising sources below.":"No useful public-web results were found.");
+  setLookupStatus(result.candidates?.length?"Several possible sources found. Select a candidate with dimensions, or refine the object name.":"No source-backed dimensions found. Scale remains unverified.",!result.candidates?.length);
+  return false;
  }
  async function lookupObject(query,quiet=false,expectedCategory=null){
   const q=(query||"").trim();if(!q||lookupBusy)return;
@@ -602,6 +644,9 @@ loadExpandedCatalogs();
    setLookupStatus("JPL physical axes found. Original scale and printer-fit suggestions have been calculated.");
   }catch(error){
    if(lookupToken!==token)return;
+   try{
+    if(proxyUrl){const found=await runWebResearch(q,expectedCategory,lookupToken);if(found)return;if($id("scaling-research-results").children.length)return;}
+   }catch(researchError){setResearchState("complete","The web search failed. Check the Worker deployment.");}
    setLookupStatus(error.message||"Object lookup failed.",true);
    if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);
   }finally{
@@ -657,9 +702,9 @@ loadExpandedCatalogs();
     showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source"});
     setLookupStatus("Vorhandene verifizierte SMA-Messung verwendet.");
    }else{
-    const query=model?.name||$id("scaling-object-query").value.trim();
+    const query=deriveSearchTerm(model,file)||$id("scaling-object-query").value.trim();
     if(query){$id("scaling-object-query").value=query;await lookupObject(query,true,model?.category||null);}
-    else setLookupStatus(proxyUrl?"Gib den Namen, die Nummer oder Bezeichnung des Objekts ein.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.");
+    else setLookupStatus("No usable object name found in the model metadata or filename. Enter a name to search.");
    }
   }catch(err){
    if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Supported: STL, OBJ, PLY, GLB and GLTF. Draco/Meshopt compression and GLTF companion files are supported; select the .gltf together with its .bin/textures. Some source hosts block previews.</p></div>';
@@ -701,6 +746,13 @@ loadExpandedCatalogs();
    const href=URL.createObjectURL(blob),a=document.createElement("a");a.href=href;a.download=name+"-1-to-"+selectedDenominator+".stl";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),30000);
    setLookupStatus("Scaled binary STL exported at 1:"+fmt(selectedDenominator)+".");
   }catch(error){setLookupStatus("STL export failed: "+(error.message||error),true);}
+ });
+ $id("scaling-research-results").addEventListener("click",e=>{
+  const button=e.target.closest("[data-research-index]");if(!button)return;
+  const candidate=researchCandidates[Number(button.dataset.researchIndex)];if(!candidate?.axesKm)return;
+  showDimensions({name:candidate.title||$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate"});
+  setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
+  setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
  $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value));
  $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value);}});
