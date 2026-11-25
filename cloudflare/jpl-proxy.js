@@ -92,7 +92,8 @@ async function fetchApprovedAsset(value, request) {
     const upstreamHeaders = { "Accept": request.headers.get("Accept") || "*/*", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-AssetProxy/1.0)", "Referer": current.origin + "/", "Origin": current.origin };
     const range = request.headers.get("Range");
     if (range) upstreamHeaders.Range = range;
-    const response = await fetch(current.toString(), { method: "GET", headers: upstreamHeaders, redirect: "manual", cf: { cacheTtl: 3600 } });
+    let response = await fetch(current.toString(), { method: "GET", headers: upstreamHeaders, redirect: "manual", cf: { cacheTtl: 3600 } });
+    if (response.status === 403 && range) { try { await response.body?.cancel(); } catch {} delete upstreamHeaders.Range; response = await fetch(current.toString(), { method: "GET", headers: upstreamHeaders, redirect: "manual", cf: { cacheTtl: 3600 } }); }
     if ([301,302,303,307,308].includes(response.status)) {
       const location = response.headers.get("Location");
       if (!location || hop === 3) throw new Error("The model source returned too many redirects.");
