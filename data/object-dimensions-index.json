@@ -336,6 +336,510 @@
       ],
       "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
       "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
+    },
+    {
+      "name": "Phobos",
+      "aliases": [
+        "Phobos moon shape model",
+        "Mars moon Phobos"
+      ],
+      "axesKm": [
+        27,
+        22,
+        18
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Phobos factsheet",
+      "sourceUrl": "https://science.nasa.gov/mars/moons/phobos/",
+      "measurement": "Published three-axis dimensions",
+      "note": "Approximate physical axes; use for the natural moon, not a spacecraft model."
+    },
+    {
+      "name": "Deimos",
+      "aliases": [
+        "Deimos moon shape model",
+        "Mars moon Deimos"
+      ],
+      "axesKm": [
+        15,
+        12,
+        11
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Deimos factsheet",
+      "sourceUrl": "https://science.nasa.gov/mars/moons/deimos/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Atlas",
+      "aliases": [
+        "Atlas moon shape model",
+        "Saturn moon Atlas"
+      ],
+      "axesKm": [
+        20,
+        18,
+        9
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Calypso",
+      "aliases": [
+        "Calypso moon shape model",
+        "Saturn moon Calypso"
+      ],
+      "axesKm": [
+        34,
+        22,
+        22
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Daphnis",
+      "aliases": [
+        "Daphnis moon shape model",
+        "Saturn moon Daphnis"
+      ],
+      "axesKm": [
+        4.3,
+        4.1,
+        3.2
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Epimetheus",
+      "aliases": [
+        "Epimetheus moon shape model",
+        "Saturn moon Epimetheus"
+      ],
+      "axesKm": [
+        140,
+        120,
+        100
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Helene",
+      "aliases": [
+        "Helene moon shape model",
+        "Saturn moon Helene"
+      ],
+      "axesKm": [
+        36,
+        32,
+        30
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Hyperion",
+      "aliases": [
+        "Hyperion moon shape model",
+        "Saturn moon Hyperion"
+      ],
+      "axesKm": [
+        410,
+        260,
+        220
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Janus",
+      "aliases": [
+        "Janus moon shape model",
+        "Saturn moon Janus"
+      ],
+      "axesKm": [
+        220,
+        200,
+        160
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Pan",
+      "aliases": [
+        "Pan moon shape model",
+        "Saturn moon Pan"
+      ],
+      "axesKm": [
+        17,
+        16,
+        10
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Pandora",
+      "aliases": [
+        "Pandora moon shape model",
+        "Saturn moon Pandora"
+      ],
+      "axesKm": [
+        110,
+        90,
+        80
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Prometheus",
+      "aliases": [
+        "Prometheus moon shape model",
+        "Saturn moon Prometheus"
+      ],
+      "axesKm": [
+        140,
+        100,
+        80
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Telesto",
+      "aliases": [
+        "Telesto moon shape model",
+        "Saturn moon Telesto"
+      ],
+      "axesKm": [
+        34,
+        28,
+        26
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Voyager Saturn moon dimensions",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/fact-sheet/",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Mimas",
+      "aliases": [
+        "Mimas moon",
+        "Saturn moon Mimas"
+      ],
+      "axesKm": [
+        208,
+        197,
+        191
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Enceladus",
+      "aliases": [
+        "Enceladus moon",
+        "Saturn moon Enceladus"
+      ],
+      "axesKm": [
+        257,
+        251,
+        248
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Tethys",
+      "aliases": [
+        "Tethys moon",
+        "Saturn moon Tethys"
+      ],
+      "axesKm": [
+        538,
+        528,
+        526
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Dione",
+      "aliases": [
+        "Dione moon",
+        "Saturn moon Dione"
+      ],
+      "axesKm": [
+        563,
+        561,
+        560
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Rhea",
+      "aliases": [
+        "Rhea moon",
+        "Saturn moon Rhea"
+      ],
+      "axesKm": [
+        765,
+        763,
+        762
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Iapetus",
+      "aliases": [
+        "Iapetus moon",
+        "Saturn moon Iapetus"
+      ],
+      "axesKm": [
+        746,
+        746,
+        712
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Saturnian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturniansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Amalthea",
+      "aliases": [
+        "Amalthea moon",
+        "Jupiter moon Amalthea"
+      ],
+      "axesKm": [
+        125,
+        73,
+        64
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Jovian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Thebe",
+      "aliases": [
+        "Thebe moon",
+        "Jupiter moon Thebe"
+      ],
+      "axesKm": [
+        58,
+        49,
+        42
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Jovian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Metis",
+      "aliases": [
+        "Metis moon",
+        "Jupiter moon Metis"
+      ],
+      "axesKm": [
+        30,
+        20,
+        17
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Jovian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Adrastea",
+      "aliases": [
+        "Adrastea moon",
+        "Jupiter moon Adrastea"
+      ],
+      "axesKm": [
+        10,
+        8,
+        7
+      ],
+      "category": "moons",
+      "sourceLabel": "NASA Jovian Satellite Fact Sheet",
+      "sourceUrl": "https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html",
+      "measurement": "Published three-axis dimensions"
+    },
+    {
+      "name": "Hubble Space Telescope",
+      "aliases": [
+        "Hubble",
+        "HST",
+        "Hubble Space Telescope (A)",
+        "Hubble Space Telescope (B)"
+      ],
+      "axesKm": [
+        0.013,
+        0.0043
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Hubble by the Numbers",
+      "sourceUrl": "https://science.nasa.gov/mission/hubble/overview/hubble-by-the-numbers/",
+      "measurement": "Spacecraft length × maximum width",
+      "configuration": "On-orbit telescope configuration",
+      "note": "NASA reports about 13 m length and 4.3 m width; only two published envelope dimensions are supplied."
+    },
+    {
+      "name": "Cassini Orbiter",
+      "aliases": [
+        "Cassini",
+        "Cassini Assembly",
+        "Cassini Huygens (A) (without Cassini)",
+        "Cassini Huygens (A)"
+      ],
+      "axesKm": [
+        0.0067,
+        0.004
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Cassini Quick Facts",
+      "sourceUrl": "https://science.nasa.gov/mission/cassini/quick-facts/",
+      "measurement": "Spacecraft height × width",
+      "configuration": "Cassini orbiter; solar arrays and antenna envelope depend on model representation",
+      "note": "NASA publishes height and width, not a complete three-axis bounding box."
+    },
+    {
+      "name": "Dawn spacecraft",
+      "aliases": [
+        "Dawn",
+        "Dawn spacecraft"
+      ],
+      "axesKm": [
+        0.02,
+        0.00164,
+        0.00177
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Dawn spacecraft specifications",
+      "sourceUrl": "https://science.nasa.gov/mission/dawn/technology/spacecraft/",
+      "measurement": "Deployed overall span × bus length × bus height",
+      "configuration": "Solar arrays deployed",
+      "note": "The 20 m span is the tip-to-tip deployed solar-array dimension; bus dimensions are 1.64 × 1.27 × 1.77 m. Model configuration must match."
+    },
+    {
+      "name": "James Webb Space Telescope",
+      "aliases": [
+        "JWST",
+        "Webb",
+        "James Webb Space Telescope (A)",
+        "James Webb Space Telescope (B)"
+      ],
+      "axesKm": [
+        0.021197,
+        0.014162,
+        0.008
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Webb Telescope Overview",
+      "sourceUrl": "https://science.nasa.gov/mission/webb/science-overview/science-explainers/telescope-overview/",
+      "measurement": "Deployed overall envelope",
+      "configuration": "Fully deployed in space",
+      "note": "Approximate deployed envelope: 21.2 × 14.2 × 8 m. Stowed launch configuration is substantially smaller."
+    },
+    {
+      "name": "Perseverance rover",
+      "aliases": [
+        "Perseverance",
+        "Mars 2020 Perseverance Rover"
+      ],
+      "axesKm": [
+        0.003,
+        0.0027,
+        0.0022
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA/JPL Mars 2020 Quick Facts",
+      "sourceUrl": "https://www.jpl.nasa.gov/news/press_kits/mars_2020/launch/quick_facts/",
+      "measurement": "Rover body length × width × height",
+      "configuration": "Rover body; robotic arm excluded",
+      "note": "NASA dimensions exclude the extended robotic arm."
+    },
+    {
+      "name": "Curiosity rover",
+      "aliases": [
+        "Curiosity",
+        "Curiosity Rover (MSL) (Clean)",
+        "Curiosity Rover (MSL) (Dirty)"
+      ],
+      "axesKm": [
+        0.003,
+        0.0027,
+        0.0022
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Mars rover dimensions",
+      "sourceUrl": "https://mars.nasa.gov/files/mars2020/Mars2020_Fact_Sheet.pdf",
+      "measurement": "Approximate rover envelope",
+      "configuration": "Rover body; arm excluded",
+      "note": "Approximate dimensions shared with the similar-sized Perseverance platform; verify against a Curiosity-specific model configuration."
+    },
+    {
+      "name": "Voyager spacecraft bus",
+      "aliases": [
+        "Voyager",
+        "Voyager Probe (A)",
+        "Voyager Probe (B)",
+        "Voyager Probe (B) (antenna)",
+        "Voyager 1",
+        "Voyager 2"
+      ],
+      "axesKm": [
+        0.004,
+        0.004,
+        0.004
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "NASA Voyager FAQ",
+      "sourceUrl": "https://science.nasa.gov/mission/voyager/frequently-asked-questions/",
+      "measurement": "Approximate central spacecraft envelope",
+      "configuration": "Central spacecraft without booms",
+      "note": "NASA says the spacecraft without its booms fits approximately in a 4 m cube. Extended booms and antenna may make the complete model much larger."
     }
   ]
 }
