@@ -48,6 +48,14 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
 - The curated asteroid set links to original object pages rather than direct OBJ/PLY endpoints. The source confirms that model downloads are available on those pages; exact file names, variants and sizes remain on the source page and are not guessed in SPACEMESHER. The source site does not document an API. Wikimedia Commons documents a predictable media URL pattern but also notes that filenames and suffixes vary, so SPACEMESHER uses the source page until each direct endpoint can be verified. The 37 moon entries remain accessible through the source catalogue page.
 
+## Catalogue completeness and data quality
+
+- Collection records are classified by what they actually provide: direct mesh/CAD files, catalogue-page references, scientific dataset archives, viewers or generators. The collection interface no longer labels a source detail page as a direct model download; ZIP/7Z packages are separated from individual mesh files.
+- The current audit snapshot is in [data/catalogue-audit.json](data/catalogue-audit.json). It reports 1,270 index records, 1,241 distinct source-file/listing placements after accounting for NASA's 29 cross-listed Height Map records, 977 direct mesh-file records (948 distinct source files after that cross-listing), 259 catalogue references, 29 archive packages and 5 unverified links. These are not unique physical-object counts.
+- The audit and data rules are documented in [tools/catalogue/README.md](tools/catalogue/README.md). Rebuild the audit with `python tools/catalogue/audit_catalogue.py`.
+- Source records are preserved individually. Multiple shape models, resolutions, methods and source datasets for the same physical object remain separate records; the audit never deletes or merges them. Only explicit numbered minor-planet designations are eligible for conservative cross-source grouping. Fuzzy name matches are not treated as proof of identity.
+- The complete 3D Asteroid Catalogue inventory remains a priority: its reported 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons and 3,079 models are not yet fully imported. The existing 256 numbered asteroid entries are catalogue-page references, not 256 direct mesh files.
+
 ## Automated real-world dimension research
 
 A first Python research pipeline for the 256 curated numbered asteroids is available in `tools/dimensions/`. It queries the official JPL Small-Body Database API, accepts only exact numbered-object matches, and writes tri-/bi-axial `extent` results to the separate candidate file `data/real-world-dimension-candidates.json`. Effective diameters are recorded separately and are never treated as longest axes.
