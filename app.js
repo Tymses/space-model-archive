@@ -492,7 +492,7 @@ loadExpandedCatalogs();
   const [t,s,o,p,g,c,d,e,x,m]=await Promise.all([import(b+"build/three.module.js"),import(b+"examples/jsm/loaders/STLLoader.js"),import(b+"examples/jsm/loaders/OBJLoader.js"),import(b+"examples/jsm/loaders/PLYLoader.js"),import(b+"examples/jsm/loaders/GLTFLoader.js"),import(b+"examples/jsm/controls/OrbitControls.js"),import(b+"examples/jsm/loaders/DRACOLoader.js"),import(b+"examples/jsm/exporters/STLExporter.js"),import(b+"examples/jsm/libs/meshopt_decoder.module.js"),import(b+"examples/jsm/loaders/MTLLoader.js")]);
   THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls,DRACO:d.DRACOLoader,STLExporter:e.STLExporter,MeshoptDecoder:x.MeshoptDecoder,MTL:m.MTLLoader};
  }
- function volume(){return $id("scaling-printer-profile").value==="p2s"?[256,256,256]:["x","y","z"].map(a=>Number($id("scaling-bed-"+a).value));}
+ function volume(){const profiles={"p2s":[256,256,256],"prusa-xl-5":[360,360,360],"centauri-carbon":[256,256,256]};return profiles[$id("scaling-printer-profile").value]||["x","y","z"].map(a=>Number($id("scaling-bed-"+a).value));}
  function rotations(d){return [[d[0],d[1],d[2]],[d[0],d[2],d[1]],[d[1],d[0],d[2]],[d[1],d[2],d[0]],[d[2],d[0],d[1]],[d[2],d[1],d[0]]];}
  function best(d,b){let factor=0,orientation=null;for(const p of rotations(d)){const f=Math.min(...p.map((v,i)=>b[i]/v));if(f>factor){factor=f;orientation=p;}}return {factor,orientation};}
  function standards(minimum){
