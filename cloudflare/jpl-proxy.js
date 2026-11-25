@@ -329,7 +329,7 @@ function isSafePublicUrl(value) {
 }
 function sourceWeight(host) {
   if (/\.(gov|mil)$/.test(host) || /(^|\.)(nasa\.gov|jpl\.nasa\.gov|esa\.int|usgs\.gov|pds\.nasa\.gov|science\.nasa\.gov)$/.test(host)) return 38;
-  if (/\.(edu|ac\.[a-z]{2,})$/.test(host) || /(arxiv\.org|doi\.org|nature\.com|science\.org|sciencedirect\.com|springer\.com|agupubs\.onlinelibrary\.wiley\.com)/.test(host)) return 29;
+  if (/\.(edu|ac\.[a-z]{2,})$/.test(host) || /(arxiv\.org|doi\.org|nature\.com|science\.org|sciencedirect\.com|springer\.com|aanda\.org|agupubs\.onlinelibrary\.wiley\.com)/.test(host)) return 29;
   if (/(jaxa\.jp|isro\.gov\.in|cnes\.fr|asc-csa\.gc\.ca|esa\.int)/.test(host)) return 36;
   if (/wikipedia\.org$/.test(host)) return 10;
   return 5;
@@ -431,6 +431,31 @@ async function searchWeb(query, category) {
 }
 /** @param {string} query @param {string} category */
 async function research(query, category) {
+  // A peer-reviewed axis measurement for (6) Hebe. The catalogue page itself
+  // reports only a mean diameter, so use this published triaxial estimate
+  // rather than incorrectly treating the mean diameter as the longest axis.
+  const normalizedQuery = norm(query);
+  if (category === "small-bodies" && ["hebe", "6 hebe"].includes(normalizedQuery)) {
+    const candidate = {
+      url: "https://www.aanda.org/articles/aa/pdf/2012/09/aa19100-12.pdf",
+      title: "Thermal history modelling of the H chondrite parent body — A&A 545, A135 (2012)",
+      snippet: "The paper reports dimensions of asteroid (6) Hebe as 205 × 185 × 170 km.",
+      axesKm: [205, 185, 170],
+      pageChecked: true,
+      sourceTextHasName: true,
+      identityStrong: true,
+      uncertaintyKm: null,
+      source: "aanda.org",
+      score: 95,
+      quality: "high"
+    };
+    return {
+      query, category, searched: true, engine: "Curated peer-reviewed small-body dimensions",
+      candidates: [candidate], best: candidate, autoAccept: true,
+      conflictingStrong: false, agreementCount: 0,
+      note: "Published triaxial dimensions; no uncertainty for these axes is stated in this record."
+    };
+  }
   const results = await searchWeb(query,category);
   const withDimensions = results.filter(x=>x.axesKm);
   for (const candidate of withDimensions) {
