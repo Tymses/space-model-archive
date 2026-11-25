@@ -1,6 +1,6 @@
 # JPL proxy for the Scaling workspace
 
-The browser cannot call the JPL SBDB API directly because the JPL endpoint does not provide browser CORS headers. This small Cloudflare Worker forwards only read-only SBDB lookups and adds the required CORS response headers.
+The browser cannot call JPL SBDB or third-party search engines directly because of CORS restrictions. This Cloudflare Worker provides read-only JPL SBDB lookups and a broader public-web research fallback, with the required CORS response headers.
 
 ## Deploy once (free Cloudflare Workers plan)
 
@@ -21,17 +21,19 @@ The Worker allows the published SMA origin (`https://tymses.github.io`) and comm
 
 ## What the lookup does
 
-The Scaling workspace sends the typed asteroid/comet name, number or designation to this Worker. The Worker requests:
+The Scaling workspace derives a search phrase from the uploaded model name or filename and sends it to this Worker automatically. It first checks curated scientific dimensions and, for small bodies, JPL SBDB. If those do not provide usable axes, the Worker searches the DuckDuckGo public web index, opens a limited number of promising result pages, extracts candidate axis values and ranks sources by domain authority, name match and explicit dimensions. This is a broad public-web search, not a literal crawl of the entire Internet. The Worker requests:
 
 `https://ssd-api.jpl.nasa.gov/sbdb.api?sstr=...&phys-par=1&full-prec=1`
 
-The browser then reads the `extent` physical parameter, converts its axes to kilometres, and uses the largest axis. A single `diameter` value is never substituted for `extent`. If JPL has no usable extent, the workspace explains why it cannot calculate a verified scale.
+The browser then reads the `extent` physical parameter, converts its axes to kilometres, and uses the largest axis. A single `diameter` value is never substituted for `extent`. If JPL has no usable extent, the workspace runs broader research. High-evidence candidates may be selected automatically; otherwise the most promising candidates are shown for manual review. The evidence score is a source-quality heuristic, not a probability. Published uncertainty is shown only when the source states it.
 
 ## Privacy and limits
 
 - No API key or account is sent to JPL.
 - The Worker forwards only the object search string and physical-parameter request.
-- It does not accept arbitrary target URLs; the upstream host is fixed to JPL.
+- Search-result URLs are fetched only after they are returned by the public search index; users cannot submit arbitrary target URLs.
+- The public-web fallback checks a bounded number of search results and pages per request. It cannot guarantee coverage of every Internet page, paywalled papers or blocked hosts.
+- Automatically extracted values are candidates, not newly peer-reviewed measurements. Review the linked source and configuration before relying on them.
 - Responses are cached for a short period to avoid repeated requests.
 - The Worker is a read-only relay; it does not write to the SMA repository or alter verified dimension records.
 
