@@ -33,7 +33,7 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - Collection pages use three independent expandable dropdown sections: **Downloadable models**, **Sources**, and **Generators**. Search and source/type filters apply across all three sections. Generators are not mixed into source catalogues or counted as downloadable model files.
 - Model detail pages show source credit, file format, file size, licence/use guidance and original download link where available.
 - Printer fit checker with a Bambu Lab P2S profile (256 × 256 × 256 mm) and custom build-volume dimensions.
-- Scale calculator for GLB previews: enter the real-world length of the model's longest axis and a scale denominator.
+- Automatic Scaling research: derives an object query from the uploaded model name/filename, checks curated scientific dimensions and JPL SBDB, then searches a public web index when those sources do not provide usable axes. It ranks source candidates, reports evidence quality and shows alternatives when evidence is ambiguous.
 - Fit checks test all six axis-aligned 90° orientations.
 
 ## Important limitations
@@ -41,9 +41,9 @@ A minimal, source-linked archive for discovering space-related 3D models and pre
 - Missing real-world dimensions, scale, licence or geometry are never guessed.
 - NASA models are linked to the NASA 3D Resources repository; follow NASA's usage guidelines and attribution requirements.
 - The fit checker uses the 3D preview's bounding box. It is not a slicer simulation and does not check wall thickness, supports, bed adhesion, brim, collision clearance or arbitrary-angle packing.
-- STL and GLB files remain in their original formats when no native STEP file is provided. A mesh-to-STEP conversion is not presented as a proper CAD solid unless its quality is verified.
+- STL, OBJ, PLY, GLB and GLTF files can be previewed in the Scaling workspace. Draco/Meshopt-compressed glTF, GLTF companion files and OBJ/MTL assets are supported. A mesh-to-STEP conversion is not presented as a proper CAD solid unless its quality is verified.
 - STEP support varies by slicer: Bambu Studio and PrusaSlicer support STEP import, while UltiMaker Cura's documented model formats do not list STEP. STL remains the broadly compatible fallback.
-- STL files are provided as direct downloads; the current in-browser preview and automatic geometry measurement are for GLB files only.
+- The Scaling workspace can export the selected printable geometry as a binary STL in millimetres; the original source file remains unchanged.
 - Scaling recommendations use the measured model geometry and verified physical dimensions. The original source file is not modified; the selected scale can be exported as a binary STL in millimetres.
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
 - The curated asteroid set links to original object pages rather than direct OBJ/PLY endpoints. The source confirms that model downloads are available on those pages; exact file names, variants and sizes remain on the source page and are not guessed in SPACEMESHER. The source site does not document an API. Wikimedia Commons documents a predictable media URL pattern but also notes that filenames and suffixes vary, so SPACEMESHER uses the source page until each direct endpoint can be verified. The 37 moon entries remain accessible through the source catalogue page.
@@ -73,6 +73,6 @@ The reference-length helper accepts km, m, cm or mm and includes a guide for fin
 
 ## Automatic object scaling
 
-The Scaling workspace can identify asteroids and comets by name, number or designation, retrieve their measured `extent` axes from JPL SBDB, calculate the source model's original scale, and suggest familiar printable scale ratios based on the selected build volume. It deliberately does not substitute a single effective diameter for a longest physical axis.
+The Scaling workspace derives a search term from an archive model name or uploaded filename. It checks the curated dimension index and JPL SBDB `extent` for small bodies first. If these do not return usable dimensions, the Cloudflare Worker searches the DuckDuckGo public web index, opens a limited set of promising pages, extracts candidate axes, ranks source quality and checks for conflicting values. High-evidence results may be selected automatically; when evidence is weak or conflicting, the best candidates are displayed for user review. This is a broad public-web search, not a crawl of every Internet page. The evidence score is heuristic, not a probability; measurement uncertainty is shown only when the source publishes it. A single effective diameter is never silently converted into three physical axes.
 
 A one-time Cloudflare Worker setup is required because the JPL API does not enable browser CORS. Follow [the proxy setup guide](cloudflare/README.md) and set the Worker URL in `config.js`. The Worker source is [cloudflare/jpl-proxy.js](cloudflare/jpl-proxy.js).
