@@ -3,6 +3,26 @@
   "description": "Curated, source-backed physical axis dimensions used only when JPL SBDB does not provide a usable extent. Values are kilometres.",
   "records": [
     {
+      "name": "(3) Juno",
+      "aliases": [
+        "Juno",
+        "3 Juno",
+        "(3) Juno",
+        "Asteroid Juno",
+        "3 Juno asteroid"
+      ],
+      "axesKm": [
+        311,
+        274,
+        236
+      ],
+      "sourceLabel": "John Broughton (2018), Asteroid Dimensions from Occultations",
+      "sourceUrl": "https://www.asteroidoccultation.com/observations/Asteroid_Dimensions_from_Occultations.html",
+      "measurement": "Occultation-derived ellipsoid dimensions",
+      "note": "Ellipsoid dimensions derived from occultation chord constraints; the source does not provide individual axis uncertainties. These are not the same as a specific photometric convex shape model.",
+      "category": "small-bodies"
+    },
+    {
       "name": "(7) Iris",
       "aliases": [
         "Iris",
