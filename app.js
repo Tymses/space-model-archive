@@ -172,7 +172,7 @@ function renderCollection(){
  const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x));
  const modelReferences=MODELS.filter(x=>matchesModel(x)&&!isDirectMesh(x)).map(x=>({
   name:x.name,entryType:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"data":"catalogue",
-  type:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable scientific dataset archive":"Original model catalogue page",
+  type:x.kind||(["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Scientific dataset archive":"Catalogue reference"),
   description:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download.",
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
