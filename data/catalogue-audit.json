@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "generatedAt": "2026-11-25",
-  "method": "Repository snapshot audit based on the five existing index files. Re-run tools/catalogue/audit_catalogue.py after index changes.",
-  "coverageNote": "These are index records, not unique physical objects and not the complete contents of external catalogues. The NASA index contains 29 planetary STL records cross-listed in Height Maps; count source files separately from collection placements. Catalogue-page references and archive packages are not individual mesh files.",
+  "method": "Repository snapshot audit based on six index files, including the 37 individually indexed planetary moon catalogue references.",
+  "coverageNote": "These are index records, not unique physical objects and not the complete contents of external catalogues. The NASA index contains 29 planetary STL records cross-listed in Height Maps; count source files separately from collection placements. Catalogue-page references and archive packages are not individual mesh files. The 37 moon records are individually catalogued references to the source list, not direct model files.",
   "totals": {
-    "indexRecordCount": 1270,
-    "uniqueRecordIdCount": 1270,
+    "indexRecordCount": 1307,
+    "uniqueRecordIdCount": 1307,
     "duplicateRecordIdCount": 0,
-    "uniqueSourceFileCount": 1241,
+    "uniqueSourceFileCount": 1278,
     "directMeshFileRecords": 977,
     "uniqueDirectMeshFilesAfterKnownNasaCrossListing": 948,
-    "cataloguePageReferences": 259,
+    "cataloguePageReferences": 296,
     "datasetArchiveRecords": 29,
     "unverifiedLinkRecords": 5
   },
@@ -18,12 +18,12 @@
     "spacecraft": 877,
     "small-bodies": 316,
     "planetary": 35,
-    "moons": 13,
+    "moons": 50,
     "height-maps": 29
   },
   "byRecordType": {
     "direct-model-file": 977,
-    "catalogue-reference": 259,
+    "catalogue-reference": 296,
     "dataset-archive": 29,
     "unverified-link": 5
   },
@@ -75,6 +75,15 @@
       "categoryCounts": {
         "small-bodies": 256
       }
+    },
+    {
+      "index": "data/moon-catalogue-index.json",
+      "source": "3D Asteroid Catalogue",
+      "recordCount": 37,
+      "categoryCounts": {
+        "moons": 37
+      },
+      "note": "37 individual source-list references; no direct mesh endpoints assumed."
     }
   ],
   "limitations": [
