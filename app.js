@@ -179,7 +179,7 @@ function renderCollection(){
   description:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download.",
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
- const remotePageUrls=new Set(MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl));
+ const remotePageUrls=new Set([...MODELS.filter(x=>x.remoteCandidate||x.remoteUnavailable).map(x=>x.remotePageUrl),...resolvedRemotePages]);
  const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
@@ -229,6 +229,7 @@ window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")ro
 routeHome(false);
 
 
+const resolvedRemotePages = new Set();
 const MOON_PAGE_SLUGS = {
  "Moon":"E1-Moon","Io":"J1-Io","Europa":"J2-Europa","Ganymede":"J3-Ganymede","Callisto":"J4-Callisto","Amalthea":"J5-Amalthea","Thebe":"J14-Thebe",
  "Phobos":"M1-Phobos","Deimos":"M2-Deimos","Triton":"N1-Triton","Larissa":"N7-Larissa","Proteus":"N8-Proteus","Charon":"P1-Charon",
@@ -265,6 +266,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    statusNode.textContent="Keine erreichbare Modelldatei gefunden. Der Eintrag bleibt als Quellenverweis erhalten.";
    if(currentCategory)renderCollection();button.hidden=true;return;
   }
+  resolvedRemotePages.add(model.remotePageUrl);
   const parentIndex=MODELS.indexOf(model);if(parentIndex>=0)MODELS.splice(parentIndex,1);
   const added=[];
   files.forEach((file,index)=>{
