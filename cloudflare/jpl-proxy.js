@@ -88,6 +88,33 @@ async function fetchApprovedAsset(value, request) {
   throw new Error("Unable to retrieve model asset.");
 }
 
+async function resolveCataloguePage(value) {
+  let page; try { page = new URL(value); } catch { throw new Error('Invalid model page URL.'); }
+  if (page.protocol !== 'https:' || !CATALOGUE_HOSTS.has(page.hostname.toLowerCase()) || !/^\/(?:asteroids|moons|comets|dwarf)(?:\/|$)/.test(page.pathname)) throw new Error('Only individual 3D Asteroid Catalogue object pages can be resolved.');
+  const response = await fetch(page.toString(), { headers: { Accept: 'text/html', 'User-Agent': 'SPACEMESHER-ModelResolver/1.0' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+  if (!response.ok) throw new Error('Catalogue page returned HTTP ' + response.status + '.');
+  const html = (await response.text()).slice(0, 2000000);
+  const re = new RegExp('href\\s*=\\s*[\"\\']([^\"\\']+)[\"\\']', 'gi');
+  const files = []; let match;
+  while ((match = re.exec(html)) && files.length < 80) {
+    let target; try { target = new URL(decode(match[1]), page); } catch { continue; }
+    const ext = assetExtension(target.toString());
+    if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== 'https:' || target.username || target.password) continue;
+    if (files.some(x => x.url === target.toString())) continue;
+    files.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split('/').pop() });
+  }
+  const verified = [];
+  for (const file of files.slice(0, 24)) {
+    try {
+      const probe = await fetch(file.url, { headers: { Range: 'bytes=0-0', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+      if (!probe.ok && probe.status !== 206) { try { await probe.body.cancel(); } catch {} continue; }
+      if ((probe.headers.get('Content-Type') || '').toLowerCase().includes('text/html')) { try { await probe.body.cancel(); } catch {} continue; }
+      file.sizeBytes = Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
+      try { await probe.body.cancel(); } catch {}
+    } catch {}
+  }
+  return { page: page.toString(), resolvedAt: new Date().toISOString(), files: verified, source: '3D Asteroid Catalogue' };
+}
 function cors(origin) {
   return {
     "Access-Control-Allow-Origin": origin,
@@ -256,6 +283,15 @@ export default {
     if (request.method === "OPTIONS") return new Response(null,{status:204,headers});
     if (request.method !== "GET") return new Response("Method not allowed",{status:405,headers});
     const incoming = new URL(request.url);
+    if (incoming.searchParams.get('action') === 'resolve') {
+      try {
+        const pageUrl = incoming.searchParams.get('url') || '';
+        if (!pageUrl || pageUrl.length > 2048) return json({ error: 'A valid catalogue page URL is required.' }, 400, headers);
+        return json(await resolveCataloguePage(pageUrl), 200, { ...headers, 'Cache-Control': 'public, max-age=1800' });
+      } catch (error) {
+        return json({ error: 'Model file resolution failed', detail: String(error.message || error) }, 502, { ...headers, 'Cache-Control': 'no-store' });
+      }
+    }
     if (incoming.searchParams.get("action") === "asset") {
       try {
         const assetUrl = incoming.searchParams.get("url") || "";
