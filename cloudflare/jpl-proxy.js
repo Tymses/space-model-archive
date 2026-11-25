@@ -145,7 +145,7 @@ function extractCatalogueFileCandidates(html, basePage) {
   const attr = /(?:href|src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
   let match;
   while ((match = attr.exec(source)) && raw.length < 300) raw.push(match[1]);
-  const urlPattern = /(?:https?:\/\/[^"'\s<>]+|\/[^"'\s<>]+)\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?/gi;
+  const urlPattern = /(?:https?:\/\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?|\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?)/gi;
   while ((match = urlPattern.exec(source)) && raw.length < 500) raw.push(match[0]);
   const found = [];
   for (const value of raw) {
@@ -160,7 +160,7 @@ function extractCatalogueFileCandidates(html, basePage) {
 }
 
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
-  const wanted = norm(objectName);
+  const wanted = norm(String(objectName || "").replace(/^[a-z]+\\d+\\s*/i, ""));
   const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop());
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
