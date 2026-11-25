@@ -250,3 +250,36 @@
 .scaling-gauge-card.is-unrated .scaling-gauge-ring{opacity:.72}
 .scaling-gauge-note{margin:7px 0 0;color:var(--muted);font-size:9px;line-height:1.45}
 @media(max-width:650px){.scaling-gauges{gap:8px}.scaling-gauge-card{min-height:84px}.scaling-gauge-ring{width:50px;height:50px;flex-basis:50px}}
+
+
+/* On-demand remote model resolution */
+.remote-resolution-status {
+  margin: 14px 0 8px;
+  color: var(--muted, #667085);
+  font-size: .88rem;
+  line-height: 1.5;
+}
+.remote-variants {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.remote-variant-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line, #e3e6eb);
+  border-radius: 10px;
+  background: var(--surface, #fff);
+  font-size: .86rem;
+}
+.remote-variant-row > span {
+  min-width: 180px;
+  flex: 1 1 240px;
+}
+.remote-variant-row .action-link {
+  font-size: .82rem;
+}
