@@ -3,6 +3,32 @@
   "description": "Curated, source-backed physical axis dimensions used only when JPL SBDB does not provide a usable extent. Values are kilometres.",
   "records": [
     {
+      "name": "(7) Iris",
+      "aliases": [
+        "Iris",
+        "7 Iris",
+        "(7) Iris",
+        "Asteroid Iris",
+        "7 Iris asteroid"
+      ],
+      "axesKm": [
+        268,
+        234,
+        180
+      ],
+      "uncertaintyKm": 6,
+      "axisUncertaintiesKm": [
+        5,
+        4,
+        6
+      ],
+      "sourceLabel": "Hanuš et al. (2019), Astronomy & Astrophysics 624, A121",
+      "sourceUrl": "https://doi.org/10.1051/0004-6361/201834541",
+      "measurement": "ADAM 3D shape-model major-axis dimensions",
+      "note": "Published axes are 268 ± 5 × 234 ± 4 × 180 ± 6 km. The displayed single uncertainty is the conservative maximum (±6 km). This is a peer-reviewed shape-model measurement, not a mean diameter.",
+      "category": "small-bodies"
+    },
+    {
       "name": "(99942) Apophis",
       "aliases": [
         "Apophis",
