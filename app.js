@@ -282,6 +282,16 @@ async function loadExpandedCatalogs() {
   }
 
   try {
+    const response = await fetch("./data/moon-catalogue-index.json");
+    if (!response.ok) throw new Error("Moon catalogue index HTTP " + response.status);
+    const index = await response.json();
+    for (const model of index.files || []) addCatalogModel(model);
+    expandedCatalogCounts.moonCatalogueEntries = (index.files || []).length;
+  } catch (error) {
+    expandedCatalogCounts.errors.push("Moon catalogue index: " + error.message);
+  }
+
+  try {
     const response = await fetch("./data/real-world-dimensions.json");
     if (!response.ok) throw new Error("Real-world dimensions index HTTP " + response.status);
     const index = await response.json();
