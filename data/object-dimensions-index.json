@@ -269,20 +269,6 @@
       "sourceUrl": "https://3d-asteroids.space/asteroids/2063-Bacchus"
     },
     {
-      "name": "(6489) 1991 JX",
-      "aliases": [
-        "1996 HW1",
-        "1996 HW1 asteroid"
-      ],
-      "axesKm": [
-        3.8,
-        1.6,
-        1.5
-      ],
-      "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
-      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
-    },
-    {
       "name": "(66391) 1999 KW4 Alpha",
       "aliases": [
         "1999 KW4 Alpha",
@@ -313,21 +299,7 @@
       "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/1999KW4/1999KW4_planning.2018.html"
     },
     {
-      "name": "(8567) 1996 HW1",
-      "aliases": [
-        "1996 HW1",
-        "8567 1996 HW1"
-      ],
-      "axesKm": [
-        3.8,
-        1.6,
-        1.5
-      ],
-      "sourceLabel": "Magri et al. (2011), radar/photometric shape model",
-      "sourceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0019103511000777"
-    },
-    {
-      "name": "(10563) 1993 WD",
+      "name": "2002 CE26",
       "aliases": [
         "2002 CE26",
         "2002 CE26 Alpha"
