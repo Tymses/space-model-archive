@@ -441,7 +441,7 @@ loadExpandedCatalogs();
  function clear(){
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
   renderer=null;controls=null;camera=null;scene=null;root=null;active=null;
-  objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];
+  objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];lookupBusy=false;const lookupButton=$id("scaling-jpl-lookup");if(lookupButton)lookupButton.disabled=false;researchCandidates=[];const researchResults=$id("scaling-research-results");if(researchResults){researchResults.hidden=true;researchResults.replaceChildren();}const researchPanel=$id("scaling-research-panel");if(researchPanel)researchPanel.hidden=true;
  }
  async function ensure(){
   if(THREE)return;const b="https://cdn.jsdelivr.net/npm/three@0.170.0/";
@@ -505,12 +505,13 @@ loadExpandedCatalogs();
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
  function setLookupStatus(message,isError=false){const el=$id("scaling-lookup-status");el.textContent=message;el.classList.toggle("is-error",isError);}
- function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote=""}){
+ function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote="",uncertaintyKm=null}){
   realAxesKm=axesKm;realLongestKm=longestAxisKm;realSourceUrl=sourceUrl;realObjectName=name;
   $id("scaling-object-result").hidden=false;$id("scaling-object-name").textContent=name;
   $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v)+" km").join(" × ");
   $id("scaling-object-longest").textContent=fmt(longestAxisKm)+" km";
   const quality=$id("scaling-object-confidence");if(quality)quality.textContent=confidenceLabel+(confidenceNote?" · "+confidenceNote:"");
+  const uncertainty=$id("scaling-object-uncertainty");if(uncertainty)uncertainty.textContent=Number.isFinite(uncertaintyKm)?"± "+fmt(uncertaintyKm)+" km":"Not stated by source";
   const link=$id("scaling-reference-source");link.href=sourceUrl;link.textContent="Open "+sourceLabel+" record ↗";
   selectedDenominator=null;update();
  }
@@ -577,7 +578,7 @@ loadExpandedCatalogs();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:best.title||query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment"});
+   showDimensions({name:best.title||query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
@@ -750,7 +751,7 @@ loadExpandedCatalogs();
  $id("scaling-research-results").addEventListener("click",e=>{
   const button=e.target.closest("[data-research-index]");if(!button)return;
   const candidate=researchCandidates[Number(button.dataset.researchIndex)];if(!candidate?.axesKm)return;
-  showDimensions({name:candidate.title||$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate"});
+  showDimensions({name:candidate.title||$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm});
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
