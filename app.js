@@ -590,7 +590,7 @@ loadExpandedCatalogs();
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
-   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-6",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-6",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
    const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
    const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
    return found.length===1?found[0]:null;
@@ -788,7 +788,7 @@ loadExpandedCatalogs();
    if(model&&Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0){
     const axes=Array.isArray(model.realDimensionsKm)&&model.realDimensionsKm.length>=2?model.realDimensionsKm:[model.realLongestAxisKm];
     showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source"});
-    setLookupStatus("Vorhandene verifizierte SMA-Messung verwendet.");
+    setLookupStatus("Using the existing verified SMA measurement.");
    }else{
     const query=deriveSearchTerm(model,file,object)||$id("scaling-object-query").value.trim();
     if(query){$id("scaling-object-query").value=query;await lookupObject(query,true,model?.category||null);}
@@ -811,7 +811,7 @@ loadExpandedCatalogs();
   $id("scaling-recommendations").innerHTML="<p>Load a model and identify its object to calculate scale suggestions.</p>";
   renderFit("Awaiting model and object dimensions","The model is checked against the selected printer once its real-world dimensions are found.",null);
   $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload STL, OBJ, PLY, GLB or GLTF model files.</p></div>';
-  setLookupStatus(proxyUrl?"Searches JPL for physical axes (extent), not just an average diameter.":"JPL-Suche benötigt einmalig den kostenlosen Proxy.",!proxyUrl);
+  setLookupStatus(proxyUrl?"Searches JPL for physical axes (extent), not just an average diameter.":"JPL lookup requires the free proxy to be configured once.",!proxyUrl);
  }
  window.addEventListener("sma-scaling-open",e=>{
   const model=e.detail?.model;resetWorkspace();
