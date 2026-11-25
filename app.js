@@ -564,7 +564,7 @@ loadExpandedCatalogs();
   panel.hidden=!researchCandidates.length;
   panel.innerHTML=researchCandidates.map((item,index)=>{
    const axes=Array.isArray(item.axesKm)&&item.axesKm.length>=2?item.axesKm.map(v=>fmt(v)+" km").join(" × "):"No extractable dimensions";
-   return '<article class="research-candidate'+(autoAccepted&&index===0?' is-chosen':'')+'"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · evidence score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Use these dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
+   return '<article class="research-candidate'+(autoAccepted&&index===0?' is-chosen':'')+'"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · source-quality score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Use these dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
   }).join("");
  }
  async function runWebResearch(query,expectedCategory,lookupToken){
@@ -591,7 +591,8 @@ loadExpandedCatalogs();
   const q=(query||"").trim();if(!q||lookupBusy)return;
   const lookupToken=token;
   lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;
-  setLookupStatus("Searching source-backed dimensions for "+q+" …");
+  setResearchState("searching","Checking the model name against curated scientific records and standard databases.");
+  setLookupStatus("Cloudflare Worker searching...");
   try{
    const directRecord=await findCuratedDimensions([q],expectedCategory);
    if(lookupToken!==token)return;
@@ -599,6 +600,7 @@ loadExpandedCatalogs();
     const longest=Math.max(...directRecord.axesKm);
     showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
+    setResearchState("complete","A matching source-backed scientific record was found.");
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
    }
