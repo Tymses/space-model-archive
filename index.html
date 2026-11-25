@@ -11,7 +11,7 @@
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="config.js?v=20261124-2"></script>
-<script src="app.js?v=20261125-9" defer></script>
+<script src="app.js?v=20261125-10" defer></script>
 </head>
 <body>
 <header class="app-bar">
@@ -104,14 +104,27 @@
       <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
       <p class="scaling-model-name" id="scaling-model-name">No model selected</p>
       <div class="scaling-object-search">
-        <label for="scaling-object-query">Asteroid or comet name, number or designation</label>
-        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="e.g. Apophis, 99942, 2004 MN4"><button class="lookup-button" id="scaling-jpl-lookup" type="button">Find dimensions</button></div>
-        <p class="field-hint" id="scaling-lookup-status" aria-live="polite">Searches JPL for physical axes (extent), not just an average diameter.</p>
+        <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
+        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button">Find dimensions</button></div>
+        <p class="field-hint" id="scaling-lookup-status" aria-live="polite">The model name is detected automatically. Scientific databases are checked first, followed by broader public-web research.</p>
+        <div class="scaling-research-panel" id="scaling-research-panel" hidden aria-live="polite">
+          <div class="research-scan" aria-hidden="true">
+            <svg viewBox="0 0 160 104" role="img">
+              <defs><pattern id="research-grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width=".7"/></pattern><pattern id="research-zoom-grid" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M6 0H0V6" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width=".8"/></pattern></defs>
+              <rect x="8" y="10" width="144" height="84" rx="10" fill="url(#research-grid)" stroke="currentColor" stroke-opacity=".16"/>
+              <path class="research-scan-line" d="M12 28H148"/>
+              <g class="research-magnifier"><circle cx="76" cy="48" r="25" fill="#f7f8fa" fill-opacity=".78" stroke="currentColor" stroke-width="2.5"/><circle cx="76" cy="48" r="20" fill="url(#research-zoom-grid)"/><path d="M94 66L113 85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M94 66L113 85" fill="none" stroke="#f7f8fa" stroke-width="2" stroke-linecap="round"/><circle cx="76" cy="48" r="3" fill="currentColor" opacity=".55"/></g>
+            </svg>
+          </div>
+          <div class="research-copy"><strong id="scaling-research-title">Cloudflare Worker searching...</strong><span id="scaling-research-detail">Comparing scientific sources and published measurements.</span></div>
+        </div>
+        <div class="scaling-research-results" id="scaling-research-results" hidden></div>
       </div>
       <div class="scaling-object-result" id="scaling-object-result" hidden>
         <div><span>Matched object</span><strong id="scaling-object-name">—</strong></div>
         <div><span>Measured axes</span><strong id="scaling-object-axes">—</strong></div>
         <div><span>Longest axis</span><strong id="scaling-object-longest">—</strong></div>
+        <div><span>Evidence quality</span><strong id="scaling-object-confidence">—</strong></div>
         <a id="scaling-reference-source" href="#" target="_blank" rel="noopener">Open JPL record ↗</a>
       </div>
       <div class="scaling-printer-block">
