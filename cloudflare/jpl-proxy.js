@@ -135,9 +135,9 @@ async function resolveCataloguePage(value) {
         if (first.value) sample = first.value.slice(0, 8192);
         await reader.cancel();
       } catch {}
-      const sampleText = new TextDecoder().decode(sample).replace(/^\\uFEFF/, '').trimStart();
+      const sampleText = new TextDecoder().decode(sample).replace(/^\uFEFF/, '').trimStart();
       if (file.format === 'PLY' && !sampleText.startsWith('ply')) continue;
-      if (file.format === 'OBJ' && !/(^|\\n)\\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\\s+/m.test(sampleText)) continue;
+      if (file.format === 'OBJ' && !/(^|\n)\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\s+/m.test(sampleText)) continue;
       if (file.format === 'GLB' && new TextDecoder().decode(sample.slice(0, 4)) !== 'glTF') continue;
       if (file.format === 'GLTF' && (!sampleText.startsWith('{') || !sampleText.includes('"asset"'))) continue;
       file.url = probeUrl; const rangeTotal = (probe.headers.get('Content-Range') || '').split('/').pop(); file.sizeBytes = Number(rangeTotal) || Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
