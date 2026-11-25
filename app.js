@@ -585,8 +585,23 @@ loadExpandedCatalogs();
   if(axes.some(v=>!Number.isFinite(v)||v<=0))return null;
   return axes;
  }
+ function simplifySearchTerm(value){
+  let text=String(value||"").normalize("NFKC").replace(/\.[^.]+$/,"");
+  text=text.replace(/\(([^)]*)\)/g,(match,inside)=>/^\s*(?:#?\d+|v?\d+(?:[._-]\d+)*|copy|final|duplicate|low[ _-]?poly|high[ _-]?poly)\s*$/i.test(inside)?" ":" "+inside+" ");
+  text=text.replace(/\b(?:3d|model|mesh|download|print|final|low[ _-]?poly|high[ _-]?poly|export|copy|duplicate|version|ver|scene|object|group|root|scan|scanned|render|textured|decimated)\b/gi," ");
+  text=text.replace(/[–—−_]+/g," ").replace(/[|,:;]+/g," ");
+  text=text.replace(/[^\p{L}\p{N}\s/'-]/gu," ");
+  text=text.replace(/\s+/g," ").trim();
+  text=text.replace(/^(?:(?:the|asteroid|minor planet|comet|dwarf planet|moon|natural satellite|satellite|planet|spacecraft|space telescope)\s+)+/i,"");
+  text=text.replace(/^\(?\d{1,7}\)?\s+/,"");
+  text=text.replace(/\s+\(?\d{1,7}\)?$/,"");
+  text=text.replace(/([\p{L}]{4,})\d{1,4}$/u,"$1");
+  text=text.replace(/\b(?:v\d+(?:[._-]\d+)*|rev(?:ision)?\s*\d+|copy\s*\d+|final\s*\d*)\b/gi," ");
+  text=text.replace(/\s+/g," ").replace(/^[-/' ]+|[-/' ]+$/g,"").trim();
+  return /^(?:model|mesh|object|scene|untitled|download|file|unknown)$/i.test(text)?"":text;
+ }
  function normalizeObjectQuery(value){
-  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  return simplifySearchTerm(value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
@@ -608,12 +623,17 @@ loadExpandedCatalogs();
   return true;
  }
  function deriveSearchTerm(model,file,object){
-  const clean=value=>String(value||"").replace(/\.[^.]+$/,"").replace(/[_.]+/g," ").replace(/\b(3d|model|mesh|download|print|final|low poly|high poly|export|copy|version\s*\d+|scene|object|group|root)\b/gi," ").replace(/\s+/g," ").trim();
-  const primary=clean(model?.name)||clean(file?.name)||clean($id("scaling-object-query").value);
-  if(primary&&primary.length>2&&!/^(model|mesh|object|scene|untitled|download)$/i.test(primary))return primary;
+  const candidates=[model?.name,file?.name,$id("scaling-object-query").value];
+  for(const candidate of candidates){
+   const simplified=simplifySearchTerm(candidate);
+   if(simplified&&simplified.length>2)return simplified;
+  }
   const labels=[];
-  if(object)object.traverse(node=>{const name=clean(node.name);if(name&&name.length>2&&!/^(mesh|object|scene|group|root|node|default)$/i.test(name)&&!labels.includes(name))labels.push(name);});
-  return labels.slice(0,3).join(" ").slice(0,140)||primary;
+  if(object)object.traverse(node=>{
+   const name=simplifySearchTerm(node.name);
+   if(name&&name.length>2&&!/^(?:mesh|object|scene|group|root|node|default|geometry)$/i.test(name)&&!labels.includes(name))labels.push(name);
+  });
+  return labels.slice(0,3).join(" ").slice(0,140);
  }
  function setResearchState(state,message){
   const panel=$id("scaling-research-panel");if(!panel)return;
@@ -653,7 +673,8 @@ loadExpandedCatalogs();
   return false;
  }
  async function lookupObject(query,quiet=false,expectedCategory=null){
-  const q=(query||"").trim();if(!q||lookupBusy)return;
+  const q=simplifySearchTerm(query)||String(query||"").trim();if(!q||lookupBusy)return;
+  if($id("scaling-object-query").value!==q)$id("scaling-object-query").value=q;
   const lookupToken=token;
   lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;
   setResearchState("searching","Checking the model name against curated scientific records and standard databases.");
