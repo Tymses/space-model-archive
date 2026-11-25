@@ -290,19 +290,12 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    throw new Error("The Worker returned "+returnedFiles.length+" file(s), but none of their filenames identify "+model.name+". Unrelated files were discarded.");
   }
   if(!files.length) {
-   // Preserve the original catalogue page as a source entry. Do not leave a
-   // dead remote candidate or an empty file URL behind when no mesh passes
-   // the Worker's reachability and format checks.
-   model.remoteCandidate=false;
-   model.remoteUnavailable=true;
-   model.downloadDirect=false;
-   model.format="CATALOGUE";
-   model.file=model.remotePageUrl||model.sourceUrl;
-   model.kind=(model.kind||"Remote model")+" · source page";
-   model.description="No directly downloadable, reachable model file passed the automatic checks. The original catalogue page remains available here; inspect its downloads manually.";
-   statusNode.textContent="Keine gültige Modelldatei gefunden. Der Eintrag wurde aus den Remote-Kandidaten in „Sources“ verschoben; die Originalseite bleibt dort verlinkt.";
-   button.hidden=true;
-   if(currentCategory)renderCollection();
+   // A failed lookup is not cached either: keep the original candidate intact
+   // and allow a fresh request when the user chooses to retry.
+   loader.hidden=true;
+   statusNode.textContent="Keine verifizierte Modelldatei gefunden. Der Eintrag bleibt unverändert; du kannst die Suche erneut starten.";
+   button.disabled=false;
+   button.textContent="Try again";
    return;
   }
   // Keep resolved files local to this detail view. Do not mutate MODELS,
