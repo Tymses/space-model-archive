@@ -161,7 +161,7 @@ function extractCatalogueFileCandidates(html, basePage) {
 
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
   const wanted = norm(String(objectName || "").replace(/^[a-z]+\\d+\\s*/i, ""));
-  const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop());
+  const wanted = norm(String(objectName || "").replace(/^[a-z]+\d+\s*/i, ""));
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
   while ((match = anchors.exec(html))) {
@@ -436,7 +436,7 @@ export default {
     const headers = cors(origin);
     if (request.method === "OPTIONS") return new Response(null,{status:204,headers});
     if (request.method !== "GET") return new Response("Method not allowed",{status:405,headers});
-    const incoming = new URL(request.url);
+        return json(await resolveCataloguePage(pageUrl, incoming.searchParams.get("name") || ""), 200, { ...headers, 'Cache-Control': 'no-store' });
     if (incoming.searchParams.get('action') === 'resolve') {
       try {
         const pageUrl = incoming.searchParams.get('url') || '';
