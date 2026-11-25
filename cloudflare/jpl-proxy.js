@@ -445,6 +445,60 @@ async function searchWeb(query, category) {
   relevantCandidates.sort((a,b)=>b.score-a.score);
   return relevantCandidates.slice(0,7);
 }
+const ASTEROID_OCCULTATION_URL = "https://www.asteroidoccultation.com/observations/Asteroid_Dimensions_from_Occultations.html";
+function cleanAsteroidQuery(value) {
+  return norm(String(value || "").replace(/^\\s*\\(\\s*#?\\d+\\s*\\)\\s*/, "").replace(/^\\s*#?\\d+\\s+/, ""));
+}
+async function lookupOccultationDimensions(query) {
+  const wanted = cleanAsteroidQuery(query);
+  if (!wanted || wanted.split(" ").length > 4) return null;
+  try {
+    const response = await fetch(ASTEROID_OCCULTATION_URL, {
+      headers: { "Accept": "text/html", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-Research/1.0)" },
+      cf: { cacheTtl: 21600 }
+    });
+    if (!response.ok) return null;
+    const html = (await response.text()).slice(0, 2500000);
+    const rows = html.match(/<tr\\b[^>]*>[\\s\\S]*?<\\/tr>/gi) || [];
+    for (const row of rows) {
+      const cells = [...row.matchAll(/<t[dh]\\b[^>]*>([\\s\\S]*?)<\\/t[dh]>/gi)].map(match => plain(match[1]));
+      if (cells.length < 7) continue;
+      const designation = cells[0].match(/^\\s*(\\d+)\\s+(.+?)\\s*$/);
+      if (!designation) continue;
+      const rowNumber = designation[1];
+      const rowName = norm(designation[2]);
+      const exactName = rowName === wanted;
+      const exactDesignation = wanted === norm(rowNumber + " " + designation[2]) || wanted === rowNumber;
+      if (!exactName && !exactDesignation) continue;
+      const ellipsoid = cells.find(cell => /^\\s*\\d+(?:\\.\\d+)?\\s*\\*\\s*\\d+(?:\\.\\d+)?(?:\\s*\\*\\s*\\d+(?:\\.\\d+)?)?\\s*$/.test(cell));
+      if (!ellipsoid) continue;
+      const axesKm = ellipsoid.match(/\\d+(?:\\.\\d+)?/g)?.map(Number) || [];
+      if (axesKm.length !== 3 || !axesKm.every(axis => Number.isFinite(axis) && axis > 0)) continue;
+      const displayName = "(" + rowNumber + ") " + designation[2].trim();
+      const candidate = {
+        url: ASTEROID_OCCULTATION_URL,
+        title: displayName + " — occultation-derived ellipsoid dimensions",
+        snippet: "John Broughton's Asteroid Dimensions from Occultations table lists an ellipsoid of " + axesKm.join(" × ") + " km. The ellipsoid is derived from occultation chord constraints; individual axis uncertainties are not stated.",
+        axesKm,
+        pageChecked: true,
+        sourceTextHasName: true,
+        identityStrong: true,
+        source: "asteroidoccultation.com",
+        score: 92,
+        quality: "high"
+      };
+      return {
+        query, category: category || "small-bodies", searched: true,
+        engine: "Asteroid Dimensions from Occultations",
+        candidates: [candidate], best: candidate, autoAccept: true,
+        conflictingStrong: false, agreementCount: 0,
+        note: "Occultation-derived ellipsoid dimensions. The source notes that ellipsoid axes are inferred from occultation constraints; no per-axis uncertainty is supplied."
+      };
+    }
+  } catch {}
+  return null;
+}
+
 /** @param {string} query @param {string} category */
 async function research(query, category) {
   // A peer-reviewed axis measurement for (6) Hebe. The catalogue page itself
@@ -492,6 +546,10 @@ async function research(query, category) {
       conflictingStrong: false, agreementCount: 0,
       note: "Published triaxial dimensions; no uncertainty for these axes is stated in this record."
     };
+  }
+  if (category === "small-bodies") {
+    const occultation = await lookupOccultationDimensions(query);
+    if (occultation) return occultation;
   }
   const results = await searchWeb(query,category);
   const withDimensions = results.filter(x=>x.axesKm);
