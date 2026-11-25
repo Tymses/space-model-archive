@@ -19,6 +19,14 @@ The browser cannot call JPL SBDB or third-party search engines directly because 
 
 The Worker allows the published SMA origin (`https://tymses.github.io`) and common local development origins on ports 8000 and 5500. If you use another local port or a custom domain, add that exact origin to `ALLOWED_ORIGINS` in the Worker and redeploy it.
 
+## Model-preview fallback
+
+Archive previews and the Scaling workspace always request a model directly first. When a browser rejects that request because the source does not send CORS headers, they retry the same approved model resource through `?action=asset&url=...` on this Worker. This is also used for a proxied remote glTF's `.bin` and texture dependencies.
+
+The asset endpoint is deliberately not a general web proxy. It accepts HTTPS resources only from the hosts in `ASSET_HOSTS`, permits only GLB, glTF, STL, OBJ, PLY and their required `.bin`, `.mtl`, PNG, JPEG and WebP companion files, checks every redirect against the same list, rejects IP/local targets, and limits streamed responses to 75 MB. Add a source host only after confirming it is a public model host and redeploy the Worker. The endpoint preserves range/cache metadata and supplies a format-appropriate content type when the upstream response omits one.
+
+After deployment, a successful asset response includes `X-SMA-Asset-Proxy: 2026-11-25-hybrid`; this distinguishes the hardened hybrid Worker from the earlier asset proxy.
+
 ## What the lookup does
 
 The Scaling workspace derives a search phrase from the uploaded model name or filename and sends it to this Worker automatically. It first checks curated scientific dimensions and, for small bodies, JPL SBDB. If those do not provide usable axes, the Worker searches the DuckDuckGo public web index, opens a limited number of promising result pages, extracts candidate axis values and ranks sources by domain authority, name match and explicit dimensions. This is a broad public-web search, not a literal crawl of the entire Internet. The Worker requests:

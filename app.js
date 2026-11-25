@@ -176,8 +176,10 @@ function renderCollection(){
 function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+model.file+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" '+(model.downloadDirect===false?'target="_blank" rel="noopener"':'download')+'>'+(model.downloadDirect===false?(model.downloadText||'Open source download page ↗'):'Download '+model.format+' ↧')+'</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';if(["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){const scalingButton=document.createElement("button");scalingButton.type="button";scalingButton.className="action-link";scalingButton.textContent="Scaling";scalingButton.addEventListener("click",()=>routeScaling(model));$("#detail-actions").prepend(scalingButton);}$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent=model.format==="STL"?"STL mesh file: preview and dimensions are read from its triangle mesh. STL does not store units; SMA interprets the coordinates as millimetres for the preview and fit estimate. Verify the intended scale in your slicer.":model.format==="ZIP"?(model.downloadDirect===false?"This record opens the original source page rather than a direct file URL. Choose the available download option on that page.":"This ZIP archive contains one or more scientific shape-model files. Extract it first and inspect the included documentation before importing the meshes."):model.format==="7Z"?"This is a compressed model package. Extract it first; the archive may contain several printable parts or assembly instructions.":model.format.includes("STEP")?"STEP CAD file: extract the compressed file if needed, then import the STEP into a compatible CAD tool or slicer.":["OBJ","GLB","FBX","BLEND","3DS","LWO","VSP3"].includes(model.format)?"This is a 3D mesh or project format, not a guaranteed slicer-ready file. If your slicer cannot import it, open it in suitable 3D software and export STL or 3MF. Mesh-to-STEP conversion is not presented as a clean CAD solid.":"No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
 function routeAbout(push=true){setView("about");setCrumbs([{label:"Home",href:"#home"},{label:"About"}]);if(push)history.pushState({view:"about"},"","#about");window.scrollTo(0,0);}
 function routeScaling(model=null,push=true){scalingSourceModel=model||null;setView("scaling");setCrumbs([{label:"Home",href:"#home"},{label:"Scaling & 3D Print"}]);if(push)history.pushState({view:"scaling",modelId:model?.id||null},"",model?"#scaling/"+encodeURIComponent(model.id):"#scaling");window.scrollTo(0,0);window.dispatchEvent(new CustomEvent("sma-scaling-open",{detail:{model}}));}
+const legacyRouteModel=routeModel;
+routeModel=(id,push=true)=>{const model=MODELS.find(item=>item.id===id);if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false)return routeScaling(model,push);return legacyRouteModel(id,push);};
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>routeCollection(b.dataset.category)));
-$("#model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-model]");if(b)routeModel(b.dataset.model);});
+$("#model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-model]");if(!b)return;const model=MODELS.find(item=>item.id===b.dataset.model);if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false)routeScaling(model);else routeModel(b.dataset.model);});
 $("#search-input").addEventListener("input",renderCollection);$("#source-filter").addEventListener("change",renderCollection);$("#type-filter").addEventListener("change",renderCollection);
 $("#about-link").addEventListener("click",e=>{e.preventDefault();routeAbout();});$("#scaling-link").addEventListener("click",e=>{e.preventDefault();routeScaling();});$("#home-scaling-link").addEventListener("click",e=>{e.preventDefault();routeScaling();});$("#detail-back").addEventListener("click",e=>{e.preventDefault();routeCollection(currentModel.category);});
 document.querySelector(".brand").addEventListener("click",e=>{e.preventDefault();routeHome();});
@@ -413,7 +415,19 @@ loadExpandedCatalogs();
       }
       return;
     }
-    activeViewer.scale="1 1 1";$id("measurement-state").textContent="Measuring model…";
+    activeViewer.scale="1 1 1";
+    // Keep the fast, direct model-viewer request as the first attempt.  Some
+    // catalogue hosts omit CORS headers; retry those GLBs through the Worker.
+    let retriedThroughProxy=false;
+    activeViewer.addEventListener("error",()=>{
+      const workerUrl=(window.SMA_CONFIG?.jplProxyUrl||"").trim();
+      if(retriedThroughProxy||!workerUrl||!currentModel?.file)return;
+      retriedThroughProxy=true;currentModel._assetProxy=true;
+      const fallback=new URL(workerUrl);fallback.searchParams.set("action","asset");fallback.searchParams.set("url",currentModel.file);
+      $id("measurement-state").textContent="Direct preview blocked; retrying through archive proxy…";
+      activeViewer.src=fallback.toString();
+    },{once:true});
+    $id("measurement-state").textContent="Measuring model…";
     $id("model-dimensions").textContent="Waiting for 3D preview…";$id("print-dimensions").textContent="—";
     activeViewer.addEventListener("load",measureViewer,{once:true});if(activeViewer.loaded)measureViewer();
     $id("scale-range").oninput=e=>{const v=Number(e.target.value);$id("scale-value").textContent=v.toFixed(2)+"×";applyPreviewScale(v);};
@@ -453,10 +467,16 @@ loadExpandedCatalogs();
   if(!proxyUrl)return sourceUrl;
   const target=new URL(proxyUrl);target.searchParams.set("action","asset");target.searchParams.set("url",sourceUrl);return target.toString();
  }
+ async function fetchRemoteResponse(sourceUrl,accept="model/gltf-binary,model/gltf+json,model/stl,application/octet-stream,*/*"){
+  let directError;
+  try{const response=await fetch(sourceUrl,{headers:{Accept:accept}});if(!response.ok)throw new Error("HTTP "+response.status);return {response,viaProxy:false};}catch(error){directError=error;}
+  if(!proxyUrl)throw new Error("Direct model download failed ("+(directError?.message||"network/CORS error")+") and no Cloudflare asset proxy is configured.");
+  const response=await fetch(proxyAssetUrl(sourceUrl),{headers:{Accept:accept}});
+  if(!response.ok)throw new Error("Direct model download failed; proxy fallback returned HTTP "+response.status+".");
+  return {response,viaProxy:true};
+ }
  async function fetchRemoteAsset(sourceUrl){
-  const target=proxyUrl?proxyAssetUrl(sourceUrl):sourceUrl;
-  const response=await fetch(target,{headers:{Accept:"model/gltf-binary,model/gltf+json,model/stl,application/octet-stream,*/*"}});
-  if(!response.ok)throw new Error("Model download failed (HTTP "+response.status+").");
+  const {response}=await fetchRemoteResponse(sourceUrl);
   const blob=await response.blob();if(!blob.size)throw new Error("The source returned an empty model file.");
   const localUrl=URL.createObjectURL(blob);objectUrls.push(localUrl);return localUrl;
  }
@@ -729,8 +749,14 @@ loadExpandedCatalogs();
      const loader=new L.GLB(manager),draco=new L.DRACO();draco.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");loader.setDRACOLoader(draco);loader.setMeshoptDecoder(L.MeshoptDecoder);
      if(format==="GLTF"&&file){const gltf=await loader.parseAsync(await file.text(),"https://sma.local/");object=gltf.scene;}
      else if(format==="GLTF"&&remoteSource){
-      const response=await fetch(proxyAssetUrl(originalUrl));if(!response.ok)throw new Error("GLTF download failed (HTTP "+response.status+").");
-      const base=originalUrl.slice(0,originalUrl.lastIndexOf("/")+1);const gltf=await loader.parseAsync(await response.text(),base);object=gltf.scene;
+      const fetched=await fetchRemoteResponse(originalUrl,"model/gltf+json,application/json,*/*");
+      // If the document needed the proxy, route its relative .bin and texture
+      // dependencies through the same allowlisted endpoint as well.
+      if(fetched.viaProxy)manager.setURLModifier(requested=>{
+       if(/^(data:|blob:)/i.test(requested))return requested;
+       return proxyAssetUrl(new URL(requested,originalUrl).toString());
+      });
+      const base=originalUrl.slice(0,originalUrl.lastIndexOf("/")+1);const gltf=await loader.parseAsync(await fetched.response.text(),base);object=gltf.scene;
      }else object=(await loader.loadAsync(url)).scene;
     }else if(format==="OBJ"){
      const manager=new THREE.LoadingManager(),resourceMap=new Map();
@@ -767,6 +793,7 @@ loadExpandedCatalogs();
  }
  function resetWorkspace(){
   clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
+  $id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
   $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";
@@ -780,6 +807,9 @@ loadExpandedCatalogs();
  window.addEventListener("sma-scaling-open",e=>{
   const model=e.detail?.model;resetWorkspace();
   if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
+   $id("scaling-page-overline").textContent="ARCHIVE MODEL";$id("scaling-page-title").textContent=model.name;$id("scaling-page-subtitle").textContent=model.kind+" · interactive preview, dimensions and print scale";
+   $id("scaling-archive-context").hidden=false;$id("scaling-archive-meta").textContent=model.format+" · "+model.size;$id("scaling-archive-source").textContent=model.source;$id("scaling-archive-credit").textContent=model.credit||"Original model source credited in the archive.";
+   const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.href=model.sourceUrl;
    $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });

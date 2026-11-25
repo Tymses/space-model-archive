@@ -9,9 +9,8 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css?v=20261125-9">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-<script src="config.js?v=20261124-2"></script>
-<script src="app.js?v=20261125-18" defer></script>
+<script src="config.js?v=20261125-3"></script>
+<script src="app.js?v=20261125-20" defer></script>
 </head>
 <body>
 <header class="app-bar">
@@ -90,7 +89,7 @@
 </section>
 <section class="scaling-view" id="scaling-view" hidden>
   <div class="page-heading scaling-page-heading">
-    <div><p class="overline">PRINT WORKSPACE</p><h1>Model scaling</h1><p class="subheading">Load a model, identify its real-world dimensions and find a printable scale.</p></div>
+    <div><p class="overline" id="scaling-page-overline">PRINT WORKSPACE</p><h1 id="scaling-page-title">Model scaling</h1><p class="subheading" id="scaling-page-subtitle">Load a model, identify its real-world dimensions and find a printable scale.</p></div>
     <span class="archive-count" id="scaling-file-state">No model loaded</span>
   </div>
   <div class="scaling-workspace">
@@ -103,6 +102,11 @@
     <section class="scaling-settings-panel">
       <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
       <p class="scaling-model-name" id="scaling-model-name">No model selected</p>
+      <section class="scaling-archive-context" id="scaling-archive-context" hidden aria-label="Archive model information">
+        <div><span id="scaling-archive-meta">ARCHIVE MODEL</span><strong id="scaling-archive-source">—</strong></div>
+        <p id="scaling-archive-credit"></p>
+        <div class="scaling-archive-actions"><a id="scaling-download-link" class="action-link" href="#">Download</a><a id="scaling-source-link" class="action-link secondary" href="#" target="_blank" rel="noopener">Source ↗</a></div>
+      </section>
       <div class="scaling-object-search">
         <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
         <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button">Find dimensions</button></div>

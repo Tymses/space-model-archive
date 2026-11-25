@@ -12,13 +12,42 @@ const ASSET_HOSTS = new Set([
   "models.spaceradar.ai",
   "models.opensourcerobotics.dev"
 ]);
+const MAX_ASSET_BYTES = 75 * 1024 * 1024;
+const MODEL_TYPES = new Map([
+  ["glb", "model/gltf-binary"], ["gltf", "model/gltf+json"],
+  ["stl", "model/stl"], ["obj", "text/plain; charset=utf-8"],
+  ["ply", "model/ply"], ["bin", "application/octet-stream"],
+  ["mtl", "text/plain; charset=utf-8"], ["png", "image/png"],
+  ["jpg", "image/jpeg"], ["jpeg", "image/jpeg"], ["webp", "image/webp"]
+]);
+function assetExtension(url) {
+  return new URL(url).pathname.split(".").pop().toLowerCase();
+}
 function validateAssetUrl(value) {
   let url;
   try { url = new URL(value); } catch { throw new Error("Invalid asset URL."); }
-  if (url.protocol !== "https:" || url.username || url.password || !ASSET_HOSTS.has(url.hostname.toLowerCase()) || (url.port && url.port !== "443")) {
+  const host = url.hostname.toLowerCase();
+  // A fixed HTTPS host allowlist is intentional: Workers cannot safely resolve
+  // arbitrary DNS names before fetching them, so this prevents SSRF/DNS rebinding.
+  if (url.protocol !== "https:" || url.username || url.password || !ASSET_HOSTS.has(host) || (url.port && url.port !== "443") || /^(?:\d{1,3}\.){3}\d{1,3}$/.test(host) || host.includes(":")) {
     throw new Error("Asset host is not on the approved source list.");
   }
+  if (!MODEL_TYPES.has(assetExtension(url))) throw new Error("The URL is not an approved model resource.");
   return url;
+}
+function limitedBody(body) {
+  let bytes = 0;
+  const limiter = new TransformStream({
+    transform(chunk, controller) {
+      bytes += chunk.byteLength;
+      if (bytes > MAX_ASSET_BYTES) {
+        controller.error(new Error("Model exceeds the 75 MB proxy limit."));
+        return;
+      }
+      controller.enqueue(chunk);
+    }
+  });
+  return body.pipeThrough(limiter);
 }
 async function fetchApprovedAsset(value, request) {
   let current = validateAssetUrl(value);
@@ -33,14 +62,22 @@ async function fetchApprovedAsset(value, request) {
       current = validateAssetUrl(new URL(location, current).toString());
       continue;
     }
+    const declaredSize = Number(response.headers.get("Content-Length"));
+    if (Number.isFinite(declaredSize) && declaredSize > MAX_ASSET_BYTES) throw new Error("Model exceeds the 75 MB proxy limit.");
+    if (!response.ok) return new Response(null, { status: response.status });
+    if (!response.body) throw new Error("The model source returned no response body.");
     const headers = new Headers();
     for (const name of ["Content-Type","Content-Length","Content-Range","Accept-Ranges","ETag","Last-Modified"]) {
       const value = response.headers.get(name);
       if (value) headers.set(name, value);
     }
+    // Do not trust a source server to label a model correctly (several return
+    // application/octet-stream or text/html for binary downloads).
+    headers.set("Content-Type", MODEL_TYPES.get(assetExtension(current)) || "application/octet-stream");
     headers.set("Cache-Control", "public, max-age=3600");
     headers.set("X-Content-Type-Options", "nosniff");
-    return new Response(response.body, { status: response.status, headers });
+    headers.set("X-SMA-Asset-Proxy", "2026-11-25-hybrid");
+    return new Response(limitedBody(response.body), { status: response.status, headers });
   }
   throw new Error("Unable to retrieve model asset.");
 }
