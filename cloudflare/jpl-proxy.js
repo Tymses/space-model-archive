@@ -34,6 +34,18 @@ function norm(value) {
 function hostOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, "").toLowerCase(); } catch { return ""; }
 }
+function isSafePublicUrl(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return false;
+    const host = url.hostname.toLowerCase().replace(/^\[|\]$/g, "");
+    if (!host || host === "localhost" || host.endsWith(".localhost") || host.endsWith(".local") || host === "::1") return false;
+    if (/^(127\.|10\.|0\.|192\.168\.)/.test(host)) return false;
+    const m = host.match(/^172\.(\d+)\./);
+    if (m && Number(m[1]) >= 16 && Number(m[1]) <= 31) return false;
+    return true;
+  } catch { return false; }
+}
 function sourceWeight(host) {
   if (/\.(gov|mil)$/.test(host) || /(^|\.)(nasa\.gov|jpl\.nasa\.gov|esa\.int|usgs\.gov|pds\.nasa\.gov|science\.nasa\.gov)$/.test(host)) return 38;
   if (/\.(edu|ac\.[a-z]{2,})$/.test(host) || /(arxiv\.org|doi\.org|nature\.com|science\.org|sciencedirect\.com|springer\.com|agupubs\.onlinelibrary\.wiley\.com)/.test(host)) return 29;
@@ -104,7 +116,7 @@ async function searchWeb(query, category) {
       while ((m = re.exec(html)) && pages.length < 15) {
         let href = decode(m[1]);
         try { const parsed = new URL(href); if (parsed.hostname.includes("duckduckgo.com") && parsed.searchParams.has("uddg")) href = parsed.searchParams.get("uddg"); } catch {}
-        if (!/^https?:\/\//i.test(href) || /duckduckgo\.com/.test(hostOf(href))) continue;
+        if (!isSafePublicUrl(href) || /duckduckgo\.com/.test(hostOf(href))) continue;
         const title = plain(m[2]);
         const start = Math.max(0, html.lastIndexOf("result__snippet", m.index));
         const snippet = plain(html.slice(start, Math.min(html.length, start + 1300))).slice(0, 450);
