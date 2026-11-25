@@ -281,7 +281,10 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   const expectedObjectName=normalizeSearchText(String(model.name||"").replace(/^\s*\(\s*#?\d+\s*\)\s*/,"").replace(/^\s*#?\d+\s+/,"")).trim();
   const files=returnedFiles.filter(file=>{
    const filename=normalizeSearchText([file.label,file.url].filter(Boolean).join(" "));
-   return expectedObjectName&&filename.includes(expectedObjectName);
+   // The Worker may verify an object-specific download from the link text
+   // even when the upstream filename itself is generic. Older Worker
+   // responses still need to pass the filename check.
+   return file.identityVerified===true||(expectedObjectName&&filename.includes(expectedObjectName));
   });
   if(returnedFiles.length&&!files.length){
    throw new Error("The Worker returned "+returnedFiles.length+" file(s), but none of their filenames identify "+model.name+". Unrelated files were discarded.");
