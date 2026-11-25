@@ -435,18 +435,18 @@ loadExpandedCatalogs();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrl=null,token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null;
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null;
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
  function clear(){
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
   renderer=null;controls=null;camera=null;scene=null;root=null;active=null;
-  if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null;}
+  objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];
  }
  async function ensure(){
   if(THREE)return;const b="https://cdn.jsdelivr.net/npm/three@0.170.0/";
-  const [t,s,o,p,g,c]=await Promise.all([import(b+"build/three.module.js"),import(b+"examples/jsm/loaders/STLLoader.js"),import(b+"examples/jsm/loaders/OBJLoader.js"),import(b+"examples/jsm/loaders/PLYLoader.js"),import(b+"examples/jsm/loaders/GLTFLoader.js"),import(b+"examples/jsm/controls/OrbitControls.js")]);
-  THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls};
+  const [t,s,o,p,g,c,d,e,x]=await Promise.all([import(b+"build/three.module.js"),import(b+"examples/jsm/loaders/STLLoader.js"),import(b+"examples/jsm/loaders/OBJLoader.js"),import(b+"examples/jsm/loaders/PLYLoader.js"),import(b+"examples/jsm/loaders/GLTFLoader.js"),import(b+"examples/jsm/controls/OrbitControls.js"),import(b+"examples/jsm/loaders/DRACOLoader.js"),import(b+"examples/jsm/exporters/STLExporter.js"),import(b+"examples/jsm/libs/meshopt_decoder.module.js")]);
+  THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls,DRACO:d.DRACOLoader,STLExporter:e.STLExporter,MeshoptDecoder:x.MeshoptDecoder};
  }
  function volume(){return $id("scaling-printer-profile").value==="p2s"?[256,256,256]:["x","y","z"].map(a=>Number($id("scaling-bed-"+a).value));}
  function rotations(d){return [[d[0],d[1],d[2]],[d[0],d[2],d[1]],[d[1],d[0],d[2]],[d[1],d[2],d[0]],[d[2],d[0],d[1]],[d[2],d[1],d[0]]];}
@@ -609,12 +609,12 @@ loadExpandedCatalogs();
    const button=$id("scaling-jpl-lookup");if(button)button.disabled=false;
   }
  }
- async function load(file,format,model=null,url=null){
+ async function load(file,format,model=null,url=null,companions=[]) {
   clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
-  if(file){objectUrl=URL.createObjectURL(file);url=objectUrl;}
+  if(file){url=URL.createObjectURL(file);objectUrls.push(url);}
   try{
    await ensure();if(my!==token)return;
    scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);
@@ -622,7 +622,20 @@ loadExpandedCatalogs();
    renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
    stage.replaceChildren(renderer.domElement);renderer.domElement.style.cssText="display:block;width:100%;height:100%;touch-action:none";
    scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);
-   let object;if(format==="GLB")object=(await new L.GLB().loadAsync(url)).scene;else if(format==="OBJ")object=await new L.OBJ().loadAsync(url);else{const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));}
+   let object;
+    if(format==="GLB"||format==="GLTF"){
+     const manager=new THREE.LoadingManager(),resourceMap=new Map();
+     companions.forEach(part=>{const partUrl=URL.createObjectURL(part);objectUrls.push(partUrl);resourceMap.set(part.name.toLowerCase(),partUrl);});
+     manager.setURLModifier(requested=>{
+      if(/^(data:|blob:|https?:)/i.test(requested)&&!requested.startsWith("https://sma.local/"))return requested;
+      const clean=decodeURIComponent(requested.split(/[?#]/)[0]),name=clean.split("/").pop().toLowerCase();
+      return resourceMap.get(name)||requested;
+     });
+     const loader=new L.GLB(manager),draco=new L.DRACO();draco.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");loader.setDRACOLoader(draco);loader.setMeshoptDecoder(L.MeshoptDecoder);
+     if(format==="GLTF"&&file){const gltf=await loader.parseAsync(await file.text(),"https://sma.local/");object=gltf.scene;}
+     else object=(await loader.loadAsync(url)).scene;
+    }else if(format==="OBJ")object=await new L.OBJ().loadAsync(url);
+    else{const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));}
    if(my!==token){renderer.dispose();return;}
    object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
    if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");
@@ -662,16 +675,28 @@ loadExpandedCatalogs();
  }
  window.addEventListener("sma-scaling-open",e=>{
   const model=e.detail?.model;resetWorkspace();
-  if(model&&["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
+  if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
    $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });
  $id("scaling-file").addEventListener("change",e=>{
-  const file=e.target.files?.[0];if(!file)return;const ext=file.name.split(".").pop().toUpperCase();
-  if(!["STL","OBJ","PLY","GLB"].includes(ext)){$id("scaling-file-state").textContent="Unsupported file";return;}
-  $id("scaling-object-query").value="";load(file,ext);
+  const files=Array.from(e.target.files||[]);if(!files.length)return;
+  const supported=["STL","OBJ","PLY","GLB","GLTF"],file=files.find(f=>supported.includes(f.name.split(".").pop().toUpperCase()));
+  if(!file){$id("scaling-file-state").textContent="No supported model file selected";return;}
+  const ext=file.name.split(".").pop().toUpperCase(),companions=files.filter(f=>f!==file);
+  if(ext==="GLTF"&&!companions.length){$id("scaling-file-state").textContent="Select the .gltf plus its .bin and texture files";return;}
+  $id("scaling-object-query").value="";load(file,ext,null,null,companions);
  });
  $id("scaling-units").addEventListener("change",()=>{if(!active)return;active.unitFactor=unitFactors[$id("scaling-units").value];root.scale.setScalar(active.unitFactor);update();});
+ $id("scaling-download-scaled").addEventListener("click",()=>{
+  if(!root||!active||!selectedDenominator||!realLongestKm){setLookupStatus("Load a model, identify its object and select a printable scale before exporting.",true);return;}
+  try{
+   root.updateMatrixWorld(true);
+   const exporter=new L.STLExporter(),data=exporter.parse(root,{binary:true}),blob=new Blob([data],{type:"model/stl"}),name=($id("scaling-model-name").textContent||"space-model").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").toLowerCase()||"scaled-model";
+   const href=URL.createObjectURL(blob),a=document.createElement("a");a.href=href;a.download=name+"-1-to-"+selectedDenominator+".stl";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),30000);
+   setLookupStatus("Scaled binary STL exported at 1:"+fmt(selectedDenominator)+".");
+  }catch(error){setLookupStatus("STL export failed: "+(error.message||error),true);}
+ });
  $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value));
  $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value);}});
  $id("scaling-recommendations").addEventListener("click",e=>{
