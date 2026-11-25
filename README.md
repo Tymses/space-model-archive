@@ -87,3 +87,7 @@ The Worker is not deployed by a GitHub push. To enable the fallback, manually re
 ### Built-in printer profiles
 
 The print-fit checker and Scaling workspace include these build volumes: Bambu Lab P2S (256 × 256 × 256 mm), Original Prusa XL with five toolheads (360 × 360 × 360 mm), and ELEGOO Centauri Carbon (256 × 256 × 256 mm). A custom build-volume option remains available. Values are based on the manufacturers' published specifications.
+
+## Source inventory
+
+The machine-readable source inventory is maintained in [`data/source-registry.json`](data/source-registry.json). It tracks public catalogues, scientific archives and generators across all five collections, including source scope, known coverage, file formats, integration status, priority and the next harvesting action. The register deliberately distinguishes indexed files from source catalogue counts and on-demand generators; it is a working inventory, not a claim that every possible source has been found or every source has been imported. Current discovery includes NASA 3D Resources, Space Radar, ESA Sci-Fleet, models.codelove.in, NASA PDS Small Bodies and Ring-Moon Systems Nodes, JAXA DARTS, NASA Solar System Treks, USGS Astropedia and NASA Astromaterials 3D.
