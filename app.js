@@ -169,7 +169,7 @@ function routeCollection(key,push=true){if(!CATEGORIES[key])return;currentCatego
 function populateFilters(){const all=[...MODELS.filter(m=>m.category===currentCategory),...CATEGORIES[currentCategory].sources];const sources=[...new Set(all.map(x=>x.source))].sort();const types=[...new Set(all.map(x=>x.kind||x.type))].sort();$("#source-filter").innerHTML='<option value="all">All sources</option>'+sources.map(x=>'<option>'+x+'</option>').join("");$("#type-filter").innerHTML='<option value="all">All types</option>'+types.map(x=>'<option>'+x+'</option>').join("");}
 function renderCollection(){
  const q=$("#search-input").value.trim().toLowerCase(),source=$("#source-filter").value,type=$("#type-filter").value;
- const isDirectMesh=x=>x.downloadDirect!==false&&!["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
+ const isDirectMesh=x=>!!x.remoteCandidate||(x.downloadDirect!==false&&!["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase()));
  const matchesModel=x=>x.category===currentCategory&&[x.name,x.kind,x.source,x.credit].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
  const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x));
  const modelReferences=MODELS.filter(x=>matchesModel(x)&&!isDirectMesh(x)).map(x=>({
@@ -178,13 +178,14 @@ function renderCollection(){
   description:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download.",
   url:x.file,source:x.source,creditsUrl:x.sourceUrl
  }));
- const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
+ const remotePageUrls=new Set(MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl));
+ const entries=[...modelReferences,...CATEGORIES[currentCategory].sources].filter(x=>!remotePageUrls.has(x.url)&&[x.name,x.type,x.description,x.source].join(" ").toLowerCase().includes(q)&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
  const modelGroup=$("#models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
  $("#model-result-count").textContent=models.length+" files";$("#source-result-count").textContent=sources.length+" entries";$("#generator-result-count").textContent=generators.length+" tools";
  modelGroup.hidden=!models.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
- modelGrid.innerHTML=models.map(data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Downloadable model</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.format+' model · '+data.size+' · '+data.license+'</p><div class="card-bottom"><small>Original file · source credited</small><button class="card-action" data-model="'+data.id+'">View details →</button></div></article>').join("");
+ modelGrid.innerHTML=models.map(data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">'+(data.remoteCandidate?'Remote model · on demand':'Downloadable model')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+(data.remoteCandidate?'Original OBJ/PLY files are discovered and checked when opened.':data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+(data.remoteCandidate?'Loads original model files only when requested':'Original file · source credited')+'</small><button class="card-action" data-model="'+data.id+'">'+(data.remoteCandidate?'Find model files →':'View details →')+'</button></div></article>').join("");
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
  sourceGrid.innerHTML=sources.map(renderEntry).join("");generatorGrid.innerHTML=generators.map(renderEntry).join("");
  const total=models.length+sources.length+generators.length;$("#result-count").textContent=total+" results";
@@ -203,7 +204,14 @@ function viewerAssetUrl(rawUrl){
   }catch(_){}
   return rawUrl;
 }
-function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" '+(model.downloadDirect===false?'target="_blank" rel="noopener"':'download')+'>'+(model.downloadDirect===false?(model.downloadText||'Open source download page ↗'):'Download '+model.format+' ↧')+'</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';if(["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){const scalingButton=document.createElement("button");scalingButton.type="button";scalingButton.className="action-link";scalingButton.textContent="Scaling";scalingButton.addEventListener("click",()=>routeScaling(model));$("#detail-actions").prepend(scalingButton);}$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent=model.format==="STL"?"STL mesh file: preview and dimensions are read from its triangle mesh. STL does not store units; SMA interprets the coordinates as millimetres for the preview and fit estimate. Verify the intended scale in your slicer.":model.format==="ZIP"?(model.downloadDirect===false?"This record opens the original source page rather than a direct file URL. Choose the available download option on that page.":"This ZIP archive contains one or more scientific shape-model files. Extract it first and inspect the included documentation before importing the meshes."):model.format==="7Z"?"This is a compressed model package. Extract it first; the archive may contain several printable parts or assembly instructions.":model.format.includes("STEP")?"STEP CAD file: extract the compressed file if needed, then import the STEP into a compatible CAD tool or slicer.":["OBJ","GLB","FBX","BLEND","3DS","LWO","VSP3"].includes(model.format)?"This is a 3D mesh or project format, not a guaranteed slicer-ready file. If your slicer cannot import it, open it in suitable 3D software and export STL or 3MF. Mesh-to-STEP conversion is not presented as a clean CAD solid.":"No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
+function routeModel(id,push=true){const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+model.format+' file ready to download.<br>Preview is not available for this file format.</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML='<a class="action-link" href="'+model.file+'" '+(model.downloadDirect===false?'target="_blank" rel="noopener"':'download')+'>'+(model.downloadDirect===false?(model.downloadText||'Open source download page ↗'):'Download '+model.format+' ↧')+'</a><a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Source catalogue ↗</a>';
+if(model.remoteCandidate){
+ const status=document.createElement("p");status.className="remote-resolution-status";status.textContent="Die Originalseite wird erst beim Öffnen nach konkreten Modelldateien durchsucht.";
+ const variants=document.createElement("div");variants.className="remote-variants";
+ const resolveButton=document.createElement("button");resolveButton.type="button";resolveButton.className="action-link";resolveButton.textContent="Find downloadable model files";
+ resolveButton.addEventListener("click",()=>resolveRemoteCatalogueModel(model,status,variants,resolveButton));
+ $("#detail-actions").append(resolveButton);$("#detail-actions").insertAdjacentElement("afterend",status);status.insertAdjacentElement("afterend",variants);
+}if(["GLB","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){const scalingButton=document.createElement("button");scalingButton.type="button";scalingButton.className="action-link";scalingButton.textContent="Scaling";scalingButton.addEventListener("click",()=>routeScaling(model));$("#detail-actions").prepend(scalingButton);}$("#source-credit").textContent=model.credit;$("#source-link").href=model.sourceUrl;$("#print-note").textContent=model.format==="STL"?"STL mesh file: preview and dimensions are read from its triangle mesh. STL does not store units; SMA interprets the coordinates as millimetres for the preview and fit estimate. Verify the intended scale in your slicer.":model.format==="ZIP"?(model.downloadDirect===false?"This record opens the original source page rather than a direct file URL. Choose the available download option on that page.":"This ZIP archive contains one or more scientific shape-model files. Extract it first and inspect the included documentation before importing the meshes."):model.format==="7Z"?"This is a compressed model package. Extract it first; the archive may contain several printable parts or assembly instructions.":model.format.includes("STEP")?"STEP CAD file: extract the compressed file if needed, then import the STEP into a compatible CAD tool or slicer.":["OBJ","GLB","FBX","BLEND","3DS","LWO","VSP3"].includes(model.format)?"This is a 3D mesh or project format, not a guaranteed slicer-ready file. If your slicer cannot import it, open it in suitable 3D software and export STL or 3MF. Mesh-to-STEP conversion is not presented as a clean CAD solid.":"No verified print test, community rating, wall-thickness check or orientation assessment is available for this model yet. Dimensions and scale are not supplied in this record.";setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[model.category].title,href:"#"+model.category},{label:model.name}]);if(push)history.pushState({view:"detail",id},"","#model/"+id);window.scrollTo(0,0);}
 function routeAbout(push=true){setView("about");setCrumbs([{label:"Home",href:"#home"},{label:"About"}]);if(push)history.pushState({view:"about"},"","#about");window.scrollTo(0,0);}
 function routeScaling(model=null,push=true){scalingSourceModel=model||null;setView("scaling");const crumbs=[{label:"Home",href:"#home"}];if(model&&CATEGORIES[model.category])crumbs.push({label:CATEGORIES[model.category].title,href:"#"+model.category});crumbs.push({label:"Scaling & 3D Print"});setCrumbs(crumbs);if(push)history.pushState({view:"scaling",modelId:model?.id||null},"",model?"#scaling/"+encodeURIComponent(model.id):"#scaling");window.scrollTo(0,0);window.dispatchEvent(new CustomEvent("sma-scaling-open",{detail:{model}}));}
 const legacyRouteModel=routeModel;
@@ -217,12 +225,71 @@ document.addEventListener("keydown",e=>{if(e.key==="/"&&!["INPUT","SELECT","TEXT
 window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")routeHome(false);else if(s.view==="collection")routeCollection(s.key,false);else if(s.view==="detail")routeModel(s.id,false);else if(s.view==="about")routeAbout(false);else if(s.view==="scaling")routeScaling(s.modelId?MODELS.find(m=>m.id===s.modelId)||null:null,false);});
 routeHome(false);
 
+
+const MOON_PAGE_SLUGS = {
+ "Moon":"E1-Moon","Io":"J1-Io","Europa":"J2-Europa","Ganymede":"J3-Ganymede","Callisto":"J4-Callisto","Amalthea":"J5-Amalthea","Thebe":"J14-Thebe",
+ "Phobos":"M1-Phobos","Deimos":"M2-Deimos","Triton":"N1-Triton","Larissa":"N7-Larissa","Proteus":"N8-Proteus","Charon":"P1-Charon",
+ "Mimas":"S1-Mimas","Enceladus":"S2-Enceladus","Tethys":"S3-Tethys","Dione":"S4-Dione","Rhea":"S5-Rhea","Titan":"S6-Titan","Hyperion":"S7-Hyperion","Iapetus":"S8-Iapetus","Phoebe":"S9-Phoebe","Janus":"S10-Janus","Epimetheus":"S11-Epimetheus","Helene":"S12-Helene","Telesto":"S13-Telesto","Calypso":"S14-Calypso","Atlas":"S15-Atlas","Prometheus":"S16-Prometheus","Pandora":"S17-Pandora","Pan":"S18-Pan","Daphnis":"S35-Daphnis",
+ "Ariel":"U1-Ariel","Umbriel":"U2-Umbriel","Titania":"U3-Titania","Oberon":"U4-Oberon","Miranda":"U5-Miranda"
+};
+function workerActionUrl(action, sourceUrl) {
+ const worker=(window.SMA_CONFIG?.jplProxyUrl||"").trim();
+ if(!worker)throw new Error("Cloudflare Worker URL fehlt in config.js.");
+ const endpoint=new URL(worker);endpoint.searchParams.set("action",action);if(sourceUrl)endpoint.searchParams.set("url",sourceUrl);return endpoint.toString();
+}
+function workerAssetUrl(sourceUrl) { return workerActionUrl("asset",sourceUrl); }
+function remoteCatalogueRecord(model) {
+ if(model.source!=="3D Asteroid Catalogue"||!model.file)return;
+ let page=model.file;
+ if(model.category==="moons"&&MOON_PAGE_SLUGS[model.name])page="https://3d-asteroids.space/moons/"+MOON_PAGE_SLUGS[model.name];
+ try {
+  const u=new URL(page);
+  if(u.protocol==="https:"&&["3d-asteroids.space","www.3d-asteroids.space"].includes(u.hostname)&&/^\/(?:asteroids|moons|comets|dwarf)\//.test(u.pathname)) {
+   model.remotePageUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
+  }
+ } catch {}
+}
+async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, button) {
+ button.disabled=true;statusNode.textContent="Suche konkrete OBJ-/PLY-Dateien auf der Originalseite …";
+ try {
+  const response=await fetch(workerActionUrl("resolve",model.remotePageUrl),{headers:{Accept:"application/json"}});
+  const result=await response.json();
+  if(!response.ok)throw new Error(result.detail||result.error||("HTTP "+response.status));
+  const files=Array.isArray(result.files)?result.files:[];
+  if(!files.length) {
+   model.remoteCandidate=false;model.remoteUnavailable=true;
+   statusNode.textContent="Keine erreichbare Modelldatei gefunden. Der Eintrag bleibt als Quellenverweis erhalten.";
+   if(currentCategory)renderCollection();button.hidden=true;return;
+  }
+  const parentIndex=MODELS.indexOf(model);if(parentIndex>=0)MODELS.splice(parentIndex,1);
+  const added=[];
+  files.forEach((file,index)=>{
+   const size=file.sizeBytes?file.sizeBytes>=1000000?(file.sizeBytes/1000000).toFixed(1)+" MB":Math.round(file.sizeBytes/1000)+" kB":"Size not reported";
+   const variant={...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",file:file.url,sourceUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
+   added.push(variant);addCatalogModel(variant);
+  });
+  statusNode.textContent=added.length+" erreichbare Modelldatei(en) gefunden. Die Varianten wurden in „Downloadable Models“ übernommen; der reine Seitenverweis wurde entfernt.";
+  button.hidden=true;variantsNode.replaceChildren();
+  added.forEach(variant=>{
+   const row=document.createElement("div");row.className="remote-variant-row";
+   const label=document.createElement("span");label.textContent=variant.name+" · "+variant.format+" · "+variant.size;
+   const preview=document.createElement("button");preview.type="button";preview.className="action-link";preview.textContent="Preview / Scaling";preview.addEventListener("click",()=>routeScaling(variant));
+   const download=document.createElement("a");download.className="action-link secondary";download.href=workerAssetUrl(variant.file);download.textContent="Download "+variant.format;download.setAttribute("download",variant.name.replace(/[^a-z0-9_-]+/gi,"-")+"."+variant.format.toLowerCase());
+   row.append(label,preview,download);variantsNode.append(row);
+  });
+  if(currentCategory)renderCollection();
+ } catch(error) {
+  statusNode.textContent="Dateiabruf fehlgeschlagen: "+error.message+" Der Quellenverweis bleibt erhalten.";button.disabled=false;
+ }
+}
+
 // Load complete source indexes rather than a small hand-picked sample.
 const expandedCatalogCounts = { nasa: 0, spaceRadar: 0, jpl: 0, smallBodyPackages: 0, errors: [] };
 function addCatalogModel(model) {
   // Keep the same asset when it represents a distinct category entry or a
   // different archive record. Suppress only the same named model repeated
   // under a different catalogue ID.
+  remoteCatalogueRecord(model);
   const name = String(model.name || "").trim().toLowerCase();
   const exists = MODELS.some(existing =>
     existing.id === model.id ||
@@ -292,6 +359,16 @@ async function loadExpandedCatalogs() {
   } catch (error) {
     expandedCatalogCounts.errors.push("Moon catalogue index: " + error.message);
   }
+
+  for (const item of [
+    ["3dac-comet-67p","67P/Churyumov-Gerasimenko","comets/67P-Churyumov-Gerasimenko"],
+    ["3dac-comet-halley","1P/Halley","comets/1P-Halley"],
+    ["3dac-comet-hartley2","103P/Hartley 2","comets/103P-Hartley-2"],
+    ["3dac-comet-tempel1","9P/Tempel 1","comets/9P-Tempel-1"],
+    ["3dac-comet-wild2","81P/Wild 2","comets/81P-Wild-2"],
+    ["3dac-dwarf-ceres","(1) Ceres","dwarf/1-Ceres"],
+    ["3dac-dwarf-pluto","Pluto","asteroids/134340-Pluto"]
+  ]) addCatalogModel({id:item[0],name:item[1],category:"small-bodies",kind:"Remote shape model · OBJ / PLY",source:"3D Asteroid Catalogue",size:"Resolved when opened",format:"OBJ / PLY",license:"See original model attribution",credit:item[1]+": 3D Asteroid Catalogue",file:"https://3d-asteroids.space/"+item[2],sourceUrl:"https://3d-asteroids.space/"+item[2],downloadDirect:false});
 
   try {
     const response = await fetch("./data/real-world-dimensions.json");
