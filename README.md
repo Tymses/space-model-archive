@@ -50,7 +50,7 @@ The Cloudflare Worker in `cloudflare/jpl-proxy.js` now supports a restricted `ac
 - The Scaling workspace can export the selected printable geometry as a binary STL in millimetres; the original source file remains unchanged.
 - Scaling recommendations use the measured model geometry and verified physical dimensions. The original source file is not modified; the selected scale can be exported as a binary STL in millimetres.
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
-- The curated asteroid set links to original object pages rather than direct OBJ/PLY endpoints. The 37 moon records likewise point to the source moon list rather than unverified per-moon URLs or guessed direct OBJ/PLY endpoints. The source confirms that model downloads are available on those pages; exact file names, variants and sizes remain on the source page and are not guessed in SPACEMESHER. The source site does not document an API. Wikimedia Commons documents a predictable media URL pattern but also notes that filenames and suffixes vary, so SPACEMESHER uses the source page until each direct endpoint can be verified. The 37 moon entries remain accessible through the source catalogue page.
+- The curated asteroid, moon, comet and dwarf-planet entries now point to individual object pages as remote candidates. The source site does not document a public API, so the Worker discovers actual linked file URLs from each object page at request time. A candidate is not promoted until its mesh URL passes the Worker probe. Pages without a verified OBJ/PLY remain in Sources; direct endpoints and file sizes are never guessed.
 
 ## Catalogue completeness and data quality
 
@@ -58,7 +58,7 @@ The Cloudflare Worker in `cloudflare/jpl-proxy.js` now supports a restricted `ac
 - The current audit snapshot is in [data/catalogue-audit.json](data/catalogue-audit.json). It reports 1,307 index records, 1,278 distinct source-file/listing placements after accounting for NASA's 29 cross-listed Height Map records, 977 direct mesh-file records (948 distinct source files after that cross-listing), 296 catalogue references, 29 archive packages and 5 unverified links. These are not unique physical-object counts.
 - The audit and data rules are documented in [tools/catalogue/README.md](tools/catalogue/README.md). Rebuild the audit with `python tools/catalogue/audit_catalogue.py`.
 - Source records are preserved individually. Multiple shape models, resolutions, methods and source datasets for the same physical object remain separate records; the audit never deletes or merges them. Only explicit numbered minor-planet designations are eligible for conservative cross-source grouping. Fuzzy name matches are not treated as proof of identity.
-- The complete 3D Asteroid Catalogue inventory remains a priority: its reported 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons and 3,079 models are not yet fully imported. The existing 256 numbered asteroid entries are catalogue-page references, not 256 direct mesh files.
+- The complete 3D Asteroid Catalogue inventory remains a priority: its reported 1,635 asteroids and 3,079 shape models are not fully imported. The current 256 asteroid object pages plus 37 moons, five comets and two dwarf planets are on-demand candidates, not a claim that all their meshes have already passed verification.
 
 ## Automated real-world dimension research
 
