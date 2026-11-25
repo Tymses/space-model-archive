@@ -278,10 +278,20 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
   if(!response.ok)throw new Error(result.detail||result.error||("HTTP "+response.status));
   loader.hidden=true;const files=Array.isArray(result.files)?result.files:[];
   if(!files.length) {
-   model.remoteCandidate=false;model.remoteUnavailable=true;
-   statusNode.textContent="Keine direkt verlinkte Modelldatei gefunden. Der Eintrag wurde aus den Remote-Kandidaten in „Sources“ verschoben; du kannst die Originalseite dort weiterhin öffnen.";
+   // Preserve the original catalogue page as a source entry. Do not leave a
+   // dead remote candidate or an empty file URL behind when no mesh passes
+   // the Worker's reachability and format checks.
+   model.remoteCandidate=false;
+   model.remoteUnavailable=true;
+   model.downloadDirect=false;
+   model.format="CATALOGUE";
+   model.file=model.remotePageUrl||model.sourceUrl;
+   model.kind=(model.kind||"Remote model")+" · source page";
+   model.description="No directly downloadable, reachable model file passed the automatic checks. The original catalogue page remains available here; inspect its downloads manually.";
+   statusNode.textContent="Keine gültige Modelldatei gefunden. Der Eintrag wurde aus den Remote-Kandidaten in „Sources“ verschoben; die Originalseite bleibt dort verlinkt.";
    button.hidden=true;
-   if(currentCategory)renderCollection();button.hidden=true;return;
+   if(currentCategory)renderCollection();
+   return;
   }
   resolvedRemotePages.add(model.remotePageUrl);
   const parentIndex=MODELS.indexOf(model);if(parentIndex>=0)MODELS.splice(parentIndex,1);
