@@ -528,7 +528,7 @@ loadExpandedCatalogs();
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
-   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-3",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-4",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
    const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
    const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory)&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
    return found.length===1?found[0]:null;
@@ -547,8 +547,8 @@ loadExpandedCatalogs();
  async function lookupObject(query,quiet=false,expectedCategory=null){
   const q=(query||"").trim();if(!q||lookupBusy)return;
   const lookupToken=token;
-  if(!proxyUrl){setLookupStatus("JPL-Suche noch nicht verbunden. Einmalig den kostenlosen Proxy einrichten (siehe Einrichtungshinweis im Repository).",true);return;}
-  lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;setLookupStatus("Searching the appropriate scientific dimensions sources for "+q+" …");
+  lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;
+  setLookupStatus("Searching source-backed dimensions for "+q+" …");
   try{
    const directRecord=await findCuratedDimensions([q],expectedCategory);
    if(lookupToken!==token)return;
@@ -559,16 +559,13 @@ loadExpandedCatalogs();
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":"Moon dimensions")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
    }
-   if(expectedCategory&&expectedCategory!=="small-bodies"&&!directRecord){
-    throw new Error("No source-verified dimensions are indexed yet for this "+expectedCategory+" model. No asteroid lookup was attempted.");
+   if(expectedCategory&&expectedCategory!=="small-bodies"){
+    throw new Error("No source-verified dimensions are indexed yet for this "+expectedCategory+" model. The model's category was recognized, but its own physical footprint/configuration still needs a reliable source.");
    }
-  }catch(error){
-   if(lookupToken!==token)return;
-   setLookupStatus(error.message||"No matching dimensions found.",true);
-   if(!quiet)renderFit("No verified scale basis",error.message||"No matching dimensions found.",null);
-   return;
-  }
-  try{
+   if(!proxyUrl){
+    if(await applyCuratedFallback([q],expectedCategory))return;
+    throw new Error("JPL lookup needs the Cloudflare proxy, and no matching scientific dimensions record was found.");
+   }
    const url=new URL(proxyUrl);url.searchParams.set("sstr",q);
    let data=null,jplFailure="";
    try{
@@ -586,7 +583,7 @@ loadExpandedCatalogs();
     throw new Error("Multiple JPL matches. Please refine the search"+(names.length?": "+names.join(", "):"."));
    }
    if(data.code||data.error||!data.object){
-    if(await applyCuratedFallback([q]))return;
+    if(await applyCuratedFallback([q],expectedCategory))return;
     throw new Error(data.message||data.error||"JPL could not identify the object and no curated dimensions matched.");
    }
    const params=Array.isArray(data.phys_par)?data.phys_par:[];
@@ -597,14 +594,20 @@ loadExpandedCatalogs();
    if(!axes){
     if(await applyCuratedFallback([objectName,data.object.shortname,q],expectedCategory))return;
     const diameter=params.find(p=>["diameter","diam"].includes(String(p.name||"").toLowerCase()));
-    if(diameter)throw new Error("JPL has a diameter but no usable extent, and no matching published axis dimensions are in the fallback catalogue. A diameter alone is not used as three axes.");
-    throw new Error("JPL has no usable extent and no matching published axis dimensions were found in the fallback catalogue.");
+    if(diameter)throw new Error("JPL has a diameter but no usable extent, and no matching published axis dimensions were found. A diameter alone is not used as three axes.");
+    throw new Error("JPL has no usable extent and no matching published axis dimensions were found.");
    }
    const longest=Math.max(...axes);
    showDimensions({name:objectName,axesKm:axes,longestAxisKm:longest,sourceUrl:sbdbUrl});
    setLookupStatus("JPL physical axes found. Original scale and printer-fit suggestions have been calculated.");
-  }catch(error){if(lookupToken!==token)return;setLookupStatus(error.message||"Object lookup failed.",true);if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);}
-  finally{lookupBusy=false;$id("scaling-jpl-lookup").disabled=false;}
+  }catch(error){
+   if(lookupToken!==token)return;
+   setLookupStatus(error.message||"Object lookup failed.",true);
+   if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);
+  }finally{
+   lookupBusy=false;
+   const button=$id("scaling-jpl-lookup");if(button)button.disabled=false;
+  }
  }
  async function load(file,format,model=null,url=null){
   clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
