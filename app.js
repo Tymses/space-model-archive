@@ -250,7 +250,7 @@ function workerAssetUrl(sourceUrl) { return workerActionUrl("asset",sourceUrl); 
 function remoteCatalogueRecord(model) {
  if(model.source!=="3D Asteroid Catalogue"||!model.file)return;
  let page=model.file;
- if(model.category==="moons"&&MOON_PAGE_SLUGS[model.name])page="https://3d-asteroids.space/moons/"+MOON_PAGE_SLUGS[model.name];
+ if(model.category==="moons"){const moonName=String(model.name||"").replace(/^[A-Z]\\d+\\s*/i,"").trim();const moonSlug=MOON_PAGE_SLUGS[model.name]||MOON_PAGE_SLUGS[moonName];if(moonSlug)page="https://3d-asteroids.space/moons/"+moonSlug;}
  try {
   const u=new URL(page);
   const parts=u.pathname.split("/").filter(Boolean);
