@@ -325,11 +325,6 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    });
    row.append(label,preview,download);variantsNode.append(row);
   });
- } catch(error) { statusNode.textContent="Download fehlgeschlagen: "+error.message; }
-    finally { download.disabled=false; }
-   });
-   row.append(label,preview,download);variantsNode.append(row);
-  });
   if(currentCategory)renderCollection();
  } catch(error) {
   loader.hidden=true;statusNode.textContent="Dateisuche fehlgeschlagen: "+error.message+" Der Kandidat bleibt erhalten. Du kannst die Suche erneut starten.";button.disabled=false;button.textContent="Try again";
