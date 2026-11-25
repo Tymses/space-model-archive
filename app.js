@@ -489,6 +489,15 @@ loadExpandedCatalogs();
   const target=new URL(proxyUrl);target.searchParams.set("action","asset");target.searchParams.set("url",sourceUrl);return target.toString();
  }
  async function fetchRemoteResponse(sourceUrl,accept="model/gltf-binary,model/gltf+json,model/stl,application/octet-stream,*/*"){
+  const sourceHost=(()=>{try{return new URL(sourceUrl).hostname.toLowerCase();}catch(_){return "";}})();
+  // Space Radar omits CORS headers. Never make a direct browser request to it:
+  // even a successful HTTP 200 response is unreadable to the page and logs a CORS error.
+  if(sourceHost==="www.spaceradar.ai"||sourceHost==="models.spaceradar.ai"){
+   if(!proxyUrl)throw new Error("Space Radar assets require the configured Cloudflare CORS proxy.");
+   const response=await fetch(proxyAssetUrl(sourceUrl),{headers:{Accept:accept}});
+   if(!response.ok)throw new Error("Cloudflare asset proxy returned HTTP "+response.status+".");
+   return {response,viaProxy:true};
+  }
   let directError;
   try{const response=await fetch(sourceUrl,{headers:{Accept:accept}});if(!response.ok)throw new Error("HTTP "+response.status);return {response,viaProxy:false};}catch(error){directError=error;}
   if(!proxyUrl)throw new Error("Direct model download failed ("+(directError?.message||"network/CORS error")+") and no Cloudflare asset proxy is configured.");
