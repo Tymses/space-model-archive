@@ -10,8 +10,14 @@ const ALLOWED_ORIGINS = new Set([
 const ASSET_HOSTS = new Set([
   "www.spaceradar.ai",
   "models.spaceradar.ai",
-  "models.opensourcerobotics.dev"
+  "models.opensourcerobotics.dev",
+  "raw.githubusercontent.com",
+  "echo.jpl.nasa.gov",
+  "3d-asteroids.space",
+  "www.3d-asteroids.space"
 ]);
+const CATALOGUE_HOSTS = new Set(["3d-asteroids.space", "www.3d-asteroids.space"]);
+const MODEL_EXTENSIONS = new Set(["glb","gltf","stl","obj","ply"]);
 const MAX_ASSET_BYTES = 75 * 1024 * 1024;
 const MODEL_TYPES = new Map([
   ["glb", "model/gltf-binary"], ["gltf", "model/gltf+json"],
