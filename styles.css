@@ -323,3 +323,8 @@
 @media(max-width:650px){.top-actions{gap:12px}.view-counter{padding:4px 7px;font-size:11px}}
 
 .view-counter{color:var(--accent)}.view-eye-icon{display:block;flex:none;color:var(--accent)}
+
+
+/* Header logo: preserve the PNG's transparent rounded corners. */
+.brand-mark{background:transparent!important;border-radius:12px;}
+.brand-word{background-image:radial-gradient(circle at 9% 36%,rgba(255,255,255,.96) 0 1px,transparent 1.5px),radial-gradient(circle at 34% 72%,rgba(255,255,255,.88) 0 .8px,transparent 1.4px),radial-gradient(circle at 61% 24%,rgba(255,255,255,.92) 0 1px,transparent 1.5px),radial-gradient(circle at 87% 58%,rgba(255,255,255,.86) 0 .8px,transparent 1.4px),linear-gradient(105deg,#192b3d 0%,#315f87 44%,#2f9fda 72%,#315f87 100%);background-size:100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;}
