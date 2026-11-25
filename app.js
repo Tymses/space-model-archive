@@ -756,7 +756,9 @@ loadExpandedCatalogs();
   text=text.replace(/[^\p{L}\p{N}\s/'-]/gu," ").replace(/\s+/g," ").trim();
   text=text.replace(/^(?:(?:the|of|asteroid|minor planet|comet|dwarf planet|moon|natural satellite|satellite|planet|spacecraft|space telescope)\s+)+/i,"");
   text=text.replace(/\s+#?\d{1,6}$/,"");
-  const tokens=text.split(/\s+/).filter(Boolean),seen=new Set(),unique=[];
+  let tokens=text.split(/\s+/).filter(Boolean);
+  tokens=tokens.filter(token=>!/^\d+$/.test(token));
+  const seen=new Set(),unique=[];
   for(const token of tokens){const key=token.toLocaleLowerCase();if(!seen.has(key)){seen.add(key);unique.push(token);}}
   text=unique.join(" ").replace(/([\p{L}]{4,})\d{1,4}$/u,"$1").trim();
   return /^(?:model|mesh|object|scene|untitled|download|file|unknown)$/i.test(text)?"":text;
