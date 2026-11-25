@@ -277,7 +277,19 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    const row=document.createElement("div");row.className="remote-variant-row";
    const label=document.createElement("span");label.textContent=variant.name+" · "+variant.format+" · "+variant.size;
    const preview=document.createElement("button");preview.type="button";preview.className="action-link";preview.textContent="Preview / Scaling";preview.addEventListener("click",()=>routeScaling(variant));
-   const download=document.createElement("a");download.className="action-link secondary";download.href=workerAssetUrl(variant.file);download.textContent="Download "+variant.format;download.setAttribute("download",variant.name.replace(/[^a-z0-9_-]+/gi,"-")+"."+variant.format.toLowerCase());
+   const download=document.createElement("button");download.type="button";download.className="action-link secondary";download.textContent="Download "+variant.format;
+   download.addEventListener("click",async()=>{
+    download.disabled=true;
+    try {
+     const response=await fetch(workerAssetUrl(variant.file));
+     if(!response.ok)throw new Error("Worker download returned HTTP "+response.status);
+     const blob=await response.blob();if(!blob.size)throw new Error("The model file is empty.");
+     const objectUrl=URL.createObjectURL(blob),anchor=document.createElement("a");
+     anchor.href=objectUrl;anchor.download=variant.name.replace(/[^a-z0-9_-]+/gi,"-")+"."+variant.format.toLowerCase();
+     document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
+    } catch(error) { statusNode.textContent="Download fehlgeschlagen: "+error.message; }
+    finally { download.disabled=false; }
+   });
    row.append(label,preview,download);variantsNode.append(row);
   });
   if(currentCategory)renderCollection();
