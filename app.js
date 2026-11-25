@@ -292,8 +292,12 @@ loadExpandedCatalogs();
 
   function number(id){ return Number($id(id).value); }
   function volume(){
-    if ($id("printer-profile").value === "p2s") return [256,256,256];
-    return [number("bed-x"),number("bed-y"),number("bed-z")];
+    const profiles = {
+      "p2s": [256,256,256],
+      "prusa-xl-5": [360,360,360],
+      "centauri-carbon": [256,256,256]
+    };
+    return profiles[$id("printer-profile").value] || [number("bed-x"),number("bed-y"),number("bed-z")];
   }
   function fmt(v){ return v.toFixed(v >= 100 ? 1 : 2).replace(/\.0$/,""); }
   function fitsSomeRotation(size, bed){
