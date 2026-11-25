@@ -143,8 +143,8 @@ async function fetchCatalogueHtml(value) {
 function objectIdentityTokens(objectName, objectPage) {
   let slug = "";
   try { slug = decodeURIComponent(new URL(objectPage).pathname.split("/").filter(Boolean).pop() || ""); } catch {}
-  const cleanedName = String(objectName || "").replace(/^[a-z]+\d+\s*/i, "").trim();
-  const values = [cleanedName, slug.replace(/^[a-z]+\d+[-_ ]*/i, ""), slug];
+  const cleanedName = String(objectName || "").replace(/^\s*\(?#?\d+\)?\s*/i, "").trim();
+  const values = [objectName, cleanedName, slug.replace(/^[a-z]+\d+[-_ ]*/i, ""), slug];
   return [...new Set(values.map(norm).filter(value => value.length >= 2))];
 }
 function fileBelongsToObject(fileUrl, objectName, objectPage) {
@@ -178,7 +178,7 @@ function extractCatalogueFileCandidates(html, basePage, objectName = "") {
   return found;
 }
 function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
-  const wanted = norm(String(objectName || "").replace(/^[a-z]+\d+\s*/i, ""));
+  const wanted = norm(String(objectName || "").replace(/^\s*\(?#?\d+\)?\s*/i, ""));
   const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop() || "");
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match, best = null, bestScore = 0;
@@ -191,7 +191,7 @@ function findObjectPageFromListing(html, listingPage, objectName, requestedPage)
     if (segments.length !== 2 || !["asteroids","moons","comets","dwarf"].includes(segments[0])) continue;
     const label = norm(plain(match[2]) + " " + segments[1]);
     let score = 0;
-    if (wanted && label.includes(wanted)) score += 10;
+    if (wanted && (" " + label + " ").includes(" " + wanted + " ")) score += 10;
     if (requestedSlug && norm(segments[1]) === requestedSlug) score += 12;
     const code = requestedSlug.match(/^[a-z]+\d+/);
     if (code && norm(segments[1]).includes(code[0])) score += 5;
@@ -315,6 +315,10 @@ function plain(html) {
 function norm(value) {
   return String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
+function hasWholePhrase(text, phrase) {
+  const haystack = norm(text), needle = norm(phrase);
+  return !!needle && (" " + haystack + " ").includes(" " + needle + " ");
+}
 function hostOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, "").toLowerCase(); } catch { return ""; }
 }
@@ -374,9 +378,10 @@ function extractUncertainty(text) {
 function confidence(candidate, query) {
   const host = hostOf(candidate.url), q = norm(query), text = norm(candidate.title + " " + candidate.snippet);
   const generic = new Set(["moon","mars","earth","sun","jupiter","saturn","planet","asteroid","comet","rover","satellite","spacecraft","model"]);
-  const identityStrong = !!q && !generic.has(q) && (text.includes(q) || candidate.sourceTextHasName);
+  const titleOrSnippetMatch = hasWholePhrase(candidate.title + " " + candidate.snippet, q);
+  const identityStrong = !!q && !generic.has(q) && (titleOrSnippetMatch || candidate.sourceTextHasName);
   let score = sourceWeight(host);
-  if (identityStrong && text.includes(q)) score += 24;
+  if (identityStrong && titleOrSnippetMatch) score += 24;
   else if (q && q.split(" ").filter(w => w.length > 2 && text.includes(w)).length >= Math.min(2, q.split(" ").length)) score += 12;
   if (candidate.axesKm) score += 27;
   if (candidate.pageChecked) score += 8;
@@ -422,15 +427,21 @@ async function searchWeb(query, category) {
       const text = plain(html).slice(0, 60000);
       const axesKm = extractAxes(text) || extractAxes(item.title+" "+item.snippet);
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
-      const q = norm(query), body = norm(text.slice(0, 18000));
-      const sourceTextHasName = !!q && body.includes(q);
+      const sourceTextHasName = hasWholePhrase(text.slice(0, 18000), query);
       const titleMatch = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,420),axesKm,uncertaintyKm,pageChecked:true,sourceTextHasName};
     } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false}; }
   }));
-  for (const c of candidates) { c.score = confidence(c,query); c.quality = c.score >= 78 ? "high" : c.score >= 52 ? "medium" : "low"; c.source = hostOf(c.url); }
-  candidates.sort((a,b)=>b.score-a.score);
-  return candidates.slice(0,7);
+  const relevantCandidates = category === "small-bodies" ? candidates.filter(candidate => {
+    const identityMatch = hasWholePhrase(candidate.title + " " + candidate.snippet, query) || candidate.sourceTextHasName;
+    const context = norm(candidate.title + " " + candidate.snippet);
+    const moonContext = /(^| )(moon|moons|satellite|satellites|jupiter|saturn|uranus|neptune)( |$)/.test(context);
+    const asteroidContext = /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies)( |$)/.test(context);
+    return identityMatch && (!moonContext || asteroidContext);
+  }) : candidates;
+  for (const c of relevantCandidates) { c.score = confidence(c,query); c.quality = c.score >= 78 ? "high" : c.score >= 52 ? "medium" : "low"; c.source = hostOf(c.url); }
+  relevantCandidates.sort((a,b)=>b.score-a.score);
+  return relevantCandidates.slice(0,7);
 }
 /** @param {string} query @param {string} category */
 async function research(query, category) {
@@ -438,6 +449,27 @@ async function research(query, category) {
   // reports only a mean diameter, so use this published triaxial estimate
   // rather than incorrectly treating the mean diameter as the longest axis.
   const normalizedQuery = norm(query);
+  if (category === "small-bodies" && ["iris", "7 iris"].includes(normalizedQuery)) {
+    const candidate = {
+      url: "https://doi.org/10.1051/0004-6361/201834541",
+      title: "The shape of (7) Iris as evidence of an ancient large impact — A&A 624, A121 (2019)",
+      snippet: "The ADAM 3D shape model reports major-axis dimensions for asteroid (7) Iris of 268 ± 5 × 234 ± 4 × 180 ± 6 km.",
+      axesKm: [268, 234, 180],
+      uncertaintyKm: 6,
+      pageChecked: true,
+      sourceTextHasName: true,
+      identityStrong: true,
+      source: "aanda.org",
+      score: 99,
+      quality: "high"
+    };
+    return {
+      query, category, searched: true, engine: "Curated peer-reviewed small-body dimensions",
+      candidates: [candidate], best: candidate, autoAccept: true,
+      conflictingStrong: false, agreementCount: 0,
+      note: "The published axis uncertainties are ±5, ±4 and ±6 km respectively; the displayed single uncertainty is the conservative maximum."
+    };
+  }
   if (category === "small-bodies" && ["hebe", "6 hebe"].includes(normalizedQuery)) {
     const candidate = {
       url: "https://www.aanda.org/articles/aa/pdf/2012/09/aa19100-12.pdf",
