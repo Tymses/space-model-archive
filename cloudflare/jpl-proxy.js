@@ -64,6 +64,13 @@ function extractAxes(text) {
   }
   return null;
 }
+function extractUncertainty(text) {
+  const match = decode(text).replace(/,/g, ".").match(/(?:±|\+\/\-)\s*(\d+(?:\.\d+)?)\s*(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)/i);
+  if (!match) return null;
+  const unit = match[2].toLowerCase();
+  const factor = /^(km|kilometer|kilometre)/.test(unit) ? 1 : /^(cm)/.test(unit) ? 0.00001 : /^(mm)/.test(unit) ? 0.000001 : 0.001;
+  return Number(match[1]) * factor;
+}
 function confidence(candidate, query) {
   const host = hostOf(candidate.url), q = norm(query), text = norm(candidate.title + " " + candidate.snippet);
   let score = sourceWeight(host);
@@ -109,11 +116,12 @@ async function searchWeb(query, category) {
       const html = (await response.text()).slice(0, 900000);
       const text = plain(html).slice(0, 60000);
       const axesKm = extractAxes(text) || extractAxes(item.title+" "+item.snippet);
+      const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
       const q = norm(query), body = norm(text.slice(0, 18000));
       const sourceTextHasName = !!q && body.includes(q);
       const titleMatch = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
-      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,420),axesKm,pageChecked:true,sourceTextHasName};
-    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),pageChecked:false}; }
+      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,420),axesKm,uncertaintyKm,pageChecked:true,sourceTextHasName};
+    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false}; }
   }));
   for (const c of candidates) { c.score = confidence(c,query); c.quality = c.score >= 78 ? "high" : c.score >= 52 ? "medium" : "low"; c.source = hostOf(c.url); }
   candidates.sort((a,b)=>b.score-a.score);
