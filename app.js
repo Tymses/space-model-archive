@@ -247,7 +247,8 @@ function remoteCatalogueRecord(model) {
  if(model.category==="moons"&&MOON_PAGE_SLUGS[model.name])page="https://3d-asteroids.space/moons/"+MOON_PAGE_SLUGS[model.name];
  try {
   const u=new URL(page);
-  if(u.protocol==="https:"&&["3d-asteroids.space","www.3d-asteroids.space"].includes(u.hostname)&&/^\/(?:asteroids|moons|comets|dwarf)\//.test(u.pathname)) {
+  const parts=u.pathname.split("/").filter(Boolean);
+  if(u.protocol==="https:"&&["3d-asteroids.space","www.3d-asteroids.space"].includes(u.hostname)&&parts.length===2&&["asteroids","moons","comets","dwarf"].includes(parts[0])&&!parts[1].includes(".")) {
    model.remotePageUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
   }
  } catch {}
