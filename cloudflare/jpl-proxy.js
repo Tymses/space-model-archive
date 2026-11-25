@@ -513,7 +513,9 @@ async function lookupOccultationDimensions(query) {
       const exactName = rowName === wanted;
       const exactDesignation = wanted === norm(rowNumber + " " + designation[2]) || wanted === rowNumber;
       if (!exactName && !exactDesignation) continue;
-      const ellipsoid = cells.find(cell => /^\s*\d+(?:\.\d+)?\s*\*\s*\d+(?:\.\d+)?(?:\s*\*\s*\d+(?:\.\d+)?)?\s*$/.test(cell));
+      // The source uses '*' as an axis separator, but tolerate the
+      // equivalent multiplication symbols and harmless cell formatting.
+      const ellipsoid = cells.find(cell => /^\s*\d+(?:\.\d+)?\s*[x*×]\s*\d+(?:\.\d+)?\s*[x*×]\s*\d+(?:\.\d+)?\s*$/i.test(cell));
       if (!ellipsoid) continue;
       const axesKm = ellipsoid.match(/\d+(?:\.\d+)?/g)?.map(Number) || [];
       if (axesKm.length !== 3 || !axesKm.every(axis => Number.isFinite(axis) && axis > 0)) continue;
