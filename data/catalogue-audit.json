@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-25",
+  "method": "Repository snapshot audit based on the five existing index files. Re-run tools/catalogue/audit_catalogue.py after index changes.",
+  "coverageNote": "These are index records, not unique physical objects and not the complete contents of external catalogues. The NASA index contains 29 planetary STL records cross-listed in Height Maps; count source files separately from collection placements. Catalogue-page references and archive packages are not individual mesh files.",
+  "totals": {
+    "indexRecordCount": 1270,
+    "uniqueRecordIdCount": 1270,
+    "duplicateRecordIdCount": 0,
+    "uniqueSourceFileCount": 1241,
+    "directMeshFileRecords": 977,
+    "uniqueDirectMeshFilesAfterKnownNasaCrossListing": 948,
+    "cataloguePageReferences": 259,
+    "datasetArchiveRecords": 29,
+    "unverifiedLinkRecords": 5
+  },
+  "byCategory": {
+    "spacecraft": 877,
+    "small-bodies": 316,
+    "planetary": 35,
+    "moons": 13,
+    "height-maps": 29
+  },
+  "byRecordType": {
+    "direct-model-file": 977,
+    "catalogue-reference": 259,
+    "dataset-archive": 29,
+    "unverified-link": 5
+  },
+  "indexes": [
+    {
+      "index": "data/nasa-model-index.json",
+      "source": "NASA 3D Resources",
+      "recordCount": 679,
+      "uniqueSourceFiles": 650,
+      "crossListedHeightMapRecords": 29,
+      "categoryCounts": {
+        "small-bodies": 18,
+        "spacecraft": 595,
+        "planetary": 35,
+        "moons": 2,
+        "height-maps": 29
+      }
+    },
+    {
+      "index": "data/spaceradar-model-index.json",
+      "source": "Space Radar",
+      "recordCount": 311,
+      "categoryCounts": {
+        "spacecraft": 282,
+        "small-bodies": 18,
+        "moons": 11
+      }
+    },
+    {
+      "index": "data/jpl-asteroid-index.json",
+      "source": "NASA/JPL Radar Astronomy",
+      "recordCount": 19,
+      "categoryCounts": {
+        "small-bodies": 19
+      }
+    },
+    {
+      "index": "data/small-body-package-index.json",
+      "source": "NASA PDS and Zenodo",
+      "recordCount": 5,
+      "categoryCounts": {
+        "small-bodies": 5
+      }
+    },
+    {
+      "index": "data/asteroid-curated-index.json",
+      "source": "3D Asteroid Catalogue",
+      "recordCount": 256,
+      "categoryCounts": {
+        "small-bodies": 256
+      }
+    }
+  ],
+  "limitations": [
+    "Cross-source physical-object matching is not complete; IDs are unique record IDs, not canonical object IDs.",
+    "The 256 asteroid records point to source detail pages and are not direct mesh files.",
+    "Archive package records represent ZIP/7Z bundles, not the number of meshes inside them.",
+    "The 3D Asteroid Catalogue reports 1,635 asteroids, 5 comets, 2 dwarf planets, 37 moons and 3,079 models; SPACEMESHER has not yet imported that full source inventory."
+  ]
+}
