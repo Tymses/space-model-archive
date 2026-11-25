@@ -250,7 +250,7 @@ function remoteCatalogueRecord(model) {
   const u=new URL(page);
   const parts=u.pathname.split("/").filter(Boolean);
   if(u.protocol==="https:"&&["3d-asteroids.space","www.3d-asteroids.space"].includes(u.hostname)&&parts.length===2&&["asteroids","moons","comets","dwarf"].includes(parts[0])&&!parts[1].includes(".")) {
-   model.remotePageUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
+   model.remotePageUrl=u.toString();model.file=u.toString();model.sourceUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
   }
  } catch {}
 }
