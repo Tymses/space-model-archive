@@ -118,7 +118,7 @@ async function resolveCataloguePage(value) {
     try {
       let probe, probeUrl = file.url;
       for (let hop = 0; hop <= 3; hop++) {
-        probe = await fetch(probeUrl, { headers: { Range: 'bytes=0-0', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+        probe = await fetch(probeUrl, { headers: { Range: 'bytes=0-4095', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
         if (![301,302,303,307,308].includes(probe.status)) break;
         const location = probe.headers.get('Location');
         if (!location || hop === 3) break;
@@ -128,8 +128,19 @@ async function resolveCataloguePage(value) {
       }
       if (!probe.ok && probe.status !== 206) { try { await probe.body.cancel(); } catch {} continue; }
       if ((probe.headers.get('Content-Type') || '').toLowerCase().includes('text/html')) { try { await probe.body.cancel(); } catch {} continue; }
+      let sample = new Uint8Array();
+      try {
+        const reader = probe.body.getReader();
+        const first = await reader.read();
+        if (first.value) sample = first.value.slice(0, 8192);
+        await reader.cancel();
+      } catch {}
+      const sampleText = new TextDecoder().decode(sample).replace(/^\\uFEFF/, '').trimStart();
+      if (file.format === 'PLY' && !sampleText.startsWith('ply')) continue;
+      if (file.format === 'OBJ' && !/(^|\\n)\\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\\s+/m.test(sampleText)) continue;
+      if (file.format === 'GLB' && new TextDecoder().decode(sample.slice(0, 4)) !== 'glTF') continue;
+      if (file.format === 'GLTF' && (!sampleText.startsWith('{') || !sampleText.includes('"asset"'))) continue;
       file.url = probeUrl; const rangeTotal = (probe.headers.get('Content-Range') || '').split('/').pop(); file.sizeBytes = Number(rangeTotal) || Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
-      try { await probe.body.cancel(); } catch {}
     } catch {}
   }
   return { page: page.toString(), resolvedAt: new Date().toISOString(), files: verified, source: '3D Asteroid Catalogue' };
