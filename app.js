@@ -435,10 +435,22 @@ loadExpandedCatalogs();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[];
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[];
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
+ function setGauge(id,value,status){
+  const card=$id("scaling-gauge-"+id),ring=$id("scaling-gauge-ring-"+id),number=$id("scaling-gauge-value-"+id),caption=$id("scaling-gauge-status-"+id);
+  if(!card||!ring||!number||!caption)return;
+  const known=Number.isFinite(value),score=known?Math.max(0,Math.min(100,Math.round(value))):null;
+  const color=!known?"#718096":score<45?"#c96b65":score<75?"#c49a58":"#70ad91";
+  ring.style.setProperty("--gauge-value",known?score:0);ring.style.setProperty("--gauge-color",color);
+  number.textContent=known?score+"%":"—";caption.textContent=status||(known?"Calculated":"Not assessed");
+  card.classList.toggle("is-unrated",!known);
+  card.setAttribute("aria-label",card.dataset.label+": "+(known?score+" percent":"not assessed")+(status?"; "+status:""));
+ }
+ function resetGauges(){setGauge("reliability",null,"Awaiting source");setGauge("printability",null,"Not assessed");}
  const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
  function clear(){
+  resetGauges();realConfidenceScore=null;
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
   renderer=null;controls=null;camera=null;scene=null;root=null;active=null;
   objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];lookupBusy=false;const lookupButton=$id("scaling-jpl-lookup");if(lookupButton)lookupButton.disabled=false;researchCandidates=[];const researchResults=$id("scaling-research-results");if(researchResults){researchResults.hidden=true;researchResults.replaceChildren();}const researchPanel=$id("scaling-research-panel");if(researchPanel)researchPanel.hidden=true;
@@ -472,6 +484,7 @@ loadExpandedCatalogs();
    $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
    $id("scaling-recommendations").innerHTML="<p>Find the object above to retrieve its measured physical axes and calculate the real scale.</p>";
    renderFit("Real-world dimensions missing","The model geometry is measured, but no verified physical extent is linked yet.",null);
+   setGauge("printability",null,"Awaiting scale");
    $id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";
    updatePreview(1);return;
   }
@@ -479,6 +492,7 @@ loadExpandedCatalogs();
   $id("scaling-original-scale").textContent="1:"+fmt(originalDenominator);
   $id("scaling-original-dimensions").textContent=dims(source);
   if(!validBed){
+   setGauge("printability",null,"Invalid build volume");
    renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);return;
   }
   const fit=best(source,bed),minimum=originalDenominator/fit.factor;
@@ -488,6 +502,7 @@ loadExpandedCatalogs();
    $id("scaling-selected-scale").textContent="No standard scale found";
    $id("scaling-print-dimensions").textContent="—";
    $id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";
+   setGauge("printability",null,"No scale selected");
    renderFit("No standard scale fits","Try splitting the model or selecting a larger build volume.",false);updatePreview(1);return;
   }
   const factor=originalDenominator/selected,print=source.map(v=>v*factor),fitNow=best(print,bed),fits=fitNow.factor>=1-1e-9;
@@ -498,6 +513,7 @@ loadExpandedCatalogs();
    return '<button type="button" class="scaling-scale-option'+(isSelected?' is-selected':'')+'" data-denominator="'+den+'"><strong>1:'+fmt(den)+'</strong><span>'+dims(size)+'</span><small>'+(i===0?'Largest recommended size':isSelected?'Selected scale':'Smaller print')+'</small></button>';
   }).join("");
   $id("scaling-orientation").textContent="Best orientation: "+(fitNow.orientation?dims(fitNow.orientation):"—");
+  setGauge("printability",Math.min(100,fitNow.factor*100),fits?"Fits selected build volume":"Needs a smaller scale");
   renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The model fits after a 90° axis-aligned rotation.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);
   updatePreview(factor);
  }
@@ -505,8 +521,11 @@ loadExpandedCatalogs();
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
  function setLookupStatus(message,isError=false){const el=$id("scaling-lookup-status");el.textContent=message;el.classList.toggle("is-error",isError);}
- function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote="",uncertaintyKm=null}){
+ function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote="",uncertaintyKm=null,confidenceScore=null}){
   realAxesKm=axesKm;realLongestKm=longestAxisKm;realSourceUrl=sourceUrl;realObjectName=name;
+  const fallbackScore=/high evidence/i.test(confidenceLabel)?95:/moderate evidence/i.test(confidenceLabel)?75:/limited evidence/i.test(confidenceLabel)?45:/verified|jpl|curated/i.test(confidenceLabel)?90:null;
+  realConfidenceScore=Number.isFinite(confidenceScore)?Math.max(0,Math.min(100,confidenceScore)):fallbackScore;
+  setGauge("reliability",realConfidenceScore,realConfidenceScore===null?"Evidence unavailable":confidenceLabel);
   $id("scaling-object-result").hidden=false;$id("scaling-object-name").textContent=name;
   $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v)+" km").join(" × ");
   $id("scaling-object-longest").textContent=fmt(longestAxisKm)+" km";
@@ -583,7 +602,7 @@ loadExpandedCatalogs();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm});
+   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
@@ -670,7 +689,7 @@ loadExpandedCatalogs();
   }
  }
  async function load(file,format,model=null,url=null,companions=[]) {
-  clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
+  clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
@@ -728,7 +747,7 @@ loadExpandedCatalogs();
   }
  }
  function resetWorkspace(){
-  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";selectedDenominator=null;
+  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
   $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";
@@ -765,7 +784,7 @@ loadExpandedCatalogs();
  $id("scaling-research-results").addEventListener("click",e=>{
   const button=e.target.closest("[data-research-index]");if(!button)return;
   const candidate=researchCandidates[Number(button.dataset.researchIndex)];if(!candidate?.axesKm)return;
-  showDimensions({name:$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm});
+  showDimensions({name:$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm,confidenceScore:candidate.score});
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
