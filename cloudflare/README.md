@@ -34,3 +34,9 @@ The browser then reads the `extent` physical parameter, converts its axes to kil
 - It does not accept arbitrary target URLs; the upstream host is fixed to JPL.
 - Responses are cached for a short period to avoid repeated requests.
 - The Worker is a read-only relay; it does not write to the SMA repository or alter verified dimension records.
+
+## Scaling lookup fallback catalogue
+
+The Scaling workspace checks JPL SBDB `extent` first. If SBDB has no usable multi-axis extent (or the JPL lookup is temporarily unavailable), it checks `data/object-dimensions-index.json` for an exact object-name/number alias. This is a curated fallback of published shape-model or physical-axis measurements, not an unrestricted web search. Each match retains its source link, measurement description, and reported uncertainty where available. A mean/effective diameter is never silently converted into three axes.
+
+Add a fallback record only when its object identity, axis values, units, source, and uncertainty (if published) can be documented. Values in the index are in kilometres.
