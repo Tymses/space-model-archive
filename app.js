@@ -435,7 +435,7 @@ loadExpandedCatalogs();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrl=null,token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false;
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrl=null,token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null;
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
  function clear(){
@@ -523,35 +523,68 @@ loadExpandedCatalogs();
   if(axes.some(v=>!Number.isFinite(v)||v<=0))return null;
   return axes;
  }
+ function normalizeObjectQuery(value){
+  return String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\\s+/g," ");
+ }
+ async function findCuratedDimensions(candidates){
+  try{
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261125-1",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback-Datenbank nicht verfügbar");return response.json();});
+   const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
+   const found=(index.records||[]).filter(record=>[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
+   return found.length===1?found[0]:null;
+  }catch(error){curatedDimensionsPromise=null;return null;}
+ }
+ async function applyCuratedFallback(candidates){
+  const record=await findCuratedDimensions(candidates);
+  if(!record)return false;
+  const longest=Math.max(...record.axesKm);
+  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference"});
+  const uncertainty=Number.isFinite(record.uncertaintyKm)?" Published uncertainty: ±"+fmt(record.uncertaintyKm)+" km.":"";
+  const note=record.note?" "+record.note:"";
+  setLookupStatus("JPL has no usable extent. Using published axis dimensions from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+uncertainty+note);
+  return true;
+ }
  async function lookupObject(query,quiet=false){
   const q=(query||"").trim();if(!q||lookupBusy)return;
   const lookupToken=token;
   if(!proxyUrl){setLookupStatus("JPL-Suche noch nicht verbunden. Einmalig den kostenlosen Proxy einrichten (siehe Einrichtungshinweis im Repository).",true);return;}
-  lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;setLookupStatus("Suche bei JPL nach "+q+" …");
+  lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;setLookupStatus("Searching JPL and the scientific dimensions catalogue for "+q+" …");
   try{
    const url=new URL(proxyUrl);url.searchParams.set("sstr",q);
-   const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
-   if(!response.ok)throw new Error("Proxy antwortet mit HTTP "+response.status);
-   const data=await response.json();
+   let data=null,jplFailure="";
+   try{
+    const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
+    if(!response.ok)jplFailure="Proxy responded with HTTP "+response.status;
+    else data=await response.json();
+   }catch(fetchError){jplFailure=fetchError.message||"JPL request failed";}
    if(lookupToken!==token)return;
+   if(!data){
+    if(await applyCuratedFallback([q]))return;
+    throw new Error(jplFailure||"JPL lookup failed and no curated dimensions were found.");
+   }
    if(data.code===300||Array.isArray(data.list)){
     const matches=data.list||[];const names=matches.slice(0,5).map(x=>x.fullname||x.name||x.des).filter(Boolean);
-    throw new Error("Mehrere Treffer. Bitte genauer suchen"+(names.length?": "+names.join(", "):"."));
+    throw new Error("Multiple JPL matches. Please refine the search"+(names.length?": "+names.join(", "):"."));
    }
-   if(data.code||data.error||!data.object)throw new Error(data.message||data.error||"JPL konnte das Objekt nicht eindeutig finden.");
+   if(data.code||data.error||!data.object){
+    if(await applyCuratedFallback([q]))return;
+    throw new Error(data.message||data.error||"JPL could not identify the object and no curated dimensions matched.");
+   }
    const params=Array.isArray(data.phys_par)?data.phys_par:[];
    const extent=params.find(p=>String(p.name||"").toLowerCase()==="extent");
    const axes=parseExtent(extent);
-   const sbdbUrl="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr="+encodeURIComponent(data.object.fullname||q);
+   const objectName=data.object.fullname||data.object.shortname||q;
+   const sbdbUrl="https://ssd.jpl.nasa.gov/tools/sbdb_lookup.html#/?sstr="+encodeURIComponent(objectName);
    if(!axes){
+    if(await applyCuratedFallback([objectName,data.object.shortname,q]))return;
     const diameter=params.find(p=>["diameter","diam"].includes(String(p.name||"").toLowerCase()));
-    if(diameter)throw new Error("JPL kennt einen Durchmesser, aber keine verwendbare extent-Angabe. Ein Durchmesser allein reicht hier nicht für die automatische Maßstabsbestimmung.");
-    throw new Error("Für dieses Objekt liefert JPL keine verwertbare zwei- oder dreiachsige extent-Messung.");
+    if(diameter)throw new Error("JPL has a diameter but no usable extent, and no matching published axis dimensions are in the fallback catalogue. A diameter alone is not used as three axes.");
+    throw new Error("JPL has no usable extent and no matching published axis dimensions were found in the fallback catalogue.");
    }
-   const longest=Math.max(...axes),name=data.object.fullname||data.object.shortname||q;
-   showDimensions({name,axesKm:axes,longestAxisKm:longest,sourceUrl:sbdbUrl});
-   setLookupStatus("Physikalische Achsen gefunden. Originalmaßstab und Druckmaßstäbe wurden berechnet.");
-  }catch(error){if(lookupToken!==token)return;setLookupStatus(error.message||"JPL-Suche fehlgeschlagen.",true);if(!quiet)renderFit("Keine verifizierte Maßstabsgrundlage",error.message||"JPL-Suche fehlgeschlagen.",null);}
+   const longest=Math.max(...axes);
+   showDimensions({name:objectName,axesKm:axes,longestAxisKm:longest,sourceUrl:sbdbUrl});
+   setLookupStatus("JPL physical axes found. Original scale and printer-fit suggestions have been calculated.");
+  }catch(error){if(lookupToken!==token)return;setLookupStatus(error.message||"Object lookup failed.",true);if(!quiet)renderFit("No verified scale basis",error.message||"Object lookup failed.",null);}
   finally{lookupBusy=false;$id("scaling-jpl-lookup").disabled=false;}
  }
  async function load(file,format,model=null,url=null){
