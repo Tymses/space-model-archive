@@ -11,7 +11,7 @@
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="config.js?v=20261124-2"></script>
-<script src="app.js?v=20261125-16" defer></script>
+<script src="app.js?v=20261125-17" defer></script>
 </head>
 <body>
 <header class="app-bar">
@@ -143,6 +143,17 @@
   <section class="scaling-output-panel">
     <div class="scaling-section-heading"><div><p class="overline">STEP 3</p><h2>Original scale &amp; print sizes</h2></div><span class="scaling-original-scale" id="scaling-original-scale">Waiting for dimensions</span></div>
     <div class="scaling-scale-summary"><div><span>Model dimensions at original file scale</span><strong id="scaling-original-dimensions">—</strong></div><div><span>Recommended printable scale</span><strong id="scaling-selected-scale">—</strong></div><div><span>Resulting print dimensions</span><strong id="scaling-print-dimensions">—</strong></div></div>
+    <div class="scaling-gauges" aria-label="Scale and print assessment">
+      <div class="scaling-gauge-card is-unrated" id="scaling-gauge-reliability" data-label="Scale reliability">
+        <div class="scaling-gauge-ring" id="scaling-gauge-ring-reliability"><span id="scaling-gauge-value-reliability">—</span></div>
+        <span class="scaling-gauge-label">Scale reliability</span><small id="scaling-gauge-status-reliability">Awaiting source</small>
+      </div>
+      <div class="scaling-gauge-card is-unrated" id="scaling-gauge-printability" data-label="Printability">
+        <div class="scaling-gauge-ring" id="scaling-gauge-ring-printability"><span id="scaling-gauge-value-printability">—</span></div>
+        <span class="scaling-gauge-label">Printability</span><small id="scaling-gauge-status-printability">Not assessed</small>
+      </div>
+    </div>
+    <p class="scaling-gauge-note">Scale reliability reflects source evidence, not a statistical probability. Printability reflects geometric fit in the selected build volume, not a full slicer or print-quality simulation.</p>
     <div class="fit-result" id="scaling-fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="scaling-fit-title">Awaiting model and object dimensions</strong><p id="scaling-fit-description">The model is checked against the selected printer once its real-world dimensions are found.</p></div></div>
     <div class="scaling-recommendation-heading"><strong>Usual scales that fit your printer</strong><span id="scaling-orientation">—</span></div>
     <div class="scaling-scale-options" id="scaling-recommendations"><p>Load a model and identify its object to calculate scale suggestions.</p></div>
