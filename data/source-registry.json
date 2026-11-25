@@ -383,7 +383,7 @@
         {
           "id": "zenodo-nwa869",
           "name": "Zenodo — NWA 869 and rock-fragment meshes",
-          "url": "https://zenodo.org/",
+          "url": "https://zenodo.org/records/14850374",
           "publisher": "Zenodo dataset authors",
           "type": "research mesh dataset",
           "formats": [
@@ -391,7 +391,7 @@
           ],
           "status": "partial",
           "priority": 3,
-          "knownCoverage": "Repository currently links three ZIP archives reporting 868 OBJ meshes; two are NWA 869 meteorite fragments and one is terrestrial rock fragments.",
+          "knownCoverage": "Repository links the exact Zenodo record DOI 10.5281/zenodo.14850374 and three archives: L01.zip (199.8 MB), L02.zip (197.6 MB) and T01.zip (56.8 MB). Together the dataset reports 868 OBJ meshes; L01/L02 are NWA 869 meteorite fragments, T01 contains terrestrial rock fragments.",
           "nextAction": "Resolve DOI and dataset files, enumerate meshes and separate extraterrestrial specimens from terrestrial comparison material."
         }
       ]
