@@ -89,7 +89,7 @@ function limitedBody(body) {
 async function fetchApprovedAsset(value, request) {
   let current = validateAssetUrl(value);
   for (let hop = 0; hop <= 3; hop++) {
-    const upstreamHeaders = { "Accept": request.headers.get("Accept") || "*/*", "User-Agent": "SPACEMESHER-Preview/1.0" };
+    const upstreamHeaders = { "Accept": request.headers.get("Accept") || "*/*", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-AssetProxy/1.0)", "Referer": current.origin + "/", "Origin": current.origin };
     const range = request.headers.get("Range");
     if (range) upstreamHeaders.Range = range;
     const response = await fetch(current.toString(), { method: "GET", headers: upstreamHeaders, redirect: "manual", cf: { cacheTtl: 3600 } });
