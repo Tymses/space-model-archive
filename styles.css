@@ -312,3 +312,8 @@
 .print-workflow li strong{color:var(--ink);font-size:12px}
 .print-workflow li span{font-size:12px}
 @media(max-width:600px){.guide-tabs{gap:3px}.guide-tab{flex:1 1 calc(50% - 4px)}.print-workflow li{grid-template-columns:30px 1fr}.print-workflow li span{grid-column:2}.top-actions{gap:11px}.top-actions a{font-size:11px}}
+
+.remote-resolution-loader{margin:12px 0 14px}
+.remote-resolution-loader[hidden]{display:none}
+.remote-resolution-loader .research-scan{flex:0 0 92px}
+.remote-resolution-loader .research-copy{flex:1}
