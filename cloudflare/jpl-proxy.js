@@ -104,7 +104,7 @@ async function resolveCataloguePage(value) {
   if (!response.ok) throw new Error('Catalogue page returned HTTP ' + response.status + '.');
   page = pageTarget;
   const html = (await response.text()).slice(0, 2000000);
-  const re = new RegExp('href\\s*=\\s*[\"\\']([^\"\\']+)[\"\\']', 'gi');
+  const re = new RegExp("href\\s*=\\s*[\"']([^\"']+)[\"']", "gi");
   const files = []; let match;
   while ((match = re.exec(html)) && files.length < 80) {
     let target; try { target = new URL(decode(match[1]), page); } catch { continue; }
