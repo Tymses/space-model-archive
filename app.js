@@ -167,13 +167,13 @@ crumb.addEventListener("click",event=>{
 function routeHome(push=true){currentCategory=null;currentModel=null;setView("home");setCrumbs([{label:"Home"}]);if(push)history.pushState({view:"home"},"","#home");window.scrollTo(0,0);}
 function routeCollection(key,push=true){if(!CATEGORIES[key])return;currentCategory=key;currentModel=null;setView("collection");$("#collection-title").textContent=CATEGORIES[key].title;$("#collection-description").textContent=CATEGORIES[key].description;$("#collection-overline").textContent=key==="small-bodies"?"COLLECTION / ASTEROIDS & COMETS":"COLLECTION / "+key.replace("-"," ").toUpperCase();$("#search-input").value="";populateFilters();renderCollection();setCrumbs([{label:"Home",href:"#home"},{label:CATEGORIES[key].title}]);if(push)history.pushState({view:"collection",key},"","#"+key);window.scrollTo(0,0);}
 function populateFilters(){const all=[...MODELS.filter(m=>m.category===currentCategory),...CATEGORIES[currentCategory].sources];const sources=[...new Set(all.map(x=>x.source))].sort();const types=[...new Set(all.map(x=>x.kind||x.type))].sort();$("#source-filter").innerHTML='<option value="all">All sources</option>'+sources.map(x=>'<option>'+x+'</option>').join("");$("#type-filter").innerHTML='<option value="all">All types</option>'+types.map(x=>'<option>'+x+'</option>').join("");}
-function normalizeSearchText(value){return String(value??"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
+function normalizeSearchText(value){return String(value??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
 function matchesSearch(query,values){
- const terms=[...new Set(normalizeSearchText(query).split(/\\s+/).filter(Boolean))];
+ const terms=[...new Set(normalizeSearchText(query).split(/\s+/).filter(Boolean))];
  if(!terms.length)return true;
  const haystack=normalizeSearchText(values.filter(value=>value!=null).join(" "));
  const words=new Set(haystack.split(" "));
- return terms.every(term=>/^\\d+$/.test(term)?words.has(term):haystack.includes(term));
+ return terms.every(term=>/^\d+$/.test(term)?words.has(term):haystack.includes(term));
 }
 function renderCollection(){
  const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
