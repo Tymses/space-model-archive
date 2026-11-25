@@ -447,7 +447,7 @@ async function searchWeb(query, category) {
 }
 const ASTEROID_OCCULTATION_URL = "https://www.asteroidoccultation.com/observations/Asteroid_Dimensions_from_Occultations.html";
 function cleanAsteroidQuery(value) {
-  return norm(String(value || "").replace(/^\\s*\\(\\s*#?\\d+\\s*\\)\\s*/, "").replace(/^\\s*#?\\d+\\s+/, ""));
+  return norm(String(value || "").replace(/^\s*\(\s*#?\d+\s*\)\s*/, "").replace(/^\s*#?\d+\s+/, ""));
 }
 async function lookupOccultationDimensions(query) {
   const wanted = cleanAsteroidQuery(query);
@@ -459,20 +459,20 @@ async function lookupOccultationDimensions(query) {
     });
     if (!response.ok) return null;
     const html = (await response.text()).slice(0, 2500000);
-    const rows = html.match(/<tr\\b[^>]*>[\\s\\S]*?<\\/tr>/gi) || [];
+    const rows = html.match(/<tr\b[^>]*>[\s\S]*?<\/tr>/gi) || [];
     for (const row of rows) {
-      const cells = [...row.matchAll(/<t[dh]\\b[^>]*>([\\s\\S]*?)<\\/t[dh]>/gi)].map(match => plain(match[1]));
+      const cells = [...row.matchAll(/<t[dh]\b[^>]*>([\s\S]*?)<\/t[dh]>/gi)].map(match => plain(match[1]));
       if (cells.length < 7) continue;
-      const designation = cells[0].match(/^\\s*(\\d+)\\s+(.+?)\\s*$/);
+      const designation = cells[0].match(/^\s*(\d+)\s+(.+?)\s*$/);
       if (!designation) continue;
       const rowNumber = designation[1];
       const rowName = norm(designation[2]);
       const exactName = rowName === wanted;
       const exactDesignation = wanted === norm(rowNumber + " " + designation[2]) || wanted === rowNumber;
       if (!exactName && !exactDesignation) continue;
-      const ellipsoid = cells.find(cell => /^\\s*\\d+(?:\\.\\d+)?\\s*\\*\\s*\\d+(?:\\.\\d+)?(?:\\s*\\*\\s*\\d+(?:\\.\\d+)?)?\\s*$/.test(cell));
+      const ellipsoid = cells.find(cell => /^\s*\d+(?:\.\d+)?\s*\*\s*\d+(?:\.\d+)?(?:\s*\*\s*\d+(?:\.\d+)?)?\s*$/.test(cell));
       if (!ellipsoid) continue;
-      const axesKm = ellipsoid.match(/\\d+(?:\\.\\d+)?/g)?.map(Number) || [];
+      const axesKm = ellipsoid.match(/\d+(?:\.\d+)?/g)?.map(Number) || [];
       if (axesKm.length !== 3 || !axesKm.every(axis => Number.isFinite(axis) && axis > 0)) continue;
       const displayName = "(" + rowNumber + ") " + designation[2].trim();
       const candidate = {
@@ -488,7 +488,7 @@ async function lookupOccultationDimensions(query) {
         quality: "high"
       };
       return {
-        query, category: category || "small-bodies", searched: true,
+        query, category: "small-bodies", searched: true,
         engine: "Asteroid Dimensions from Occultations",
         candidates: [candidate], best: candidate, autoAccept: true,
         conflictingStrong: false, agreementCount: 0,
