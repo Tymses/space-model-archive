@@ -1,3 +1,34 @@
+/**
+ * @typedef {Object} ModelFileCandidate
+ * @property {string} url
+ * @property {string} format
+ * @property {string} label
+ * @property {number|null} [sizeBytes]
+ * @property {boolean} [verified]
+ */
+
+/**
+ * @typedef {Object} SearchPage
+ * @property {string} url
+ * @property {string} title
+ * @property {string} snippet
+ */
+
+/**
+ * @typedef {Object} ResearchCandidate
+ * @property {string} url
+ * @property {string} title
+ * @property {string} snippet
+ * @property {number[]|null} [axesKm]
+ * @property {number|null} [uncertaintyKm]
+ * @property {boolean} [pageChecked]
+ * @property {boolean} [sourceTextHasName]
+ * @property {boolean} [identityStrong]
+ * @property {number} [score]
+ * @property {"high"|"medium"|"low"} [quality]
+ * @property {string} [source]
+ */
+
 const JPL_API = "https://ssd-api.jpl.nasa.gov/sbdb.api";
 const SEARCH_URL = "https://html.duckduckgo.com/html/";
 const ALLOWED_ORIGINS = new Set([
@@ -105,6 +136,7 @@ async function resolveCataloguePage(value) {
   page = pageTarget;
   const html = (await response.text()).slice(0, 2000000);
   const re = new RegExp("href\\s*=\\s*[\"']([^\"']+)[\"']", "gi");
+  /** @type {ModelFileCandidate[]} */
   const files = []; let match;
   while ((match = re.exec(html)) && files.length < 80) {
     let target; try { target = new URL(decode(match[1]), page); } catch { continue; }
@@ -113,6 +145,7 @@ async function resolveCataloguePage(value) {
     if (files.some(x => x.url === target.toString())) continue;
     files.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split('/').pop() });
   }
+  /** @type {ModelFileCandidate[]} */
   const verified = [];
   for (const file of files.slice(0, 24)) {
     try {
@@ -223,6 +256,7 @@ function extractUncertainty(text) {
   const factor = /^(km|kilometer|kilometre)/.test(unit) ? 1 : /^(cm)/.test(unit) ? 0.00001 : /^(mm)/.test(unit) ? 0.000001 : 0.001;
   return Number(match[1]) * factor;
 }
+/** @param {ResearchCandidate} candidate @param {string} query */
 function confidence(candidate, query) {
   const host = hostOf(candidate.url), q = norm(query), text = norm(candidate.title + " " + candidate.snippet);
   const generic = new Set(["moon","mars","earth","sun","jupiter","saturn","planet","asteroid","comet","rover","satellite","spacecraft","model"]);
@@ -244,6 +278,7 @@ async function searchWeb(query, category) {
     query + " physical extent length width height scientific"
   ];
   const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.0; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html" };
+  /** @type {SearchPage[]} */
   const pages = [];
   for (const term of searches) {
     try {
@@ -264,6 +299,7 @@ async function searchWeb(query, category) {
       }
     } catch {}
   }
+  /** @type {ResearchCandidate[]} */
   const candidates = await Promise.all(pages.slice(0, 7).map(async item => {
     try {
       const response = await fetch(item.url, {headers, redirect:"follow", cf:{cacheTtl:3600}});
@@ -282,6 +318,7 @@ async function searchWeb(query, category) {
   candidates.sort((a,b)=>b.score-a.score);
   return candidates.slice(0,7);
 }
+/** @param {string} query @param {string} category */
 async function research(query, category) {
   const results = await searchWeb(query,category);
   const withDimensions = results.filter(x=>x.axesKm);
