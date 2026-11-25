@@ -449,6 +449,18 @@ loadExpandedCatalogs();
  }
  function resetGauges(){setGauge("reliability",null,"Awaiting source");setGauge("printability",null,"Not assessed");}
  const config=window.SMA_CONFIG||{},proxyUrl=(config.jplProxyUrl||"").trim();
+ function proxyAssetUrl(sourceUrl){
+  if(!proxyUrl)return sourceUrl;
+  const target=new URL(proxyUrl);target.searchParams.set("action","asset");target.searchParams.set("url",sourceUrl);return target.toString();
+ }
+ async function fetchRemoteAsset(sourceUrl){
+  const target=proxyUrl?proxyAssetUrl(sourceUrl):sourceUrl;
+  const response=await fetch(target,{headers:{Accept:"model/gltf-binary,model/gltf+json,model/stl,application/octet-stream,*/*"}});
+  if(!response.ok)throw new Error("Model download failed (HTTP "+response.status+").");
+  const blob=await response.blob();if(!blob.size)throw new Error("The source returned an empty model file.");
+  const localUrl=URL.createObjectURL(blob);objectUrls.push(localUrl);return localUrl;
+ }
+
  function clear(){
   resetGauges();realConfidenceScore=null;
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
@@ -694,7 +706,10 @@ loadExpandedCatalogs();
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
   if(file){url=URL.createObjectURL(file);objectUrls.push(url);}
+  const remoteSource=!file&&typeof url==="string"&&url.startsWith("https://");
+  const originalUrl=url;
   try{
+   if(remoteSource&&format!=="GLTF")url=await fetchRemoteAsset(originalUrl);
    await ensure();if(my!==token)return;
    scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);
    camera=new THREE.PerspectiveCamera(38,(stage.clientWidth||640)/(stage.clientHeight||360),.01,1e9);
@@ -706,17 +721,21 @@ loadExpandedCatalogs();
      const manager=new THREE.LoadingManager(),resourceMap=new Map();
      companions.forEach(part=>{const partUrl=URL.createObjectURL(part);objectUrls.push(partUrl);resourceMap.set(part.name.toLowerCase(),partUrl);});
      manager.setURLModifier(requested=>{
+      if(requested.startsWith("https://")&&proxyUrl)return proxyAssetUrl(requested);
       if(/^(data:|blob:|https?:)/i.test(requested)&&!requested.startsWith("https://sma.local/"))return requested;
       const clean=decodeURIComponent(requested.split(/[?#]/)[0]),name=clean.split("/").pop().toLowerCase();
       return resourceMap.get(name)||requested;
      });
      const loader=new L.GLB(manager),draco=new L.DRACO();draco.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");loader.setDRACOLoader(draco);loader.setMeshoptDecoder(L.MeshoptDecoder);
      if(format==="GLTF"&&file){const gltf=await loader.parseAsync(await file.text(),"https://sma.local/");object=gltf.scene;}
-     else object=(await loader.loadAsync(url)).scene;
+     else if(format==="GLTF"&&remoteSource){
+      const response=await fetch(proxyAssetUrl(originalUrl));if(!response.ok)throw new Error("GLTF download failed (HTTP "+response.status+").");
+      const base=originalUrl.slice(0,originalUrl.lastIndexOf("/")+1);const gltf=await loader.parseAsync(await response.text(),base);object=gltf.scene;
+     }else object=(await loader.loadAsync(url)).scene;
     }else if(format==="OBJ"){
      const manager=new THREE.LoadingManager(),resourceMap=new Map();
      companions.forEach(part=>{const partUrl=URL.createObjectURL(part);objectUrls.push(partUrl);resourceMap.set(part.name.toLowerCase(),partUrl);});
-     manager.setURLModifier(requested=>{if(/^(data:|blob:|https?:)/i.test(requested)&&!requested.startsWith("https://sma.local/"))return requested;const name=decodeURIComponent(requested.split(/[?#]/)[0]).split("/").pop().toLowerCase();return resourceMap.get(name)||requested;});
+     manager.setURLModifier(requested=>{if(requested.startsWith("https://")&&proxyUrl)return proxyAssetUrl(requested);if(/^(data:|blob:|https?:)/i.test(requested)&&!requested.startsWith("https://sma.local/"))return requested;const name=decodeURIComponent(requested.split(/[?#]/)[0]).split("/").pop().toLowerCase();return resourceMap.get(name)||requested;});
      const objLoader=new L.OBJ(manager),mtl=companions.find(part=>part.name.toLowerCase().endsWith(".mtl"));
      if(mtl){const materials=new L.MTL(manager).parse(await mtl.text(),"https://sma.local/");materials.preload();objLoader.setMaterials(materials);}
      object=await objLoader.loadAsync(url);
@@ -741,7 +760,7 @@ loadExpandedCatalogs();
     else setLookupStatus("No usable object name found in the model metadata or filename. Enter a name to search.");
    }
   }catch(err){
-   if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Supported: STL, OBJ, PLY, GLB and GLTF. Draco/Meshopt compression and GLTF companion files are supported; select the .gltf together with its .bin/textures. Some source hosts block previews.</p></div>';
+   if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Archive previews use the configured Cloudflare asset proxy when available. If the download still fails, the source may be unavailable, the URL may not point to a direct model file, or the host may block server-side access. Supported formats: STL, OBJ, PLY, GLB and GLTF.</p></div>';
    $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
