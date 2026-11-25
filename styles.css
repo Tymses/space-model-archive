@@ -283,3 +283,13 @@
 .remote-variant-row .action-link {
   font-size: .82rem;
 }
+
+.remote-variant-row button.action-link {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+.remote-variant-row button.action-link:disabled {
+  cursor: wait;
+  opacity: .6;
+}
