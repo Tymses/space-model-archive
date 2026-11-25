@@ -540,7 +540,7 @@ loadExpandedCatalogs();
   const record=await findCuratedDimensions(candidates,expectedCategory);
   if(!record)return false;
   const longest=Math.max(...record.axesKm);
-  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference"});
+  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:record.uncertaintyKm});
   const uncertainty=Number.isFinite(record.uncertaintyKm)?" Published uncertainty: ±"+fmt(record.uncertaintyKm)+" km.":"";
   const note=record.note?" "+record.note:"";
   setLookupStatus((record.category==="spacecraft"?"Spacecraft dimensions":record.category==="moons"?"Moon dimensions":"JPL has no usable extent; using published dimensions")+" from "+(record.sourceLabel||"the scientific fallback catalogue")+"."+(record.configuration?" Configuration: "+record.configuration+".":"")+uncertainty+note);
@@ -597,7 +597,7 @@ loadExpandedCatalogs();
    if(lookupToken!==token)return;
    if(directRecord&&directRecord.category!=="small-bodies"){
     const longest=Math.max(...directRecord.axesKm);
-    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference"});
+    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
