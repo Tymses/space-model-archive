@@ -141,11 +141,13 @@ async function research(query, category) {
   withDimensions.sort((a,b)=>b.score-a.score);
   const best = withDimensions[0] || null;
   const independentAgreement = best ? withDimensions.filter(x=>x.source!==best.source && Math.abs(Math.max(...x.axesKm)-Math.max(...best.axesKm))/Math.max(...best.axesKm)<0.08).length : 0;
+  const conflictingStrong = best ? withDimensions.some(x=>x!==best && x.source!==best.source && x.score>=best.score-12 && sourceWeight(x.source)>=20 && Math.abs(Math.max(...x.axesKm)-Math.max(...best.axesKm))/Math.max(...best.axesKm)>=0.08) : false;
   return {
     query, category:category||"general", searched:true, engine:"DuckDuckGo public web index",
     candidates:results,
     best:best && best.score >= 78 ? best : null,
-    autoAccept:!!best && best.score >= 78 && (sourceWeight(best.source)>=29 || independentAgreement>=1),
+    autoAccept:!!best && best.score >= 78 && (sourceWeight(best.source)>=29 || independentAgreement>=1) && !conflictingStrong,
+    conflictingStrong,
     agreementCount:independentAgreement,
     note:"Evidence score is a source-quality heuristic, not a statistical probability. Search coverage depends on publicly indexed pages and pages accessible to the Worker."
   };
