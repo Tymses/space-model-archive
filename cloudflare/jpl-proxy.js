@@ -82,7 +82,7 @@ async function fetchApprovedAsset(value, request) {
     headers.set("Content-Type", MODEL_TYPES.get(assetExtension(current)) || "application/octet-stream");
     headers.set("Cache-Control", "public, max-age=3600");
     headers.set("X-Content-Type-Options", "nosniff");
-    headers.set("X-SMA-Asset-Proxy", "2026-11-25-hybrid");
+    headers.set("X-SMA-Asset-Proxy", "2026-11-25-remote-resolver");
     return new Response(limitedBody(response.body), { status: response.status, headers });
   }
   throw new Error("Unable to retrieve model asset.");
@@ -91,8 +91,18 @@ async function fetchApprovedAsset(value, request) {
 async function resolveCataloguePage(value) {
   let page; try { page = new URL(value); } catch { throw new Error('Invalid model page URL.'); }
   if (page.protocol !== 'https:' || !CATALOGUE_HOSTS.has(page.hostname.toLowerCase()) || !/^\/(?:asteroids|moons|comets|dwarf)(?:\/|$)/.test(page.pathname)) throw new Error('Only individual 3D Asteroid Catalogue object pages can be resolved.');
-  const response = await fetch(page.toString(), { headers: { Accept: 'text/html', 'User-Agent': 'SPACEMESHER-ModelResolver/1.0' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+  let response, pageTarget = page;
+  for (let hop = 0; hop <= 3; hop++) {
+    response = await fetch(pageTarget.toString(), { headers: { Accept: 'text/html', 'User-Agent': 'SPACEMESHER-ModelResolver/1.0' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+    if (![301,302,303,307,308].includes(response.status)) break;
+    const location = response.headers.get('Location');
+    if (!location || hop === 3) throw new Error('Catalogue page redirected too many times.');
+    const next = new URL(location, pageTarget);
+    if (next.protocol !== 'https:' || !CATALOGUE_HOSTS.has(next.hostname.toLowerCase())) throw new Error('Catalogue page redirected outside the approved host.');
+    pageTarget = next;
+  }
   if (!response.ok) throw new Error('Catalogue page returned HTTP ' + response.status + '.');
+  page = pageTarget;
   const html = (await response.text()).slice(0, 2000000);
   const re = new RegExp('href\\s*=\\s*[\"\\']([^\"\\']+)[\"\\']', 'gi');
   const files = []; let match;
@@ -106,10 +116,19 @@ async function resolveCataloguePage(value) {
   const verified = [];
   for (const file of files.slice(0, 24)) {
     try {
-      const probe = await fetch(file.url, { headers: { Range: 'bytes=0-0', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+      let probe, probeUrl = file.url;
+      for (let hop = 0; hop <= 3; hop++) {
+        probe = await fetch(probeUrl, { headers: { Range: 'bytes=0-0', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+        if (![301,302,303,307,308].includes(probe.status)) break;
+        const location = probe.headers.get('Location');
+        if (!location || hop === 3) break;
+        const next = new URL(location, probeUrl);
+        if (next.protocol !== 'https:' || !ASSET_HOSTS.has(next.hostname.toLowerCase()) || !MODEL_EXTENSIONS.has(assetExtension(next.toString()))) break;
+        probeUrl = next.toString();
+      }
       if (!probe.ok && probe.status !== 206) { try { await probe.body.cancel(); } catch {} continue; }
       if ((probe.headers.get('Content-Type') || '').toLowerCase().includes('text/html')) { try { await probe.body.cancel(); } catch {} continue; }
-      file.sizeBytes = Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
+      file.url = probeUrl; file.sizeBytes = Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
       try { await probe.body.cancel(); } catch {}
     } catch {}
   }
