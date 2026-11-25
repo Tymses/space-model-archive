@@ -119,48 +119,122 @@ async function fetchApprovedAsset(value, request) {
   throw new Error("Unable to retrieve model asset.");
 }
 
-async function resolveCataloguePage(value) {
-  let page; try { page = new URL(value); } catch { throw new Error('Invalid model page URL.'); }
-  if (page.protocol !== 'https:' || !CATALOGUE_HOSTS.has(page.hostname.toLowerCase()) || !/^\/(?:asteroids|moons|comets|dwarf)(?:\/|$)/.test(page.pathname)) throw new Error('Only individual 3D Asteroid Catalogue object pages can be resolved.');
+async function fetchCatalogueHtml(value) {
+  let page; try { page = new URL(value); } catch { throw new Error("Invalid model page URL."); }
+  if (page.protocol !== "https:" || !CATALOGUE_HOSTS.has(page.hostname.toLowerCase()) || !/^\/(?:asteroids|moons|comets|dwarf)(?:\/|$)/.test(page.pathname)) throw new Error("Only 3D Asteroid Catalogue pages can be resolved.");
   let response, pageTarget = page;
   for (let hop = 0; hop <= 3; hop++) {
-    response = await fetch(pageTarget.toString(), { headers: { Accept: 'text/html', 'User-Agent': 'SPACEMESHER-ModelResolver/1.0' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+    response = await fetch(pageTarget.toString(), {
+      headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.0)" },
+      redirect: "manual", cf: { cacheTtl: 900 }
+    });
     if (![301,302,303,307,308].includes(response.status)) break;
-    const location = response.headers.get('Location');
-    if (!location || hop === 3) throw new Error('Catalogue page redirected too many times.');
+    const location = response.headers.get("Location");
+    if (!location || hop === 3) throw new Error("Catalogue page redirected too many times.");
     const next = new URL(location, pageTarget);
-    if (next.protocol !== 'https:' || !CATALOGUE_HOSTS.has(next.hostname.toLowerCase())) throw new Error('Catalogue page redirected outside the approved host.');
+    if (next.protocol !== "https:" || !CATALOGUE_HOSTS.has(next.hostname.toLowerCase())) throw new Error("Catalogue page redirected outside the approved host.");
     pageTarget = next;
   }
-  if (!response.ok) throw new Error('Catalogue page returned HTTP ' + response.status + '.');
-  page = pageTarget;
-  const html = (await response.text()).slice(0, 2000000);
-  const re = new RegExp("href\\s*=\\s*[\"']([^\"']+)[\"']", "gi");
-  /** @type {ModelFileCandidate[]} */
-  const files = []; let match;
-  while ((match = re.exec(html)) && files.length < 80) {
-    let target; try { target = new URL(decode(match[1]), page); } catch { continue; }
+  if (!response.ok) throw new Error("Catalogue page returned HTTP " + response.status + ".");
+  return { page: pageTarget, html: (await response.text()).slice(0, 2500000) };
+}
+
+function extractCatalogueFileCandidates(html, basePage) {
+  const source = decode(String(html || "")).replace(/\\\\\//g, "/");
+  const raw = [];
+  const attr = /(?:href|src|data-href|data-url|data-file|data-download)\\s*=\\s*["']([^"']+)["']/gi;
+  let match;
+  while ((match = attr.exec(source)) && raw.length < 300) raw.push(match[1]);
+  const urlPattern = /(?:https?:\\/\\/[^"'\\s<>]+|\\/[^"'\\s<>]+)\\.(?:obj|ply|glb|gltf|stl)(?:\\?[^"'\\s<>]*)?/gi;
+  while ((match = urlPattern.exec(source)) && raw.length < 500) raw.push(match[0]);
+  const found = [];
+  for (const value of raw) {
+    let target;
+    try { target = new URL(decode(value).replace(/\\\\\//g, "/"), basePage); } catch { continue; }
     const ext = assetExtension(target.toString());
-    if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== 'https:' || target.username || target.password) continue;
-    if (files.some(x => x.url === target.toString())) continue;
-    files.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split('/').pop() });
+    if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== "https:" || target.username || target.password) continue;
+    if (found.some(item => item.url === target.toString())) continue;
+    found.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split("/").pop() || ext.toUpperCase() });
   }
+  return found;
+}
+
+function findObjectPageFromListing(html, listingPage, objectName, requestedPage) {
+  const wanted = norm(objectName);
+  const requestedSlug = norm(new URL(requestedPage).pathname.split("/").filter(Boolean).pop());
+  const anchors = /<a\\b([^>]*)>([\\s\\S]*?)<\\/a>/gi;
+  let match, best = null, bestScore = 0;
+  while ((match = anchors.exec(html))) {
+    const hrefMatch = match[1].match(/href\\s*=\\s*["']([^"']+)["']/i);
+    if (!hrefMatch) continue;
+    let target; try { target = new URL(decode(hrefMatch[1]), listingPage); } catch { continue; }
+    if (target.protocol !== "https:" || !CATALOGUE_HOSTS.has(target.hostname.toLowerCase())) continue;
+    const segments = target.pathname.split("/").filter(Boolean);
+    if (segments.length !== 2 || !["asteroids","moons","comets","dwarf"].includes(segments[0])) continue;
+    const label = norm(plain(match[2]) + " " + segments[1]);
+    let score = 0;
+    if (wanted && label.includes(wanted)) score += 10;
+    if (requestedSlug && norm(segments[1]) === requestedSlug) score += 12;
+    const code = requestedSlug.match(/^[a-z]+\\d+/);
+    if (code && norm(segments[1]).includes(code[0])) score += 5;
+    if (score > bestScore) { bestScore = score; best = target; }
+  }
+  return bestScore >= 10 ? best : null;
+}
+
+async function resolveCataloguePage(value, objectName = "") {
+  let requested; try { requested = new URL(value); } catch { throw new Error("Invalid model page URL."); }
+  const searchedPages = [];
+  let current;
+  try {
+    current = await fetchCatalogueHtml(requested.toString());
+    searchedPages.push(current.page.toString());
+  } catch (error) {
+    current = null;
+    var firstError = error;
+  }
+  let candidates = current ? extractCatalogueFileCandidates(current.html, current.page) : [];
+  // Some catalogue pages render download buttons from embedded scripts or require
+  // opening the object page from the main list. If the supplied page has no file
+  // links, search the matching object link in its category index and inspect it.
+  if (!candidates.length) {
+    const category = requested.pathname.split("/").filter(Boolean)[0];
+    const listingUrl = new URL("/" + category + "/", requested.origin);
+    if (listingUrl.toString() !== requested.toString()) {
+      try {
+        const listing = await fetchCatalogueHtml(listingUrl.toString());
+        searchedPages.push(listing.page.toString());
+        const objectPage = findObjectPageFromListing(listing.html, listing.page, objectName, requested.toString());
+        if (objectPage && objectPage.toString() !== requested.toString()) {
+          const object = await fetchCatalogueHtml(objectPage.toString());
+          searchedPages.push(object.page.toString());
+          current = object;
+          candidates = extractCatalogueFileCandidates(object.html, object.page);
+        }
+      } catch (error) {
+        if (!current && !firstError) firstError = error;
+      }
+    }
+  }
+  if (!current && !firstError) throw new Error("The catalogue page could not be loaded.");
+  if (!candidates.length && firstError && searchedPages.length === 0) throw firstError;
+
   /** @type {ModelFileCandidate[]} */
   const verified = [];
-  for (const file of files.slice(0, 24)) {
+  for (const file of candidates.slice(0, 30)) {
     try {
       let probe, probeUrl = file.url;
       for (let hop = 0; hop <= 3; hop++) {
-        probe = await fetch(probeUrl, { headers: { Range: 'bytes=0-4095', Accept: '*/*' }, redirect: 'manual', cf: { cacheTtl: 1800 } });
+        probe = await fetch(probeUrl, { headers: { Range: "bytes=0-8191", Accept: "*/*", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelResolver/2.0)" }, redirect: "manual", cf: { cacheTtl: 900 } });
         if (![301,302,303,307,308].includes(probe.status)) break;
-        const location = probe.headers.get('Location');
+        const location = probe.headers.get("Location");
         if (!location || hop === 3) break;
         const next = new URL(location, probeUrl);
-        if (next.protocol !== 'https:' || !ASSET_HOSTS.has(next.hostname.toLowerCase()) || !MODEL_EXTENSIONS.has(assetExtension(next.toString()))) break;
+        if (next.protocol !== "https:" || !ASSET_HOSTS.has(next.hostname.toLowerCase()) || !MODEL_EXTENSIONS.has(assetExtension(next.toString()))) break;
         probeUrl = next.toString();
       }
-      if (!probe.ok && probe.status !== 206) { try { await probe.body.cancel(); } catch {} continue; }
-      if ((probe.headers.get('Content-Type') || '').toLowerCase().includes('text/html')) { try { await probe.body.cancel(); } catch {} continue; }
+      if (!probe || (!probe.ok && probe.status !== 206)) { try { await probe?.body?.cancel(); } catch {} continue; }
+      if ((probe.headers.get("Content-Type") || "").toLowerCase().includes("text/html")) { try { await probe.body.cancel(); } catch {} continue; }
       let sample = new Uint8Array();
       try {
         const reader = probe.body.getReader();
@@ -168,15 +242,28 @@ async function resolveCataloguePage(value) {
         if (first.value) sample = first.value.slice(0, 8192);
         await reader.cancel();
       } catch {}
-      const sampleText = new TextDecoder().decode(sample).replace(/^\uFEFF/, '').trimStart();
-      if (file.format === 'PLY' && !sampleText.startsWith('ply')) continue;
-      if (file.format === 'OBJ' && !/(^|\n)\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\s+/m.test(sampleText)) continue;
-      if (file.format === 'GLB' && new TextDecoder().decode(sample.slice(0, 4)) !== 'glTF') continue;
-      if (file.format === 'GLTF' && (!sampleText.startsWith('{') || !sampleText.includes('"asset"'))) continue;
-      file.url = probeUrl; const rangeTotal = (probe.headers.get('Content-Range') || '').split('/').pop(); file.sizeBytes = Number(rangeTotal) || Number(probe.headers.get('Content-Length')) || null; file.verified = true; verified.push(file);
+      const sampleText = new TextDecoder().decode(sample).replace(/^\\uFEFF/, "").trimStart();
+      if (file.format === "PLY" && !sampleText.startsWith("ply")) continue;
+      if (file.format === "OBJ" && !/(^|\\n)\\s*(?:v|vn|vt|f|o|g|mtllib|usemtl)\\s+/m.test(sampleText)) continue;
+      if (file.format === "GLB" && new TextDecoder().decode(sample.slice(0, 4)) !== "glTF") continue;
+      if (file.format === "GLTF" && (!sampleText.startsWith("{") || !sampleText.includes('"asset"'))) continue;
+      if (file.format === "STL" && sample.length < 84) continue;
+      file.url = probeUrl;
+      const rangeTotal = (probe.headers.get("Content-Range") || "").split("/").pop();
+      file.sizeBytes = Number(rangeTotal) || Number(probe.headers.get("Content-Length")) || null;
+      file.verified = true;
+      verified.push(file);
     } catch {}
   }
-  return { page: page.toString(), resolvedAt: new Date().toISOString(), files: verified, source: '3D Asteroid Catalogue' };
+  return {
+    page: (current?.page || requested).toString(),
+    requestedPage: requested.toString(),
+    resolvedAt: new Date().toISOString(),
+    searchedPages: [...new Set(searchedPages)],
+    candidateCount: candidates.length,
+    files: verified,
+    source: "3D Asteroid Catalogue"
+  };
 }
 function cors(origin) {
   return {
@@ -354,7 +441,7 @@ export default {
       try {
         const pageUrl = incoming.searchParams.get('url') || '';
         if (!pageUrl || pageUrl.length > 2048) return json({ error: 'A valid catalogue page URL is required.' }, 400, headers);
-        return json(await resolveCataloguePage(pageUrl), 200, { ...headers, 'Cache-Control': 'public, max-age=1800' });
+        return json(await resolveCataloguePage(pageUrl, incoming.searchParams.get("name") || ""), 200, { ...headers, 'Cache-Control': 'public, max-age=1800' });
       } catch (error) {
         return json({ error: 'Model file resolution failed', detail: String(error.message || error) }, 502, { ...headers, 'Cache-Control': 'no-store' });
       }
