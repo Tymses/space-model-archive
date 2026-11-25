@@ -7,11 +7,11 @@
 <meta name="description" content="SPACEMESHER — find, explore and prepare space-related 3D models for 3D printing.">
 <title>SPACEMESHER — Space-related 3D Models</title>
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=20261124-6">
+<link rel="stylesheet" href="styles.css?v=20261125-7">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <script src="config.js?v=20261124-2"></script>
-<script src="app.js?v=20261125-6" defer></script>
+<script src="app.js?v=20261125-7" defer></script>
 </head>
 <body>
 <header class="app-bar">
@@ -97,7 +97,7 @@
     <section class="scaling-preview-panel">
       <div class="preview-toolbar"><span>3D MODEL</span><span id="scaling-format">UPLOAD A MODEL</span></div>
       <div class="scaling-preview-stage" id="scaling-preview-stage"><div class="preview-placeholder"><span>◈</span><p>Upload a downloaded STL, OBJ, PLY or GLB model.</p></div></div>
-      <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model file</label><input id="scaling-file" type="file" accept=".stl,.obj,.ply,.glb"><span>STL · OBJ · PLY · GLB</span></div>
+      <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model file</label><input id="scaling-file" type="file" multiple accept=".stl,.obj,.ply,.glb,.gltf,.bin,.mtl,.png,.jpg,.jpeg,.webp"><span>STL · OBJ · PLY · GLB</span></div>
       <div class="scaling-geometry-line"><span>Measured model size</span><strong id="scaling-source-dimensions">—</strong><label>File unit<select class="scale-input" id="scaling-units"><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option><option value="in">in</option></select></label></div>
     </section>
     <section class="scaling-settings-panel">
@@ -132,7 +132,7 @@
     <div class="fit-result" id="scaling-fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="scaling-fit-title">Awaiting model and object dimensions</strong><p id="scaling-fit-description">The model is checked against the selected printer once its real-world dimensions are found.</p></div></div>
     <div class="scaling-recommendation-heading"><strong>Usual scales that fit your printer</strong><span id="scaling-orientation">—</span></div>
     <div class="scaling-scale-options" id="scaling-recommendations"><p>Load a model and identify its object to calculate scale suggestions.</p></div>
-    <p class="scale-disclaimer">The suggestions use the model's longest physical axis and six 90° axis-aligned orientations. This is a bounding-box check, not a slicing simulation. The file is not modified; apply the selected scale in your slicer.</p>
+    <div class="scaling-export-row"><button class="upload-button scaling-export-button" id="scaling-download-scaled" type="button">Download scaled STL</button><span>Exports the selected scale as a binary STL in millimetres.</span></div><p class="scale-disclaimer">The suggestions use the model's longest physical axis and six 90° axis-aligned orientations. This is a bounding-box check, not a slicing simulation. The exported STL contains the selected scale; the original source file remains unchanged.</p>
   </section>
 </section>
 <section class="about-view" id="about-view" hidden><p class="overline">ABOUT SMA</p><h1>A clear index for space models.</h1><p class="subheading">Space Model Archive organises links to original 3D model sources. The goal is to make geometry easier to discover while keeping provenance, scale, dimensions and licensing transparent.</p><p>Models remain hosted by their original providers wherever possible. SMA does not include a slicer: users prepare and slice files in their own software. Print assessments will only appear when supported by actual test data.</p><a href="#home" class="text-back">← Back to home</a></section>
