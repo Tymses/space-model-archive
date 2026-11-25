@@ -46,3 +46,10 @@ Add a fallback record only when its object identity, axis values, units, source,
 Scaling uses the JPL SBDB proxy first for small bodies (asteroids and comets). For exact catalogue matches in the curated dimension index, moons and spacecraft use their category-specific published physical dimensions directly; this avoids accidentally resolving a moon or spacecraft name as an asteroid in SBDB.
 
 The curated index currently contains source-backed records for selected moons and spacecraft. Spacecraft records identify the configuration (for example, deployed or stowed, and whether booms/robotic arms are included). A missing record is reported as unavailable rather than guessed. Coverage is extended as new source-verified dimensions are added.
+
+### Current curated category coverage
+
+- **Small bodies:** asteroids and comets use JPL SBDB `extent` first, then exact-match literature fallback.
+- **Moons:** exact-match NASA/PDS published shape dimensions; JPL SBDB is bypassed to avoid name collisions with asteroids.
+- **Spacecraft:** exact-match published envelope dimensions, with configuration notes (deployed/stowed, booms/arms included or excluded).
+- **Planetary terrain / height maps:** require the footprint of the actual mapped region and the source mesh's vertical exaggeration. The diameter of the parent planet is not a valid substitute; until a region-specific footprint is indexed, Scaling reports that dimensions are unavailable instead of assigning a false scale.
