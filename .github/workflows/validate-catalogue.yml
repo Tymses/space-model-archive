@@ -1,0 +1,38 @@
+name: Validate catalogue data
+
+on:
+  push:
+    paths:
+      - "data/**"
+      - "tools/catalogue/**"
+      - "tools/dimensions/**"
+      - ".github/workflows/validate-catalogue.yml"
+  pull_request:
+    paths:
+      - "data/**"
+      - "tools/catalogue/**"
+      - "tools/dimensions/**"
+      - ".github/workflows/validate-catalogue.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate JSON and catalogue records
+        run: python tools/catalogue/validate_data.py
+      - name: Run catalogue audit tests
+        run: python -m unittest discover -s tools/catalogue/tests -v
+      - name: Run dimension scanner tests
+        run: python -m unittest discover -s tools/dimensions -v
+      - name: Verify catalogue audit can be generated
+        run: python tools/catalogue/audit_catalogue.py --output /tmp/catalogue-audit.json
