@@ -1138,7 +1138,7 @@ loadExpandedCatalogs();
   if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
    $id("scaling-page-overline").textContent="ARCHIVE MODEL";$id("scaling-page-title").textContent=model.name;$id("scaling-page-subtitle").textContent=model.kind+" · interactive preview, dimensions and print scale";
    $id("scaling-archive-context").hidden=false;$id("scaling-archive-meta").textContent=model.format+" · "+model.size;$id("scaling-archive-source").textContent=model.source;$id("scaling-archive-credit").textContent=model.credit||"Original model source credited in the archive.";
-   const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.href=model.sourceUrl;
+   const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.href=model.sourceUrl;const meshNote=$id("spacecraft-mesh-note");if(meshNote)meshNote.hidden=model.category!=="spacecraft";
    $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });
