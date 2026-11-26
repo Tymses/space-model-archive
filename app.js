@@ -151,19 +151,19 @@ for(const [id,name,category,kind,path,bytes,format] of NASA_FILES){
   MODELS.push({...model,id:model.id+"-heightmap",category:"height-maps",name:model.name+" (height map)"});
  }
 
-// Give every model a model-specific provenance URL. Keep the broad catalogue
-// page separately so users can still reach the provider's surrounding context.
-for(const model of MODELS){
+// Prefer the exact model page or file over a provider's general landing page.
+function setSpecificModelSource(model){
  if(!model.sourcePageUrl&&model.sourceUrl)model.sourcePageUrl=model.sourceUrl;
- if(!model.file)continue;
+ if(!model.file)return model;
  try{
   const fileUrl=new URL(model.file),sourceUrl=model.sourceUrl?new URL(model.sourceUrl):null;
   const genericSource=!sourceUrl||sourceUrl.pathname==="/"||
-   ["/3d-resources/","/3d-resources","/"].includes(sourceUrl.pathname);
-  const specificFile=fileUrl.pathname!=="/"&&!/^https?:$/.test(fileUrl.protocol);
-  if(genericSource&&specificFile)model.sourceUrl=fileUrl.toString();
+   ["/3d-resources/","/3d-resources"].includes(sourceUrl.pathname);
+  if(genericSource&&fileUrl.pathname!=="/")model.sourceUrl=fileUrl.toString();
  }catch{}
+ return model;
 }
+for(const model of MODELS)setSpecificModelSource(model);
 
 const $=s=>document.querySelector(s);
 const home=$("#home-view"),collection=$("#collection-view"),detail=$("#detail-view"),about=$("#about-view"),scaling=$("#scaling-view"),crumb=$("#breadcrumbs");
@@ -194,8 +194,8 @@ function renderCollection(){
  const isDirectMesh=x=>x.downloadDirect!==false&&!["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
  const matchesModel=x=>x.category===currentCategory&&matchesSearch(q,[x.name,x.kind,x.source,x.credit,x.description,x.id,x.format,x.file,x.remotePageUrl])&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
  const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x));
- const remoteCandidates=MODELS.filter(x=>matchesModel(x)&&x.remoteCandidate);
- const modelReferences=MODELS.filter(x=>matchesModel(x)&&!isDirectMesh(x)&&!x.remoteCandidate).map(x=>({
+ const remoteCandidates=MODELS.filter(x=>matchesModel(x)&&x.remoteCandidate&&!x.remoteResolvedParent);
+ const modelReferences=MODELS.filter(x=>matchesModel(x)&&!isDirectMesh(x)&&!x.remoteCandidate&&!x.remoteResolvedParent).map(x=>({
   name:x.name,entryType:["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"data":"catalogue",
   type:x.kind||(["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Scientific dataset archive":"Catalogue reference"),
   description:x.remoteUnavailable&&x.description?x.description:(["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())?"Downloadable archive package ("+x.format+"). Extract it and inspect the included documentation; it may contain multiple models or data files.":"This entry links to the original object or model page. Open the source page to inspect available model variants, formats and attribution; this is not a direct mesh download."),
@@ -317,13 +317,17 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    }
    return;
   }
-  // Keep resolved files local to this detail view. Do not mutate MODELS,
-  // promote variants into the collection, or reuse results for another object.
+  // Each discovered file becomes a first-class model record in the collection.
+  // This replaces the one parent resolver card with separate cards per file.
   const variants=files.map((file,index)=>{
    const size=file.sizeBytes?file.sizeBytes>=1000000?(file.sizeBytes/1000000).toFixed(1)+" MB":Math.round(file.sizeBytes/1000)+" kB":"Size not reported";
    return {...model,id:model.id+"-"+file.format.toLowerCase()+"-"+(index+1),name:model.name+" — "+(file.label||file.format+" variant"),objectSearchName:model.name,kind:(model.kind||"Remote shape model")+" · "+file.format,format:file.format,size,license:model.license||"See original model attribution",credit:model.credit||model.name+": 3D Asteroid Catalogue",file:file.url,sourceUrl:file.url,sourcePageUrl:model.remotePageUrl,downloadDirect:true,remoteCandidate:false,remotePageUrl:null,realDimensionsKm:Array.isArray(result.axesKm)?result.axesKm:null,realLongestAxisKm:Array.isArray(result.axesKm)&&result.axesKm.length?Math.max(...result.axesKm):null,realDimensionUrl:result.dimensionSourceUrl||model.remotePageUrl,realDimensionSource:result.dimensionSourceLabel||"3D Asteroid Catalogue",realLongestAxisUncertaintyKm:Number.isFinite(result.uncertaintyKm)?result.uncertaintyKm:null,changed:"Resolved on demand "+new Date().toISOString().slice(0,10),remoteResolved:true};
   });
-  statusNode.textContent=variants.length+" erreichbare Modelldatei(en) für "+model.name+" gefunden. Diese Treffer gelten nur für den geöffneten Eintrag und werden nicht zwischengespeichert.";
+  for(const variant of variants){
+   if(!MODELS.some(existing=>existing.id===variant.id))MODELS.push(variant);
+  }
+  model.remoteResolvedParent=true;
+  statusNode.textContent=variants.length+" einzelne Modelldatei(en) für "+model.name+" gefunden. Jede Datei ist jetzt als eigener Modellblock in der Sammlung aufgeführt.";
   button.hidden=true;button.textContent="Files found";variantsNode.replaceChildren();
   variants.forEach(variant=>{
    // Use the same card structure as the main Downloadable Models collection.
@@ -366,6 +370,7 @@ function addCatalogModel(model) {
   // Keep the same asset when it represents a distinct category entry or a
   // different archive record. Suppress only the same named model repeated
   // under a different catalogue ID.
+  setSpecificModelSource(model);
   remoteCatalogueRecord(model);
   const name = String(model.name || "").trim().toLowerCase();
   const exists = MODELS.some(existing =>
