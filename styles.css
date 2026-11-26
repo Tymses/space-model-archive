@@ -357,3 +357,12 @@
 .assessment-limitations li{margin:7px 0}
 .assessment-limitations strong{color:var(--ink)}
 @media(max-width:560px){.assessment-dialog{padding:18px}.assessment-facts{grid-template-columns:1fr;gap:10px}.assessment-axis-breakdown{grid-template-columns:1fr}.assessment-dialog-header h2{font-size:20px}}
+
+/* Keep unverified web-search candidates collapsed until explicitly opened. */
+.scaling-unverified-details{margin:10px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.scaling-unverified-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 2px;color:var(--muted);font-size:12px;font-weight:650;cursor:pointer;list-style:none}
+.scaling-unverified-details>summary::-webkit-details-marker{display:none}
+.scaling-unverified-details>summary:after{content:"＋";font-size:15px;color:var(--muted)}
+.scaling-unverified-details[open]>summary:after{content:"−"}
+.scaling-unverified-details>summary span{margin-left:auto;padding:2px 7px;border-radius:20px;background:var(--surface-low);font-variant-numeric:tabular-nums}
+.scaling-unverified-details .scaling-research-results{padding:2px 0 12px}
