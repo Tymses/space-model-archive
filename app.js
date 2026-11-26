@@ -231,14 +231,32 @@ function renderCollection(){
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
  const modelGroup=$("#models-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
- const folderGroups=new Map(),individualModels=[];
+ const folderGroups=new Map(),folderNames=new Map(),individualModels=[];
+ const getFolderInfo=model=>{
+  if(model.folderKey)return {key:model.folderKey,name:model.folderName||model.name};
+  try{
+   const asset=new URL(model.file);
+   if(asset.hostname.toLowerCase()!=="raw.githubusercontent.com")return null;
+   const parts=asset.pathname.split("/").filter(Boolean);
+   const branchIndex=parts.findIndex((part,index)=>index>=2&&(part==="main"||part==="master"));
+   if(branchIndex<0)return null;
+   const relative=parts.slice(branchIndex+1).map(part=>decodeURIComponent(part));
+   if(relative.length<3||!["3D Models","3D Printing"].includes(relative[0]))return null;
+   const directory=relative.slice(0,-1);
+   return {key:model.category+"|"+directory.join("/"),name:directory[directory.length-1]};
+  }catch{return null;}
+ };
  modelGroup.hidden=!models.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
  const renderModelCard=data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button></div></article>';
  for(const model of models){
-  const key=model.folderKey||null;
-  if(key){if(!folderGroups.has(key))folderGroups.set(key,[]);folderGroups.get(key).push(model);}
-  else individualModels.push(model);
+  const folderInfo=getFolderInfo(model);
+  const key=folderInfo?.key||null;
+  if(key){
+   if(!folderGroups.has(key))folderGroups.set(key,[]);
+   folderGroups.get(key).push(model);
+   if(!folderNames.has(key))folderNames.set(key,model.folderName||folderInfo.name||model.name);
+  }else individualModels.push(model);
  }
  const folderCount=[...folderGroups.values()].filter(items=>items.length>1).length;
  $("#model-result-count").textContent=models.length+" files · "+folderCount+" folders";
@@ -248,7 +266,7 @@ function renderCollection(){
  const folderMarkup=[];
  for(const [key,items] of folderGroups){
   if(items.length<2){individualModels.push(...items);continue;}
-  const folderName=items[0].folderName||items[0].name;
+  const folderName=folderNames.get(key)||items[0].folderName||items[0].name;
   folderMarkup.push('<details class="model-folder"><summary class="model-folder-summary"><div class="result-meta"><span class="result-type model-type">Model folder</span><span class="result-source">'+escapeCardText(items[0].source)+'</span></div><h2>'+escapeCardText(folderName)+'</h2><p>'+items.length+' related model files, variants or components</p><div class="card-bottom"><small>Grouped by their original source directory or parent object</small><span class="card-action">Open folder ↓</span></div></summary><div class="model-folder-grid">'+items.map(renderModelCard).join("")+'</div></details>');
  }
  modelGrid.innerHTML=[...folderMarkup,...individualModels.map(renderModelCard)].join("");
