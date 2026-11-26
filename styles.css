@@ -381,3 +381,8 @@
 .scaling-unverified-details[open]>summary:after{content:"−"}
 .scaling-unverified-details>summary span{margin-left:auto;padding:2px 7px;border-radius:20px;background:var(--surface-low);font-variant-numeric:tabular-nums}
 .scaling-unverified-details .scaling-research-results{padding:2px 0 12px}
+
+
+/* Wordmark cleanup: no decorative stars; keep the final letter fully visible. */
+.brand{flex:0 0 auto;min-width:max-content}
+.brand-word{flex:none;white-space:nowrap;padding-right:3px;background-image:linear-gradient(105deg,#192b3d 0%,#315f87 44%,#2f9fda 72%,#315f87 100%);background-size:100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent}
