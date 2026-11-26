@@ -151,15 +151,14 @@ for(const [id,name,category,kind,path,bytes,format] of NASA_FILES){
   MODELS.push({...model,id:model.id+"-heightmap",category:"height-maps",name:model.name+" (height map)"});
  }
 
-// Prefer the exact model page or file over a provider's general landing page.
+// The model record's own file/page is the primary provenance target.
+// Keep the former catalogue URL separately for broader provider context.
 function setSpecificModelSource(model){
  if(!model.sourcePageUrl&&model.sourceUrl)model.sourcePageUrl=model.sourceUrl;
  if(!model.file)return model;
  try{
-  const fileUrl=new URL(model.file),sourceUrl=model.sourceUrl?new URL(model.sourceUrl):null;
-  const genericSource=!sourceUrl||sourceUrl.pathname==="/"||
-   ["/3d-resources/","/3d-resources"].includes(sourceUrl.pathname);
-  if(genericSource&&fileUrl.pathname!=="/")model.sourceUrl=fileUrl.toString();
+  const fileUrl=new URL(model.file);
+  if(fileUrl.pathname!=="/")model.sourceUrl=fileUrl.toString();
  }catch{}
  return model;
 }
