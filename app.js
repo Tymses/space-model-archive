@@ -177,7 +177,7 @@ function matchesSearch(query,values){
 }
 function renderCollection(){
  const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
- const isArchiveEntry=x=>["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())||/\\bGZIP\\b/i.test(String(x.format||""));
+ const isArchiveEntry=x=>["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())||/\bGZIP\b/i.test(String(x.format||""));
  const isDirectMesh=x=>x.downloadDirect!==false&&!isArchiveEntry(x)&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
  const matchesModel=x=>x.category===currentCategory&&matchesSearch(q,[x.name,x.kind,x.source,x.credit,x.description,x.id,x.format,x.file,x.remotePageUrl,...(x.aliases||[])])&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
  const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x)&&!x.remoteCandidate);
@@ -238,7 +238,7 @@ function renderCollection(){
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
  sourceGrid.innerHTML=sources.map(renderEntry).join("");generatorGrid.innerHTML=generators.map(renderEntry).join("");
  const total=models.length+archives.length+remoteCandidates.length+sources.length+generators.length;$("#result-count").textContent=total+" results";
- if(!total)modelGrid.innerHTML='<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.';
+ if(!total)modelGrid.innerHTML='<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.</div>';
  $("#collection-footnote").textContent="Related model files are grouped in expandable folders; opening a folder shows every individual model card. Original-source links open the model webpage or source-file webpage. Downloads are only started by the separate Download action. General source catalogues and generators remain separate."+(expandedCatalogCounts.nasa||expandedCatalogCounts.spaceRadar||expandedCatalogCounts.jpl?" Indexed files: NASA "+expandedCatalogCounts.nasa+"; Space Radar "+expandedCatalogCounts.spaceRadar+"; JPL Radar OBJ "+expandedCatalogCounts.jpl+"; Moon catalogue entries "+(expandedCatalogCounts.moonCatalogueEntries||0)+". The 29 NASA terrain files in Height Maps are cross-listed, not extra downloads.":"")+(expandedCatalogCounts.errors.length?" Some local indexes could not be loaded: "+expandedCatalogCounts.errors.join("; "):"");
 }
 function viewerAssetUrl(rawUrl){
@@ -426,13 +426,16 @@ function addCatalogModel(model) {
     if (names.size) existing.aliases = [...names];
     const candidateSource = model.sourcePageUrl || model.sourceUrl || "";
     const existingSource = existing.sourcePageUrl || existing.sourceUrl || "";
-    const isSpecificSource = value => {
+    const sourceQuality = value => {
       try {
         const url = new URL(value);
-        return url.pathname !== "/" && !["/3d-resources", "/3d-resources/"].includes(url.pathname);
-      } catch { return false; }
+        if (url.hostname === "models.spaceradar.ai" && url.pathname.startsWith("/model/")) return 4;
+        if (url.pathname === "/" || ["/3d-resources", "/3d-resources/"].includes(url.pathname)) return 0;
+        if (url.hostname === "github.com" && url.pathname.includes("/blob/")) return 1;
+        return 2;
+      } catch { return 0; }
     };
-    if (isSpecificSource(candidateSource) && !isSpecificSource(existingSource)) {
+    if (sourceQuality(candidateSource) > sourceQuality(existingSource)) {
       existing.sourcePageUrl = candidateSource;
       existing.sourceUrl = candidateSource;
     }
