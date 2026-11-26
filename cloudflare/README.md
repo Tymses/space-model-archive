@@ -15,11 +15,11 @@ The browser cannot call JPL SBDB or third-party search engines directly because 
      jplProxyUrl: "https://sma-jpl-proxy.<your-subdomain>.workers.dev"
    };
    ```
-7. Commit the change. Reload the SMA Scaling page.
+7. Commit the change. Reload the SPACEMESHER Scaling page.
 
 If you already deployed an earlier version of the Worker, you must also open it in **Workers & Pages → your Worker → Edit code**, replace its code with the updated `cloudflare/jpl-proxy.js`, and select **Deploy** again. A GitHub commit does not update the deployed Worker automatically. The repository validation workflow does not deploy the Worker; deployment remains a separate, deliberate step so a repository change cannot silently replace a working production Worker.
 
-The Worker allows the published SMA origin (`https://tymses.github.io`) and common local development origins on ports 8000 and 5500. If you use another local port or a custom domain, add that exact origin to `ALLOWED_ORIGINS` in the Worker and redeploy it.
+The Worker allows the published SPACEMESHER origin (`https://tymses.github.io`) and common local development origins on ports 8000 and 5500. If you use another local port or a custom domain, add that exact origin to `ALLOWED_ORIGINS` in the Worker and redeploy it.
 
 ## Model-preview fallback
 
@@ -49,7 +49,7 @@ The browser then reads the `extent` physical parameter, converts its axes to kil
 - Responses are cached for a short period to avoid repeated requests.
 - The Worker checks the browser Origin against an allowlist. CORS is not authentication: non-browser clients can send or spoof an Origin header.
 - The Worker currently has no application-level rate limiter. If abuse or unexpectedly high traffic appears, add a Cloudflare edge rate-limiting rule before adding IP-based tracking to the application; the current view counter stores only an aggregate total.
-- The Worker is a read-only relay; it does not write to the SMA repository or alter verified dimension records.
+- The Worker is a read-only relay; it does not write to the SPACEMESHER repository or alter verified dimension records.
 
 ## Scaling lookup fallback catalogue
 
