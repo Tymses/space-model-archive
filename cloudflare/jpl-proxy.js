@@ -152,28 +152,57 @@ function identityTextMatchesObject(value, objectName, objectPage) {
   const haystack = " " + norm(value) + " ";
   return objectIdentityTokens(objectName, objectPage).some(token => haystack.includes(" " + token + " "));
 }
-function fileBelongsToObject(fileUrl, objectName, objectPage, linkLabel = "") {
+function isObjectDetailPage(pageUrl) {
+  try { return /^\/(?:asteroids|moons|comets|dwarf)\/[^/]+\/?$/.test(new URL(pageUrl).pathname); } catch { return false; }
+}
+function cataloguePageIdentifiesObject(html, objectName, pageUrl) {
+  const pageText = norm(plain(html));
+  const requestedName = norm(String(objectName || "").replace(/^\s*\(\s*#?\d+\s*\)\s*/, "").replace(/^\s*#?\d+\s+/, ""));
+  let slug = "";
+  try { slug = decodeURIComponent(new URL(pageUrl).pathname.split("/").filter(Boolean).pop() || "").replace(/^[a-z]+\d+[-_ ]*/i, ""); } catch {}
+  const slugName = norm(slug);
+  return (!!requestedName && hasWholePhrase(pageText, requestedName)) ||
+    (!!slugName && hasWholePhrase(pageText, slugName) && (!requestedName || slugName.split(" ").some(token => requestedName.split(" ").includes(token))));
+}
+function catalogueSaysNoShapeModel(html) {
+  const text = norm(plain(html));
+  return /(?:this object|the object|it) does not have a shape model yet/.test(text) ||
+    /no shape model (?:is )?(?:currently )?available/.test(text) ||
+    /shape model is not available/.test(text);
+}
+function isObjectPageModelAsset(fileUrl, objectPage) {
+  try {
+    const file = new URL(fileUrl), page = new URL(objectPage);
+    const pageCategory = page.pathname.split("/").filter(Boolean)[0];
+    const match = file.pathname.match(/^\/data\/(asteroids|moons|comets|dwarf)\/models(?:\/[a-z])?\//i);
+    return !!match && match[1].toLowerCase() === pageCategory && MODEL_EXTENSIONS.has(assetExtension(file.toString()));
+  } catch { return false; }
+}
+function fileBelongsToObject(fileUrl, objectName, objectPage, linkLabel = "", pageIdentityVerified = false) {
   let filename = "";
   try { filename = decodeURIComponent(new URL(fileUrl).pathname.split("/").pop() || "").replace(/\.(?:obj|ply|glb|gltf|stl)$/i, ""); } catch { return false; }
-  // Some catalogue download URLs are generic. Accept them only when the
-  // actual anchor text explicitly names this object and the page identity
-  // has already been checked by resolveCataloguePage.
+  // Prefer explicit identity in the filename or link label. If the object page
+  // itself has been verified, also accept model assets from that object's
+  // category-specific catalogue model directory: filenames are not consistent
+  // across all bodies and may contain only catalogue IDs or processing codes.
   return identityTextMatchesObject(filename, objectName, objectPage) ||
-    identityTextMatchesObject(linkLabel, objectName, objectPage);
+    identityTextMatchesObject(linkLabel, objectName, objectPage) ||
+    (pageIdentityVerified && isObjectPageModelAsset(fileUrl, objectPage));
 }
-function extractCatalogueFileCandidates(html, basePage, objectName = "") {
+function extractCatalogueFileCandidates(html, basePage, objectName = "", pageIdentityVerified = false) {
   const source = decode(String(html || "")).replace(/\\\//g, "/");
   const raw = [];
   const anchors = /<a\b([^>]*)>([\s\S]*?)<\/a>/gi;
   let match;
-  while ((match = anchors.exec(source)) && raw.length < 400) {
-    const href = match[1].match(/(?:href|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/i);
+  while ((match = anchors.exec(source)) && raw.length < 500) {
+    const href = match[1].match(/(?:href|data-href|data-url|data-file|data-download|data-src|data-original)\s*=\s*["']([^"']+)["']/i);
     if (href) raw.push({ value: href[1], label: plain(match[2]).slice(0, 240) });
   }
-  const attr = /(?:src|data-href|data-url|data-file|data-download)\s*=\s*["']([^"']+)["']/gi;
-  while ((match = attr.exec(source)) && raw.length < 600) raw.push({ value: match[1], label: "" });
+  const attr = /(?:href|src|data-href|data-url|data-file|data-download|data-src|data-original)\s*=\s*["']([^"']+)["']/gi;
+  while ((match = attr.exec(source)) && raw.length < 700) raw.push({ value: match[1], label: "" });
+  // Also inspect escaped URLs embedded in page scripts/configuration.
   const urlPattern = /(?:https?:\/\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?|\/[^"'\s<>]*?\.(?:obj|ply|glb|gltf|stl)(?:\?[^"'\s<>]*)?)/gi;
-  while ((match = urlPattern.exec(source)) && raw.length < 800) raw.push({ value: match[0], label: "" });
+  while ((match = urlPattern.exec(source)) && raw.length < 1000) raw.push({ value: match[0], label: "" });
   /** @type {ModelFileCandidate[]} */
   const found = [];
   for (const entry of raw) {
@@ -181,7 +210,7 @@ function extractCatalogueFileCandidates(html, basePage, objectName = "") {
     try { target = new URL(decode(entry.value).replace(/\\\//g, "/"), basePage); } catch { continue; }
     const ext = assetExtension(target.toString());
     if (!MODEL_EXTENSIONS.has(ext) || !ASSET_HOSTS.has(target.hostname.toLowerCase()) || target.protocol !== "https:" || target.username || target.password) continue;
-    const identityVerified = fileBelongsToObject(target.toString(), objectName, basePage.toString(), entry.label);
+    const identityVerified = fileBelongsToObject(target.toString(), objectName, basePage.toString(), entry.label, pageIdentityVerified);
     if (!identityVerified) continue;
     if (found.some(item => item.url === target.toString())) continue;
     found.push({ url: target.toString(), format: ext.toUpperCase(), label: target.pathname.split("/").pop() || ext.toUpperCase(), identityVerified });
@@ -224,14 +253,11 @@ async function resolveCataloguePage(value, objectName = "") {
     current = null;
     var firstError = error;
   }
-  if (current && objectName) {
-    const expected = norm(String(objectName).replace(/^\s*\(\s*#?\d+\s*\)\s*/, "").replace(/^\s*#?\d+\s+/, ""));
-    const pageText = norm(plain(current.html));
-    if (expected && !hasWholePhrase(pageText, expected)) {
-      throw new Error("The loaded catalogue page does not identify the requested object (" + objectName + "). No files were accepted.");
-    }
+  let currentIdentityVerified = !!(current && objectName && isObjectDetailPage(current.page) && cataloguePageIdentifiesObject(current.html, objectName, current.page));
+  if (current && objectName && isObjectDetailPage(current.page) && !currentIdentityVerified) {
+    throw new Error("The loaded catalogue page does not identify the requested object (" + objectName + "). No files were accepted.");
   }
-  let candidates = current ? extractCatalogueFileCandidates(current.html, current.page, objectName) : [];
+  let candidates = current && currentIdentityVerified ? extractCatalogueFileCandidates(current.html, current.page, objectName, true) : [];
   // Some catalogue pages render download buttons from embedded scripts or require
   // opening the object page from the main list. If the supplied page has no file
   // links, search the matching object link in its category index and inspect it.
@@ -246,8 +272,11 @@ async function resolveCataloguePage(value, objectName = "") {
         if (objectPage && objectPage.toString() !== requested.toString()) {
           const object = await fetchCatalogueHtml(objectPage.toString());
           searchedPages.push(object.page.toString());
-          current = object;
-          candidates = extractCatalogueFileCandidates(object.html, object.page, objectName);
+          if (cataloguePageIdentifiesObject(object.html, objectName, object.page)) {
+            current = object;
+            currentIdentityVerified = true;
+            candidates = extractCatalogueFileCandidates(object.html, object.page, objectName, true);
+          }
         }
       } catch (error) {
         if (!current && !firstError) firstError = error;
@@ -256,6 +285,17 @@ async function resolveCataloguePage(value, objectName = "") {
   }
   if (!current && !firstError) throw new Error("The catalogue page could not be loaded.");
   if (!candidates.length && firstError && searchedPages.length === 0) throw firstError;
+  if (current && currentIdentityVerified && catalogueSaysNoShapeModel(current.html)) {
+    return {
+      page: current.page.toString(), requestedPage: requested.toString(),
+      resolvedAt: new Date().toISOString(), searchedPages: [...new Set(searchedPages)],
+      candidateCount: 0, files: [], axesKm: extractAxes(plain(current.html)),
+      uncertaintyKm: null, dimensionSourceUrl: current.page.toString(),
+      dimensionSourceLabel: "3D Asteroid Catalogue", source: "3D Asteroid Catalogue",
+      availability: "no-shape-model",
+      message: "The catalogue explicitly states that this object has no shape model yet; the page displays only a textured triaxial ellipsoid."
+    };
+  }
 
   /** @type {ModelFileCandidate[]} */
   const verified = [];
@@ -305,6 +345,8 @@ async function resolveCataloguePage(value, objectName = "") {
     searchedPages: [...new Set(searchedPages)],
     candidateCount: candidates.length,
     files: verified,
+    availability: verified.length ? "available" : "not-found",
+    message: verified.length ? "Verified model files found." : "No direct model file passed the source and file-integrity checks. The catalogue page may not expose a downloadable mesh.",
     axesKm,
     uncertaintyKm,
     dimensionSourceUrl: (current?.page || requested).toString(),
