@@ -386,3 +386,11 @@
 /* Wordmark cleanup: no decorative stars; keep the final letter fully visible. */
 .brand{flex:0 0 auto;min-width:max-content}
 .brand-word{flex:none;white-space:nowrap;padding-right:3px;background-image:linear-gradient(105deg,#192b3d 0%,#315f87 44%,#2f9fda 72%,#315f87 100%);background-size:100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent}
+
+
+/* Downloadable model folders: stack folders and their individual model cards vertically. */
+#model-grid{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:14px}
+#model-grid>.model-folder{grid-column:1/-1;width:100%;min-width:0}
+#model-grid>.result-card{width:100%;min-width:0}
+.model-folder-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:14px}
+.model-folder-grid>.result-card{width:100%;min-width:0;height:auto}
