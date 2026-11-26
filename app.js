@@ -290,12 +290,17 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    throw new Error("The Worker returned "+returnedFiles.length+" file(s), but none of their filenames identify "+model.name+". Unrelated files were discarded.");
   }
   if(!files.length) {
-   // A failed lookup is not cached either: keep the original candidate intact
-   // and allow a fresh request when the user chooses to retry.
    loader.hidden=true;
-   statusNode.textContent="Keine verifizierte Modelldatei gefunden. Der Eintrag bleibt unverändert; du kannst die Suche erneut starten.";
-   button.disabled=false;
-   button.textContent="Try again";
+   if(result.availability==="no-shape-model") {
+    statusNode.textContent="Für "+model.name+" ist im 3D Asteroid Catalogue ausdrücklich kein Shape-Modell hinterlegt. Die Quelle zeigt nur ein texturiertes Ellipsoid; es gibt dort keine OBJ-/PLY-Datei zum Auflösen.";
+    button.disabled=true;
+    button.textContent="No shape model in source";
+    button.title="The original catalogue confirms that no downloadable shape model is available for this object.";
+   } else {
+    statusNode.textContent=result.message||"Keine verifizierte Modelldatei gefunden. Die Quelle stellt möglicherweise keine direkt verlinkte Mesh-Datei bereit; du kannst die Suche erneut starten.";
+    button.disabled=false;
+    button.textContent="Try again";
+   }
    return;
   }
   // Keep resolved files local to this detail view. Do not mutate MODELS,
