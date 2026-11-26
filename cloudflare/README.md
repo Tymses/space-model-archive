@@ -15,7 +15,9 @@ The browser cannot call JPL SBDB or third-party search engines directly because 
      jplProxyUrl: "https://sma-jpl-proxy.<your-subdomain>.workers.dev"
    };
    ```
-7. Commit the change. Reload the SMA Scaling page.\n\nIf you already deployed an earlier version of the Worker, you must also open it in **Workers & Pages → your Worker → Edit code**, replace its code with the updated `cloudflare/jpl-proxy.js`, and select **Deploy** again. A GitHub commit does not update the deployed Worker automatically. The repository validation workflow does not deploy the Worker; deployment remains a separate, deliberate step so a repository change cannot silently replace a working production Worker.
+7. Commit the change. Reload the SMA Scaling page.
+
+If you already deployed an earlier version of the Worker, you must also open it in **Workers & Pages → your Worker → Edit code**, replace its code with the updated `cloudflare/jpl-proxy.js`, and select **Deploy** again. A GitHub commit does not update the deployed Worker automatically. The repository validation workflow does not deploy the Worker; deployment remains a separate, deliberate step so a repository change cannot silently replace a working production Worker.
 
 The Worker allows the published SMA origin (`https://tymses.github.io`) and common local development origins on ports 8000 and 5500. If you use another local port or a custom domain, add that exact origin to `ALLOWED_ORIGINS` in the Worker and redeploy it.
 
@@ -27,7 +29,7 @@ The asset endpoint is deliberately not a general web proxy. It accepts HTTPS res
 
 The new `?action=resolve&url=<object-page>` endpoint is restricted to individual object pages on `3d-asteroids.space`. It extracts linked OBJ/PLY/GLB/glTF/STL assets, probes candidates with a small byte-range request and checks the file signature (for example, the PLY header or OBJ geometry lines) and returns only reachable file URLs. It does not treat a general catalogue index as a model and does not mirror files into GitHub. The browser can then fetch a selected asset through `?action=asset&url=<file-url>`.
 
-The asset allowlist now includes NASA's raw GitHub model files, JPL radar OBJ files and the 3D Asteroid Catalogue model host. After deployment, successful proxied assets include `X-SMA-Asset-Proxy: 2026-11-25-hybrid`.
+The asset allowlist now includes NASA's raw GitHub model files, JPL radar OBJ files and the 3D Asteroid Catalogue model host. After deployment, successful proxied assets include `X-SMA-Asset-Proxy: 2026-11-25-remote-resolver`.
 
 ## What the lookup does
 
