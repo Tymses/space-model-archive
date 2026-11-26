@@ -231,11 +231,11 @@ function renderCollection(){
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
  const modelGroup=$("#models-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
+ const folderGroups=new Map(),individualModels=[];
  $("#model-result-count").textContent=models.length+" files · "+[...folderGroups.values()].filter(items=>items.length>1).length+" folders";$("#remote-model-result-count").textContent=remoteCandidates.length+" candidates";$("#source-result-count").textContent=sources.length+" entries";$("#generator-result-count").textContent=generators.length+" tools";
  modelGroup.hidden=!models.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
  const renderModelCard=data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button></div></article>';
- const folderGroups=new Map(),individualModels=[];
  for(const model of models){
   const key=model.folderKey||null;
   if(key){if(!folderGroups.has(key))folderGroups.set(key,[]);folderGroups.get(key).push(model);}
