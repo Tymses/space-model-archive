@@ -316,7 +316,7 @@ function remoteCatalogueRecord(model) {
   const u=new URL(page);
   const parts=u.pathname.split("/").filter(Boolean);
   if(u.protocol==="https:"&&["3d-asteroids.space","www.3d-asteroids.space"].includes(u.hostname)&&parts.length===2&&["asteroids","moons","comets","dwarf"].includes(parts[0])&&!parts[1].includes(".")) {
-   model.remotePageUrl=u.toString();model.file=u.toString();model.sourceUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
+   model.remotePageUrl=u.toString();model.file=u.toString();model.sourceUrl=u.toString();model.sourcePageUrl=u.toString();model.remoteCandidate=true;model.downloadDirect=false;
   }
  } catch {}
 }
@@ -366,8 +366,13 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    if(!MODELS.some(existing=>existing.id===variant.id))MODELS.push(variant);
   }
   model.remoteResolvedParent=true;
-  statusNode.textContent=variants.length+" einzelne Modelldatei(en) für "+model.name+" gefunden. Jede Datei ist jetzt als eigener Modellblock in der Sammlung aufgeführt.";
+  statusNode.textContent=variants.length+" einzelne Modelldatei(en) für "+model.name+" gefunden. Die Dateien sind jetzt gemeinsam in einem Modellordner abgelegt.";
   button.hidden=true;button.textContent="Files found";variantsNode.replaceChildren();
+  const variantFolder=document.createElement("details");variantFolder.className="model-folder";variantFolder.open=true;
+  const folderSummary=document.createElement("summary");folderSummary.className="model-folder-summary";
+  folderSummary.innerHTML='<div class="result-meta"><span class="result-type model-type">Model folder</span><span class="result-source">'+String(model.source).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))+'</span></div><h2>'+String(model.name).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))+'</h2><p>'+variants.length+' related model files and variants</p><div class="card-bottom"><small>Original source: '+String(model.source).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]))+'</small><span class="card-action">Model folder</span></div>';
+  const variantGrid=document.createElement("div");variantGrid.className="model-folder-grid";
+  variantFolder.append(folderSummary,variantGrid);variantsNode.append(variantFolder);
   variants.forEach(variant=>{
    // Use the same card structure as the main Downloadable Models collection.
    const card=document.createElement("article");card.className="result-card model-card remote-variant-card";
@@ -395,7 +400,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
     } catch(error) { statusNode.textContent="Download fehlgeschlagen: "+error.message; }
     finally { download.disabled=false; }
    });
-   actions.append(sourceLink,preview,download);bottom.append(note,actions);card.append(meta,title,description,bottom);variantsNode.append(card);
+   actions.append(sourceLink,preview,download);bottom.append(note,actions);card.append(meta,title,description,bottom);variantGrid.append(card);
   });
   if(currentCategory)renderCollection();
  } catch(error) {
