@@ -112,70 +112,67 @@ for(const [id,name,category,kind,path,bytes,format] of NASA_FILES){
   MODELS.push({...model,id:model.id+"-heightmap",category:"height-maps",name:model.name+" (height map)"});
  }
 
-// Keep the original webpage separate from the downloadable mesh URL.
-// Never use a raw asset URL as the "source page" link.
-function sourceSlug(value){
+// Source links must be verified, model-specific pages. Never infer a page URL
+// from a filename or model title: plausible slugs are not proof that a page exists.
+const NASA_VERIFIED_MODEL_PAGES = new Map([
+ ["1999 rq36 asteroid","https://science.nasa.gov/3d-resources/1999-rq36-asteroid/"],
+ ["70 meter dish","https://science.nasa.gov/3d-resources/70-meter-dish/"],
+ ["active cavity irradiance monitor satellite acrimsat a","https://science.nasa.gov/3d-resources/active-cavity-irradiance-monitor-satellite-acrimsat-a/"],
+ ["active cavity irradiance monitor satellite acrimsat b","https://science.nasa.gov/3d-resources/active-cavity-irradiance-monitor-satellite-acrimsat-b/"],
+ ["advanced composition explorer","https://science.nasa.gov/3d-resources/advanced-composition-explorer/"],
+ ["advanced crew escape suit","https://science.nasa.gov/3d-resources/advanced-crew-escape-suit/"],
+ ["advanced technology large aperture space telescope atlast","https://science.nasa.gov/3d-resources/advanced-technology-large-aperture-space-telescope-atlast/"],
+ ["aeronomy of ice in the mesosphere","https://science.nasa.gov/3d-resources/aeronomy-of-ice-in-the-mesosphere/"],
+ ["agena target vehicle","https://science.nasa.gov/3d-resources/agena-target-vehicle/"],
+ ["apollo 11 landing site","https://science.nasa.gov/3d-resources/apollo-11-landing-site/"],
+ ["apollo 11 view of the moon","https://science.nasa.gov/3d-resources/apollo-11-view-of-the-moon/"],
+ ["apollo 12 landing site","https://science.nasa.gov/3d-resources/apollo-12-landing-site/"],
+ ["apollo 14 landing site","https://science.nasa.gov/3d-resources/apollo-14-landing-site/"],
+ ["apollo 15 landing site","https://science.nasa.gov/3d-resources/apollo-15-landing-site/"],
+ ["apollo 16 landing site","https://science.nasa.gov/3d-resources/apollo-16-landing-site/"],
+ ["apollo lunar module","https://science.nasa.gov/3d-resources/apollo-lunar-module/"]
+]);
+function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\\u0300-\\u036f]/g,"")
-  .toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 }
 function setSpecificModelSource(model){
- if(!model.sourcePageUrl&&model.sourceUrl)model.sourcePageUrl=model.sourceUrl;
- const file=model.file||"";
- try{
-  const asset=new URL(file),source=model.sourcePageUrl?new URL(model.sourcePageUrl):null;
-  const generic=!source||source.pathname==="/"||
-   ["/3d-resources/","/3d-resources","/models/","/"].includes(source.pathname);
-  const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
-
-  // NASA's raw repository is only the file host. Link to the matching NASA
-  // Science model record instead of sending visitors to a GitHub blob/folder.
-  if(asset.hostname==="raw.githubusercontent.com"&&
-     asset.pathname.includes("/NASA-3D-Resources/")&&generic){
-   const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
-   if(marker>=0&&parts.length>marker+2){
-    const directory=parts.slice(marker,parts.length-1).join("/");
-    model.folderKey="nasa:"+directory.toLowerCase();
-    model.folderName=parts[parts.length-2];
-    if(parts[marker]==="3D Models"){
-     const slug=sourceSlug(model.name||parts[parts.length-2]);
-     if(slug)model.sourcePageUrl="https://science.nasa.gov/3d-resources/"+slug+"/";
+  const file=model.file||"";
+  const originalSource=model.sourcePageUrl||model.sourceUrl||"";
+  try{
+    const asset=file?new URL(file):null;
+    const source=originalSource?new URL(originalSource):null;
+    const generic=!source||source.pathname==="/"||
+      ["/3d-resources/","/3d-resources","/models/","/models","/"].includes(source.pathname)||
+      (source.hostname==="3d-asteroids.space"&&source.pathname==="/moons/");
+    if(asset&&asset.hostname==="raw.githubusercontent.com"&&
+       asset.pathname.includes("/NASA-3D-Resources/")){
+      const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
+      const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
+      if(marker>=0&&parts.length>marker+2){
+        const directory=parts.slice(marker,parts.length-1).join("/");
+        model.folderKey="nasa:"+directory.toLowerCase();
+        model.folderName=parts[parts.length-2];
+      }
+      if(generic){
+        const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name));
+        model.sourcePageUrl=verifiedPage||null;
+      }
+    }else if(generic){
+      // A catalogue homepage, model-file host or GitHub mirror is not a
+      // model-specific source page. Leave the source link unavailable until
+      // the exact original record has been found and added to the data.
+      model.sourcePageUrl=null;
+    }else{
+      // Keep explicitly supplied deep links, including provider record IDs.
+      model.sourcePageUrl=source.toString();
     }
-   }
-  }else if(asset.hostname==="raw.githubusercontent.com"&&
-     parts[0]?.toLowerCase()==="sara-managed-projects"&&
-     parts[1]?.toLowerCase()==="space-radar"&&generic){
-   const filename=parts[parts.length-1]||"";
-   const slug=sourceSlug(filename.replace(/\\.(?:glb|gltf|stl|obj|ply)$/i,""));
-   if(slug)model.sourcePageUrl="https://models.spaceradar.ai/"+slug+"/";
-  }else if((asset.hostname==="www.spaceradar.ai"||asset.hostname==="models.spaceradar.ai")&&generic){
-   const filename=parts[parts.length-1]||"";
-   const slug=sourceSlug(filename.replace(/\\.(?:glb|gltf|stl|obj|ply)$/i,""));
-   if(slug)model.sourcePageUrl="https://models.spaceradar.ai/"+slug+"/";
-  }else if(asset.hostname==="raw.githubusercontent.com"&&generic){
-   const p=asset.pathname.split("/").filter(Boolean);
-   if(p.length>=4){
-    const [owner,repoName,branch,...path]=p;
-    const sourcePath=owner.toLowerCase()==="sara-managed-projects"&&repoName.toLowerCase()==="space-radar"&&path[0]==="models"?["site",...path]:path;
-    model.sourcePageUrl="https://github.com/"+owner+"/"+repoName+"/blob/"+branch+"/"+sourcePath.join("/");
-   }
-  }else if(source&&!generic){
-   model.sourcePageUrl=source.toString();
+  }catch{
+    if(!originalSource)model.sourcePageUrl=null;
   }
- }catch{}
- if(model.sourcePageUrl)model.sourceUrl=model.sourcePageUrl;
- try{
-  const asset=new URL(file);
-  if(asset.hostname==="raw.githubusercontent.com"&&asset.pathname.includes("/NASA-3D-Resources/")){
-   const nasaParts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
-   const marker=nasaParts.findIndex(part=>part==="3D Models"||part==="3D Printing");
-   if(marker>=0&&nasaParts.length>marker+2){
-    const directory=nasaParts.slice(marker,nasaParts.length-1).join("/");
-    model.folderKey="nasa:"+directory.toLowerCase();
-    model.folderName=nasaParts[nasaParts.length-2];
-   }
-  }
- }catch{}
- return model;
+  if(model.sourcePageUrl)model.sourceUrl=model.sourcePageUrl;
+  else model.sourceUrl=null;
+  return model;
 }
 for(const model of MODELS)setSpecificModelSource(model);
 
