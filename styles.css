@@ -328,3 +328,32 @@
 /* Header logo: preserve the PNG's transparent rounded corners. */
 .brand-mark{background:transparent!important;border-radius:12px;}
 .brand-word{background-image:radial-gradient(circle at 9% 36%,rgba(255,255,255,.96) 0 1px,transparent 1.5px),radial-gradient(circle at 34% 72%,rgba(255,255,255,.88) 0 .8px,transparent 1.4px),radial-gradient(circle at 61% 24%,rgba(255,255,255,.92) 0 1px,transparent 1.5px),radial-gradient(circle at 87% 58%,rgba(255,255,255,.86) 0 .8px,transparent 1.4px),linear-gradient(105deg,#192b3d 0%,#315f87 44%,#2f9fda 72%,#315f87 100%);background-size:100% 100%;background-repeat:no-repeat;-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+
+/* Interactive assessment statistics and detailed technical analysis */
+.scaling-gauges{gap:2px;margin:5px 0 0;justify-content:center;align-items:center}
+.scaling-gauge-card{border:0;background:transparent;border-radius:0;min-height:78px;padding:3px 5px;cursor:pointer;transition:transform .16s ease,opacity .16s ease}
+.scaling-gauge-card:hover{transform:translateY(-2px);opacity:.82}
+.scaling-gauge-card:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+.scaling-gauge-note{margin-top:3px}
+.assessment-dialog{width:min(760px,calc(100vw - 28px));max-width:760px;max-height:min(86vh,900px);padding:24px;border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);box-shadow:0 24px 80px rgba(0,0,0,.28);overflow:auto}
+.assessment-dialog::backdrop{background:rgba(12,18,28,.58);backdrop-filter:blur(3px)}
+.assessment-dialog-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}
+.assessment-dialog-header h2{margin:3px 0 0;font-size:24px;letter-spacing:-.035em}
+.assessment-close{width:34px;height:34px;border:0;border-radius:50%;background:var(--surface-low);color:var(--ink);font-size:24px;line-height:1;cursor:pointer}
+.assessment-intro{color:var(--muted);font-size:13px;line-height:1.65;margin:12px 0 16px}
+.assessment-verdict{display:grid;gap:5px;padding:13px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.assessment-verdict span,.assessment-facts span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.assessment-verdict strong{font-size:17px}
+.assessment-dialog h3{font-size:14px;margin:20px 0 10px}
+.assessment-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;margin-top:14px}
+.assessment-facts>div{min-width:0;display:grid;gap:4px}
+.assessment-facts strong{font-size:12px;line-height:1.5;overflow-wrap:anywhere;font-weight:650}
+.assessment-axis-breakdown{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:18px}
+.assessment-axis{display:grid;gap:4px;padding:10px 0;border-top:1px solid var(--line)}
+.assessment-axis span,.assessment-axis small{font-size:10px;color:var(--muted)}
+.assessment-axis strong{font-size:12px}
+.assessment-limitations{padding-left:18px;margin:0;color:var(--muted);font-size:12px;line-height:1.7}
+.assessment-limitations li{margin:7px 0}
+.assessment-limitations strong{color:var(--ink)}
+@media(max-width:560px){.assessment-dialog{padding:18px}.assessment-facts{grid-template-columns:1fr;gap:10px}.assessment-axis-breakdown{grid-template-columns:1fr}.assessment-dialog-header h2{font-size:20px}}
