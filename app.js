@@ -141,6 +141,12 @@ function setSpecificModelSource(model){
      if(slug)model.sourcePageUrl="https://science.nasa.gov/3d-resources/"+slug+"/";
     }
    }
+  }else if(asset.hostname==="raw.githubusercontent.com"&&
+     parts[0]?.toLowerCase()==="sara-managed-projects"&&
+     parts[1]?.toLowerCase()==="space-radar"&&generic){
+   const filename=parts[parts.length-1]||"";
+   const slug=sourceSlug(filename.replace(/\\.(?:glb|gltf|stl|obj|ply)$/i,""));
+   if(slug)model.sourcePageUrl="https://models.spaceradar.ai/"+slug+"/";
   }else if((asset.hostname==="www.spaceradar.ai"||asset.hostname==="models.spaceradar.ai")&&generic){
    const filename=parts[parts.length-1]||"";
    const slug=sourceSlug(filename.replace(/\\.(?:glb|gltf|stl|obj|ply)$/i,""));
