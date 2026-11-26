@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="styles.css?v=20261126-1">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script src="config.js?v=20261125-3"></script>
-<script src="app.js?v=20261126-2" defer></script>
+<script src="app.js?v=20261126-3" defer></script>
 <script src="view-counter.js?v=20261125-2" defer></script>
 </head>
 <body>
@@ -124,7 +124,7 @@
           </div>
           <div class="research-copy"><strong id="scaling-research-title">Cloudflare Worker searching...</strong><span id="scaling-research-detail">Comparing scientific sources and published measurements.</span></div>
         </div>
-        <div class="scaling-research-results" id="scaling-research-results" hidden></div><p class="field-hint research-evidence-note">Evidence quality is a source-ranking heuristic, not a probability or guaranteed measurement accuracy. Published uncertainty is shown only when the source explicitly reports it.</p>
+        <details class="scaling-unverified-details" id="scaling-unverified-details" hidden><summary>Unverified search candidates <span id="scaling-unverified-count">0</span></summary><div class="scaling-research-results" id="scaling-research-results" hidden></div></details><p class="field-hint research-evidence-note">Evidence quality is a source-ranking heuristic, not a probability or guaranteed measurement accuracy. Published uncertainty is shown only when the source explicitly reports it.</p>
       </div>
       <div class="scaling-object-result" id="scaling-object-result" hidden>
         <div><span>Matched object</span><strong id="scaling-object-name">—</strong></div>
