@@ -94,18 +94,18 @@
 .model-card{border-top:2px solid #8eacc5}
 
 /* Related model files live inside an expandable folder card. */
-.model-folder{grid-column:1/-1;padding:0;overflow:hidden;border-top:2px solid #8eacc5}
+.model-folder{grid-column:auto;min-width:0;padding:0;overflow:hidden;border-top:2px solid #8eacc5}
 .model-folder>summary{display:flex;flex-direction:column;gap:11px;padding:18px;cursor:pointer;list-style:none}
 .model-folder>summary::-webkit-details-marker{display:none}
 .model-folder>summary:hover{background:rgba(127,127,127,.035)}
 .model-folder[open]>summary{border-bottom:1px solid var(--line)}
 .model-folder-summary h2{margin:0;font-size:16px;font-weight:650;letter-spacing:-.02em}
 .model-folder-summary p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
-.model-folder-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:14px}
+.model-folder-grid{display:grid;grid-template-columns:1fr;gap:10px;padding:12px}
 .model-folder-grid>.result-card{height:100%}
 .model-folder .card-bottom{margin-top:auto}
-@media(max-width:850px){.model-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.model-folder-grid{grid-template-columns:1fr}}
+
+
 
 
 /* Separate physical model collections from terrain data and source-only entries */
