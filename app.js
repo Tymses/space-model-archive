@@ -385,7 +385,7 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
    const bottom=document.createElement("div");bottom.className="card-bottom";
    const note=document.createElement("small");note.textContent="Individual model file · original source linked";
    const actions=document.createElement("span");
-   const sourceLink=document.createElement("a");sourceLink.className="card-action";sourceLink.href=variant.sourceUrl;sourceLink.target="_blank";sourceLink.rel="noopener";sourceLink.textContent="Original model ↗";
+   const sourceLink=document.createElement("a");sourceLink.className="card-action";sourceLink.href=variant.sourceUrl;sourceLink.target="_blank";sourceLink.rel="noopener";sourceLink.textContent="Open source page ↗";
    const preview=document.createElement("button");preview.type="button";preview.className="card-action";preview.textContent="Preview / Scaling →";preview.addEventListener("click",()=>routeScaling(variant));
    const download=document.createElement("button");download.type="button";download.className="card-action";download.textContent="Download "+variant.format+" ↓";
    download.addEventListener("click",async()=>{
