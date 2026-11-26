@@ -133,7 +133,7 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["apollo lunar module","https://science.nasa.gov/3d-resources/apollo-lunar-module/"]
 ]);
 function normalizeSourceTitle(value){
- return String(value||"").normalize("NFKD").replace(/[\\u0300-\\u036f]/g,"")
+ return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
   .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 }
 function setSpecificModelSource(model){
