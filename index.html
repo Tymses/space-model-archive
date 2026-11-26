@@ -197,6 +197,32 @@
   </div>
   <a href="#home" class="text-back">← Back to home</a>
 </section>
+
+<dialog class="assessment-dialog" id="assessment-dialog" aria-labelledby="assessment-title">
+  <div class="assessment-dialog-header"><div><p class="overline">TECHNICAL BACKGROUND ANALYSIS</p><h2 id="assessment-title">Printability assessment</h2></div><button type="button" class="assessment-close" id="assessment-close" aria-label="Close analysis">×</button></div>
+  <p class="assessment-intro" id="assessment-summary">The assessment combines model geometry, selected scale and printer build volume.</p>
+  <div class="assessment-verdict"><span>Overall geometric result</span><strong id="assessment-verdict">Awaiting data</strong></div>
+  <div class="assessment-facts">
+    <div><span>Printer</span><strong id="assessment-printer">—</strong></div><div><span>Build volume</span><strong id="assessment-bed">—</strong></div>
+    <div><span>Source geometry</span><strong id="assessment-model">—</strong></div><div><span>Physical object</span><strong id="assessment-object">—</strong></div>
+    <div><span>Calculated scale</span><strong id="assessment-scale">—</strong></div><div><span>Dimension evidence</span><strong id="assessment-confidence">—</strong></div>
+  </div>
+  <h3>Geometric fit breakdown</h3>
+  <div class="assessment-facts">
+    <div><span>Scaled print dimensions</span><strong id="assessment-print-dimensions">—</strong></div><div><span>Best tested orientation</span><strong id="assessment-orientation">—</strong></div>
+    <div><span>Remaining clearance</span><strong id="assessment-clearance">—</strong></div><div><span>Bounding-box volume use</span><strong id="assessment-occupancy">—</strong></div>
+    <div><span>Fit index</span><strong id="assessment-fit-index">—</strong></div><div><span>Dimension source</span><strong id="assessment-source">—</strong></div>
+  </div>
+  <div class="assessment-axis-breakdown" id="assessment-axis-breakdown"><p>Axis-by-axis clearance appears when a model and printer are selected.</p></div>
+  <h3>What this assessment can and cannot tell you</h3>
+  <ul class="assessment-limitations">
+    <li><strong>Measured:</strong> model bounding dimensions, six axis-aligned 90° orientations, scale conversion and remaining space in the selected build volume.</li>
+    <li><strong>Not measured:</strong> wall thickness, minimum feature size, mesh defects, overhangs, support demand, bed adhesion, material behaviour, thermal warping or slicer collision checks.</li>
+    <li><strong>Interpretation:</strong> the displayed fit index is a geometric clearance/scale-down indicator, not a probability of a successful print or a quality score.</li>
+    <li><strong>Recommendation:</strong> inspect the mesh in your slicer, orient it for strength and support reduction, then run the slicer's own plate and collision checks before printing.</li>
+  </ul>
+</dialog>
+
 </main>
 <footer class="footer"><span>SPACEMESHER</span><span>Independent index · Original sources credited</span><a href="https://github.com/Tymses/space-model-archive" target="_blank" rel="noopener">GitHub ↗</a></footer>
 </body>
