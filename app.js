@@ -125,7 +125,8 @@ function setSpecificModelSource(model){
    const p=asset.pathname.split("/").filter(Boolean);
    if(p.length>=4){
     const [owner,repo,branch,...path]=p;
-    model.sourcePageUrl="https://github.com/"+owner+"/"+repo+"/blob/"+branch+"/"+path.join("/");
+    const sourcePath=owner.toLowerCase()==="sara-managed-projects"&&repo.toLowerCase()==="space-radar"&&path[0]==="models"?["site",...path]:path;
+    model.sourcePageUrl="https://github.com/"+owner+"/"+repo+"/blob/"+branch+"/"+sourcePath.join("/");
    }
   }else if(asset.hostname==="www.spaceradar.ai"&&asset.pathname.startsWith("/models/")&&generic){
    const filename=asset.pathname.split("/").pop();
@@ -229,7 +230,11 @@ function renderCollection(){
  }
  modelGrid.innerHTML=[...folderMarkup,...individualModels.map(renderModelCard)].join("");
  archiveGrid.innerHTML=archives.map(data=>{
-  const direct=data.downloadDirect!==false&&/^https:\/\//i.test(String(data.file||""));
+  const format=String(data.format||"").toUpperCase();
+  let path="";
+  try{path=new URL(data.file).pathname.toLowerCase();}catch{}
+  const extension=format==="ZIP"?/\.zip$/i:format==="7Z"?/\.7z$/i:format==="TAR"?/\.tar$/i:format==="GZ"?/\.gz$/i:format.includes("STEP")?/\.step\.gz$/i:null;
+  const direct=data.downloadDirect!==false&&/^https:\/\//i.test(String(data.file||""))&&!!extension&&extension.test(path);
   const target=direct?data.file:(data.sourceUrl||data.file||"#");
   const action=direct?(String(data.format||"").toUpperCase().includes("STEP")?"Download compressed STEP ↗":"Download archive ↗"):"Open source page ↗";
   return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><a class="card-action" href="'+escapeCardText(target)+'" target="_blank" rel="noopener">'+action+'</a></div></article>';
