@@ -129,7 +129,7 @@ function setSpecificModelSource(model){
    }
   }else if(asset.hostname==="www.spaceradar.ai"&&asset.pathname.startsWith("/models/")&&generic){
    const filename=asset.pathname.split("/").pop();
-   model.sourcePageUrl="https://github.com/Sara-Managed-Projects/space-radar/blob/main/models/"+filename;
+   model.sourcePageUrl="https://github.com/Sara-Managed-Projects/space-radar/blob/main/site/models/"+filename;
   }else if(source&&!generic){
    model.sourcePageUrl=source.toString();
   }
@@ -177,15 +177,17 @@ function matchesSearch(query,values){
 }
 function renderCollection(){
  const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
- const isDirectMesh=x=>x.downloadDirect!==false&&!["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
- const matchesModel=x=>x.category===currentCategory&&matchesSearch(q,[x.name,x.kind,x.source,x.credit,x.description,x.id,x.format,x.file,x.remotePageUrl])&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
- const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x));
+ const isArchiveEntry=x=>["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())||/\\bGZIP\\b/i.test(String(x.format||""));
+ const isDirectMesh=x=>x.downloadDirect!==false&&!isArchiveEntry(x)&&["GLB","GLTF","STL","OBJ","PLY","STEP","STP","FBX","BLEND","3DS","LWO","VSP3"].includes(String(x.format||"").toUpperCase());
+ const matchesModel=x=>x.category===currentCategory&&matchesSearch(q,[x.name,x.kind,x.source,x.credit,x.description,x.id,x.format,x.file,x.remotePageUrl,...(x.aliases||[])])&&(source==="all"||x.source===source)&&(type==="all"||x.kind===type);
+ const models=MODELS.filter(x=>matchesModel(x)&&isDirectMesh(x)&&!x.remoteCandidate);
+ const archives=MODELS.filter(x=>matchesModel(x)&&isArchiveEntry(x));
  const remoteCandidates=MODELS.filter(x=>matchesModel(x)&&x.remoteCandidate&&!x.remoteResolvedParent);
  const remotePageUrls=new Set(MODELS.filter(x=>x.remoteCandidate).map(x=>x.remotePageUrl));
  const entries=CATEGORIES[currentCategory].sources.filter(x=>!remotePageUrls.has(x.url)&&matchesSearch(q,[x.name,x.type,x.description,x.source,x.url])&&(source==="all"||x.source===source)&&(type==="all"||x.type===type));
  const sources=entries.filter(x=>x.entryType!=="generator"),generators=entries.filter(x=>x.entryType==="generator");
- const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
- const modelGroup=$("#models-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
+ const modelGrid=$("#model-grid"),archiveGrid=$("#archive-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
+ const modelGroup=$("#models-group"),archiveGroup=$("#archives-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
  const folderGroups=new Map(),folderNames=new Map(),individualModels=[];
  const getFolderInfo=model=>{
   if(model.folderKey)return {key:model.folderKey,name:model.folderName||model.name};
@@ -201,7 +203,7 @@ function renderCollection(){
    return {key:model.category+"|"+directory.join("/"),name:directory[directory.length-1]};
   }catch{return null;}
  };
- modelGroup.hidden=!models.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
+ modelGroup.hidden=!models.length;archiveGroup.hidden=!archives.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
  const renderModelCard=data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button></div></article>';
  for(const model of models){
@@ -215,6 +217,7 @@ function renderCollection(){
  }
  const folderCount=[...folderGroups.values()].filter(items=>items.length>1).length;
  $("#model-result-count").textContent=models.length+" files · "+folderCount+" folders";
+ $("#archive-result-count").textContent=archives.length+" packages";
  $("#remote-model-result-count").textContent=remoteCandidates.length+" candidates";
  $("#source-result-count").textContent=sources.length+" entries";
  $("#generator-result-count").textContent=generators.length+" tools";
@@ -225,11 +228,17 @@ function renderCollection(){
   folderMarkup.push('<details class="model-folder"><summary class="model-folder-summary"><div class="result-meta"><span class="result-type model-type">Model folder</span><span class="result-source">'+escapeCardText(items[0].source)+'</span></div><h2>'+escapeCardText(folderName)+'</h2><p>'+items.length+' related model files, variants or components</p><div class="card-bottom"><small>Grouped by their original source directory or parent object</small><span class="card-action">Open folder ↓</span></div></summary><div class="model-folder-grid">'+items.map(renderModelCard).join("")+'</div></details>');
  }
  modelGrid.innerHTML=[...folderMarkup,...individualModels.map(renderModelCard)].join("");
+ archiveGrid.innerHTML=archives.map(data=>{
+  const direct=data.downloadDirect!==false&&/^https:\/\//i.test(String(data.file||""));
+  const target=direct?data.file:(data.sourceUrl||data.file||"#");
+  const action=direct?(String(data.format||"").toUpperCase().includes("STEP")?"Download compressed STEP ↗":"Download archive ↗"):"Open source page ↗";
+  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><a class="card-action" href="'+escapeCardText(target)+'" target="_blank" rel="noopener">'+action+'</a></div></article>';
+ }).join("");
  remoteModelGrid.innerHTML=remoteCandidates.map(data=>'<article class="result-card model-card remote-model-card"><div class="result-meta"><span class="result-type model-type">Remote · on demand</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>Original model page. SPACEMESHER checks for reachable OBJ/PLY files only when you open it.</p><div class="card-bottom"><small>No local copy is stored</small><button class="card-action" data-remote-model="'+data.id+'">Find model files →</button></div></article>').join("");
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
  sourceGrid.innerHTML=sources.map(renderEntry).join("");generatorGrid.innerHTML=generators.map(renderEntry).join("");
- const total=models.length+remoteCandidates.length+sources.length+generators.length;$("#result-count").textContent=total+" results";
- if(!total)modelGrid.innerHTML='<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.</div>';
+ const total=models.length+archives.length+remoteCandidates.length+sources.length+generators.length;$("#result-count").textContent=total+" results";
+ if(!total)modelGrid.innerHTML='<div class="empty-state">No results match your search and filters. Try a different term or choose “All”.';
  $("#collection-footnote").textContent="Related model files are grouped in expandable folders; opening a folder shows every individual model card. Original-source links open the model webpage or source-file webpage. Downloads are only started by the separate Download action. General source catalogues and generators remain separate."+(expandedCatalogCounts.nasa||expandedCatalogCounts.spaceRadar||expandedCatalogCounts.jpl?" Indexed files: NASA "+expandedCatalogCounts.nasa+"; Space Radar "+expandedCatalogCounts.spaceRadar+"; JPL Radar OBJ "+expandedCatalogCounts.jpl+"; Moon catalogue entries "+(expandedCatalogCounts.moonCatalogueEntries||0)+". The 29 NASA terrain files in Height Maps are cross-listed, not extra downloads.":"")+(expandedCatalogCounts.errors.length?" Some local indexes could not be loaded: "+expandedCatalogCounts.errors.join("; "):"");
 }
 function viewerAssetUrl(rawUrl){
@@ -259,6 +268,20 @@ routeModel=(id,push=true)=>{const model=MODELS.find(item=>item.id===id);if(model
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>routeCollection(b.dataset.category)));
 $("#model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-model]");if(!b)return;const model=MODELS.find(item=>item.id===b.dataset.model);if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false)routeScaling(model);else routeModel(b.dataset.model);});
 $("#remote-model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-remote-model]");if(!b)return;routeModel(b.dataset.remoteModel);});
+function restoreRouteFromHash(){
+ const raw=decodeURIComponent((location.hash||"").replace(/^#/,""));
+ if(!raw||raw==="home"){routeHome(false);return;}
+ if(raw==="guide"||raw==="about"){routeGuide(false);return;}
+ if(raw==="scaling"||raw.startsWith("scaling/")){
+  const id=raw.startsWith("scaling/")?raw.slice(8):"";
+  routeScaling(id?MODELS.find(model=>model.id===id)||null:null,false);return;
+ }
+ if(raw.startsWith("model/")){routeModel(raw.slice(6),false);return;}
+ if(CATEGORIES[raw]){routeCollection(raw,false);return;}
+}
+window.addEventListener("hashchange",restoreRouteFromHash);
+window.addEventListener("popstate",restoreRouteFromHash);
+restoreRouteFromHash();
 $("#search-input").addEventListener("input",renderCollection);$("#source-filter").addEventListener("change",renderCollection);$("#type-filter").addEventListener("change",renderCollection);
 $("#guide-link").addEventListener("click",e=>{e.preventDefault();routeGuide();});$("#scaling-link").addEventListener("click",e=>{e.preventDefault();routeScaling();});
  document.querySelectorAll("[data-guide-tab]").forEach(tab=>tab.addEventListener("click",()=>{
@@ -268,8 +291,7 @@ $("#guide-link").addEventListener("click",e=>{e.preventDefault();routeGuide();})
  }));$("#home-scaling-link").addEventListener("click",e=>{e.preventDefault();routeScaling();});$("#detail-back").addEventListener("click",e=>{e.preventDefault();routeCollection(currentModel.category);});
 document.querySelector(".brand").addEventListener("click",e=>{e.preventDefault();routeHome();});
 document.addEventListener("keydown",e=>{if(e.key==="/"&&!["INPUT","SELECT","TEXTAREA"].includes(document.activeElement.tagName)&&!collection.hidden){e.preventDefault();$("#search-input").focus();}});
-window.addEventListener("popstate",e=>{const s=e.state;if(!s||s.view==="home")routeHome(false);else if(s.view==="collection")routeCollection(s.key,false);else if(s.view==="detail")routeModel(s.id,false);else if(s.view==="about")routeGuide(false);else if(s.view==="scaling")routeScaling(s.modelId?MODELS.find(m=>m.id===s.modelId)||null:null,false);});
-routeHome(false);
+// Routing is restored from the URL after all route handlers are registered.
 
 
 // Remote model files are resolved per object and are never stored in a session cache.
@@ -388,19 +410,36 @@ async function resolveRemoteCatalogueModel(model, statusNode, variantsNode, butt
 // Load complete source indexes rather than a small hand-picked sample.
 const expandedCatalogCounts = { nasa: 0, spaceRadar: 0, jpl: 0, smallBodyPackages: 0, errors: [] };
 function addCatalogModel(model) {
-  // Keep the same asset when it represents a distinct category entry or a
-  // different archive record. Suppress only the same named model repeated
-  // under a different catalogue ID.
   setSpecificModelSource(model);
   remoteCatalogueRecord(model);
-  const name = String(model.name || "").trim().toLowerCase();
-  const exists = MODELS.some(existing =>
-    existing.id === model.id ||
-    (model.file && existing.file === model.file &&
-      existing.category === model.category &&
-      String(existing.name || "").trim().toLowerCase() === name)
-  );
-  if (!exists) MODELS.push(model);
+  const assetKey = value => {
+    try { const url = new URL(value); url.hash = ""; return url.toString(); }
+    catch { return String(value || "").trim(); }
+  };
+  const existing = model.file ? MODELS.find(item =>
+    item.file && item.category === model.category &&
+    assetKey(item.file) === assetKey(model.file)
+  ) : null;
+  if (existing) {
+    const names = new Set([...(existing.aliases || []), existing.name, model.name].filter(Boolean).map(name => String(name).trim()).filter(Boolean));
+    names.delete(String(existing.name || "").trim());
+    if (names.size) existing.aliases = [...names];
+    const candidateSource = model.sourcePageUrl || model.sourceUrl || "";
+    const existingSource = existing.sourcePageUrl || existing.sourceUrl || "";
+    const isSpecificSource = value => {
+      try {
+        const url = new URL(value);
+        return url.pathname !== "/" && !["/3d-resources", "/3d-resources/"].includes(url.pathname);
+      } catch { return false; }
+    };
+    if (isSpecificSource(candidateSource) && !isSpecificSource(existingSource)) {
+      existing.sourcePageUrl = candidateSource;
+      existing.sourceUrl = candidateSource;
+    }
+    return;
+  }
+  if (MODELS.some(item => item.id === model.id)) return;
+  MODELS.push(model);
 }
 async function loadExpandedCatalogs() {
   try {
@@ -498,6 +537,8 @@ async function loadExpandedCatalogs() {
     populateFilters();
     renderCollection();
   }
+  // Re-run deep-link restoration after dynamic model indexes have loaded.
+  if (location.hash.startsWith("#scaling/") || location.hash.startsWith("#model/")) restoreRouteFromHash();
 }
 loadExpandedCatalogs();
 
@@ -991,6 +1032,18 @@ loadExpandedCatalogs();
     setResearchState("complete","A matching source-backed scientific record was found.");
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
     return;
+   }
+   if(expectedCategory!=="small-bodies"){
+    if(await applyCuratedFallback([q],expectedCategory))return;
+    if(proxyUrl){
+     const researched=await runWebResearch(q,expectedCategory,lookupToken);
+     if(researched)return;
+     if(lookupToken!==token)return;
+     setLookupStatus("No category-matched scientific dimensions were found. JPL Small-Body Database was not queried for this object.",true);
+     if(!quiet)renderFit("No verified scale basis","No matching scientific dimensions were found for this category. The scale remains unverified.",null);
+     return;
+    }
+    throw new Error("JPL Small-Body Database is restricted to asteroids, comets and other small bodies. Configure the research Worker for category-specific dimensions.");
    }
    if(!proxyUrl){
     if(await applyCuratedFallback([q],expectedCategory))return;
