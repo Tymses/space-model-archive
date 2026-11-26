@@ -232,7 +232,6 @@ function renderCollection(){
  const modelGrid=$("#model-grid"),remoteModelGrid=$("#remote-model-grid"),sourceGrid=$("#source-grid"),generatorGrid=$("#generator-grid");
  const modelGroup=$("#models-group"),remoteModelGroup=$("#remote-models-group"),sourceGroup=$("#sources-group"),generatorGroup=$("#generators-group");
  const folderGroups=new Map(),individualModels=[];
- $("#model-result-count").textContent=models.length+" files · "+[...folderGroups.values()].filter(items=>items.length>1).length+" folders";$("#remote-model-result-count").textContent=remoteCandidates.length+" candidates";$("#source-result-count").textContent=sources.length+" entries";$("#generator-result-count").textContent=generators.length+" tools";
  modelGroup.hidden=!models.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
  const renderModelCard=data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button></div></article>';
@@ -241,6 +240,11 @@ function renderCollection(){
   if(key){if(!folderGroups.has(key))folderGroups.set(key,[]);folderGroups.get(key).push(model);}
   else individualModels.push(model);
  }
+ const folderCount=[...folderGroups.values()].filter(items=>items.length>1).length;
+ $("#model-result-count").textContent=models.length+" files · "+folderCount+" folders";
+ $("#remote-model-result-count").textContent=remoteCandidates.length+" candidates";
+ $("#source-result-count").textContent=sources.length+" entries";
+ $("#generator-result-count").textContent=generators.length+" tools";
  const folderMarkup=[];
  for(const [key,items] of folderGroups){
   if(items.length<2){individualModels.push(...items);continue;}
