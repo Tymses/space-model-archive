@@ -525,7 +525,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/moon-catalogue-index.json");
+    const response = await fetch("./data/moon-catalogue-index.json?v=20261126-18");
     if (!response.ok) throw new Error("Moon catalogue index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
