@@ -47,6 +47,8 @@ The browser then reads the `extent` physical parameter, converts its axes to kil
 - The public-web fallback checks a bounded number of search results and pages per request. It cannot guarantee coverage of every Internet page, paywalled papers or blocked hosts.
 - Automatically extracted values are candidates, not newly peer-reviewed measurements. Review the linked source and configuration before relying on them.
 - Responses are cached for a short period to avoid repeated requests.
+- The Worker checks the browser Origin against an allowlist. CORS is not authentication: non-browser clients can send or spoof an Origin header.
+- The Worker currently has no application-level rate limiter. If abuse or unexpectedly high traffic appears, add a Cloudflare edge rate-limiting rule before adding IP-based tracking to the application; the current view counter stores only an aggregate total.
 - The Worker is a read-only relay; it does not write to the SMA repository or alter verified dimension records.
 
 ## Scaling lookup fallback catalogue
