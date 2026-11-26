@@ -114,23 +114,44 @@ for(const [id,name,category,kind,path,bytes,format] of NASA_FILES){
 
 // Keep the original webpage separate from the downloadable mesh URL.
 // Never use a raw asset URL as the "source page" link.
+function sourceSlug(value){
+ return String(value||"").normalize("NFKD").replace(/[\\u0300-\\u036f]/g,"")
+  .toLowerCase().replace(/&/g," and ").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+}
 function setSpecificModelSource(model){
  if(!model.sourcePageUrl&&model.sourceUrl)model.sourcePageUrl=model.sourceUrl;
  const file=model.file||"";
  try{
   const asset=new URL(file),source=model.sourcePageUrl?new URL(model.sourcePageUrl):null;
   const generic=!source||source.pathname==="/"||
-   ["/3d-resources/","/3d-resources","/"].includes(source.pathname);
-  if(asset.hostname==="raw.githubusercontent.com"&&generic){
+   ["/3d-resources/","/3d-resources","/models/","/"].includes(source.pathname);
+  const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
+
+  // NASA's raw repository is only the file host. Link to the matching NASA
+  // Science model record instead of sending visitors to a GitHub blob/folder.
+  if(asset.hostname==="raw.githubusercontent.com"&&
+     asset.pathname.includes("/NASA-3D-Resources/")&&generic){
+   const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
+   if(marker>=0&&parts.length>marker+2){
+    const directory=parts.slice(marker,parts.length-1).join("/");
+    model.folderKey="nasa:"+directory.toLowerCase();
+    model.folderName=parts[parts.length-2];
+    if(parts[marker]==="3D Models"){
+     const slug=sourceSlug(model.name||parts[parts.length-2]);
+     if(slug)model.sourcePageUrl="https://science.nasa.gov/3d-resources/"+slug+"/";
+    }
+   }
+  }else if((asset.hostname==="www.spaceradar.ai"||asset.hostname==="models.spaceradar.ai")&&generic){
+   const filename=parts[parts.length-1]||"";
+   const slug=sourceSlug(filename.replace(/\\.(?:glb|gltf|stl|obj|ply)$/i,""));
+   if(slug)model.sourcePageUrl="https://models.spaceradar.ai/"+slug+"/";
+  }else if(asset.hostname==="raw.githubusercontent.com"&&generic){
    const p=asset.pathname.split("/").filter(Boolean);
    if(p.length>=4){
-    const [owner,repo,branch,...path]=p;
-    const sourcePath=owner.toLowerCase()==="sara-managed-projects"&&repo.toLowerCase()==="space-radar"&&path[0]==="models"?["site",...path]:path;
-    model.sourcePageUrl="https://github.com/"+owner+"/"+repo+"/blob/"+branch+"/"+sourcePath.join("/");
+    const [owner,repoName,branch,...path]=p;
+    const sourcePath=owner.toLowerCase()==="sara-managed-projects"&&repoName.toLowerCase()==="space-radar"&&path[0]==="models"?["site",...path]:path;
+    model.sourcePageUrl="https://github.com/"+owner+"/"+repoName+"/blob/"+branch+"/"+sourcePath.join("/");
    }
-  }else if(asset.hostname==="www.spaceradar.ai"&&asset.pathname.startsWith("/models/")&&generic){
-   const filename=asset.pathname.split("/").pop();
-   model.sourcePageUrl="https://github.com/Sara-Managed-Projects/space-radar/blob/main/site/models/"+filename;
   }else if(source&&!generic){
    model.sourcePageUrl=source.toString();
   }
@@ -139,12 +160,12 @@ function setSpecificModelSource(model){
  try{
   const asset=new URL(file);
   if(asset.hostname==="raw.githubusercontent.com"&&asset.pathname.includes("/NASA-3D-Resources/")){
-   const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
-   const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
-   if(marker>=0&&parts.length>marker+2){
-    const directory=parts.slice(marker,parts.length-1).join("/");
+   const nasaParts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
+   const marker=nasaParts.findIndex(part=>part==="3D Models"||part==="3D Printing");
+   if(marker>=0&&nasaParts.length>marker+2){
+    const directory=nasaParts.slice(marker,nasaParts.length-1).join("/");
     model.folderKey="nasa:"+directory.toLowerCase();
-    model.folderName=parts[parts.length-2];
+    model.folderName=nasaParts[nasaParts.length-2];
    }
   }
  }catch{}
