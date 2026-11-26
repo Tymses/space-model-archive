@@ -103,3 +103,11 @@ The print-fit checker and Scaling workspace include these build volumes: Bambu L
 ## Source inventory
 
 The machine-readable source inventory is maintained in [`data/source-registry.json`](data/source-registry.json). It tracks public catalogues, scientific archives and generators across all five collections, including source scope, known coverage, file formats, integration status, priority and the next harvesting action. The register deliberately distinguishes indexed files from source catalogue counts and on-demand generators; it is a working inventory, not a claim that every possible source has been found or every source has been imported. Current discovery includes NASA 3D Resources, Space Radar, ESA Sci-Fleet, models.codelove.in, NASA PDS Small Bodies and Ring-Moon Systems Nodes, JAXA DARTS, NASA Solar System Treks, USGS Astropedia and NASA Astromaterials 3D.
+
+## Open-source licensing
+
+SPACEMESHER's original source code is released under the **MIT License**; original project documentation and written guides are released under **CC BY 4.0**. These licences do not override third-party licences. Model files, scientific datasets, textures, photographs, external libraries and source catalogue content retain their original publishers' terms. The contents of the `data/` directory are not blanket-licensed because records can contain third-party metadata from sources with different terms. See [Open-source licensing](OPEN-SOURCE-LICENSING.md), [LICENSE](LICENSE) and [LICENSE-DOCUMENTATION](LICENSE-DOCUMENTATION).
+
+## Automated repository checks
+
+GitHub Actions validates JSON syntax, checks stable IDs in the core catalogue indexes, runs the catalogue and dimension-scanner tests, and verifies that the catalogue audit can be generated. See [the validation workflow](.github/workflows/validate-catalogue.yml). This does not automatically certify that external model URLs remain online; source availability still needs periodic checks.
