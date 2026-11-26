@@ -482,16 +482,39 @@ function parseBingRssResults(xml, pages) {
     if (link) addSearchPage(pages, link, title, description, "https://www.bing.com/");
   }
 }
+function categoryContextMatches(text, category) {
+  const value = norm(text);
+  if (category === "small-bodies") return /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies|comet|comets|dwarf planet)( |$)/.test(value);
+  if (category === "spacecraft") return /(^| )(spacecraft|satellite|probe|orbiter|lander|rover|space telescope|space station)( |$)/.test(value);
+  if (category === "moons") return /(^| )(moon|moons|natural satellite|natural satellites)( |$)/.test(value);
+  if (category === "planetary" || category === "height-maps") return /(^| )(crater|mountain|volcano|valley|canyon|surface feature|terrain|elevation|topography)( |$)/.test(value);
+  return true;
+}
+function exactResearchIdentity(candidate, query, category) {
+  const titleSnippet = candidate.title + " " + candidate.snippet;
+  const body = candidate.sourceText || "";
+  const combined = titleSnippet + " " + body.slice(0, 24000);
+  const exactPhrase = hasWholePhrase(titleSnippet, query) || hasWholePhrase(body.slice(0, 24000), query);
+  if (!exactPhrase || !categoryContextMatches(combined, category)) return false;
+  if (category === "small-bodies") {
+    const normalized = norm(query);
+    const designation = normalized.match(/^(\d{1,7})\s+(.+)$/) || normalized.match(/^(.+?)\s+(\d{1,7})$/);
+    if (designation) {
+      const number = /^\d+$/.test(designation[1]) ? designation[1] : designation[2];
+      const name = /^\d+$/.test(designation[1]) ? designation[2] : designation[1];
+      if (!hasWholePhrase(combined, number) || !hasWholePhrase(combined, name)) return false;
+    }
+  }
+  return true;
+}
 async function searchWeb(query, category) {
-  const categoryTerm = ({spacecraft:"spacecraft dimensions",moons:"moon dimensions",planetary:"surface feature diameter extent","height-maps":"terrain footprint dimensions","small-bodies":"asteroid shape model dimensions triaxial axes"}[category] || "physical dimensions axes");
+  const categoryTerm = ({spacecraft:"spacecraft physical dimensions",moons:"moon physical dimensions axes",planetary:"planetary surface feature measured dimensions","height-maps":"planetary terrain elevation footprint","small-bodies":"asteroid minor planet triaxial axes dimensions"}[category] || "scientific physical dimensions axes");
   const searches = [
     '"' + query + '" ' + categoryTerm,
-    '"' + query + '" size dimensions km metres NASA ESA',
-    query + " physical extent length width height scientific",
-    category === "small-bodies" ? '"' + query + '" asteroid km axes ellipsoid' : '"' + query + '" measured dimensions physical size'
+    '"' + query + '" measured dimensions ' + (category === "small-bodies" ? "asteroid minor planet km" : categoryTerm),
+    '"' + query + '" physical extent scientific ' + categoryTerm
   ];
-  const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.1; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html,application/rss+xml,application/xml;q=0.9,*/*;q=0.8" };
-  /** @type {SearchPage[]} */
+  const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.2; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html,application/rss+xml,application/xml;q=0.9,*/*;q=0.8" };
   const pages = [];
   for (const term of searches) {
     const encoded = encodeURIComponent(term);
@@ -499,33 +522,34 @@ async function searchWeb(query, category) {
       fetch("https://html.duckduckgo.com/html/?q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseDuckDuckGoResults(await response.text(), pages); }).catch(() => {}),
       fetch("https://www.bing.com/search?format=rss&q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseBingRssResults(await response.text(), pages); }).catch(() => {})
     ]);
-    if (pages.length >= 12) break;
+    if (pages.length >= 16) break;
   }
-  /** @type {ResearchCandidate[]} */
-  const candidates = await Promise.all(pages.slice(0, 12).map(async item => {
+  const checked = await Promise.all(pages.slice(0, 18).map(async item => {
     try {
       const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
-      if (!response.ok) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false};
-      const html = (await response.text()).slice(0, 900000);
-      const text = plain(html).slice(0, 60000);
+      if (!response.ok) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:""};
+      const contentType = (response.headers.get("content-type") || "").toLowerCase();
+      if (contentType.includes("pdf") || contentType.includes("octet-stream") || contentType.startsWith("image/")) {
+        return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+      }
+      const raw = (await response.text()).slice(0, 900000);
+      if (raw.startsWith("%PDF-")) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+      const text = plain(raw).slice(0, 60000);
       const axesKm = extractAxes(text) || extractAxes(item.title+" "+item.snippet);
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
-      const sourceTextHasName = hasWholePhrase(text.slice(0, 24000), query);
-      const titleMatch = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
-      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceTextHasName};
-    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false}; }
+      const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
+      return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceText:text};
+    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
   }));
-  const relevantCandidates = category === "small-bodies" ? candidates.filter(candidate => {
-    const identityMatch = hasWholePhrase(candidate.title + " " + candidate.snippet, query) || candidate.sourceTextHasName;
-    const context = norm(candidate.title + " " + candidate.snippet);
-    const moonContext = /(^| )(moon|moons|satellite|satellites|jupiter|saturn|uranus|neptune)( |$)/.test(context);
-    const asteroidContext = /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies)( |$)/.test(context);
-    return identityMatch && (!moonContext || asteroidContext);
-  }) : candidates;
+  const relevantCandidates = checked.filter(candidate => exactResearchIdentity(candidate, query, category));
   for (const candidate of relevantCandidates) {
-    candidate.score = confidence(candidate, query);
-    candidate.quality = candidate.score >= 78 ? "high" : candidate.score >= 52 ? "medium" : "low";
     candidate.source = hostOf(candidate.url);
+    candidate.sourceTextHasName = true;
+    candidate.score = confidence(candidate, query);
+    if (candidate.nonHtml) candidate.score = Math.max(0, candidate.score - 15);
+    candidate.quality = candidate.score >= 78 ? "high" : candidate.score >= 52 ? "medium" : "low";
+    delete candidate.sourceText;
+    delete candidate.nonHtml;
   }
   relevantCandidates.sort((a,b)=>b.score-a.score);
   return relevantCandidates.slice(0, 7);
