@@ -628,7 +628,7 @@ loadExpandedCatalogs();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[];
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,activeExpectedCategory=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[];
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  function setGauge(id,value,status){
   const card=$id("scaling-gauge-"+id),ring=$id("scaling-gauge-ring-"+id),number=$id("scaling-gauge-value-"+id),caption=$id("scaling-gauge-status-"+id);
@@ -798,6 +798,13 @@ loadExpandedCatalogs();
   card.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();openAssessment();}});
  });
  const assessmentClose=$id("assessment-close");if(assessmentClose)assessmentClose.addEventListener("click",()=> $id("assessment-dialog")?.close());
+ const assessmentDialog=$id("assessment-dialog");
+ if(assessmentDialog)assessmentDialog.addEventListener("click",event=>{
+  if(event.target!==assessmentDialog)return;
+  const rect=assessmentDialog.getBoundingClientRect();
+  const inside=event.clientX>=rect.left&&event.clientX<=rect.right&&event.clientY>=rect.top&&event.clientY<=rect.bottom;
+  if(!inside)assessmentDialog.close();
+ });
  function resize(){if(!renderer||!camera)return;const w=stage.clientWidth||640,h=stage.clientHeight||360;camera.aspect=w/h;camera.updateProjectionMatrix();renderer.setSize(w,h);}
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
@@ -887,16 +894,19 @@ loadExpandedCatalogs();
  function escapeResearch(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
  function renderResearchCandidates(candidates,autoAccepted=false){
   researchCandidates=Array.isArray(candidates)?candidates:[];
-  const panel=$id("scaling-research-results");if(!panel)return;
+  const panel=$id("scaling-research-results"),details=$id("scaling-unverified-details"),count=$id("scaling-unverified-count");
+  if(!panel)return;
   panel.hidden=!researchCandidates.length;
+  if(details){details.hidden=!researchCandidates.length;details.open=false;}
+  if(count)count.textContent=String(researchCandidates.length);
   panel.innerHTML=researchCandidates.map((item,index)=>{
    const axes=Array.isArray(item.axesKm)&&item.axesKm.length>=2?item.axesKm.map(v=>fmt(v)+" km").join(" × ")+(Number.isFinite(item.uncertaintyKm)?" · published ± "+fmt(item.uncertaintyKm)+" km":" · uncertainty not stated"):"No extractable dimensions";
-   return '<article class="research-candidate'+(autoAccepted&&index===0?' is-chosen':'')+'"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · source-quality score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Use these dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
+   return '<article class="research-candidate"><div class="research-candidate-top"><strong>'+escapeResearch(item.title||item.source||"Source result")+'</strong><span>'+escapeResearch(qualityLabel(item.quality))+'</span></div><p>'+escapeResearch(axes)+'</p><small>'+escapeResearch(item.source||"Web source")+' · source-quality score '+escapeResearch(item.score??"—")+'</small><div class="research-candidate-actions">'+(item.axesKm?'<button type="button" data-research-index="'+index+'">Review dimensions</button>':'<span>Dimensions not extracted</span>')+' <a href="'+escapeResearch(item.url||"#")+'" target="_blank" rel="noopener">Open source ↗</a></div><p class="research-snippet">'+escapeResearch(item.snippet||"")+'</p></article>';
   }).join("");
  }
  async function runWebResearch(query,expectedCategory,lookupToken){
   if(!proxyUrl){setResearchState("complete","Web research requires the Cloudflare Worker URL in config.js.");return false;}
-  setResearchState("searching","Searching the public web index, opening promising sources and comparing published dimensions.");
+  setResearchState("searching","Searching for exact object-name matches in relevant scientific contexts.");
   setLookupStatus("Cloudflare Worker searching...");
   const url=new URL(proxyUrl);url.searchParams.set("action","research");url.searchParams.set("q",query);if(expectedCategory)url.searchParams.set("category",expectedCategory);
   const response=await fetch(url.toString(),{headers:{Accept:"application/json"}});
@@ -910,8 +920,8 @@ loadExpandedCatalogs();
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
   }
-  setResearchState("complete",result.candidates?.length?"No single result met the automatic-selection threshold. Review the most promising sources below.":"No useful public-web results were found.");
-  setLookupStatus(result.candidates?.length?"Several possible sources found. Select a candidate with dimensions, or refine the object name.":"No source-backed dimensions found. Scale remains unverified.",!result.candidates?.length);
+  setResearchState("complete",result.candidates?.length?"No verified result met the automatic-selection threshold. Relevant unverified candidates are available below.":"No relevant exact-name results were found. No unrelated pages are shown.");
+  setLookupStatus(result.candidates?.length?"Review the unverified candidates only if their title and original source clearly identify this object.":"No source-backed dimensions found. Scale remains unverified.",!result.candidates?.length);
   return false;
  }
  async function lookupObject(query,quiet=false,expectedCategory=null){
@@ -990,7 +1000,7 @@ loadExpandedCatalogs();
   }
  }
  async function load(file,format,model=null,url=null,companions=[]) {
-  clear();const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
+  clear();activeExpectedCategory=model?.category||null;const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";
@@ -1106,8 +1116,8 @@ loadExpandedCatalogs();
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
- $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value));
- $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value);}});
+ $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value,false,activeExpectedCategory));
+ $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value,false,activeExpectedCategory);}});
  $id("scaling-recommendations").addEventListener("click",e=>{
   const button=e.target.closest("[data-denominator]");if(!button)return;
   selectedDenominator=Number(button.dataset.denominator);update();
