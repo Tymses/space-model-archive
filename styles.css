@@ -394,3 +394,8 @@
 #model-grid>.result-card{width:100%;min-width:0}
 .model-folder-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:14px}
 .model-folder-grid>.result-card{width:100%;min-width:0;height:auto}
+
+
+/* Subtle slicer repair hint for spacecraft meshes only. */
+.spacecraft-mesh-note{display:block;margin-top:8px;color:var(--muted);font-size:10px;line-height:1.5}
+.spacecraft-mesh-note[hidden]{display:none}
