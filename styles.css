@@ -389,16 +389,22 @@
 
 
 
-/* Keep the Downloadable Models collection compact and the detail resolver results readable. */
-#model-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch;gap:14px}
-#model-grid>.model-folder{grid-column:auto;width:100%;min-width:0}
-#model-grid>.model-folder[open]{grid-column:1/-1}
-#model-grid>.result-card{width:auto;min-width:0}
-#model-grid .model-folder-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:14px}
-#model-grid .model-folder-grid>.result-card{width:100%;min-width:0;height:100%}
+/* Downloadable Models: force a compact four-column collection; remote resolver results stay full-width. */
+#model-grid.result-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;grid-auto-flow:row;align-items:stretch;gap:14px}
+#model-grid.result-grid>.result-card,
+#model-grid.result-grid>.model-folder:not([open]){grid-column:span 1!important;width:auto;min-width:0}
+#model-grid.result-grid>.model-folder[open]{grid-column:1/-1!important;width:100%;min-width:0}
+#model-grid .model-folder-grid{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px;padding:14px}
+#model-grid .model-folder-grid>.result-card{grid-column:span 1!important;width:100%;min-width:0;height:100%}
 .remote-variants .model-folder{width:100%;min-width:0}
-.remote-variants .model-folder-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:14px}
-.remote-variants .remote-variant-card{width:100%;min-width:0}
-@media(max-width:1100px){#model-grid,#model-grid .model-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:850px){#model-grid,#model-grid .model-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){#model-grid,#model-grid .model-folder-grid{grid-template-columns:minmax(0,1fr)}}
+.remote-variants .model-folder-grid{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:10px;padding:14px}
+.remote-variants .remote-variant-card{grid-column:1/-1!important;width:100%;min-width:0}
+@media(max-width:1100px){
+ #model-grid.result-grid,#model-grid .model-folder-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:850px){
+ #model-grid.result-grid,#model-grid .model-folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:600px){
+ #model-grid.result-grid,#model-grid .model-folder-grid{grid-template-columns:minmax(0,1fr)!important}
+}
