@@ -475,7 +475,7 @@ function addCatalogModel(model) {
 }
 async function loadExpandedCatalogs() {
   try {
-    const response = await fetch("./data/nasa-model-index.json");
+    const response = await fetch("./data/nasa-model-index.json?v=20261126-19");
     if (!response.ok) throw new Error("NASA index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -485,7 +485,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/spaceradar-model-index.json");
+    const response = await fetch("./data/spaceradar-model-index.json?v=20261126-19");
     if (!response.ok) throw new Error("Space Radar index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -495,7 +495,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/jpl-asteroid-index.json");
+    const response = await fetch("./data/jpl-asteroid-index.json?v=20261126-19");
     if (!response.ok) throw new Error("JPL index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -505,7 +505,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/asteroid-curated-index.json");
+    const response = await fetch("./data/asteroid-curated-index.json?v=20261126-19");
     if (!response.ok) throw new Error("Curated asteroid index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -515,7 +515,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/small-body-package-index.json");
+    const response = await fetch("./data/small-body-package-index.json?v=20261126-19");
     if (!response.ok) throw new Error("Small-body package index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -525,7 +525,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/moon-catalogue-index.json?v=20261126-18");
+    const response = await fetch("./data/moon-catalogue-index.json?v=20261126-19");
     if (!response.ok) throw new Error("Moon catalogue index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
