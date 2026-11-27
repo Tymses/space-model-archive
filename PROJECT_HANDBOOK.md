@@ -379,3 +379,16 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - GitHub Pages build and deployment run `46072701220` completed successfully, including the **Deploy to GitHub Pages** job.
 - The website deployment is confirmed. The exact InSight `.blend` file has not yet been converted end-to-end in a browser, so the fix is not claimed to have visually resolved that specific file. The parser regression test and CI establish the code-level correction only.
 - Documentation follow-up safety branch: `backup/after-blend-parser-offset-fix-2026-11-27`, created from merge commit `5a5426db35d28027098f9656f12a21fea5b6265f`; documentation branch: `docs/blend-parser-offset-fix-verification-2026-11-27`.
+
+
+## 19. Blender SDNA compiled structure size — 27 November 2026
+
+- Current main at investigation: `9ff3b0af5d1b6e356ae856ca08a306055bf15457`.
+- User reported repeatable `BLEND_INVALID_DNA_SIZE` for Blender structure `ID` after PR #28. The cause is confirmed: `getBlenderStructByteLength` read `SDNA[type].length`, but the schema builder never assigned a compiled structure size there. Its `length` members are per-field lengths and are not the structure's total size.
+- SDNA's `TLEN` table already contains the compiled size for each type, including C alignment padding. The DNA parser now retains the TLEN entry for each STRC type as `SDNA[type].byteLength`; nested traversal reads that exact value.
+- Regression tests cover TLEN retention and rejection of an invalid/missing byteLength, including the reported `ID` case.
+- This addresses the reported error at source level. End-to-end verification against NASA's 21,801,160-byte BLEND binary and geometry comparison are still pending until the binary can be run through the actual converter runtime. Do not claim STL quality until the binary imports and output geometry/bounds are checked.
+- Backup: `backup/before-blend-dna-struct-size-fix-2026-11-27` at `9ff3b0af5d1b6e356ae856ca08a306055bf15457`.
+- Implementation branch: `fix/blend-dna-struct-size-2026-11-27`.
+- Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `README.md`, `PROJECT_HANDBOOK.md`.
+- Rollback: reset to the safety branch commit above.
