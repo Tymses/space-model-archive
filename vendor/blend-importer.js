@@ -317,7 +317,7 @@ function setTransform(object, obj) {
     // Blender stores parentinv as a row-vector matrix (translation in row 4);
     // the parser exposes that raw layout, while Three.js uses column vectors.
     const parentInverse = object.parentinv
-    if (parentInverse) {
+    if (object.parent && parentInverse) {
         const value = (row, column) => Number(parentInverse?.[row]?.[column] ?? parentInverse?.[row]?.[String(column)])
         const matrixValues = Array.from({ length: 4 }, (_, row) =>
             Array.from({ length: 4 }, (_, column) => value(column, row)))
