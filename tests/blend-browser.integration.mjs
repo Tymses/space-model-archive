@@ -33,7 +33,7 @@ const browser = await chromium.launch({headless:true,args:["--no-sandbox"]});
 try {
   const page = await browser.newPage();
   page.on("console", msg => { if (msg.type()==="error") process.stderr.write("[browser] "+msg.text()+"\n"); });
-  await page.goto("http://127.0.0.1:"+address.port+"/", {waitUntil:"domcontentloaded"});
+  await page.goto("http://127.0.0.1:"+address.port+"/tests/blend-fixture-browser.html", {waitUntil:"domcontentloaded"});
   const result = await page.evaluate(async () => {
     const [THREE, importer, exporterModule] = await Promise.all([
       import("https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"),
