@@ -172,3 +172,8 @@ test("NASA terrain cross-listings reuse the verified original source page", () =
 test("NASA source resolver never substitutes a GitHub mirror folder for a source page", () => {
  const app=read("app.js");assert.match(app,/model\.sourcePageUrl=verifiedPage\|\|suppliedNasaPage\|\|"https:\/\/science\.nasa\.gov\/3d-resources\//);
 });
+
+test("NASA Pahrump Hills source records use the official NASA catalogue when no model detail page is verified", () => {
+ const index=JSON.parse(read("data/nasa-model-index.json"));const byId=new Map(index.files.map(item=>[item.id,item]));
+ for(const id of ["nasa-auto-054edfd18207","nasa-auto-d4c3298e3f16"])assert.equal(byId.get(id)?.sourceUrl,"https://science.nasa.gov/3d-resources/",id);
+});
