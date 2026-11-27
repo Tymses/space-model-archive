@@ -241,7 +241,8 @@ test("fit-to-build-plate calculation ignores astronomical scale, uses safety mar
  assert.ok(start>=0&&end>start);
  const calculate=new Function(app.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
  const fit=calculate([100,50,20],[100,80,50],5,100);
- assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
+ assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.deepEqual(fit.orientationIndices,[0,1,2]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
+ const rotated=calculate([100,50,20],[35,70,100],5,100);assert.deepEqual(rotated.orientationIndices,[2,1,0]);assert.deepEqual(rotated.printDimensions,[18,45,90]);assert.equal(rotated.fits,true);
  const reduced=calculate([100,50,20],[100,80,50],5,50);assert.equal(reduced.factor,0.45);assert.equal(reduced.fits,true);
  const enlarged=calculate([100,50,20],[100,80,50],5,150);assert.equal(enlarged.fits,false);
  assert.equal(calculate([10,10,10],[10,10,10],5,100).valid,false);
@@ -259,7 +260,7 @@ test("scaling workspace exposes original, fit-to-build-plate and custom-dimensio
  const html=read("index.html"),app=read("app.js");
  for(const id of ["scaling-mode","scaling-fit-margin","scaling-fit-adjustment","scaling-custom-dimension","scaling-custom-unit","scaling-custom-axis","scaling-custom-kind"])assert.match(html,new RegExp('id="'+id+'"'));
  assert.match(html,/value="fit">Fit to build plate/);assert.match(html,/value="custom">Custom original dimensions/);
- assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/exported STL keeps the source orientation/);
+ assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/automatically rotated to the selected axis-aligned orientation/);
 });
 
 test("custom original dimensions convert mm, m and km to millimetres",()=>{
@@ -333,13 +334,15 @@ test("all button-like controls receive a short click acknowledgement animation",
 test("Blender annotation meshes are excluded by conservative whole-name matching",()=>{
  const source=read("vendor/blend-importer.js"),start=source.indexOf("const ANNOTATION_OBJECT_NAME"),end=source.indexOf("\nexport function createObjects",start);
  assert.ok(start>=0&&end>start,"annotation classifier must be defined before scene construction");
- const helper=source.slice(start,end).replace("export function isLikelyAnnotationObject","function isLikelyAnnotationObject");
+ const helper="const BLEND_OBJECT_TYPES={camera:11};\n"+source.slice(start,end).replace("export function isLikelyAnnotationObject","function isLikelyAnnotationObject");
  const classify=new Function(helper+"\nreturn isLikelyAnnotationObject;")();
  assert.equal(classify({aname:"Text",data:{aname:"Text"}}),true);
  assert.equal(classify({aname:"Text.001",data:{aname:"Text.001"}}),true);
  assert.equal(classify({aname:"Mission label",data:{aname:"Mission label"}}),false);
  assert.equal(classify({aname:"Solar Panel",data:{aname:"TexturedMesh"}}),false);
  assert.equal(classify({aname:"Cube",data:{aname:"Cube.001"}}),false);
+ assert.equal(classify({aname:"logo_NASA_JPL",data:{aname:"Plane.007"},parent:{type:11}}),true);
+ assert.equal(classify({aname:"ground_and_sky_dome",data:{aname:"Sphere"}}),true);
 });
 test("Blender scene builder can explicitly retain annotation meshes when requested",()=>{
  const source=read("vendor/blend-importer.js");
@@ -347,7 +350,7 @@ test("Blender scene builder can explicitly retain annotation meshes when request
  assert.ok(source.includes("options.onAnnotationExcluded?.(diagnostic)"));
  const app=read("app.js");
  assert.ok(app.includes("onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)"));
- assert.ok(app.includes("likely text/label mesh(es)"));
+ assert.ok(app.includes("hidden or presentation-only scene object(s)"));
 });
 
 
@@ -358,11 +361,99 @@ test("Blender parser advances nested DNA structures by their compiled byte size"
  assert.ok(start>=0&&end>start,"compiled SDNA byte-size helper must exist");
  const helper=source.slice(start,end+2);
  const getSize=new Function(helper+"\nreturn getBlenderStructByteLength;")();
- assert.equal(getSize({MVert:{length:12},CustomDataLayer:{length:24}},"MVert"),12);
- assert.equal(getSize({MVert:{length:12}},"MVert"),12);
+ assert.equal(getSize({MVert:{byteLength:12},CustomDataLayer:{byteLength:24}},"MVert"),12);
+ assert.equal(getSize({MVert:{byteLength:12}},"MVert"),12);
  assert.throws(()=>getSize({},"MissingType"),/BLEND_INVALID_DNA_SIZE/);
- assert.throws(()=>getSize({Broken:{length:0}},"Broken"),/BLEND_INVALID_DNA_SIZE/);
+ assert.throws(()=>getSize({Broken:{byteLength:0}},"Broken"),/BLEND_INVALID_DNA_SIZE/);
+ assert.throws(()=>getSize({ID:{length:8}},"ID"),/BLEND_INVALID_DNA_SIZE/);
  assert.ok(source.includes("const memberByteLength = getBlenderStructByteLength(current_SDNA_template.SDNA, type)"));
+ assert.ok(source.includes("byteLength: compiledByteLength"));
+ assert.ok(source.includes("const compiled_struct_byte_length = lengths[struct_type_index]"));
+ assert.ok(source.includes("getSDNAStructureConstructor(struct_name, obj, compiled_struct_byte_length)"));
  assert.ok(source.includes("memberEnd > data_block_end"));
  assert.ok(source.includes("memberStart + memberByteLength"));
+});
+
+test("BLEND parse failures offer independent converter fallbacks with upload disclosure",()=>{
+ const app=read("app.js");
+ assert.ok(app.includes("https://www.innerscene.com/tools/blend-to-stl"));
+ assert.ok(app.includes("https://shapeweld.com/tools/blend-to-stl"));
+ assert.ok(app.includes("Shapeweld uploads the file to its server"));
+ assert.ok(app.includes("fallback.append(heading,note,local,server,privacy)"));
+});
+
+test("Blender object transforms apply the transposed parent-inverse matrix",()=>{
+ const source=read("vendor/blend-importer.js");
+ assert.ok(source.includes("const parentInverse = object.parentinv"));
+ assert.ok(source.includes("if (object.parent && parentInverse)"));
+ assert.ok(source.includes("value(column, row)"));
+ assert.ok(source.includes("parentInverseThree = basis.clone().multiply(blenderMatrix).multiply(basis.clone().invert())"));
+ assert.ok(source.includes("obj.matrix.premultiply(parentInverseThree)"));
+ assert.ok(source.includes("obj.matrixAutoUpdate = false"));
+});
+
+test("Blender numeric-key vector structs are read as location, scale, rotation and quaternion",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function safeNumericVector"),end=source.indexOf("\nfunction setTransform",start);
+ assert.ok(start>=0&&end>start);
+ const helper=source.slice(start,end);
+ const {safeVec,safeQuat}=new Function(helper+"\nreturn {safeVec,safeQuat};")();
+ assert.deepEqual(safeVec({0:1,1:2,2:3},[0,0,0]),[1,2,3]);
+ assert.deepEqual(safeVec(new Float32Array([4,5,6]),[0,0,0]),[4,5,6]);
+ assert.deepEqual(safeQuat({0:1,1:0,2:0,3:0}),[1,0,0,0]);
+ const nonUnit=safeQuat({0:0.3016583025,1:-0.6116163731,2:0.314779669,3:0.6561406255});
+ assert.ok(Math.abs(Math.hypot(...nonUnit)-1)<1e-12);
+ assert.equal(safeQuat({0:1,1:0,2:0}),null);
+});
+
+test("Blender active view-layer visibility excludes hidden and viewport-restricted objects",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function isObjectVisibleInActiveViewLayer("),end=source.indexOf("\n}",start);
+ assert.ok(start>=0&&end>start);
+ const helper=source.slice(start,end+2);
+ const visible=new Function(helper+"\nreturn isObjectVisibleInActiveViewLayer;")();
+ const shown={aname:"shown",restrictflag:0},renderHidden={aname:"render-hidden",restrictflag:0},hidden={aname:"hidden",restrictflag:0},viewportHidden={aname:"viewport-hidden",restrictflag:1},childOfHiddenCamera={aname:"camera-child",restrictflag:0,parent:{restrictflag:1}};
+ const file={objects:{Base:[{object:shown,flag:214},{object:renderHidden,flag:86},{object:hidden,flag:0},{object:viewportHidden,flag:128}]}};
+ assert.equal(visible(file,shown),true);
+ assert.equal(visible(file,renderHidden),true);
+ assert.equal(visible(file,hidden),false);
+ assert.equal(visible(file,viewportHidden),false);
+ file.objects.Base.push({object:childOfHiddenCamera,flag:214});assert.equal(visible(file,childOfHiddenCamera),true);
+ assert.equal(visible(file,{aname:"orphan"}),false);
+ assert.equal(visible(file,hidden,{includeHiddenObjects:true}),true);
+});
+
+test("Blender mesh geometry computes exact local bounds before being returned",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function createBufferGeometry(");
+ const end=source.indexOf("\nfunction ",start+10);
+ const body=source.slice(start,end>start?end:undefined);
+ assert.ok(body.includes("geometry.computeBoundingBox()"));
+ assert.ok(body.indexOf("geometry.computeBoundingBox()")<body.indexOf("return geometry"));
+});
+
+test("manual original dimensions convert units and select the chosen model axis",()=>{
+ const source=read("app.js"),start=source.indexOf("function calculateFitToBuildPlate("),end=source.indexOf("function describeOriginalScale(",start);
+ assert.ok(start>=0&&end>start);
+ const helpers=new Function(source.slice(start,end)+"\nreturn {convertCustomDimensionToMm,calculateCustomScaleDenominator};")();
+ assert.equal(helpers.convertCustomDimensionToMm(3.4,"m"),3400);
+ assert.equal(helpers.convertCustomDimensionToMm(3400,"mm"),3400);
+ assert.equal(helpers.convertCustomDimensionToMm(-1,"m"),null);
+ const model=[6135.377,1584.011,3620.992];
+ assert.ok(Math.abs(helpers.calculateCustomScaleDenominator(model,3400,"longest")-(3400/6135.377))<1e-12);
+ assert.ok(Math.abs(helpers.calculateCustomScaleDenominator(model,1000,"1")-(1000/1584.011))<1e-12);
+});
+test("automatic printer-bed fit chooses a safe axis orientation and proportional scale",()=>{
+ const source=read("app.js"),start=source.indexOf("function calculateFitToBuildPlate("),end=source.indexOf("function convertCustomDimensionToMm(",start);
+ assert.ok(start>=0&&end>start);
+ const fit=new Function(source.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
+ const result=fit([6135.377,1584.011,3620.992],[256,256,256],5,100);
+ assert.equal(result.valid,true);assert.equal(result.fits,true);
+ assert.ok(result.factor>0&&result.factor<1);
+ assert.ok(result.printDimensions.every((value,index)=>value<=result.usableBed[index]+1e-9));
+ assert.equal(result.usableBed[0],246);
+ assert.equal(fit([100,100,100],[256,256,256],200,100).valid,false);
+ assert.equal(fit([100,100,100],[256,256,256],5,90).fits,true);
+ assert.equal(fit([100,100,100],[256,256,256],5,110).fits,false);
+ assert.equal(fit([100,100,100],[256,256,256],5,300).fits,false);
 });

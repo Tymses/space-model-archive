@@ -147,6 +147,32 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["asteroid 4179 toutatis","https://science.nasa.gov/3d-resources/asteroid-4179-toutatis/"],
  ["asteroid 433 eros","https://science.nasa.gov/3d-resources/asteroid-433-eros/"]
 ]);
+function exactMeshBounds(root) {
+  root.updateMatrixWorld(true);
+  const bounds = new THREE.Box3();
+  const point = new THREE.Vector3();
+  let usedVertices = 0;
+  root.traverse(node => {
+    if (!node.isMesh || !node.geometry?.attributes?.position) return;
+    const geometry = node.geometry;
+    const position = geometry.attributes.position;
+    const index = geometry.index;
+    const start = Math.max(0, Number(geometry.drawRange?.start) || 0);
+    const available = index ? index.count : position.count;
+    const requested = geometry.drawRange?.count;
+    const count = Number.isFinite(requested) ? Math.max(0, Math.min(requested, available - start)) : available - start;
+    for (let offset = start; offset < start + count; offset++) {
+      const vertexIndex = index ? index.getX(offset) : offset;
+      point.fromBufferAttribute(position, vertexIndex).applyMatrix4(node.matrixWorld);
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y) || !Number.isFinite(point.z)) continue;
+      bounds.expandByPoint(point);
+      usedVertices++;
+    }
+  });
+  if (!usedVertices || bounds.isEmpty()) throw new Error("Model has no finite triangle geometry.");
+  return bounds;
+}
+
 function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
   .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -228,10 +254,11 @@ function findCrossListedModel(model){
 function calculateFitToBuildPlate(sourceMm,bedMm,marginMm=5,adjustmentPercent=100){
  if(!Array.isArray(sourceMm)||!Array.isArray(bedMm)||sourceMm.length!==3||bedMm.length!==3||!sourceMm.every(v=>Number.isFinite(v)&&v>0)||!bedMm.every(v=>Number.isFinite(v)&&v>0)||!Number.isFinite(marginMm)||marginMm<0||!Number.isFinite(adjustmentPercent)||adjustmentPercent<=0)return {valid:false};
  const usableBed=bedMm.map(v=>v-2*marginMm);if(!usableBed.every(v=>Number.isFinite(v)&&v>0))return {valid:false,usableBed};
- const rotations=[[sourceMm[0],sourceMm[1],sourceMm[2]],[sourceMm[0],sourceMm[2],sourceMm[1]],[sourceMm[1],sourceMm[0],sourceMm[2]],[sourceMm[1],sourceMm[2],sourceMm[0]],[sourceMm[2],sourceMm[0],sourceMm[1]],[sourceMm[2],sourceMm[1],sourceMm[0]]];
- let maxFactor=0,orientation=null;for(const rotation of rotations){const factor=Math.min(...rotation.map((v,i)=>usableBed[i]/v));if(factor>maxFactor){maxFactor=factor;orientation=rotation;}}
- const factor=maxFactor*adjustmentPercent/100,printDimensions=sourceMm.map(v=>v*factor),fits=rotations.some(rotation=>rotation.every((v,i)=>v*factor<=usableBed[i]+1e-9));
- return {valid:true,maxFactor,factor,orientation,usableBed,printDimensions,fits,adjustmentPercent,marginMm};
+ const permutations=[[0,1,2],[0,2,1],[1,0,2],[1,2,0],[2,0,1],[2,1,0]];
+ let maxFactor=0,orientationIndices=[0,1,2];
+ for(const indices of permutations){const oriented=indices.map(index=>sourceMm[index]),factor=Math.min(...oriented.map((v,i)=>usableBed[i]/v));if(factor>maxFactor){maxFactor=factor;orientationIndices=indices;}}
+ const orientation=orientationIndices.map(index=>sourceMm[index]),factor=maxFactor*adjustmentPercent/100,printDimensions=orientation.map(v=>v*factor),fits=printDimensions.every((v,i)=>v<=usableBed[i]+1e-9);
+ return {valid:true,maxFactor,factor,orientation,orientationIndices,usableBed,printDimensions,fits,adjustmentPercent,marginMm};
 }
 function convertCustomDimensionToMm(value,unit){
  const factors={mm:1,m:1000,km:1000000},number=Number(value);
@@ -377,7 +404,7 @@ async function renderExtended3DPreview(model){
   renderer.domElement.style.cssText="display:block;width:100%;height:360px;touch-action:none";
   scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));
   const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);scene.add(object);
-  const bounds=new THREE.Box3().setFromObject(object);if(bounds.isEmpty())throw new Error("The file contains no visible mesh geometry.");
+  const bounds=exactMeshBounds(object);
   const size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z)||1;
   object.position.sub(center);camera.position.set(maxDim*1.7,maxDim*1.3,maxDim*1.9);camera.near=Math.max(maxDim/10000,.001);camera.far=maxDim*100;camera.updateProjectionMatrix();
   const controls=new orbitModule.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;
@@ -903,7 +930,7 @@ restoreRouteFromHash();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,activeExpectedCategory=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,currentExportFactor=1,currentExportReady=false,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[],conversionContext=null,occtPromise=null,occtScriptPromise=null,descriptionToken=0;
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,activeExpectedCategory=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,currentExportFactor=1,currentExportOrientation=[0,1,2],currentExportReady=false,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[],conversionContext=null,occtPromise=null,occtScriptPromise=null,descriptionToken=0;
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  function setGauge(id,value,status){
   const card=$id("scaling-gauge-"+id),ring=$id("scaling-gauge-ring-"+id),number=$id("scaling-gauge-value-"+id),caption=$id("scaling-gauge-status-"+id);
@@ -1030,7 +1057,15 @@ restoreRouteFromHash();
   return [...new Set(values)].sort((a,b)=>a-b);
  }
  function updatePreview(factor){
-  if(!root||!active)return;root.scale.setScalar(active.unitFactor*factor);
+  if(!root||!active)return;
+  const indices=currentExportOrientation||[0,1,2],inversions=(indices[0]>indices[1]?1:0)+(indices[0]>indices[2]?1:0)+(indices[1]>indices[2]?1:0),sign=inversions%2?-1:1;
+  const matrix=new THREE.Matrix4().set(
+   indices[0]===0?1:0,indices[0]===1?1:0,indices[0]===2?1:0,0,
+   indices[1]===0?1:0,indices[1]===1?1:0,indices[1]===2?1:0,0,
+   indices[2]===0?sign:0,indices[2]===1?sign:0,indices[2]===2?sign:0,0,
+   0,0,0,1
+  );
+  root.quaternion.setFromRotationMatrix(matrix);root.scale.setScalar(active.unitFactor*factor);
   if(camera&&active.maxSize){const m=active.maxSize*factor;camera.position.set(m*1.7,m*1.3,m*1.9);camera.near=Math.max(m/10000,.001);camera.far=Math.max(m*100,1000);camera.updateProjectionMatrix();}
  }
  function renderFit(title,description,fits){
@@ -1039,7 +1074,7 @@ restoreRouteFromHash();
  }
  function update(){
   if(!active)return;
-  const mode=$id("scaling-mode").value,source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+  const mode=$id("scaling-mode").value,source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);currentExportOrientation=[0,1,2];
   $id("scaling-source-dimensions").textContent=dims(source);$id("scaling-original-dimensions").textContent=dims(source);currentExportReady=false;currentExportFactor=1;
   $id("scaling-mode-hint").setAttribute("data-mode",mode);
   if(mode==="fit"){
@@ -1047,10 +1082,10 @@ restoreRouteFromHash();
    if(!validBed){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Enter valid printer dimensions before fitting the model.</p>";setGauge("printability",null,"Invalid build volume");renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
    const margin=Number($id("scaling-fit-margin").value),adjustment=Number($id("scaling-fit-adjustment").value),fit=calculateFitToBuildPlate(source,bed,margin,adjustment);
    if(!fit.valid){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Safety margin must be non-negative and leave a positive usable volume on all axes.</p>";setGauge("printability",null,"Invalid safety margin");renderFit("Check safety margin","The selected safety margin leaves no usable space on at least one printer axis.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
-   currentExportFactor=fit.factor;currentExportReady=true;$id("scaling-selected-scale").textContent=fmt(fit.factor)+"× of source geometry";$id("scaling-print-dimensions").textContent=dims(fit.printDimensions);
-   $id("scaling-recommendations").innerHTML="<p>Maximum proportional fit: <strong>"+fmt(fit.maxFactor)+"×</strong> of the loaded geometry.</p><p>Adjustment: "+fmt(adjustment)+"% · safety margin: "+fmt(margin)+" mm on every side.</p><p>Usable volume: "+dims(fit.usableBed)+". Increase the adjustment above 100% to test a larger model; the fit indicator will warn if it crosses the safe limits. The exported STL keeps the source orientation; rotate it in your slicer if the best orientation shown requires an axis swap.</p>";
-   const actualFit=best(fit.printDimensions,fit.usableBed);$id("scaling-orientation").textContent="Best orientation: "+(actualFit.orientation?dims(actualFit.orientation):"—");
-   setGauge("printability",Math.min(100,actualFit.factor*100),fit.fits?"Fits with safety margins":"Exceeds safety-adjusted build volume");
+   currentExportFactor=fit.factor;currentExportOrientation=fit.orientationIndices;currentExportReady=true;$id("scaling-selected-scale").textContent=fmt(fit.factor)+"× of source geometry";$id("scaling-print-dimensions").textContent=dims(fit.printDimensions);
+   $id("scaling-recommendations").innerHTML="<p>Maximum proportional fit: <strong>"+fmt(fit.maxFactor)+"×</strong> of the loaded geometry.</p><p>Adjustment: "+fmt(adjustment)+"% · safety margin: "+fmt(margin)+" mm on every side.</p><p>Usable volume: "+dims(fit.usableBed)+". Increase the adjustment above 100% to test a larger model; the fit indicator will warn if it crosses the safe limits. The preview and exported STL are automatically rotated to the selected axis-aligned orientation, then scaled proportionally to the usable printer volume.</p>";
+   $id("scaling-orientation").textContent="Applied orientation: "+dims(fit.orientation);
+   setGauge("printability",Math.min(100,fit.fits?100:Math.min(...fit.printDimensions.map((v,i)=>fit.usableBed[i]/v))*100),fit.fits?"Fits with safety margins":"Exceeds safety-adjusted build volume");
    renderFit(fit.fits?"Fits the selected build plate":"Exceeds the selected build plate",fit.fits?"The model fits in the selected printer volume with "+fmt(margin)+" mm clearance on every side.":"The adjusted model is larger than the safety-adjusted usable volume. Reduce the adjustment percentage.",fit.fits);updatePreview(fit.factor);return;
   }
   let referenceDimensionMm=null,referenceAxis="longest",referenceLabel="";
@@ -1077,7 +1112,7 @@ restoreRouteFromHash();
   $id("scaling-selected-scale").textContent="1:"+fmt(selected);$id("scaling-print-dimensions").textContent=dims(print);
   $id("scaling-recommendations").innerHTML=choices.slice(0,6).map((den,i)=>{const size=source.map(v=>v*originalDenominator/den),isSelected=den===selected;return '<button type="button" class="scaling-scale-option'+(isSelected?' is-selected':'')+'" data-denominator="'+den+'"><strong>1:'+fmt(den)+'</strong><span>'+dims(size)+'</span><small>'+(i===0?'Largest recommended size':isSelected?'Selected scale':'Smaller print')+'</small></button>';}).join("");
   $id("scaling-orientation").textContent=(mode==="custom"?referenceLabel+" · model axis "+(referenceAxis==="longest"?"longest":"XYZ"[Number(referenceAxis)])+" · ":"")+"Best orientation: "+(fitNow.orientation?dims(fitNow.orientation):"—");
-  setGauge("printability",Math.min(100,fitNow.factor*100),fits?"Fits selected build volume":"Needs a smaller scale");renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The model fits after a 90° axis-aligned rotation.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);updatePreview(factor);
+  setGauge("printability",Math.min(100,fitNow.factor*100),fits?"Fits selected build volume":"Needs a smaller scale");renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The exported STL is rotated and scaled to fit the selected build volume.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);updatePreview(factor);
  }
  function assessmentText(id,value){const el=$id(id);if(el)el.textContent=value;}
  function openAssessment(){
@@ -1434,7 +1469,7 @@ restoreRouteFromHash();
       throw new Error("BLEND_NO_VALID_MESH: Blender "+parsed.header.version+" scene contains no importable mesh triangles. "+detail+" No substitute geometry was generated.");
      }
      object=new THREE.Group();object.add(...objects);
-     const annotationNote=annotationDiagnostics.length?" Excluded "+annotationDiagnostics.length+" likely text/label mesh(es) from printable geometry.": "";
+     const annotationNote=annotationDiagnostics.length?" Excluded "+annotationDiagnostics.length+" hidden or presentation-only scene object(s) from printable geometry.": "";
      if(meshDiagnostics.length){
       const examples=meshDiagnostics.slice(0,2).map(item=>item.object+": "+item.message).join(" | ");
       setLookupStatus("Blender "+parsed.header.version+": loaded "+blendMeshCount+" valid mesh(es); skipped "+meshDiagnostics.length+" invalid mesh object(s)."+annotationNote+" "+examples,true);
@@ -1450,7 +1485,7 @@ restoreRouteFromHash();
      const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));
     }
    if(my!==token){renderer.dispose();return;}
-   object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+   object.updateMatrixWorld(true);const box=exactMeshBounds(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
    if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");
    root=new THREE.Group();root.position.copy(center).multiplyScalar(-1);root.add(object);scene.add(root);
    const unit=(format==="GLB"||format==="GLTF"||format==="BLEND")?"m":"mm";$id("scaling-units").value=unit;
@@ -1475,6 +1510,15 @@ restoreRouteFromHash();
    }
   }catch(err){
    if(my!==token)return;clear();const errorText=String(err.message||err),safeError=errorText.replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));const helpText=format==="BLEND"?"Check that the source URL returns the original .blend binary, that the download is complete and within 75 MB, and that the file uses a supported Blender structure. Invalid mesh objects are skipped only when other valid meshes can still be imported; missing topology is never invented. For complex or unsupported scenes, open the file in Blender and export the required mesh as GLB or STL.":"Archive previews use the configured Cloudflare asset proxy when available. If the download still fails, the source may be unavailable, the URL may not point to a direct model file, or the host may block server-side access. Supported formats: STL, OBJ, PLY, GLB, GLTF, FBX, 3DS, LWO, BLEND and STEP.";stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+safeError+'</p><p>'+helpText+'</p></div>';
+   if(format==="BLEND"){
+    const fallback=document.createElement("div");fallback.className="blend-converter-fallback";
+    const heading=document.createElement("strong");heading.textContent="Alternative BLEND converters";
+    const note=document.createElement("p");note.textContent="These converters use a different conversion pipeline. Innerscene processes the file locally in your browser; Shapeweld opens it with Blender on its server. After downloading the STL, upload it here again for scaling.";
+    const local=document.createElement("a");local.className="action-link";local.href="https://www.innerscene.com/tools/blend-to-stl";local.target="_blank";local.rel="noopener noreferrer";local.textContent="Try Innerscene (local conversion) ↗";
+    const server=document.createElement("a");server.className="action-link secondary";server.href="https://shapeweld.com/tools/blend-to-stl";server.target="_blank";server.rel="noopener noreferrer";server.textContent="Try Shapeweld (Blender server) ↗";
+    const privacy=document.createElement("small");privacy.textContent="Shapeweld uploads the file to its server and states that uploads and results are deleted after 3 days. Do not use it for confidential models.";
+    fallback.append(heading,note,local,server,privacy);stage.append(fallback);
+   }
    $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }

@@ -9,6 +9,10 @@ on:
       - "vendor/blend-importer.js"
       - "vendor/blend-parser.js"
       - "tests/model-workspace.test.mjs"
+      - "tests/blend-fixture.integration.mjs"
+      - "tests/blend-browser.integration.mjs"
+      - "tests/blend-native-inspection.py"
+      - "tests/blend-fixture-browser.html"
       - ".github/workflows/test-model-workspace.yml"
   pull_request:
     paths:
@@ -35,3 +39,28 @@ jobs:
           node-version: "20"
       - name: Run model workspace regression tests
         run: node --test tests/model-workspace.test.mjs
+      - name: Parse official NASA InSight BLEND fixture
+        run: node tests/blend-fixture.integration.mjs
+      - name: Install Chromium for browser conversion integration
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Run browser BLEND to STL integration
+        run: node tests/blend-browser.integration.mjs
+      - name: Install native Blender for source comparison
+        run: sudo apt-get update && sudo apt-get install -y blender
+      - name: Validate binary STL geometry and bounds
+        run: python3 tests/validate-binary-stl.py /tmp/insight-browser.stl /tmp/insight-browser-result.json
+      - name: Upload converted InSight STL sample
+        uses: actions/upload-artifact@v4
+        with:
+          name: insight-cruise-stage-browser-stl
+          path: /tmp/insight-browser.stl
+          if-no-files-found: error
+          retention-days: 7
+      - name: Export NASA fixture with native Blender
+        run: |
+          curl --fail --location --retry 3 --output /tmp/insight-native.blend "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20%28final%29.blend"
+          blender --background /tmp/insight-native.blend --python-exit-code 1 --python tests/blend-native-inspection.py -- /tmp/insight-native.stl
+      - name: Compare browser and native Blender object transforms
+        run: node tests/compare-blend-transforms.mjs

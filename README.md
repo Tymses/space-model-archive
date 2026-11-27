@@ -87,7 +87,7 @@ The dedicated **Scaling & 3D Print** workspace is available from the top navigat
 
 The workspace supports millimetre, centimetre, metre and inch unit interpretation. External files also have an optional direct-diameter mode: enter the real object's original diameter and the desired printed diameter in millimetres to calculate the model scale without a verified longest-axis record. The collection breadcrumb uses “Asteroids & Comets” rather than the technical label “Small Bodies”. The GLB/glTF format uses metres by specification, while STL/OBJ/PLY units must be checked by the user. It calculates the source geometry dimensions, derives the original scale when a verified real-world reference is supplied, tests six axis-aligned 90° orientations against the selected printer volume, and suggests standard scale denominators. The built-in Bambu Lab P2S profile is 256 × 256 × 256 mm; custom build volumes can be entered. This is a bounding-box check, not a slicer simulation or a guarantee of printability. The source file is not modified. The selected printable scale can be exported directly as a binary STL in millimetres; the source file remains unchanged.
 
-The workspace also provides three independent calculation modes. **Original astronomical scale** retains the source-backed physical-dimension workflow. **Fit to build plate** ignores astronomical scale, calculates the largest proportional geometry that fits the selected printer's usable volume, and applies a configurable safety margin (default 5 mm on every side) plus a proportional adjustment control. **Custom original dimensions** accepts a user-entered diameter, length, height or other measurement in mm, m or km; the user maps it to the matching model axis and the workspace derives the original denominator and printable standard scales while preserving all other proportions. The custom measurement is user-supplied, not source-verified. All modes compare resulting geometry with the selected build volume; the result remains a bounding-box check, not a slicer simulation. Fit mode checks six axis-aligned 90° orientations, but the exported STL retains the source orientation; rotate it in the slicer if the reported best orientation requires an axis swap.
+The workspace also provides three independent calculation modes. **Original astronomical scale** retains the source-backed physical-dimension workflow. **Fit to build plate** ignores astronomical scale, calculates the largest proportional geometry that fits the selected printer's usable volume, and applies a configurable safety margin (default 5 mm on every side) plus a proportional adjustment control. **Custom original dimensions** accepts a user-entered diameter, length, height or other measurement in mm, m or km; the user maps it to the matching model axis and the workspace derives the original denominator and printable standard scales while preserving all other proportions. The custom measurement is user-supplied, not source-verified. All modes compare resulting geometry with the selected build volume; the result remains a bounding-box check, not a slicer simulation. Fit mode checks all six axis-aligned 90° orientations and applies the selected rotation to both the preview and exported STL before uniform scaling.
 
 The reference-length helper accepts km, m, cm or mm and includes a guide for finding a defensible longest-axis measurement. It directs asteroids/comets to the JPL Small-Body Database `extent` field, planets/moons to NASA mission science pages or PDS shape-model records, and other cases to the original scientific publication/dataset. The guide explains how to select the largest axis, handle radii versus full dimensions, and record the exact source URL. A single effective/mean diameter, unsourced summary or model-file bounding box is not silently treated as a verified longest axis.
 
@@ -135,3 +135,32 @@ The **Convert to STL** action is placed in the top-right title row of the model 
 ### STL conversion status
 
 The browser-based **Convert to STL** action is marked **BETA** wherever it is offered. Conversion may not work for all models or file formats. It remains a best-effort browser conversion; inspect every exported STL in your slicer before printing.
+
+
+### Blender SDNA struct-size correction
+
+Blender SDNA's `TLEN` table stores the actual compiled size of each C structure, including alignment padding. The parser now retains that size as `SDNA[type].byteLength` when it compiles each structure and uses it for nested inline structure traversal. It no longer reads a nonexistent `SDNA[type].length` field (which was never the compiled struct size). This specifically fixes failures such as `BLEND_INVALID_DNA_SIZE` for the base `ID` structure.
+
+
+
+### Blender conversion fallback
+
+If the in-browser BLEND parser rejects a file, the Scaling workspace offers two independent alternatives: [Innerscene BLEND to STL](https://www.innerscene.com/tools/blend-to-stl), which states that conversion runs locally in the browser (up to 200 MB), and [Shapeweld BLEND to STL](https://shapeweld.com/tools/blend-to-stl), which states that it opens the file in Blender on its server (up to 50 MB; files/results deleted after three days). These are external services, not SPACEMESHER/Worker conversions. The user must download the STL and upload it back into Scaling. Server upload is disclosed before use.
+
+
+### Automatic build-plate orientation
+
+Fit to build plate now selects the best of all six axis-aligned dimension permutations, applies a proper 3D rotation to the preview and exported STL, and then applies the proportional fit factor. The safety margin is enforced on each printer axis. The original/custom-scale modes reset to the source orientation.
+
+
+### Blender parent-inverse transforms
+
+The importer applies each Blender object's `parentinv` matrix in the correct order and coordinate basis before attaching the object to its parent. This preserves Blender's world-space placement for parented meshes; ignoring this matrix can stretch the scene bounds and separate otherwise correctly sized parts.
+
+
+### Active Blender view-layer selection
+
+BLEND imports now respect the active Blender view layer: objects hidden by view-layer Base flags or the viewport restriction flag are skipped, while render-hidden but viewport-visible geometry is preserved. This prevents alternate manipulator poses and other hidden scene variants from being mixed into the printable model. Advanced callers can set `includeHiddenObjects: true` to inspect every mesh datablock.
+
+
+For model dimensions and automatic printer-bed fitting, SPACEMESHER measures only vertices referenced by actual mesh triangles, transformed through the full object hierarchy. Isolated/unreferenced vertices and stale cached geometry bounds do not distort the printable dimensions.

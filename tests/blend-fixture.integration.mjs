@@ -1,0 +1,94 @@
+import assert from "node:assert/strict";
+import parser from "../vendor/blend-parser.js";
+
+const source = "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20%28final%29.blend";
+const expectedBytes = 21801160;
+const response = await fetch(source, { headers: { "User-Agent": "SPACEMESHER-BLEND-Integration-Test/1.0" } });
+assert.equal(response.status, 200, "NASA fixture download must return HTTP 200");
+const declared = Number(response.headers.get("content-length"));
+if (Number.isFinite(declared) && declared > 0) assert.equal(declared, expectedBytes, "NASA fixture Content-Length changed");
+const buffer = await response.arrayBuffer();
+assert.equal(buffer.byteLength, expectedBytes, "NASA fixture must be downloaded completely");
+assert.equal(new TextDecoder().decode(new Uint8Array(buffer, 0, 7)), "BLENDER", "NASA fixture must have a Blender header");
+
+const parsed = await new Promise((resolve, reject) => {
+  parser.onParseReady = (file, error) => error || !file ? reject(new Error(String(error || "Parser returned no file"))) : resolve(file);
+  try { parser.loadBlendFromArrayBuffer(buffer); } catch (error) { reject(error); }
+});
+assert.ok(parsed && Array.isArray(parsed.object_array), "Parser must return Blender datablocks");
+assert.ok(parsed.object_array.length > 0, "Parser must return non-empty Blender datablocks");
+const meshes = parsed.objects?.Mesh || [];
+assert.ok(meshes.length > 0, "NASA InSight fixture must contain parsed Mesh datablocks");
+const validMeshes = meshes.filter(mesh =>
+  Number(mesh?.totvert) > 0 && Number(mesh?.totloop) > 0 && Number(mesh?.totpoly) > 0
+);
+assert.ok(validMeshes.length > 0, "NASA InSight fixture must contain mesh datablocks with non-empty vertex, loop and polygon topology");
+const totals = validMeshes.reduce((sum, mesh) => ({
+  vertices: sum.vertices + Number(mesh.totvert),
+  loops: sum.loops + Number(mesh.totloop),
+  polygons: sum.polygons + Number(mesh.totpoly)
+}), { vertices: 0, loops: 0, polygons: 0 });
+assert.ok(totals.vertices >= 3 && totals.loops >= 3 && totals.polygons >= 1, "Parsed mesh topology totals must be non-empty");
+const targetNames = new Set(["deck","panel_l_root","Cube.046","Cube.059","arm_03.001","logo_NASA_JPL","ground_and_sky_dome"]);
+const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.has(object.aname)).map(object=>({
+  name:object.aname, loc:object.loc, size:object.size, rot:object.rot, rotmode:object.rotmode, quat:object.quat, obmat:object.obmat, parentinv:object.parentinv, flag:object.flag, restrictflag:object.restrictflag,
+  parentName:object.parent?.aname||null, dataName:object.data?.aname||null, dataTopology:object.data?{totvert:object.data.totvert,totloop:object.data.totloop,totpoly:object.data.totpoly}:null
+}));
+const flaggedObjects=(parsed.objects?.Object||[]).filter(object=>Number(object.restrictflag||0)!==0||Number(object.flag||0)!==0).slice(0,80).map(object=>({name:object.aname,flag:object.flag,restrictflag:object.restrictflag,parent:object.parent?.aname||null}));
+const typeKeys=Object.keys(parsed.objects||{}).filter(name=>/Collection|ViewLayer|Base|Layer/i.test(name));
+const viewLayerDetails=(parsed.objects?.ViewLayer||[]).map(layer=>({
+  keys:Object.keys(layer).slice(0,80),
+  name:layer.name||null,
+  layerCollectionName:layer.layer_collection?.collection?.id?.name||layer.layer_collection?.id?.name||null,
+  layerCollectionFlag:layer.layer_collection?.flag??null,
+  layerCollectionsKeys:Object.keys(layer.layer_collections||{}),
+  firstLayerName:layer.layer_collections?.first?.collection?.id?.name||null,
+  firstLayerNextName:layer.layer_collections?.first?.next?.collection?.id?.name||null,
+  firstLayerNextKeys:Object.keys(layer.layer_collections?.first?.next||{}),
+  firstLayerFlag:layer.layer_collections?.first?.flag??null,
+  objectBasesKeys:Object.keys(layer.object_bases||{}),
+  firstBaseName:layer.object_bases?.first?.object?.aname||null,
+  firstBaseFlag:layer.object_bases?.first?.flag??null,
+  objectBaseListCount:layer.object_bases?.__list__?.length||0,
+  objectBaseSamples:(layer.object_bases?.__list__||[]).filter(base=>["arm_01_b","arm_01_c","arm_02_b","arm_02_c","arm_03_b","arm_03_c","shovel_b","shovel_c","grapple_b","SEIS","deck","arm_01"].includes(base.object?.aname)).map(base=>({object:base.object?.aname,flag:base.flag})),
+  layerCollectionListCount:layer.layer_collections?.__list__?.length||0,
+  layerCollectionSamples:(layer.layer_collections?.__list__||[]).map(item=>({name:item.collection?.id?.name,flag:item.flag,children:item.children?.__list__?.map(child=>({name:child.collection?.id?.name,flag:child.flag}))||[]}))
+}));
+const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).map(layer=>({
+  collectionName:layer.collection?.id?.name||null,flag:layer.flag,
+  parentName:layer.parent?.collection?.id?.name||null
+}));
+const hiddenNames=new Set(["SEIS","arm_01_b","arm_01_c","arm_02_b","arm_02_c","arm_03_b","arm_03_c","shovel_b","shovel_c","grapple_b","shovel_arrow","arm_03_arrow","arm_02_arrow","arm_01_arrow"]);
+const baseDetails=(parsed.objects?.Base||[]).filter(base=>hiddenNames.has(base.object?.aname)||Number(base.flag||0)!==0).slice(0,200).map(base=>({object:base.object?.aname||null,flag:base.flag}));
+const listChain=(first,selector,max=300)=>{const result=[],seen=new Set();let current=first;while(current&&result.length<max&&!seen.has(current)){seen.add(current);result.push(selector(current));current=current.next;}return result;};
+const walkLayer=(layer,depth=0)=>!layer||depth>8?null:{
+ name:layer.collection?.id?.name||null,flag:layer.flag,
+ children:listChain(layer.layer_collections?.first,item=>walkLayer(item,depth+1))
+};
+const activeLayerChain=(parsed.objects?.ViewLayer||[]).map(layer=>({
+ name:layer.name,root:walkLayer(layer.layer_collections?.first)
+}));
+const collectionMembership=(parsed.objects?.Collection||[]).map(collection=>({
+ name:collection.id?.name||null,
+ objects:listChain(collection.gobject?.first,item=>item.ob?.aname||null),
+ children:listChain(collection.children?.first,item=>item.collection?.id?.name||null)
+}));
+const layerTree=(parsed.objects?.LayerCollection||[]).map(layer=>({
+ name:layer.collection?.id?.name||null,flag:layer.flag,keys:Object.keys(layer),
+ childrenKeys:Object.keys(layer.layer_collections||{}),childrenFirst:layer.layer_collections?.first?.collection?.id?.name||null,
+ childrenFirstFlag:layer.layer_collections?.first?.flag??null,
+ childListKeys:Object.keys(layer.children||{}),childFirst:layer.children?.first?.collection?.id?.name||null,childFirstFlag:layer.children?.first?.flag??null
+}));
+const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
+  unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length,
+  keys:Object.keys(scene).slice(0,80), collectionName:scene.master_collection?.id?.name||scene.collection?.id?.name||null
+}));
+const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collection=>({
+  name:collection.id?.name||collection.name||null,
+  keys:Object.keys(collection).slice(0,50),
+  gobjectKeys:Object.keys(collection.gobject||{}),
+  firstObject:collection.gobject?.first?.ob?.aname||null,
+  childrenKeys:Object.keys(collection.children||{}),
+  firstChild:collection.children?.first?.collection?.id?.name||null
+}));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, typeKeys,viewLayerDetails,layerCollectionDetails,layerTree,activeLayerChain,collectionMembership,baseDetails,sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));

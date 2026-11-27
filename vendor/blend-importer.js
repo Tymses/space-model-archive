@@ -286,8 +286,26 @@ function createCamera(object) {
     return new THREE.PerspectiveCamera(fov, (d.sensor_x || 36) / sensorHeight, d.clipsta || 0.1, d.clipend || 1000)
 }
 
+function safeNumericVector(value, length, fallback = null) {
+    let values
+    if (Array.isArray(value) || ArrayBuffer.isView(value)) {
+        values = Array.from(value).slice(0, length)
+    } else if (value && typeof value === 'object') {
+        values = Array.from({ length }, (_, index) => value[index] ?? value[String(index)])
+    }
+    if (!values || values.length !== length || !values.every(item => Number.isFinite(Number(item)))) return fallback
+    return values.map(Number)
+}
+
 function safeVec(v, fallback) {
-    return Array.isArray(v) && v.length >= 3 ? v : fallback
+    return safeNumericVector(v, 3, fallback)
+}
+
+function safeQuat(v) {
+    const values = safeNumericVector(v, 4, null)
+    if (!values) return null
+    const length = Math.hypot(...values)
+    return length > 1e-8 && Number.isFinite(length) ? values.map(value => value / length) : null
 }
 
 function setTransform(object, obj) {
@@ -298,8 +316,8 @@ function setTransform(object, obj) {
     obj.scale.set(size[0], size[2], size[1])
     obj.position.set(loc[0], loc[2], -loc[1])
 
-    const quat = object.quat
-    if ((!object.rotmode || object.rotmode === 0) && Array.isArray(quat) && quat.length >= 4) {
+    const quat = safeQuat(object.quat)
+    if ((!object.rotmode || object.rotmode === 0) && quat) {
         obj.quaternion.set(quat[1], quat[3], -quat[2], quat[0]) // wxyz
     } else {
         const order = EULER_MODES[object.rotmode] ?? 'XYZ'
@@ -314,9 +332,27 @@ function setTransform(object, obj) {
         obj.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2))
 
     obj.updateMatrix()
+    // Blender stores parentinv as a row-vector matrix (translation in row 4);
+    // the parser exposes that raw layout, while Three.js uses column vectors.
+    const parentInverse = object.parentinv
+    if (object.parent && parentInverse) {
+        const value = (row, column) => Number(parentInverse?.[row]?.[column] ?? parentInverse?.[row]?.[String(column)])
+        const matrixValues = Array.from({ length: 4 }, (_, row) =>
+            Array.from({ length: 4 }, (_, column) => value(column, row)))
+        if (matrixValues.every(row => row.every(Number.isFinite))) {
+            const blenderMatrix = new THREE.Matrix4().set(...matrixValues.flat())
+            const basis = new THREE.Matrix4().makeRotationX(-Math.PI / 2)
+            const parentInverseThree = basis.clone().multiply(blenderMatrix).multiply(basis.clone().invert())
+            obj.matrix.premultiply(parentInverseThree)
+            // Preserve the exact parent-inverse transform (including shear).
+            obj.matrixAutoUpdate = false
+            obj.matrixWorldNeedsUpdate = true
+        }
+    }
 }
 
-const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|watermark|copyright)(?:[._ -]?\d+)?$/i
+const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$/i
+const PRESENTATION_ENVIRONMENT_NAME = /^(?:ground[._ -]?and[._ -]?sky[._ -]?dome|sky[._ -]?dome|world[._ -]?background)$/i
 
 /**
  * Blender scenes often contain extruded text meshes for titles and labels.
@@ -327,7 +363,21 @@ export function isLikelyAnnotationObject(object) {
     const names = [object?.aname, object?.data?.aname]
         .map(value => String(value || '').trim())
         .filter(Boolean)
-    return names.some(name => ANNOTATION_OBJECT_NAME.test(name))
+    // Camera-parented meshes are presentation overlays (e.g. the NASA/JPL logo),
+    // not part of the physical spacecraft. Known sky/ground domes are environment.
+    return object?.parent?.type === BLEND_OBJECT_TYPES.camera ||
+        names.some(name => ANNOTATION_OBJECT_NAME.test(name) || PRESENTATION_ENVIRONMENT_NAME.test(name))
+}
+
+function isObjectVisibleInActiveViewLayer(file, object, options = {}) {
+    if (options.includeHiddenObjects === true) return true
+    const bases = file?.objects?.Base
+    if (!Array.isArray(bases) || bases.length === 0) return true
+    const baseByObject = options.baseByObject || new Map(bases.map(base => [base.object, Number(base.flag)]))
+    const baseFlag = baseByObject.get(object)
+    if (baseFlag === undefined || baseFlag === 0) return false
+    // Blender Object.restrictflag bit 0 is OB_RESTRICT_VIEWPORT.
+    return !((Number(object.restrictflag) || 0) & 1)
 }
 
 export function createObjects(file, options = {}) {
@@ -337,12 +387,23 @@ export function createObjects(file, options = {}) {
     const blendObjects = file.objects.Object ?? []
     const loadedGeo = new Map()
     const loadedMat = new Map()
+    const includeHiddenObjects = options.includeHiddenObjects === true
+    const baseByObject = new Map((file.objects.Base || []).map(base => [base.object, Number(base.flag)]))
 
     for (const object of blendObjects) {
         let obj
         if (object.type === BLEND_OBJECT_TYPES.mesh && options.excludeAnnotations !== false && isLikelyAnnotationObject(object)) {
             const diagnostic = { object: object.aname || "unnamed mesh", data: object.data?.aname || "", code: "BLEND_ANNOTATION_EXCLUDED", message: "Likely text/label geometry was excluded from printable bounds." }
             options.onAnnotationExcluded?.(diagnostic)
+            continue
+        }
+        if (object.type === BLEND_OBJECT_TYPES.mesh && !isObjectVisibleInActiveViewLayer(file, object, { includeHiddenObjects, baseByObject })) {
+            options.onAnnotationExcluded?.({
+                object: object.aname || "unnamed mesh",
+                data: object.data?.aname || "",
+                code: "BLEND_HIDDEN_OBJECT_EXCLUDED",
+                message: "Object is hidden or excluded in the active Blender view layer."
+            })
             continue
         }
         switch (object.type) {

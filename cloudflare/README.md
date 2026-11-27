@@ -73,3 +73,17 @@ The curated index currently contains source-backed records for selected moons an
 ## Terrain / height-map coverage
 
 The terrain fallback index uses the published footprint of the exact source model where NASA provides one. Current examples include Gale Crater, Valles Marineris C, Tharsis, and the Apollo 11 landing-site relief. Vertical exaggeration is stored as a note and never multiplied into the horizontal footprint. For other terrain models, the exact region footprint must be documented before automatic scale calculation is enabled.
+
+
+
+## Blender conversion backend status
+
+The current `sma-jpl-proxy` Worker is a read-only GET proxy for assets and dimension research; it does not accept uploads or execute Blender. Cloudflare Containers would provide a Linux runtime suitable for a headless Blender process behind a Worker, but the connected account's Containers API explicitly reports that Containers require the Workers Paid plan. No Worker upload endpoint is exposed until an actual conversion runtime is configured. Do not send .blend files to the current Worker expecting an STL response.
+
+External fallback options surfaced by the website are [Innerscene](https://www.innerscene.com/tools/blend-to-stl) (local browser conversion, up to 200 MB per its published page) and [Shapeweld](https://shapeweld.com/tools/blend-to-stl) (server-side Blender conversion, up to 50 MB; provider states files/results are deleted after three days). The website labels these as external options and discloses Shapeweld's upload/privacy behavior.
+
+
+
+### Spacecraft dimension-search refinement
+
+The Worker now treats **cruise stage** and **cruise module** as spacecraft context, adds dedicated overall-envelope and cruise-stage query variants, and includes JPL-domain searches. The existing exact-name/category checks remain in place, so broader query variants do not relax object-identity requirements. Regression coverage includes InSight Cruise Stage terminology.
