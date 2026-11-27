@@ -3526,7 +3526,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tether: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tether/Tether.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tether/",
       "changed": "Source repository"
     },
     {
@@ -3540,7 +3540,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tether: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tether/tether.fbx",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tether/",
       "changed": "Source repository"
     },
     {
@@ -3554,7 +3554,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Time History of Events and Macroscale Interactions During Substorms (THEMIS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Time%20History%20of%20Events%20and%20Macroscale%20Interactions%20During%20Substorms%20(THEMIS)/Time%20History%20of%20Events%20and%20Macroscale%20Interactions%20During%20Substorms%20(THEMIS).blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/time-history-of-events-and-macroscale-interactions-during-substorms-themis/",
       "changed": "Source repository"
     },
     {
@@ -3568,7 +3568,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Time History of Events and Macroscale Interactions During Substorms (THEMIS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Time%20History%20of%20Events%20and%20Macroscale%20Interactions%20During%20Substorms%20(THEMIS)/Time%20History%20of%20Events%20and%20Macroscale%20Interactions%20During%20Substorms%20(THEMIS).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/time-history-of-events-and-macroscale-interactions-during-substorms-themis/",
       "changed": "Source repository"
     },
     {
@@ -3582,7 +3582,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Total Ozone Mapping Spectrometer (TOMS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS)/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/total-ozone-mapping-spectrometer-toms/",
       "changed": "Source repository"
     },
     {
@@ -3596,7 +3596,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Total Ozone Mapping Spectrometer (TOMS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS)/Total%20Ozone%20Mapping%20Spectrometer%20(TOMS).lwo",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/total-ozone-mapping-spectrometer-toms/",
       "changed": "Source repository"
     },
     {
@@ -3610,7 +3610,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-a/",
       "changed": "Source repository"
     },
     {
@@ -3624,7 +3624,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(B)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-b/",
       "changed": "Source repository"
     },
     {
@@ -3638,7 +3638,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)%20(left%20antenna).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-c/",
       "changed": "Source repository"
     },
     {
@@ -3652,7 +3652,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)%20(right%20antenna).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-c/",
       "changed": "Source repository"
     },
     {
@@ -3666,7 +3666,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-c/",
       "changed": "Source repository"
     },
     {
@@ -3680,7 +3680,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(D)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(D).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-d/",
       "changed": "Source repository"
     },
     {
@@ -3694,7 +3694,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TRDS) (E): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-trds-e/",
       "changed": "Source repository"
     },
     {
@@ -3708,7 +3708,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TRDS) (E): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E)/Tracking%20and%20Data%20Relay%20Satellites%20(TRDS)%20(E).lwo",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-trds-e/",
       "changed": "Source repository"
     },
     {
@@ -3722,7 +3722,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Transiting Exoplanet Survey Satellite (TESS) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(A)/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/transiting-exoplanet-survey-satellite-tess-a/",
       "changed": "Source repository"
     },
     {
@@ -3736,7 +3736,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Transiting Exoplanet Survey Satellite (TESS) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B)/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B).blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/transiting-exoplanet-survey-satellite-tess-b/",
       "changed": "Source repository"
     },
     {
@@ -3750,7 +3750,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Transiting Exoplanet Survey Satellite (TESS) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B)/Transiting%20Exoplanet%20Survey%20Satellite%20(TESS)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/transiting-exoplanet-survey-satellite-tess-b/",
       "changed": "Source repository"
     },
     {
