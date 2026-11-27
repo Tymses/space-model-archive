@@ -119,6 +119,12 @@ def main() -> int:
             continue
         collect_urls(payload, found=urls)
 
+    app_path = ROOT / "app.js"
+    if app_path.exists():
+        app_source = app_path.read_text(encoding="utf-8")
+        for url in re.findall(r"https?://science\\.nasa\\.gov/3d-resources/[^\\s\\\"']+", app_source):
+            urls.setdefault(url.rstrip("),;"), set()).add("NASA_VERIFIED_MODEL_PAGES")
+
     unique_urls = sorted(urls)
     nasa_urls = [url for url in unique_urls if url.startswith(NASA_RAW_PREFIX)]
     other_urls = [url for url in unique_urls if url not in set(nasa_urls)]
@@ -140,8 +146,8 @@ def main() -> int:
     counts = {status: sum(1 for item in results if item["status"] == status) for status in ("verified", "broken", "inconclusive")}
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "scope": "All URL-valued source/file/page/download/link fields in data/*.json",
-        "index_files": [str(path.relative_to(ROOT)) for path in files],
+        "scope": "All URL-valued source/file/page/download/link fields in data/*.json plus hard-coded NASA 3D page overrides in app.js",
+        "index_files": [str(path.relative_to(ROOT)) for path in files] + (["app.js (NASA page overrides)"] if app_path.exists() else []),
         "unique_urls": len(unique_urls),
         "counts": counts,
         "results": results,
