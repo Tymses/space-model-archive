@@ -70,3 +70,15 @@ The **Convert to STL** button belongs in the model **View details** card, in the
 - GitHub Pages build and deployment run `46009499817` completed successfully.
 - Live interaction in a desktop browser was not performed through the GitHub connector; CI success and deployment success do not replace a manual browser check.
 - The separate BOGY project diary in the personal Library was read during the initial review but was not edited or synchronized. This repository handbook and the repository README are the documentation locations updated and verified in this task.
+
+
+## 6. Editorial readiness workflow
+
+The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md](EDITORIAL_WORKFLOW.md). Primary categories must describe the geometry, not merely the scientific topic. Cross-listings are supplementary and should be visible. Source links must lead to a publisher page; a GitHub mirror folder must never be the primary source. If no individual NASA page is verified, use the official NASA 3D Resources catalogue and label it as a general catalogue source.
+
+### Editorial correction — 27 November 2026
+- Reclassified NASA ICESat, ICESat-2 and Jason-2 records from Planetary features to Spacecraft; moved the Deep Space Station antenna assembly into Spacecraft / mission hardware.
+- Replaced NASA planetary-terrain GitHub folder links with verified NASA 3D Resources pages where available, including matching terrain cross-listings.
+- Changed the unresolved NASA source resolver fallback to the official NASA 3D Resources catalogue instead of a GitHub mirror folder.
+- Added regression coverage for NASA source links and satellite categories.
+- The visible Terrain collection rename, visible cross-listing UI, scale wording and compact beginner workflow remain planned phases, not completed changes.

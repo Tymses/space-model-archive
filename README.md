@@ -72,7 +72,7 @@ Open `index.html` in a modern browser. No build step or package installation is 
 
 ## Data quality
 
-Never infer a model's scale, dimensions, source or licence. Missing information should be shown as unknown until verified from the original source.
+Never infer a model's scale, dimensions, source or licence. Missing information should be shown as unknown until verified from the original source. The editorial acceptance criteria and category rules are documented in [the editorial workflow](EDITORIAL_WORKFLOW.md). The editorial acceptance criteria and category rules are documented in [the editorial workflow](EDITORIAL_WORKFLOW.md).
 
 
 ## Scaling & 3D Print workspace

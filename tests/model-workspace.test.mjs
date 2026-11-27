@@ -36,10 +36,10 @@ test("NASA Deep Impact and Wrench records point to model-specific sources", () =
   assert.equal(glb.length, 1);
   assert.equal(glb[0].name, "Wrench (GLB model)");
   assert.equal(glb[0].kind, "Tool / mission hardware");
-  assert.match(glb[0].sourceUrl, /^https:\/\/github\.com\/nasa\/NASA-3D-Resources\/tree\/master\/3D%20Models\/Wrench$/);
+  assert.equal(glb[0].sourceUrl, "https://science.nasa.gov/3d-resources/wrench-2/");
 });
 
-test("all previously dead NASA pages now use a live NASA page or exact source folder", () => {
+test("NASA source links use official NASA pages rather than GitHub repository folders", () => {
   const index = JSON.parse(read("data/nasa-model-index.json"));
   const byId = new Map(index.files.map(item => [item.id, item]));
   const expected = {
@@ -47,14 +47,34 @@ test("all previously dead NASA pages now use a live NASA page or exact source fo
     "nasa-auto-fae6c14137ae": "https://science.nasa.gov/3d-resources/g292-01-8-supernova-remnant/",
     "nasa-auto-7f1f2a785853": "https://science.nasa.gov/3d-resources/gateway-lunar-space-station/",
     "nasa-auto-62d260861742": "https://science.nasa.gov/3d-resources/pioneer/",
-    "nasa-auto-164dd4594a7b": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Skylab",
-    "nasa-auto-3159443bc1e2": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Dynamics%20Observatory",
-    "nasa-auto-e3bd379865ff": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Radiation%20and%20Climate%20Experiment%20(SORCE)",
-    "nasa-auto-f4f7e17d18c2": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Sail%20Concept",
-    "nasa-auto-e581425c8d36": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO)",
+    "nasa-auto-164dd4594a7b": "https://science.nasa.gov/3d-resources/",
+    "nasa-auto-3159443bc1e2": "https://science.nasa.gov/mission/sdo/",
+    "nasa-auto-e3bd379865ff": "https://science.nasa.gov/earth/earth-observatory/solar-radiation-and-climate-experiment-sorce-fact-sheet/",
+    "nasa-auto-f4f7e17d18c2": "https://science.nasa.gov/3d-resources/",
+    "nasa-auto-e581425c8d36": "https://science.nasa.gov/mission/stereo/",
     "nasa-auto-ae543fdbdccb": "https://science.nasa.gov/3d-resources/solar-and-heliospheric-observatory-soho/",
     "nasa-auto-5f06eab80de7": "https://science.nasa.gov/3d-resources/x-57-maxwell/",
-    "nasa-auto-1b9a809402d2": "https://science.nasa.gov/3d-resources/x-57-maxwell/"
+    "nasa-auto-1b9a809402d2": "https://science.nasa.gov/3d-resources/x-57-maxwell/",
+    "nasa-auto-74bc0bbbc9d0": "https://science.nasa.gov/3d-resources/curiosity-landing-site/",
+    "nasa-auto-64780f1e28d6": "https://science.nasa.gov/3d-resources/curiosity-rover-path/",
+    "nasa-auto-598a68f4b58d": "https://science.nasa.gov/3d-resources/gale-crater/",
+    "nasa-auto-ccb45d9c34c3": "https://science.nasa.gov/3d-resources/linne-crater/",
+    "nasa-auto-439c1921ce5a": "https://science.nasa.gov/3d-resources/mars-trek-inside-gale-crater/",
+    "nasa-auto-96407e3e20a6": "https://science.nasa.gov/3d-resources/mars-spirit-landing-site/",
+    "nasa-auto-68dc14b2f6b0": "https://science.nasa.gov/3d-resources/mars-spirit-rover-path/",
+    "nasa-auto-ce50399914d8": "https://science.nasa.gov/3d-resources/mars-tharsis/",
+    "nasa-auto-94435a690d2b": "https://science.nasa.gov/3d-resources/mars-trek-valles-marineris/",
+    "nasa-auto-c580ba647024": "https://science.nasa.gov/3d-resources/mars-valles-marineris-c/",
+    "nasa-auto-385bd61c5494": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
+    "nasa-auto-1e0e36115cea": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
+    "nasa-auto-f75c3135019f": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
+    "nasa-auto-ed59ef8f86ff": "https://science.nasa.gov/3d-resources/mars-trek-victoria-crater/",
+    "nasa-auto-ee89f1e3db79": "https://science.nasa.gov/3d-resources/moon-aristarchus-region/",
+    "nasa-auto-1290df0fc033": "https://science.nasa.gov/3d-resources/moon-copernicus-crater/",
+    "nasa-auto-cd819130e643": "https://science.nasa.gov/3d-resources/moon-gassendi-crater/",
+    "nasa-auto-6ba7dbf39798": "https://science.nasa.gov/3d-resources/moon-mount-hadley/",
+    "nasa-auto-1c395de28d7a": "https://science.nasa.gov/3d-resources/moon-tycho/",
+    "nasa-auto-df9141da74d9": "https://science.nasa.gov/3d-resources/opportunity-landing-site/"
   };
   for (const [id, url] of Object.entries(expected)) assert.equal(byId.get(id)?.sourceUrl, url, id);
 });
@@ -139,4 +159,16 @@ test("generated descriptions never append conflicting free-text model kinds", ()
   const worker = read("cloudflare/jpl-proxy.js");
   assert.match(worker, /Do not mix free-text "kind" labels/);
   assert.match(worker, /Matching original source page summary/);
+});
+
+test("NASA satellite models are classified as spacecraft, not planetary surface features", () => {
+ const index=JSON.parse(read("data/nasa-model-index.json"));const byId=new Map(index.files.map(item=>[item.id,item]));
+ for(const id of ["nasa-auto-8bb9044d2bf0","nasa-auto-9939a1032569","nasa-auto-68ce25824a7a","nasa-auto-d0ea1fde4097","nasa-auto-311a2780b948","nasa-auto-420d5ed71dcd","nasa-auto-75cc8e54cb2c"])assert.equal(byId.get(id)?.category,"spacecraft",id);
+});
+test("NASA terrain cross-listings reuse the verified original source page", () => {
+ const index=JSON.parse(read("data/nasa-model-index.json"));const byId=new Map(index.files.map(item=>[item.id,item]));
+ for(const [id,url] of Object.entries({"nasa-auto-74bc0bbbc9d0":"https://science.nasa.gov/3d-resources/curiosity-landing-site/","nasa-auto-64780f1e28d6":"https://science.nasa.gov/3d-resources/curiosity-rover-path/","nasa-auto-598a68f4b58d":"https://science.nasa.gov/3d-resources/gale-crater/","nasa-auto-ccb45d9c34c3":"https://science.nasa.gov/3d-resources/linne-crater/","nasa-auto-439c1921ce5a":"https://science.nasa.gov/3d-resources/mars-trek-inside-gale-crater/","nasa-auto-96407e3e20a6":"https://science.nasa.gov/3d-resources/mars-spirit-landing-site/","nasa-auto-68dc14b2f6b0":"https://science.nasa.gov/3d-resources/mars-spirit-rover-path/","nasa-auto-ce50399914d8":"https://science.nasa.gov/3d-resources/mars-tharsis/","nasa-auto-94435a690d2b":"https://science.nasa.gov/3d-resources/mars-trek-valles-marineris/","nasa-auto-c580ba647024":"https://science.nasa.gov/3d-resources/mars-valles-marineris-c/","nasa-auto-385bd61c5494":"https://science.nasa.gov/3d-resources/mars-valles-marineris/","nasa-auto-1e0e36115cea":"https://science.nasa.gov/3d-resources/mars-valles-marineris/","nasa-auto-f75c3135019f":"https://science.nasa.gov/3d-resources/mars-valles-marineris/","nasa-auto-ed59ef8f86ff":"https://science.nasa.gov/3d-resources/mars-trek-victoria-crater/","nasa-auto-ee89f1e3db79":"https://science.nasa.gov/3d-resources/moon-aristarchus-region/","nasa-auto-1290df0fc033":"https://science.nasa.gov/3d-resources/moon-copernicus-crater/","nasa-auto-cd819130e643":"https://science.nasa.gov/3d-resources/moon-gassendi-crater/","nasa-auto-6ba7dbf39798":"https://science.nasa.gov/3d-resources/moon-mount-hadley/","nasa-auto-1c395de28d7a":"https://science.nasa.gov/3d-resources/moon-tycho/","nasa-auto-df9141da74d9":"https://science.nasa.gov/3d-resources/opportunity-landing-site/"})){assert.equal(byId.get(id)?.sourceUrl,url,id);const cross=byId.get(id+"-heightmap");if(cross)assert.equal(cross.sourceUrl,url,id+"-heightmap");}
+});
+test("NASA source resolver never substitutes a GitHub mirror folder for a source page", () => {
+ const app=read("app.js");assert.match(app,/model\.sourcePageUrl=verifiedPage\|\|suppliedNasaPage\|\|"https:\/\/science\.nasa\.gov\/3d-resources\//);
 });
