@@ -137,7 +137,12 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["asteroid 4 vesta a","https://science.nasa.gov/3d-resources/asteroid-4-vesta-a/"],
  ["asteroid 4 vesta b","https://science.nasa.gov/3d-resources/asteroid-4-vesta-b/"],
  ["apollo 16 landing site","https://science.nasa.gov/3d-resources/apollo-16-landing-site/"],
- ["curiosity landing site","https://science.nasa.gov/3d-resources/curiosity-landing-site/"]
+ ["curiosity landing site","https://science.nasa.gov/3d-resources/curiosity-landing-site/"],
+ ["asteroid 8567 1996 hw1","https://science.nasa.gov/3d-resources/asteroid-8567-1996-hw1/"],
+ ["asteroid 6489 golevka","https://science.nasa.gov/3d-resources/asteroid-6489-golevka/"],
+ ["asteroid 4486 mithra","https://science.nasa.gov/3d-resources/asteroid-4486-mithra/"],
+ ["asteroid 4179 toutatis","https://science.nasa.gov/3d-resources/asteroid-4179-toutatis/"],
+ ["asteroid 433 eros","https://science.nasa.gov/3d-resources/asteroid-433-eros/"]
 ]);
 function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
