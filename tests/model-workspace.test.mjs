@@ -224,7 +224,7 @@ test("scaling workspace exposes original, fit-to-build-plate and custom-dimensio
  const html=read("index.html"),app=read("app.js");
  for(const id of ["scaling-mode","scaling-fit-margin","scaling-fit-adjustment","scaling-custom-dimension","scaling-custom-unit","scaling-custom-axis","scaling-custom-kind"])assert.match(html,new RegExp('id="'+id+'"'));
  assert.match(html,/value="fit">Fit to build plate/);assert.match(html,/value="custom">Custom original dimensions/);
- assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);
+ assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/exported STL keeps the source orientation/);
 });
 
 test("custom original dimensions convert mm, m and km to millimetres",()=>{
