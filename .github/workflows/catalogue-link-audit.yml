@@ -1,0 +1,39 @@
+name: Catalogue link audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "tools/catalogue/check_links.py"
+      - ".github/workflows/catalogue-link-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "tools/catalogue/check_links.py"
+      - ".github/workflows/catalogue-link-audit.yml"
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check every indexed source and model URL
+        run: python tools/catalogue/check_links.py --output link-audit.json --workers 24
+      - name: Upload link audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogue-link-audit
+          path: link-audit.json
+          retention-days: 30
