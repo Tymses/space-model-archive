@@ -565,8 +565,8 @@ function extractSpacecraftAxes(text) {
   return null;
 }
 
-function extractUncertainty(text) {
-  const source = decode(text);
+function extractUncertainty(text, unitContext = "") {
+  const source = decode(text) + " " + unitContext;
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
   let match = source.match(new RegExp("(?:±|\\+\\/-)\\s*(" + number + ")\\s*" + unit, "i"));
@@ -729,7 +729,7 @@ function extractIdentityScopedMeasurement(rawHtml, query, category, title = "", 
     if (!blockMatchesResearchIdentity(block, query, category, pageContext)) continue;
     const tableContext = researchTableHeaderContext(rawHtml, block);
     const axesKm = category === "spacecraft" ? extractSpacecraftAxes(block) : extractAxes(block, tableContext);
-    if (axesKm) return { axesKm, uncertaintyKm: extractUncertainty(block) };
+    if (axesKm) return { axesKm, uncertaintyKm: extractUncertainty(block, tableContext) };
   }
   return { axesKm: null, uncertaintyKm: null };
 }
