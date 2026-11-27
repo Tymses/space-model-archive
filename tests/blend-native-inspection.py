@@ -49,6 +49,14 @@ for obj in printable_objects:
 details.sort(key=lambda item: item["dimensions"][0] * item["dimensions"][1] * item["dimensions"][2], reverse=True)
 for obj in printable_objects:
     obj.data.calc_loop_triangles()
+native_transforms = [{
+    "name": obj.name,
+    "matrix_world": [list(row) for row in obj.matrix_world],
+    "vertices": len(obj.data.vertices),
+    "polygons": len(obj.data.polygons)
+} for obj in printable_objects if len(obj.data.polygons) > 0]
+with open("/tmp/spacemesher-native-transforms.json", "w", encoding="utf-8") as handle:
+    json.dump(native_transforms, handle)
 native_totals = {
     "vertices": sum(len(obj.data.vertices) for obj in printable_objects),
     "polygons": sum(len(obj.data.polygons) for obj in printable_objects),
