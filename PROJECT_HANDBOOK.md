@@ -277,3 +277,23 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - GZIP expanded data is bounded while streaming. Zstandard output is checked only after the decompressor returns, so a highly compressed Zstandard input can still allocate memory before the post-check.
 - Rollback reference: `backup/before-blend-diagnostics-2026-11-27` at `c224afb76b21e81de0e7a5742b7e443bc9fca6dc`.
 - Implementation branch: `fix/blend-diagnostics-and-safe-mesh-recovery-2026-11-27`.
+
+## 15. Automatic merge and publication policy — 27 November 2026
+
+This is the user's standing instruction for SPACEMESHER implementation work:
+
+1. For every approved implementation, complete the documented pre-flight, create a safety backup from the inspected current `main`, and work on a separate implementation branch and pull request.
+2. Do not ask the user again whether to merge a completed implementation. Once the exact PR head has passed all applicable required checks (including **Enforce project workflow**, model-workspace tests, catalogue/application validation and link audit where triggered), the PR is mergeable, and the final diff has been reviewed, merge it into `main` automatically. Use the expected head SHA to prevent merging a branch that changed after review.
+3. After merge, read back `main` and confirm it points to the merge commit. Then verify the GitHub Pages build and the **Deploy to GitHub Pages** job for that exact commit.
+4. Say **published/live** only after the deployment job has completed successfully. A successful PR check or merge alone is not proof of publication. If deployment is pending, report that publication is pending; if it fails, investigate and repair before claiming success.
+5. After each implementation, update this handbook and relevant technical documentation in the same implementation PR. Record PR/merge commit, exact CI run IDs and deployment result. If a separate documentation-only record is necessary, follow the same backup/PR/check/merge/deploy discipline.
+6. Keep browser/manual verification distinct from CI and deployment. Do not claim the real-world model conversion or live interaction was tested unless it was actually exercised.
+
+This standing policy does not authorize merging when checks fail, the diff is unsafe or unclear, the PR head changes unexpectedly, or required evidence is unavailable. In those cases stop, explain the blocker and continue only after it is resolved.
+
+### Policy-record change
+
+- User explicitly requested that this automatic merge-and-publication workflow be followed for future SPACEMESHER changes and that this handbook be updated.
+- Safety branch: `backup/before-auto-publish-policy-2026-11-27`, created from inspected `main` commit `5d936894bcd3b357b3ee0ab553c4a57dbca2eb16`.
+- Documentation branch: `docs/automatic-merge-and-publication-policy-2026-11-27`, created from the same commit.
+- This change documents the workflow only; it does not change application code. CI and Pages deployment for this documentation PR must be checked before reporting it as merged or published.
