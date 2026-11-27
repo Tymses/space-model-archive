@@ -34,6 +34,7 @@ const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.
   name:object.aname, loc:object.loc, size:object.size, rot:object.rot, rotmode:object.rotmode, quat:object.quat, obmat:object.obmat, parentinv:object.parentinv, flag:object.flag, restrictflag:object.restrictflag,
   parentName:object.parent?.aname||null, dataName:object.data?.aname||null, dataTopology:object.data?{totvert:object.data.totvert,totloop:object.data.totloop,totpoly:object.data.totpoly}:null
 }));
+const flaggedObjects=(parsed.objects?.Object||[]).filter(object=>Number(object.restrictflag||0)!==0||Number(object.flag||0)!==0).slice(0,80).map(object=>({name:object.aname,flag:object.flag,restrictflag:object.restrictflag,parent:object.parent?.aname||null}));
 const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
   unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length,
   keys:Object.keys(scene).slice(0,80), collectionName:scene.master_collection?.id?.name||scene.collection?.id?.name||null
