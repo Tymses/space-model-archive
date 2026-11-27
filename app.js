@@ -181,7 +181,7 @@ function setSpecificModelSource(model){
  else model.sourceUrl=originalSource||fallbackSourceCatalogue(model)||null;
  return model;
 }
-for(const model of MODELS)setSpecificModelSource(model);
+for(const model of MODELS){setSpecificModelSource(model);if(!model.sourceUrl)model.sourceUrl=fallbackSourceCatalogue(model)||null;}
 
 const $=s=>document.querySelector(s);
 const home=$("#home-view"),collection=$("#collection-view"),detail=$("#detail-view"),about=$("#about-view"),scaling=$("#scaling-view"),crumb=$("#breadcrumbs");
@@ -1244,7 +1244,7 @@ loadExpandedCatalogs();
   if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
    $id("scaling-page-overline").textContent="ARCHIVE MODEL";$id("scaling-page-title").textContent=model.name;$id("scaling-page-subtitle").textContent=model.kind+" · interactive preview, dimensions and print scale";
    $id("scaling-archive-context").hidden=false;$id("scaling-archive-meta").textContent=model.format+" · "+model.size;const archiveSource=$id("scaling-archive-source");archiveSource.textContent=model.source||"Unknown source";archiveSource.hidden=!model.sourceUrl;if(model.sourceUrl)archiveSource.href=model.sourceUrl;else archiveSource.removeAttribute("href");$id("scaling-archive-credit").textContent=model.credit||"Original model source credited in the archive.";
-   const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.hidden=!model.sourceUrl;if(model.sourceUrl)source.href=model.sourceUrl;else source.removeAttribute("href");const meshNote=$id("spacecraft-mesh-note");if(meshNote)meshNote.hidden=model.category!=="spacecraft";
+   const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.hidden=!model.sourceUrl;if(model.sourceUrl){source.href=model.sourceUrl;source.textContent=model.sourcePageUrl?"Original model page ↗":"Source catalogue ↗";}else source.removeAttribute("href");const meshNote=$id("spacecraft-mesh-note");if(meshNote)meshNote.hidden=model.category!=="spacecraft";
    $id("scaling-object-query").value=model.name||"";loadSourceDescription(model.sourceUrl,model.name);load(null,model.format,model,model.file);
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });
