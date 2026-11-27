@@ -646,7 +646,7 @@ async function searchWeb(query, category) {
       const raw = (await response.text()).slice(0, 900000);
       if (raw.startsWith("%PDF-")) return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:"", nonHtml:true};
       const text = plain(raw).slice(0, 60000);
-      const axesKm = category === "spacecraft" ? (extractSpacecraftAxes(text) || extractSpacecraftAxes(item.title+" "+item.snippet)) : (extractAxes(text) || (category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)));
+      const axesKm = category === "spacecraft" ? (extractSpacecraftAxes(text) || extractSpacecraftAxes(item.title+" "+item.snippet)) : (extractAxes(text) || extractAxes(item.title+" "+item.snippet));
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
       const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceText:text};
