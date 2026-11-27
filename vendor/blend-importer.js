@@ -10,30 +10,91 @@ import parser from "./blend-parser.js";
 
 const ZSTD_MAGIC = [0x28, 0xb5, 0x2f, 0xfd]
 const GZIP_MAGIC = [0x1f, 0x8b]
+export const MAX_BLEND_BYTES = 75 * 1024 * 1024
+
+export function inspectBlendHeader(buffer) {
+    if (!(buffer instanceof ArrayBuffer) || buffer.byteLength < 12) {
+        throw new Error("BLEND_INVALID_HEADER: The download is empty or too short to contain a Blender file header.")
+    }
+    const bytes = new Uint8Array(buffer, 0, 12)
+    const magic = String.fromCharCode(...bytes.subarray(0, 7))
+    if (magic !== "BLENDER") {
+        const prefix = String.fromCharCode(...bytes.subarray(0, Math.min(4, bytes.length)))
+        if (prefix.startsWith("<!DO") || prefix.startsWith("<htm") || prefix.startsWith("<?xm")) {
+            throw new Error("BLEND_NOT_A_FILE: The source returned a web page or error document instead of a .blend file.")
+        }
+        throw new Error("BLEND_INVALID_HEADER: The file does not contain the BLENDER signature. The download may be incomplete or the URL may not point to a direct .blend file.")
+    }
+    const pointerMarker = String.fromCharCode(bytes[7])
+    const endianMarker = String.fromCharCode(bytes[8])
+    const version = String.fromCharCode(...bytes.subarray(9, 12))
+    if (!["_", "-"].includes(pointerMarker) || !["v", "V"].includes(endianMarker) || !/^\d{3}$/.test(version)) {
+        throw new Error("BLEND_INVALID_HEADER: The Blender header contains an unsupported pointer, byte-order or version marker.")
+    }
+    return { version: version[0] + "." + String(Number(version.slice(1))), versionCode: version, pointerSize: pointerMarker === "_" ? 4 : 8, endian: endianMarker === "V" ? "big" : "little" }
+}
+
+async function readLimitedStream(stream, limit) {
+    const reader = stream.getReader()
+    const chunks = []
+    let total = 0
+    try {
+        while (true) {
+            const { done, value } = await reader.read()
+            if (done) break
+            total += value.byteLength
+            if (total > limit) {
+                await reader.cancel("BLEND decompressed-size limit exceeded")
+                throw new Error("BLEND_TOO_LARGE: The decompressed Blender file exceeds the 75 MB browser limit.")
+            }
+            chunks.push(value)
+        }
+    } finally {
+        reader.releaseLock()
+    }
+    const output = new Uint8Array(total)
+    let offset = 0
+    for (const chunk of chunks) { output.set(chunk, offset); offset += chunk.byteLength }
+    return output.buffer
+}
 
 export async function parseBlend(buffer, name = '') {
+    if (!(buffer instanceof ArrayBuffer) || !buffer.byteLength) throw new Error("BLEND_EMPTY: The source returned an empty file.")
+    if (buffer.byteLength > MAX_BLEND_BYTES) throw new Error("BLEND_TOO_LARGE: The Blender file exceeds the 75 MB browser limit.")
     let data = buffer
-    const magic = new Uint8Array(buffer, 0, 4)
-    if (ZSTD_MAGIC.every((b, i) => magic[i] === b)) {
-        // Blender >= 3.0 default "Compress" uses Zstandard.
-        const { decompress } = await import("https://esm.sh/fzstd@0.1.1");
-        const decompressed = decompress(new Uint8Array(buffer));
-        data = decompressed.buffer.slice(decompressed.byteOffset, decompressed.byteOffset + decompressed.byteLength)
-    } else if (GZIP_MAGIC.every((b, i) => magic[i] === b)) {
-        // Older Blender versions used gzip.
-        data = await new Response(
-            new Blob([buffer]).stream().pipeThrough(new DecompressionStream('gzip'))
-        ).arrayBuffer()
+    const magic = new Uint8Array(buffer, 0, Math.min(4, buffer.byteLength))
+    const isZstd = ZSTD_MAGIC.every((b, i) => magic[i] === b)
+    const isGzip = GZIP_MAGIC.every((b, i) => magic[i] === b)
+    if (isZstd) {
+        try {
+            const { decompress } = await import("https://esm.sh/fzstd@0.1.1")
+            const decompressed = decompress(new Uint8Array(buffer))
+            if (decompressed.byteLength > MAX_BLEND_BYTES) throw new Error("BLEND_TOO_LARGE: The decompressed Blender file exceeds the 75 MB browser limit.")
+            data = decompressed.buffer.slice(decompressed.byteOffset, decompressed.byteOffset + decompressed.byteLength)
+        } catch (error) {
+            if (String(error?.message || error).includes("BLEND_TOO_LARGE")) throw error
+            throw new Error("BLEND_DECOMPRESSION_FAILED: The Zstandard-compressed Blender file could not be decompressed. " + (error?.message || String(error)))
+        }
+    } else if (isGzip) {
+        try {
+            if (typeof DecompressionStream !== "function") throw new Error("This browser does not support GZIP decompression.")
+            data = await readLimitedStream(new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip")), MAX_BLEND_BYTES)
+        } catch (error) {
+            if (String(error?.message || error).includes("BLEND_TOO_LARGE")) throw error
+            throw new Error("BLEND_DECOMPRESSION_FAILED: The GZIP-compressed Blender file could not be decompressed. " + (error?.message || String(error)))
+        }
     }
+    const header = inspectBlendHeader(data)
+    if (header.endian !== "little") throw new Error("BLEND_UNSUPPORTED_ENDIAN: This importer currently supports little-endian Blender files only.")
     return new Promise((resolve, reject) => {
         parser.onParseReady = (file, error) => {
-            if (!file || error) reject(new Error(error ?? 'Not a valid .blend file'))
-            else resolve(file)
+            if (!file || error) reject(new Error("BLEND_PARSE_FAILED: " + (error ?? "The Blender parser returned no scene data.")))
+            else resolve({ file, header })
         }
         try {
             parser.loadBlendFromArrayBuffer(data, name)
-        } catch (e) {
-            reject(e instanceof Error ? e : new Error(String(e)))
+        } catch (error) {
+            reject(new Error("BLEND_PARSE_FAILED: " + (error?.message || String(error))))
         }
     })
 }
@@ -255,7 +316,7 @@ function setTransform(object, obj) {
     obj.updateMatrix()
 }
 
-export function createObjects(file) {
+export function createObjects(file, options = {}) {
     const objects = []
     const childMap = new Map()
     const objMap = new Map()
@@ -270,11 +331,18 @@ export function createObjects(file) {
                 if (!object.data) break
                 let geo = loadedGeo.get(object.data)
                 if (!geo) {
-                    geo = createBufferGeometry(object.data)
-                    const position = geo.attributes.position
-                    const elementCount = geo.index ? geo.index.count : (position?.count || 0)
-                    if (!position || position.count < 3 || elementCount < 3) throw new Error('Blender object "' + (object.aname || 'unnamed mesh') + '" has no valid triangle geometry.')
-                    loadedGeo.set(object.data, geo)
+                    try {
+                        geo = createBufferGeometry(object.data)
+                        const position = geo.attributes.position
+                        const elementCount = geo.index ? geo.index.count : (position?.count || 0)
+                        if (!position || position.count < 3 || elementCount < 3) throw new Error('Mesh has no valid triangle geometry.')
+                        loadedGeo.set(object.data, geo)
+                    } catch (error) {
+                        const diagnostic = { object: object.aname || "unnamed mesh", code: "BLEND_MESH_INVALID", message: error?.message || String(error) }
+                        if (typeof options.onMeshError !== "function") throw new Error('Blender object "' + diagnostic.object + '" could not be imported: ' + diagnostic.message)
+                        options.onMeshError(diagnostic)
+                        continue
+                    }
                 }
                 const mat = object.data.mat?.[0]
                 let material

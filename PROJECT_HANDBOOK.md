@@ -244,3 +244,36 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - The NASA source record for Mars 2020 Perseverance Rover points to the original NASA/JPL Blender file. The binary `.blend` could not be downloaded through the available GitHub file connector (it returned no binary content), so no claim is made that this exact 20.92 MB file was manually converted or visually compared after the fix. The regression suite validates the importer logic, not this specific external binary.
 - No post-merge GitHub Pages deployment run or interactive browser verification was available in the recorded workflow results. The live preview and actual rover appearance still require a manual browser check after the published site updates.
 - Documentation follow-up branch: `docs/blend-fix-verification-record-2026-11-27`; safety branch: `backup/before-blend-verification-record-2026-11-27`, created from merge commit `e86b7e35c9a4404ff7b901bc5d2ba6b297f9b51d`.
+
+
+## 14. Blender file diagnostics and partial scene recovery — 27 November 2026
+
+### Pre-flight and rollback
+- Re-read the current handbook, `SPACEMESHER_WORKFLOW_CHECKLIST.md`, README conversion notes and PR template. Read the available BOGY project diary from the personal Library; it distinguishes proposed conversion workflows from empirically verified file conversions and requires a concrete import/export test before claiming one.
+- Inspected the actual `main` head `c224afb76b21e81de0e7a5742b7e443bc9fca6dc`, the latest commits, all visible backup branches, the existing Blender implementation/verification branches and open pull requests (none).
+- Read the complete current `vendor/blend-importer.js`, `vendor/blend-parser.js`, `app.js`, `tests/model-workspace.test.mjs`, the relevant Cloudflare asset proxy code, `index.html`, README, validation workflow and workflow-enforcement files.
+- Created safety branch `backup/before-blend-diagnostics-2026-11-27` and implementation branch `fix/blend-diagnostics-and-safe-mesh-recovery-2026-11-27` from the exact inspected main commit above.
+- The separate BOGY diary was read but not edited. No external-diary synchronization is claimed.
+
+### Findings and implementation
+- The previous loader accepted any response body as a potential Blender file and delegated format detection to the parser. It did not expose the Blender header version or distinguish a returned HTML/error page from a binary model file.
+- The importer now validates the 12-byte `BLENDER` header, pointer-width marker, byte-order marker and version code. It reports the detected Blender version and explicitly rejects big-endian files because the existing geometry reader assumes little-endian data.
+- Input files are limited to 75 MB. GZIP decompression is streamed and cancelled if the expanded file exceeds 75 MB. Zstandard decompression is checked against the same expanded-size limit after decompression; this post-check does not prevent the Zstandard library from allocating the decompressed output first.
+- Parser errors are reset between imports so one malformed file does not leave a stale error state for the next file. Invalid signatures, HTML/error responses, oversized downloads, decompression failures, unsupported byte order, parser failures and scenes without valid mesh triangles now have distinct diagnostic codes/messages.
+- Mesh objects are isolated during scene construction: if one mesh object is malformed, it can be skipped while valid mesh objects from the same scene remain available. The UI reports how many meshes loaded and how many were skipped, with diagnostic examples. If no valid triangle mesh remains, loading stops with the mesh diagnostics.
+- No missing faces, indices or topology are fabricated. Existing canonical geometry-layer checks and legacy polygon triangulation remain in place. Complex/unsupported scenes are directed to Blender for export to GLB or STL.
+
+### Files changed
+- `vendor/blend-importer.js`: header inspection, bounded GZIP decompression, Zstandard output-size check, parser error classification, version reporting and per-mesh skip callback.
+- `vendor/blend-parser.js`: reset parser error state at the beginning of each parse.
+- `app.js`: response-size checks, version/mesh diagnostics and BLEND-specific failure guidance.
+- `tests/model-workspace.test.mjs`: header validation, compressed-file limits, parser reset and partial-import regression coverage.
+- `README.md`: current Blender support behavior and limits.
+
+### Verification status and limitations
+- Initial PR validation runs `46066188896` (catalogue/application validation), `46066188915` (model-workspace tests) and `46066188953` (link audit) failed at the Node regression-test step. The same three test failures were repeated across the workflows: the old empty-scene assertion still expected the previous error text, the GZIP test expected single quotes after the implementation changed to double quotes, and the HTML fixture was shorter than the 12-byte header precondition. The implementation was not the reported cause of those assertions. The test assertions/fixture were corrected in later commits on the PR branch. No successful rerun for the latest PR head has been returned yet, so the current revision is unverified by CI and must not be described as passing.
+- No local Node runtime or local browser was used in this task. The exact NASA Perseverance `.blend` binary was not retrieved or converted; the prior verification record explains the binary access limitation. No visual comparison of the rover model or live browser verification is claimed.
+- Header validation confirms file-container identity and reports its version; it does not prove that every Blender release, datablock layout, modifier, dependency or scene feature is supported.
+- GZIP expanded data is bounded while streaming. Zstandard output is checked only after the decompressor returns, so a highly compressed Zstandard input can still allocate memory before the post-check.
+- Rollback reference: `backup/before-blend-diagnostics-2026-11-27` at `c224afb76b21e81de0e7a5742b7e443bc9fca6dc`.
+- Implementation branch: `fix/blend-diagnostics-and-safe-mesh-recovery-2026-11-27`.

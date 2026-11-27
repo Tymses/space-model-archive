@@ -1419,13 +1419,27 @@ restoreRouteFromHash();
     }else if(format==="LWO"){
      const data=await new L.LWO().loadAsync(url);object=new THREE.Group();(data.meshes||[]).forEach(mesh=>object.add(mesh));
     }else if(format==="BLEND"){
-     const response=await fetch(url);if(!response.ok)throw new Error("BLEND download returned HTTP "+response.status+".");
-     const bytes=await response.arrayBuffer();const blend=await import("./vendor/blend-importer.js");
-     const parsed=await blend.parseBlend(bytes,model?.name||file?.name||"Blender scene");const objects=blend.createObjects(parsed);
+     const response=await fetch(url).catch(error=>{throw new Error("BLEND_DOWNLOAD_FAILED: "+(error?.message||String(error)));});if(!response.ok)throw new Error("BLEND_DOWNLOAD_FAILED: The source returned HTTP "+response.status+".");
+     const declaredLength=Number(response.headers.get("Content-Length"));
+     if(Number.isFinite(declaredLength)&&declaredLength>MAX_BROWSER_MODEL_BYTES)throw new Error("BLEND_TOO_LARGE: The Blender download exceeds the 75 MB browser limit.");
+     const bytes=await response.arrayBuffer();if(bytes.byteLength>MAX_BROWSER_MODEL_BYTES)throw new Error("BLEND_TOO_LARGE: The Blender download exceeds the 75 MB browser limit.");
+     const blend=await import("./vendor/blend-importer.js");
+     const parsed=await blend.parseBlend(bytes,model?.name||file?.name||"Blender scene");
+     const meshDiagnostics=[];
+     const objects=blend.createObjects(parsed.file,{onMeshError:diagnostic=>meshDiagnostics.push(diagnostic)});
      let blendMeshCount=0,blendTriangleCount=0;
      for(const item of objects)item.traverse?.(node=>{if(node.isMesh&&node.geometry){blendMeshCount++;blendTriangleCount+=node.geometry.index?node.geometry.index.count/3:(node.geometry.attributes.position?.count||0)/3;}});
-     if(!blendMeshCount||!blendTriangleCount)throw new Error("The BLEND file did not produce valid mesh triangles. No substitute geometry was loaded.");
+     if(!blendMeshCount||!blendTriangleCount){
+      const detail=meshDiagnostics.length?meshDiagnostics.slice(0,3).map(item=>item.object+": "+item.message).join(" | "):"No mesh objects with valid polygon triangles were found.";
+      throw new Error("BLEND_NO_VALID_MESH: Blender "+parsed.header.version+" scene contains no importable mesh triangles. "+detail+" No substitute geometry was generated.");
+     }
      object=new THREE.Group();object.add(...objects);
+     if(meshDiagnostics.length){
+      const examples=meshDiagnostics.slice(0,2).map(item=>item.object+": "+item.message).join(" | ");
+      setLookupStatus("Blender "+parsed.header.version+": loaded "+blendMeshCount+" valid mesh(es); skipped "+meshDiagnostics.length+" invalid mesh object(s). "+examples,true);
+     }else{
+      setLookupStatus("Blender "+parsed.header.version+" scene parsed; "+blendMeshCount+" mesh(es), "+Math.round(blendTriangleCount).toLocaleString("en-US")+" triangles.");
+     }
     }else if(format==="STEP"||format==="STP"){
      const response=await fetch(url);if(!response.ok)throw new Error("STEP download returned HTTP "+response.status+".");
      const bytes=await stepBuffer(await response.arrayBuffer());const occt=await getOcct();
@@ -1459,7 +1473,7 @@ restoreRouteFromHash();
     else setLookupStatus("No usable object name found in the model metadata or filename. Enter a name to search.");
    }
   }catch(err){
-   if(my!==token)return;clear();stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+String(err.message||err).replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]))+'</p><p>Archive previews use the configured Cloudflare asset proxy when available. If the download still fails, the source may be unavailable, the URL may not point to a direct model file, or the host may block server-side access. Supported formats: STL, OBJ, PLY, GLB, GLTF, FBX, 3DS, LWO, BLEND and STEP.</p></div>';
+   if(my!==token)return;clear();const errorText=String(err.message||err),safeError=errorText.replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));const helpText=format==="BLEND"?"Check that the source URL returns the original .blend binary, that the download is complete and within 75 MB, and that the file uses a supported Blender structure. Invalid mesh objects are skipped only when other valid meshes can still be imported; missing topology is never invented. For complex or unsupported scenes, open the file in Blender and export the required mesh as GLB or STL.":"Archive previews use the configured Cloudflare asset proxy when available. If the download still fails, the source may be unavailable, the URL may not point to a direct model file, or the host may block server-side access. Supported formats: STL, OBJ, PLY, GLB, GLTF, FBX, 3DS, LWO, BLEND and STEP.";stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+safeError+'</p><p>'+helpText+'</p></div>';
    $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
