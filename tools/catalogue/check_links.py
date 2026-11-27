@@ -122,7 +122,7 @@ def main() -> int:
     app_path = ROOT / "app.js"
     if app_path.exists():
         app_source = app_path.read_text(encoding="utf-8")
-        for url in re.findall(r"https?://science\\.nasa\\.gov/3d-resources/[^\\s\\\"']+", app_source):
+        for url in re.findall(r"https?://science\.nasa\.gov/3d-resources/[^\s"']+", app_source):
             urls.setdefault(url.rstrip("),;"), set()).add("NASA_VERIFIED_MODEL_PAGES")
 
     unique_urls = sorted(urls)
