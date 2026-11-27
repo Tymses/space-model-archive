@@ -28,6 +28,20 @@ for obj in mesh_objects:
         maximum[i] = max(maximum[i], hi[i])
     details.append({"name": obj.name, "dimensions": size, "vertices": len(evaluated.data.vertices), "polygons": len(evaluated.data.polygons)})
 details.sort(key=lambda item: item["dimensions"][0] * item["dimensions"][1] * item["dimensions"][2], reverse=True)
+target_names = {"deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome","roll_pressure_inlet","roll_grapple","roll_RISE Antenna","roll_solar_panels"}
+selected_details = []
+for obj in mesh_objects:
+    if obj.name in target_names:
+        selected_details.append({
+            "name": obj.name,
+            "dimensions": list(obj.dimensions),
+            "scale": list(obj.scale),
+            "location": list(obj.location),
+            "parent": obj.parent.name if obj.parent else None,
+            "data": obj.data.name if obj.data else None,
+            "vertices": len(obj.data.vertices),
+            "polygons": len(obj.data.polygons)
+        })
 scene_units = {
     "system": scene.unit_settings.system,
     "scale_length": scene.unit_settings.scale_length,
@@ -52,7 +66,7 @@ result = {
     "mesh_objects": len(mesh_objects),
     "scene_units": scene_units,
     "bounds": [maximum[i] - minimum[i] for i in range(3)],
-    "largest_objects": details[:20],
+    "largest_objects": details[:20],\n    "selected_objects": selected_details,
     "stl_bytes": os.path.getsize(output_path),
 }
 print("SPACEMESHER_NATIVE_BLENDER_RESULT=" + json.dumps(result, sort_keys=True))
