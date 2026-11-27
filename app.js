@@ -1419,7 +1419,7 @@ restoreRouteFromHash();
     }else if(format==="LWO"){
      const data=await new L.LWO().loadAsync(url);object=new THREE.Group();(data.meshes||[]).forEach(mesh=>object.add(mesh));
     }else if(format==="BLEND"){
-     const response=await fetch(url);if(!response.ok)throw new Error("BLEND_DOWNLOAD_FAILED: The source returned HTTP "+response.status+".");
+     const response=await fetch(url).catch(error=>{throw new Error("BLEND_DOWNLOAD_FAILED: "+(error?.message||String(error)));});if(!response.ok)throw new Error("BLEND_DOWNLOAD_FAILED: The source returned HTTP "+response.status+".");
      const declaredLength=Number(response.headers.get("Content-Length"));
      if(Number.isFinite(declaredLength)&&declaredLength>MAX_BROWSER_MODEL_BYTES)throw new Error("BLEND_TOO_LARGE: The Blender download exceeds the 75 MB browser limit.");
      const bytes=await response.arrayBuffer();if(bytes.byteLength>MAX_BROWSER_MODEL_BYTES)throw new Error("BLEND_TOO_LARGE: The Blender download exceeds the 75 MB browser limit.");
