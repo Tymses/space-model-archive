@@ -81,6 +81,7 @@ function worker_code () {
             // reset global variables
             AB = null;
             data = null;
+            ERROR = null;
             BIG_ENDIAN = false;
             pointer_size = 0;
             struct_names = [];
