@@ -78,12 +78,12 @@ try {
     if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
     return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics,excludedAnnotations:annotationDiagnostics.map(item=>item.object),largestMeshes:meshBounds.slice(0,20),transformDetails,sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null})),sceneUnits:(parsed.file.objects.Scene||[]).map(scene=>({unitSystem:scene.unit?.system,scaleLength:scene.unit?.scale_length}))};
   });
+  console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_DIAGNOSTIC",...result}));
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
   assert.ok(result.stlBytes>84);
   assert.ok(result.sizeMm.every(value=>Number.isFinite(value)&&value>0));
-  assert.ok(Math.max(...result.sizeMm)<10000,"Presentation meshes or broken parent transforms inflated the InSight printable bounds: "+result.sizeMm.join(" × ")+" mm");
-  console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_OK",...result}));
+  assert.ok(Math.max(...result.sizeMm)<10000,"Presentation meshes or broken parent transforms inflated the InSight printable bounds: "+result.sizeMm.join(" × "));
 } finally {
   await browser.close();
   await new Promise(resolveClose=>server.close(resolveClose));
