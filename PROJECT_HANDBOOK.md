@@ -112,3 +112,13 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Rewrote the beginner workflow around the actual archive journey: find a model, check source/preview, prepare scale/build-volume, finish in the users slicer.
 - Added regression tests for collection naming, cross-listing detection/display, percentage wording and workflow copy. Expanded pull-request validation path filters so UI-only changes run the Node regression suite.
 - CI and deployment status will be recorded after GitHub Actions completes; no browser interaction or deployment is claimed before confirmation.
+
+
+### Final verification and publication — 27 November 2026
+
+- Pull request #14 merged into `main` by squash merge: `07b460d229637fe5eed112e21661b33dc0cfb18b`.
+- Final PR-head checks on `aed852f9addf7a8b3be197b4e0eca8c33485d198` passed: model-workspace regression run `46026736306`; catalogue validation run `46026736322`; complete source/model link audit run `46026737627`.
+- Post-merge `main` checks on `07b460d229637fe5eed112e21661b33dc0cfb18b` passed: model-workspace run `46026811175`; catalogue validation run `46026811416`; complete link audit run `46026811146`.
+- GitHub Pages build and deployment run `46026810918` completed successfully, including the `Deploy to GitHub Pages` step.
+- A manual interactive browser review was not performed in this session. Automated CI and deployment success do not substitute for checking the live website at desktop and mobile breakpoints.
+- P3 automation now covers the new UI/editorial acceptance cases as regression tests. Human review is still required for source meaning, licensing and scientific identity; the tests do not certify every future catalogue record automatically.
