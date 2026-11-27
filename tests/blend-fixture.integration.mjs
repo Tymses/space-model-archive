@@ -58,6 +58,16 @@ const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).
 }));
 const hiddenNames=new Set(["SEIS","arm_01_b","arm_01_c","arm_02_b","arm_02_c","arm_03_b","arm_03_c","shovel_b","shovel_c","grapple_b","shovel_arrow","arm_03_arrow","arm_02_arrow","arm_01_arrow"]);
 const baseDetails=(parsed.objects?.Base||[]).filter(base=>hiddenNames.has(base.object?.aname)||Number(base.flag||0)!==0).slice(0,200).map(base=>({object:base.object?.aname||null,flag:base.flag}));
+const listChain=(first,selector,max=300)=>{const result=[],seen=new Set();let current=first;while(current&&result.length<max&&!seen.has(current)){seen.add(current);result.push(selector(current));current=current.next;}return result;};
+const activeLayerChain=(parsed.objects?.ViewLayer||[]).map(layer=>({
+ name:layer.name,
+ layers:listChain(layer.layer_collections?.first,item=>({name:item.collection?.id?.name||null,flag:item.flag,childFirst:item.layer_collections?.first?.collection?.id?.name||null}))
+}));
+const collectionMembership=(parsed.objects?.Collection||[]).map(collection=>({
+ name:collection.id?.name||null,
+ objects:listChain(collection.gobject?.first,item=>item.ob?.aname||null),
+ children:listChain(collection.children?.first,item=>item.collection?.id?.name||null)
+}));
 const layerTree=(parsed.objects?.LayerCollection||[]).map(layer=>({
  name:layer.collection?.id?.name||null,flag:layer.flag,keys:Object.keys(layer),
  childrenKeys:Object.keys(layer.layer_collections||{}),childrenFirst:layer.layer_collections?.first?.collection?.id?.name||null,
@@ -76,4 +86,4 @@ const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collect
   childrenKeys:Object.keys(collection.children||{}),
   firstChild:collection.children?.first?.collection?.id?.name||null
 }));
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, typeKeys,viewLayerDetails,layerCollectionDetails,layerTree,baseDetails,sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, typeKeys,viewLayerDetails,layerCollectionDetails,layerTree,activeLayerChain,collectionMembership,baseDetails,sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
