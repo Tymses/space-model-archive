@@ -91,3 +91,32 @@ test("BLEND importer supports Zstandard and gzip compressed projects", () => {
   assert.match(importer, /DecompressionStream\('gzip'\)/);
   assert.match(importer, /export function createObjects/);
 });
+
+test("source descriptions are included only when they identify the selected model", () => {
+  const worker = read("cloudflare/jpl-proxy.js");
+  const start = worker.indexOf("function sourceDescriptionMatchesModel(");
+  const end = worker.indexOf("\nasync function describeArchiveModel", start);
+  assert.ok(start >= 0 && end > start, "model identity matcher must exist");
+  const matcher = new Function(worker.slice(start, end) + "\nreturn sourceDescriptionMatchesModel;")();
+
+  const genericSpaceRadar = {
+    title: "Space Radar",
+    summary: "One of Space Radar's own 3D models of a spacecraft, to turn and zoom. Made to be embedded: see models.spaceradar.ai for the catalog."
+  };
+  assert.equal(matcher("Deep Impact", genericSpaceRadar), false);
+  assert.equal(matcher("Apollo Csm", genericSpaceRadar), false);
+
+  const deepImpactPage = {
+    title: "Deep Impact / EPOXI",
+    summary: "The Deep Impact spacecraft mission and its EPOXI extended mission."
+  };
+  assert.equal(matcher("Deep Impact", deepImpactPage), true);
+  assert.equal(matcher("EPOXI", deepImpactPage), true);
+  assert.equal(matcher("Didymos", deepImpactPage), false);
+});
+
+test("generated descriptions never append conflicting free-text model kinds", () => {
+  const worker = read("cloudflare/jpl-proxy.js");
+  assert.match(worker, /Do not mix free-text "kind" labels/);
+  assert.match(worker, /Matching original source page summary/);
+});
