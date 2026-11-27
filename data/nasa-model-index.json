@@ -2896,7 +2896,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite for Scientific Applications (SAC-C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20for%20Scientific%20Applications%20(SAC-C)/Satellite%20for%20Scientific%20Applications%20(SAC-C).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-for-scientific-applications-sac-c/",
       "changed": "Source repository"
     },
     {
@@ -2910,7 +2910,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Saturn V: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Saturn%20V/Saturn%20V.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/saturn-v/",
       "changed": "Source repository"
     },
     {
@@ -2924,7 +2924,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "SeaStar: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/SeaStar/SeaStar.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/seastar/",
       "changed": "Source repository"
     },
     {
@@ -3008,7 +3008,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Solar and Heliospheric Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20and%20Heliospheric%20Observatory/Solar%20and%20Heliospheric%20Observatory.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/solar-and-heliospheric-observatory-soho/",
       "changed": "Source repository"
     },
     {
@@ -3022,7 +3022,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Exploration Vehicle: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Exploration%20Vehicle/Space%20Exploration%20Vehicle.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-exploration-vehicle/",
       "changed": "Source repository"
     },
     {
