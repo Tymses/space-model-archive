@@ -60,7 +60,8 @@ try {
         const nodeTriangles=node.geometry.index ? node.geometry.index.count/3 : (node.geometry.attributes.position?.count||0)/3;
         triangles += nodeTriangles;
         const nodeBox=new THREE.Box3().setFromObject(node),nodeSize=nodeBox.getSize(new THREE.Vector3());
-        meshBounds.push({name:node.name||"(unnamed)",sizeMm:nodeSize.toArray().map(v=>Number(v.toFixed(2))),triangles:Math.round(nodeTriangles)});
+        const localSize=node.geometry.boundingBox?.getSize(new THREE.Vector3())||new THREE.Vector3();
+        meshBounds.push({name:node.name||"(unnamed)",sizeMm:nodeSize.toArray().map(v=>Number(v.toFixed(2))),localSizeMm:localSize.toArray().map(v=>Number((v*1000).toFixed(2))),scale:node.scale.toArray().map(v=>Number(v.toFixed(4))),triangles:Math.round(nodeTriangles)});
       }
     });
     meshBounds.sort((a,b)=>(b.sizeMm[0]*b.sizeMm[1]*b.sizeMm[2])-(a.sizeMm[0]*a.sizeMm[1]*a.sizeMm[2]));
@@ -71,7 +72,7 @@ try {
     const stlBytes = stlBuffer?.byteLength || stl?.byteLength || 0;
     const expectedBytes = 84 + Math.round(triangles)*50;
     if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
-    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length,largestMeshes:meshBounds.slice(0,20)};
+    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length,largestMeshes:meshBounds.slice(0,20),sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null}))};
   });
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
