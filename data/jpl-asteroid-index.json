@@ -16,7 +16,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/kleo.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -30,7 +30,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/betulia.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -44,7 +44,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/geographos.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -58,7 +58,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/bacchus.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -72,7 +72,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/rashalom.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -86,7 +86,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/toutatis.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -100,7 +100,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/hirestoutatis.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -114,7 +114,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/castalia.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -128,7 +128,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/golevka.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -142,7 +142,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/1996hw1.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -156,7 +156,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/sk.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -170,7 +170,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/wt24.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -184,7 +184,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/ml14.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -198,7 +198,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/yorp.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -212,7 +212,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/kw4a.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -226,7 +226,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/kw4b.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -240,7 +240,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/ky26.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -254,7 +254,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/ce26.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     },
     {
@@ -268,7 +268,7 @@
       "license": "No licence stated on the model index; check source terms",
       "credit": "NASA/JPL Radar Astronomy — asteroid shape model. See original JPL shape-model index for model references and attribution.",
       "file": "https://echo.jpl.nasa.gov/asteroids/shapes/2008ev5.obj",
-      "sourceUrl": "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html",
+      "sourceUrl": null,
       "changed": "JPL index last updated 2024-08-10"
     }
   ]
