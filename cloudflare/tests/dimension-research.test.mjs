@@ -7,13 +7,14 @@ const workerPath = new URL("../jpl-proxy.js", import.meta.url);
 let workerSource = readFileSync(workerPath, "utf8");
 workerSource = workerSource.replace(/\nexport default \{[\s\S]*\n\};\s*$/, "");
 assert.notEqual(workerSource, "", "Worker source must be readable");
-workerSource += "\nglobalThis.__smaTest = { canonicalSmallBodyQuery, buildResearchSearchTerms, exactResearchIdentity, extractIdentityScopedMeasurement, extractSpacecraftAxes, lookupCuratedDimensions };";
+workerSource += "\nglobalThis.__smaTest = { canonicalSmallBodyQuery, buildResearchSearchTerms, exactResearchIdentity, extractIdentityScopedMeasurement, extractSpacecraftAxes, lookupCuratedDimensions, searchWeb };";
 const dimensionsPath = new URL("../../data/object-dimensions-index.json", import.meta.url);
 const dimensionsIndex = JSON.parse(readFileSync(dimensionsPath, "utf8"));
+let fetchImpl = async () => ({ ok: true, json: async () => dimensionsIndex });
 const context = {
   URL,
   URLSearchParams,
-  fetch: async () => ({ ok: true, json: async () => dimensionsIndex })
+  fetch: (...args) => fetchImpl(...args)
 };
 vm.runInNewContext(workerSource, context);
 const api = context.__smaTest;
@@ -34,7 +35,7 @@ test("research expands into more than one scientific query form", () => {
 });
 
 test("Didymos labelled X/Y/Z extents are extracted with metre conversion and uncertainty", () => {
-  const html = "<h1>Physical dimensions of the asteroid</h1><table><tr><td>Extent of Didymos (m)</td><td>X: 849 ± 15; Y: 851 ± 15; Z: 620 ± 15</td></tr></table>";
+  const html = "<h1>Physical dimensions of the asteroid</h1><table><tr><th>Object</th><th>Extents (m)</th></tr><tr><td>Didymos</td><td>X: 849 ± 15; Y: 851 ± 15; Z: 620 ± 15</td></tr></table>";
   const result = api.extractIdentityScopedMeasurement(html, "Didymos", "small-bodies");
   assert.deepEqual(Array.from(result.axesKm), [0.849, 0.851, 0.62]);
   assert.equal(result.uncertaintyKm, 0.015);
@@ -72,4 +73,30 @@ test("Dimorphos remains distinct from the Didymos primary", async () => {
   const result = await api.lookupCuratedDimensions("Dimorphos moonlet", "small-bodies");
   assert.equal(result.best.title.startsWith("Dimorphos"), true);
   assert.deepEqual(Array.from(result.best.axesKm), [0.177, 0.174, 0.116]);
+});
+
+test("web search checks scientific result variants and extracts a labelled table row", async () => {
+  fetchImpl = async input => {
+    const url = String(input);
+    if (url.includes("html.duckduckgo.com")) {
+      return {
+        ok: true,
+        text: async () => '<div class="result__snippet">Asteroid physical properties include dimensions for Didymos.</div><a class="result__a" href="https://www.nature.com/articles/s41586-023-05810-5">Successful kinetic impact into an asteroid for planetary defence</a>'
+      };
+    }
+    if (url.includes("bing.com")) return { ok: true, text: async () => "<rss></rss>" };
+    if (url.includes("nature.com")) {
+      return {
+        ok: true,
+        headers: { get: () => "text/html; charset=utf-8" },
+        text: async () => '<html><head><title>Successful kinetic impact into an asteroid for planetary defence</title></head><body><h1>Physical dimensions of the asteroid</h1><table><tr><th>Object</th><th>Extents (m)</th></tr><tr><td>Didymos</td><td>X: 849 ± 15; Y: 851 ± 15; Z: 620 ± 15</td></tr></table></body></html>'
+      };
+    }
+    return { ok: false, text: async () => "" };
+  };
+  const results = await api.searchWeb("Didymos asteroid shape model", "small-bodies");
+  assert.equal(results.length, 1);
+  assert.deepEqual(Array.from(results[0].axesKm), [0.849, 0.851, 0.62]);
+  assert.equal(results[0].uncertaintyKm, 0.015);
+  fetchImpl = async () => ({ ok: true, json: async () => dimensionsIndex });
 });
