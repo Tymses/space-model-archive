@@ -35,6 +35,18 @@ const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.
   parentName:object.parent?.aname||null, dataName:object.data?.aname||null, dataTopology:object.data?{totvert:object.data.totvert,totloop:object.data.totloop,totpoly:object.data.totpoly}:null
 }));
 const flaggedObjects=(parsed.objects?.Object||[]).filter(object=>Number(object.restrictflag||0)!==0||Number(object.flag||0)!==0).slice(0,80).map(object=>({name:object.aname,flag:object.flag,restrictflag:object.restrictflag,parent:object.parent?.aname||null}));
+const typeKeys=Object.keys(parsed.objects||{}).filter(name=>/Collection|ViewLayer|Base|Layer/i.test(name));
+const viewLayerDetails=(parsed.objects?.ViewLayer||[]).map(layer=>({
+  keys:Object.keys(layer).slice(0,80),
+  name:layer.name||null,
+  layerCollectionName:layer.layer_collection?.collection?.id?.name||layer.layer_collection?.id?.name||null,
+  layerCollectionFlag:layer.layer_collection?.flag??null
+}));
+const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).map(layer=>({
+  collectionName:layer.collection?.id?.name||null,flag:layer.flag,
+  parentName:layer.parent?.collection?.id?.name||null
+}));
+const baseDetails=(parsed.objects?.Base||[]).filter(base=>Number(base.flag||0)!==0).slice(0,100).map(base=>({object:base.object?.aname||null,flag:base.flag}));
 const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
   unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length,
   keys:Object.keys(scene).slice(0,80), collectionName:scene.master_collection?.id?.name||scene.collection?.id?.name||null
@@ -47,4 +59,4 @@ const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collect
   childrenKeys:Object.keys(collection.children||{}),
   firstChild:collection.children?.first?.collection?.id?.name||null
 }));
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, typeKeys,viewLayerDetails,layerCollectionDetails,baseDetails,sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
