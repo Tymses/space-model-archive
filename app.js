@@ -470,7 +470,7 @@ function addCatalogModel(model) {
 }
 async function loadExpandedCatalogs() {
   try {
-    const response = await fetch("./data/nasa-model-index.json?v=20261126-19");
+    const response = await fetch("./data/nasa-model-index.json?v=20261127-01");
     if (!response.ok) throw new Error("NASA index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -480,7 +480,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/spaceradar-model-index.json?v=20261126-20");
+    const response = await fetch("./data/spaceradar-model-index.json?v=20261127-01");
     if (!response.ok) throw new Error("Space Radar index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -520,7 +520,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/moon-catalogue-index.json?v=20261126-19");
+    const response = await fetch("./data/moon-catalogue-index.json?v=20261127-01");
     if (!response.ok) throw new Error("Moon catalogue index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
