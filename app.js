@@ -1422,7 +1422,9 @@ restoreRouteFromHash();
      const response=await fetch(url);if(!response.ok)throw new Error("BLEND download returned HTTP "+response.status+".");
      const bytes=await response.arrayBuffer();const blend=await import("./vendor/blend-importer.js");
      const parsed=await blend.parseBlend(bytes,model?.name||file?.name||"Blender scene");const objects=blend.createObjects(parsed);
-     if(!objects.length)throw new Error("The BLEND file contains no supported mesh objects.");
+     let blendMeshCount=0,blendTriangleCount=0;
+     for(const item of objects)item.traverse?.(node=>{if(node.isMesh&&node.geometry){blendMeshCount++;blendTriangleCount+=node.geometry.index?node.geometry.index.count/3:(node.geometry.attributes.position?.count||0)/3;}});
+     if(!blendMeshCount||!blendTriangleCount)throw new Error("The BLEND file did not produce valid mesh triangles. No substitute geometry was loaded.");
      object=new THREE.Group();object.add(...objects);
     }else if(format==="STEP"||format==="STP"){
      const response=await fetch(url);if(!response.ok)throw new Error("STEP download returned HTTP "+response.status+".");
@@ -1578,4 +1580,18 @@ restoreRouteFromHash();
  });
  ["scaling-bed-x","scaling-bed-y","scaling-bed-z"].forEach(id=>$id(id).addEventListener("input",()=>{selectedDenominator=null;update();}));
  $id("scaling-printer-profile").addEventListener("change",()=>{$id("scaling-custom-volume").hidden=$id("scaling-printer-profile").value!=="custom";selectedDenominator=null;update();});
+})();
+
+
+// Global click acknowledgement for native buttons and button-like controls.
+(function initButtonClickFeedback(){
+ const selector='button, [role="button"], input[type="button"], input[type="submit"], .upload-button, .action-link';
+ document.addEventListener("click",event=>{
+  const control=event.target?.closest?.(selector);
+  if(!control||control.disabled||control.getAttribute("aria-disabled")==="true")return;
+  control.classList.remove("is-click-feedback");
+  void control.offsetWidth;
+  control.classList.add("is-click-feedback");
+  window.setTimeout(()=>control.classList.remove("is-click-feedback"),280);
+ },true);
 })();
