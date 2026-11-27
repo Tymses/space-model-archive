@@ -96,6 +96,7 @@ try {
   });
   await writeFile("/tmp/spacemesher-browser-transforms.json",JSON.stringify({objects:result.objectTransforms,sizeMm:result.sizeMm}));
   await writeFile("/tmp/insight-browser.stl",Buffer.from(result.stlBase64,"base64"));
+  await writeFile("/tmp/insight-browser-result.json",JSON.stringify({sizeMm:result.sizeMm,triangles:result.triangles,stlBytes:result.stlBytes}));
   console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_DIAGNOSTIC",...result,objectTransforms:undefined,stlBase64:undefined}));
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
