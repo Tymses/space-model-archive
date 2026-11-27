@@ -156,3 +156,8 @@ Fit to build plate now selects the best of all six axis-aligned dimension permut
 ### Blender parent-inverse transforms
 
 The importer applies each Blender object's `parentinv` matrix in the correct order and coordinate basis before attaching the object to its parent. This preserves Blender's world-space placement for parented meshes; ignoring this matrix can stretch the scene bounds and separate otherwise correctly sized parts.
+
+
+### Active Blender view-layer selection
+
+BLEND imports now respect the active Blender view layer: objects hidden by view-layer Base flags or the viewport restriction flag are skipped, while render-hidden but viewport-visible geometry is preserved. This prevents alternate manipulator poses and other hidden scene variants from being mixed into the printable model. Advanced callers can set `includeHiddenObjects: true` to inspect every mesh datablock.
