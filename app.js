@@ -1205,9 +1205,22 @@ loadExpandedCatalogs();
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
  }
+ async function loadSourceDescription(sourceUrl, objectName) {
+  const panel=$id("scaling-source-description"),body=$id("scaling-source-description-text"),link=$id("scaling-source-description-link");
+  panel.hidden=false;body.textContent="Loading the description from the original source…";link.hidden=true;link.removeAttribute("href");
+  if(!proxyUrl||!sourceUrl){body.textContent="No original source page is available for this model.";return;}
+  try{
+   const endpoint=new URL(proxyUrl);endpoint.searchParams.set("action","describe");endpoint.searchParams.set("url",sourceUrl);endpoint.searchParams.set("name",objectName||"");
+   const response=await fetch(endpoint.toString(),{headers:{Accept:"application/json"}});
+   const data=await response.json();
+   if(!response.ok)throw new Error(data.error||"Source description unavailable.");
+   if(data.identityMatched&&data.description){body.textContent=data.description;link.href=data.url||sourceUrl;link.hidden=false;}
+   else body.textContent="The source page did not provide a clearly matching description for this model.";
+  }catch(error){body.textContent="The original source description could not be loaded. Open the source page to view its details.";}
+ }
  function resetWorkspace(){
   clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
-  $id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;
+  $id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;$id("scaling-source-description").hidden=true;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
   $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";
@@ -1224,7 +1237,7 @@ loadExpandedCatalogs();
    $id("scaling-page-overline").textContent="ARCHIVE MODEL";$id("scaling-page-title").textContent=model.name;$id("scaling-page-subtitle").textContent=model.kind+" · interactive preview, dimensions and print scale";
    $id("scaling-archive-context").hidden=false;$id("scaling-archive-meta").textContent=model.format+" · "+model.size;$id("scaling-archive-source").textContent=model.source;$id("scaling-archive-credit").textContent=model.credit||"Original model source credited in the archive.";
    const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.hidden=!model.sourceUrl;if(model.sourceUrl)source.href=model.sourceUrl;else source.removeAttribute("href");const meshNote=$id("spacecraft-mesh-note");if(meshNote)meshNote.hidden=model.category!=="spacecraft";
-   $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
+   $id("scaling-object-query").value=model.name||"";loadSourceDescription(model.sourceUrl,model.name);load(null,model.format,model,model.file);
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });
  $id("scaling-file").addEventListener("change",e=>{
