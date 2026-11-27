@@ -28,7 +28,7 @@ for(const item of native){
  const localError=Math.max(...expectedLocalMin.map((value,index)=>Math.abs(value-actual.localMin[index])),...expectedLocalMax.map((value,index)=>Math.abs(value-actual.localMax[index])));
  let objectVertexError=0;
  if(item.positions.length!==actual.positions.length) objectVertexError=Infinity;
- else for(let index=0;index<item.positions.length/3;index++){
+ else for(const index of item.used_vertex_indices){
   const expectedVertex=[item.positions[index*3],item.positions[index*3+2],-item.positions[index*3+1]];
   for(let axis=0;axis<3;axis++) objectVertexError=Math.max(objectVertexError,Math.abs(expectedVertex[axis]-actual.positions[index*3+axis]));
   const world=[0,1,2].map(row=>expected[row][0]*expectedVertex[0]+expected[row][1]*expectedVertex[1]+expected[row][2]*expectedVertex[2]+expected[row][3]);
