@@ -93,7 +93,7 @@
 </section>
 <section class="scaling-view" id="scaling-view" hidden>
   <div class="page-heading scaling-page-heading">
-    <div><p class="overline" id="scaling-page-overline">PRINT WORKSPACE</p><h1 id="scaling-page-title">Model scaling</h1><p class="subheading" id="scaling-page-subtitle">Load a model, identify its real-world dimensions and find a printable scale.</p></div>
+    <div><p class="overline" id="scaling-page-overline">PRINT WORKSPACE</p><h1 id="scaling-page-title">Model scaling</h1><p class="subheading" id="scaling-page-subtitle">Load a model, choose how to scale it and check the selected build volume.</p></div>
     <span class="archive-count" id="scaling-file-state">No model loaded</span>
   </div>
   <div class="scaling-workspace">
@@ -109,37 +109,12 @@
       </section>
     </section>
     <section class="scaling-settings-panel">
-      <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
+      <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Choose scaling mode</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
       <p class="scaling-model-name" id="scaling-model-name">No model selected</p>
       <section class="scaling-archive-context" id="scaling-archive-context" hidden aria-label="Archive model information">
         <div><span id="scaling-archive-meta">ARCHIVE MODEL</span><a id="scaling-archive-source" class="scaling-archive-source-link" href="#" target="_blank" rel="noopener">—</a></div>
         <div class="scaling-archive-actions"><a id="scaling-download-link" class="action-link" href="#">Download</a><a id="scaling-source-link" class="action-link secondary" href="#" target="_blank" rel="noopener">Original source page ↗</a></div><small class="spacecraft-mesh-note" id="spacecraft-mesh-note" hidden>Some spacecraft meshes may need repair in your slicer: right-click the model and select “Fix Model”.</small>
       </section>
-      <div class="scaling-object-search" id="scaling-object-search">
-        <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
-        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button" title="Search scientific records for the real object dimensions. Review the source before relying on a result.">Find dimensions</button></div>
-        <p class="field-hint" id="scaling-lookup-status" aria-live="polite">The model name is detected automatically. Scientific databases are checked first, followed by broader public-web research.</p>
-        <div class="scaling-research-panel" id="scaling-research-panel" hidden aria-live="polite">
-          <div class="research-scan" aria-hidden="true">
-            <svg viewBox="0 0 160 104" role="img">
-              <defs><pattern id="research-grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width=".7"/></pattern><pattern id="research-zoom-grid" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M6 0H0V6" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width=".8"/></pattern></defs>
-              <rect x="8" y="10" width="144" height="84" rx="10" fill="url(#research-grid)" stroke="currentColor" stroke-opacity=".16"/>
-              <path class="research-scan-line" d="M12 28H148"/>
-              <g class="research-magnifier"><circle cx="76" cy="48" r="25" fill="#f7f8fa" fill-opacity=".78" stroke="currentColor" stroke-width="2.5"/><circle cx="76" cy="48" r="20" fill="url(#research-zoom-grid)"/><path d="M94 66L113 85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M94 66L113 85" fill="none" stroke="#f7f8fa" stroke-width="2" stroke-linecap="round"/><circle cx="76" cy="48" r="3" fill="currentColor" opacity=".55"/></g>
-            </svg>
-          </div>
-          <div class="research-copy"><strong id="scaling-research-title">Cloudflare Worker searching...</strong><span id="scaling-research-detail">Comparing scientific sources and published measurements.</span></div>
-        </div>
-        <details class="scaling-unverified-details" id="scaling-unverified-details" hidden><summary>Unverified search candidates <span id="scaling-unverified-count">0</span></summary><div class="scaling-research-results" id="scaling-research-results" hidden></div></details><p class="field-hint research-evidence-note">Evidence quality is a source-ranking heuristic, not a probability or guaranteed measurement accuracy. Published uncertainty is shown only when the source explicitly reports it.</p>
-      </div>
-      <div class="scaling-object-result" id="scaling-object-result" hidden>
-        <div><span>Matched object</span><strong id="scaling-object-name">—</strong></div>
-        <div><span>Measured axes</span><strong id="scaling-object-axes">—</strong></div>
-        <div><span>Longest axis</span><strong id="scaling-object-longest">—</strong></div>
-        <div><span>Evidence quality</span><strong id="scaling-object-confidence">—</strong></div>
-        <div><span>Published uncertainty</span><strong id="scaling-object-uncertainty">Not stated by source</strong></div>
-        <a id="scaling-reference-source" href="#" target="_blank" rel="noopener">Open JPL record ↗</a>
-      </div>
       <section class="scaling-mode-panel" aria-label="Scaling mode">
         <label for="scaling-mode">Scaling mode</label>
         <select class="scale-input" id="scaling-mode">
@@ -167,6 +142,31 @@
         <input class="scale-input" id="scaling-fit-adjustment" type="range" min="10" max="200" step="1" value="100">
         <p class="field-hint">100% uses the maximum safe size. Lower values shrink it; higher values test a larger model and may exceed the safe build volume.</p>
       </section>
+      <div class="scaling-object-search" id="scaling-object-search">
+        <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
+        <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button" title="Search scientific records for the real object dimensions. Review the source before relying on a result.">Find dimensions</button></div>
+        <p class="field-hint" id="scaling-lookup-status" aria-live="polite">The model name is detected automatically. Scientific databases are checked first, followed by broader public-web research.</p>
+        <div class="scaling-research-panel" id="scaling-research-panel" hidden aria-live="polite">
+          <div class="research-scan" aria-hidden="true">
+            <svg viewBox="0 0 160 104" role="img">
+              <defs><pattern id="research-grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-width=".7"/></pattern><pattern id="research-zoom-grid" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M6 0H0V6" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width=".8"/></pattern></defs>
+              <rect x="8" y="10" width="144" height="84" rx="10" fill="url(#research-grid)" stroke="currentColor" stroke-opacity=".16"/>
+              <path class="research-scan-line" d="M12 28H148"/>
+              <g class="research-magnifier"><circle cx="76" cy="48" r="25" fill="#f7f8fa" fill-opacity=".78" stroke="currentColor" stroke-width="2.5"/><circle cx="76" cy="48" r="20" fill="url(#research-zoom-grid)"/><path d="M94 66L113 85" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M94 66L113 85" fill="none" stroke="#f7f8fa" stroke-width="2" stroke-linecap="round"/><circle cx="76" cy="48" r="3" fill="currentColor" opacity=".55"/></g>
+            </svg>
+          </div>
+          <div class="research-copy"><strong id="scaling-research-title">Cloudflare Worker searching...</strong><span id="scaling-research-detail">Comparing scientific sources and published measurements.</span></div>
+        </div>
+        <details class="scaling-unverified-details" id="scaling-unverified-details" hidden><summary>Unverified search candidates <span id="scaling-unverified-count">0</span></summary><div class="scaling-research-results" id="scaling-research-results" hidden></div></details><p class="field-hint research-evidence-note">Evidence quality is a source-ranking heuristic, not a probability or guaranteed measurement accuracy. Published uncertainty is shown only when the source explicitly reports it.</p>
+      </div>
+      <div class="scaling-object-result" id="scaling-object-result" hidden>
+        <div><span>Matched object</span><strong id="scaling-object-name">—</strong></div>
+        <div><span>Measured axes</span><strong id="scaling-object-axes">—</strong></div>
+        <div><span>Longest axis</span><strong id="scaling-object-longest">—</strong></div>
+        <div><span>Evidence quality</span><strong id="scaling-object-confidence">—</strong></div>
+        <div><span>Published uncertainty</span><strong id="scaling-object-uncertainty">Not stated by source</strong></div>
+        <a id="scaling-reference-source" href="#" target="_blank" rel="noopener">Open JPL record ↗</a>
+      </div>
       <div class="scaling-printer-block">
         <div class="scaling-section-heading"><div><p class="overline">STEP 2</p><h2>Printer build volume</h2></div></div>
         <label for="scaling-printer-profile" title="The build volume limits the largest printable bounding box.">Printer</label>
