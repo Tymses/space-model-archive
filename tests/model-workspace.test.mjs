@@ -401,6 +401,8 @@ test("Blender numeric-key vector structs are read as location, scale, rotation a
  assert.deepEqual(safeVec({0:1,1:2,2:3},[0,0,0]),[1,2,3]);
  assert.deepEqual(safeVec(new Float32Array([4,5,6]),[0,0,0]),[4,5,6]);
  assert.deepEqual(safeQuat({0:1,1:0,2:0,3:0}),[1,0,0,0]);
+ const nonUnit=safeQuat({0:0.3016583025,1:-0.6116163731,2:0.314779669,3:0.6561406255});
+ assert.ok(Math.abs(Math.hypot(...nonUnit)-1)<1e-12);
  assert.equal(safeQuat({0:1,1:0,2:0}),null);
 });
 
