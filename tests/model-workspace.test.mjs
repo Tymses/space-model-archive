@@ -410,7 +410,7 @@ test("Blender active view-layer visibility excludes hidden and viewport-restrict
  assert.ok(start>=0&&end>start);
  const helper=source.slice(start,end+2);
  const visible=new Function(helper+"\nreturn isObjectVisibleInActiveViewLayer;")();
- const shown={aname:"shown",restrictflag:0},renderHidden={aname:"render-hidden",restrictflag:0},hidden={aname:"hidden",restrictflag:0},viewportHidden={aname:"viewport-hidden",restrictflag:1};
+ const shown={aname:"shown",restrictflag:0},renderHidden={aname:"render-hidden",restrictflag:0},hidden={aname:"hidden",restrictflag:0},viewportHidden={aname:"viewport-hidden",restrictflag:1},childOfHiddenCamera={aname:"camera-child",restrictflag:0,parent:{restrictflag:1}};
  const file={objects:{Base:[{object:shown,flag:214},{object:renderHidden,flag:86},{object:hidden,flag:0},{object:viewportHidden,flag:128}]}};
  assert.equal(visible(file,shown),true);
  assert.equal(visible(file,renderHidden),true);
