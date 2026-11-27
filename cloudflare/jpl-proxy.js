@@ -521,7 +521,7 @@ function extractSpacecraftAxes(text) {
     }
     match = block.match(new RegExp(
       "(?:spacecraft|space vehicle|flyby vehicle|probe|orbiter)[^.;]{0,100}?" +
-      "(?:dimensions?|measures?|measuring|size)\\s*:?\\s*" +
+      "(?:dimensions?|measures?|measuring|size)\\s*(?:are|of)?\\s*:?\\s*" +
       number + "\\s*(?:x|×|by)\\s*" + number + "\\s*(?:x|×|by)\\s*" + number + "\\s*" + unit, "i"
     ));
     if (match) {
