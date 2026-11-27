@@ -131,38 +131,38 @@ const SOURCE_DESCRIPTION_HOSTS = new Set([
   "triunitystudios.com","sketchfab.com","zenodo.org"
 ]);
 function descriptionPlain(value) {
-  return decode(String(value||"").replace(/<script[\\s\\S]*?<\\/script>|<style[\\s\\S]*?<\\/style>|<svg[\\s\\S]*?<\\/svg>/gi," ")
-    .replace(/<[^>]+>/g," ").replace(/&nbsp;/gi," ").replace(/\\s+/g," ")).trim();
+  return decode(String(value||"").replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<svg[\s\S]*?<\/svg>/gi," ")
+    .replace(/<[^>]+>/g," ").replace(/&nbsp;/gi," ").replace(/\s+/g," ")).trim();
 }
 function extractSourceDescription(html) {
   const source=String(html||"").slice(0,1800000);
   const meta=[];
-  const tags=source.match(/<meta\\b[^>]*>/gi)||[];
+  const tags=source.match(/<meta\b[^>]*>/gi)||[];
   for(const tag of tags){
-    const key=(tag.match(/(?:name|property)\\s*=\\s*["']([^"']+)["']/i)||[])[1]||"";
-    const value=(tag.match(/content\\s*=\\s*["']([^"']*)["']/i)||[])[1]||"";
+    const key=(tag.match(/(?:name|property)\s*=\s*["']([^"']+)["']/i)||[])[1]||"";
+    const value=(tag.match(/content\s*=\s*["']([^"']*)["']/i)||[])[1]||"";
     if(/^(description|og:description|twitter:description)$/i.test(key)&&value)meta.push(descriptionPlain(value));
   }
   const jsonDescriptions=[];
-  const scripts=source.match(/<script[^>]+type=["']application\\/ld\\+json["'][^>]*>[\\s\\S]*?<\\/script>/gi)||[];
+  const scripts=source.match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi)||[];
   for(const script of scripts){
-    const raw=script.replace(/^<script[^>]*>|<\\/script>$/gi,"");
+    const raw=script.replace(/^<script[^>]*>|<\/script>$/gi,"");
     try{
       const visit=value=>{if(!value||typeof value!=="object")return;if(typeof value.description==="string")jsonDescriptions.push(descriptionPlain(value.description));if(Array.isArray(value))value.forEach(visit);else Object.values(value).forEach(visit);};
       visit(JSON.parse(raw));
     }catch{}
   }
-  const content=(source.match(/<(?:main|article)\\b[^>]*>([\\s\\S]*?)<\\/(?:main|article)>/i)||[])[1]||source;
-  const cleaned=content.replace(/<(?:nav|header|footer|aside|script|style|form|svg)[\\s\\S]*?<\\/(?:nav|header|footer|aside|script|style|form|svg)>/gi," ");
-  const paragraphs=[...cleaned.matchAll(/<p\\b[^>]*>([\\s\\S]*?)<\\/p>/gi)]
+  const content=(source.match(/<(?:main|article)\b[^>]*>([\s\S]*?)<\/(?:main|article)>/i)||[])[1]||source;
+  const cleaned=content.replace(/<(?:nav|header|footer|aside|script|style|form|svg)[\s\S]*?<\/(?:nav|header|footer|aside|script|style|form|svg)>/gi," ");
+  const paragraphs=[...cleaned.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
     .map(match=>descriptionPlain(match[1])).filter(text=>text.length>=45&&!/cookie|privacy policy|subscribe to|all rights reserved/i.test(text));
   const candidates=[...meta,...jsonDescriptions,...paragraphs].filter(text=>text.length>=35);
   const unique=[...new Set(candidates)];
-  return unique.slice(0,4).join("\\n\\n").slice(0,1800);
+  return unique.slice(0,4).join("\n\n").slice(0,1800);
 }
 async function describeSourcePage(value, objectName) {
   let page;try{page=new URL(value);}catch{throw new Error("Invalid source page URL.");}
-  const allowed=host=>SOURCE_DESCRIPTION_HOSTS.has(host.toLowerCase().replace(/^www\\./,""));
+  const allowed=host=>SOURCE_DESCRIPTION_HOSTS.has(host.toLowerCase().replace(/^www\./,""));
   if(page.protocol!=="https:"||!allowed(page.hostname)||page.username||page.password||page.port&&page.port!=="443")throw new Error("Source page host is not approved.");
   let response,target=page;
   for(let hop=0;hop<=3;hop++){
@@ -175,7 +175,7 @@ async function describeSourcePage(value, objectName) {
   const type=(response.headers.get("content-type")||"").toLowerCase();
   if(!type.includes("html")&&!type.includes("xml"))throw new Error("Source URL is not an HTML page.");
   const html=(await response.text()).slice(0,1800000),description=extractSourceDescription(html);
-  const title=descriptionPlain((html.match(/<title[^>]*>([\\s\\S]*?)<\\/title>/i)||[])[1]||"");
+  const title=descriptionPlain((html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]||"");
   const text=descriptionPlain(html).slice(0,120000);
   const name=String(objectName||"").trim(),tokens=name.toLowerCase().split(/[^a-z0-9]+/).filter(token=>token.length>2);
   const identityMatched=!!name&&(text.toLowerCase().includes(name.toLowerCase())||title.toLowerCase().includes(name.toLowerCase())||(tokens.length>0&&tokens.every(token=>text.toLowerCase().includes(token))));
