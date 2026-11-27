@@ -430,7 +430,7 @@ function parseDimensionNumber(token) {
     const integerPart = value.slice(0, decimalIndex);
     const fractionPart = value.slice(decimalIndex + 1);
     const groupingPattern = new RegExp("^\\d{1,3}(?:" + (groupingSeparator === "." ? "\\." : ",") + "\\d{3})+$");
-    if (!fractionPart || !/^\\d+$/.test(fractionPart) || !groupingPattern.test(integerPart)) return null;
+    if (!fractionPart || !/^\d+$/.test(fractionPart) || !groupingPattern.test(integerPart)) return null;
     normalized = integerPart.split(groupingSeparator).join("") + "." + fractionPart;
   } else {
     const separator = lastComma >= 0 ? "," : ".";
