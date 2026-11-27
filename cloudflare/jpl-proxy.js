@@ -566,14 +566,22 @@ function extractSpacecraftAxes(text) {
 }
 
 function extractUncertainty(text) {
+  const source = decode(text);
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
-  const match = decode(text).match(new RegExp("(?:±|\\+\\/-)\\s*(" + number + ")\\s*" + unit, "i"));
-  if (!match) return null;
+  let match = source.match(new RegExp("(?:±|\\+\\/-)\\s*(" + number + ")\\s*" + unit, "i"));
+  let unitValue = match?.[2];
+  if (!match) {
+    // Tables often state the unit once in the column heading, e.g. "Extent (m)"
+    // and then list "X: 849 ± 15; Y: ...". Only inherit an explicit shared unit.
+    match = source.match(new RegExp("(?:±|\\+\\/-)\\s*(" + number + ")", "i"));
+    unitValue = (source.match(/\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)\)/i) || [])[1];
+  }
+  if (!match || !unitValue) return null;
   const numericValue = parseDimensionNumber(match[1]);
   if (numericValue == null) return null;
-  const unitValue = match[2].toLowerCase();
-  const factor = /^(km|kilometer|kilometre)/.test(unitValue) ? 1 : /^cm/.test(unitValue) ? 0.00001 : /^mm/.test(unitValue) ? 0.000001 : 0.001;
+  const unitName = unitValue.toLowerCase();
+  const factor = /^(km|kilometer|kilometre)/.test(unitName) ? 1 : /^cm/.test(unitName) ? 0.00001 : /^mm/.test(unitName) ? 0.000001 : 0.001;
   return numericValue * factor;
 }
 /** @param {ResearchCandidate} candidate @param {string} query */
