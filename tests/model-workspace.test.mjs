@@ -129,7 +129,7 @@ test("Worker only proxies newly supported geometry extensions from approved host
 test("BLEND importer supports Zstandard and gzip compressed projects", () => {
   const importer = read("vendor/blend-importer.js");
   assert.match(importer, /fzstd@0\.1\.1/);
-  assert.match(importer, /DecompressionStream\('gzip'\)/);
+  assert.match(importer, /DecompressionStream\(["\']gzip["\']\)/);
   assert.match(importer, /export function createObjects/);
 });
 
