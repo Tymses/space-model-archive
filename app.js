@@ -1144,7 +1144,7 @@ restoreRouteFromHash();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.sourceLabel||best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:best.measurement||"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:expectedCategory==="spacecraft"?"m":"km"});
+   showDimensions({name:best.matchedObject||query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.sourceLabel||best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:best.measurement||"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:expectedCategory==="spacecraft"?"m":"km"});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus((best.sourceLabel||best.source||"A source")+" · "+(best.measurement||"Published dimensions")+". "+(best.note||"Evidence score is a source-quality heuristic, not a statistical probability."));
    return true;
