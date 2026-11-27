@@ -25,6 +25,8 @@ if not mesh_objects:
 
 minimum = [float("inf")] * 3
 maximum = [float("-inf")] * 3
+raw_minimum = [float("inf")] * 3
+raw_maximum = [float("-inf")] * 3
 details = []
 for obj in printable_objects:
     evaluated = obj.evaluated_get(depsgraph)
@@ -35,6 +37,11 @@ for obj in printable_objects:
     for i in range(3):
         minimum[i] = min(minimum[i], lo[i])
         maximum[i] = max(maximum[i], hi[i])
+    for vertex in obj.data.vertices:
+        point = obj.matrix_world @ vertex.co
+        for i in range(3):
+            raw_minimum[i] = min(raw_minimum[i], point[i])
+            raw_maximum[i] = max(raw_maximum[i], point[i])
     details.append({"name": obj.name, "dimensions": size, "vertices": len(evaluated.data.vertices), "polygons": len(evaluated.data.polygons)})
 details.sort(key=lambda item: item["dimensions"][0] * item["dimensions"][1] * item["dimensions"][2], reverse=True)
 for obj in printable_objects:
@@ -86,7 +93,7 @@ result = {
     "printable_objects": len(printable_objects),
     "excluded_presentation_objects": len(mesh_objects) - len(printable_objects),
     "scene_units": scene_units,
-    "bounds": [maximum[i] - minimum[i] for i in range(3)],
+    "bounds": [maximum[i] - minimum[i] for i in range(3)],\n    "raw_bounds": [raw_maximum[i] - raw_minimum[i] for i in range(3)],
     "largest_objects": details[:20],
     "selected_objects": selected_details,
     "stl_bytes": os.path.getsize(output_path),
