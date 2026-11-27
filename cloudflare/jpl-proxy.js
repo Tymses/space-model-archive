@@ -469,7 +469,7 @@ function extractAxes(text) {
     + "z(?:\\s*[- ]?axis)?\\s*[:=]\\s*(" + axisNumber + ")(?:\\s*(?:±|\\+\\/-)\\s*" + axisNumber + ")?\\s*(" + axisUnit + ")?", "i"
   ));
   if (labelled) {
-    const sharedUnit = (source.match(/\\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\\)/i) || [])[1];
+    const sharedUnit = (source.match(/\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\)/i) || [])[1];
     const units = [labelled[2], labelled[4], labelled[6]].map(unitValue => unitValue || sharedUnit);
     if (units.every(Boolean)) {
       const factors = units.map(unitValue =>
@@ -776,7 +776,7 @@ async function lookupCuratedDimensions(query, category) {
     if (matches.length !== 1) return null;
     const record = matches[0];
     const axesKm = Array.isArray(record.axesKm) ? record.axesKm.map(Number) : [];
-    if (axesKm.length < 2 || axesKm.length > 3 || !axesKm.every(value => Number.isFinite(value) && value > 0) || !/^https:\\/\\//i.test(record.sourceUrl || "")) return null;
+    if (axesKm.length < 2 || axesKm.length > 3 || !axesKm.every(value => Number.isFinite(value) && value > 0) || !/^https:\/\//i.test(record.sourceUrl || "")) return null;
     const candidate = {
       url: record.sourceUrl,
       title: record.name + " — " + (record.measurement || "published physical dimensions"),
