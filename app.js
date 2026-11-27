@@ -1059,20 +1059,20 @@ restoreRouteFromHash();
   return /^(?:model|mesh|object|scene|untitled|download|file|unknown)$/i.test(text)?"":text;
  }
  function normalizeResearchQuery(value,category=null){
-  let text=String(value||"").normalize("NFKC").replace(/\\.[^.]+$/,"").trim();
+  let text=String(value||"").normalize("NFKC").replace(/\.[^.]+$/,"").trim();
   if(category==="small-bodies"){
-   text=text.replace(/^\\s*(?:asteroid|minor planet|minor planet no\\.?)\\s+/i,"");
-   text=text.replace(/^\\s*\\(\\s*(\\d+)\\s*\\)\\s*/,"$1 ");
+   text=text.replace(/^\s*(?:asteroid|minor planet|minor planet no\.?)\s+/i,"");
+   text=text.replace(/^\s*\(\s*(\d+)\s*\)\s*/,"$1 ");
    // Parenthetical suffixes in catalogue model names describe a mesh/print variant,
    // not a different physical body (e.g. "(A) (West Globe Hollow)").
-   text=text.replace(/\\s+\\([^)]*\\).*$/,"");
-   text=text.replace(/[–—−_]+/g," ").replace(/[()]/g," ").replace(/\\s+/g," ").trim();
+   text=text.replace(/\s+\([^)]*\).*$/,"");
+   text=text.replace(/[–—−_]+/g," ").replace(/[()]/g," ").replace(/\s+/g," ").trim();
    return text;
   }
   return simplifySearchTerm(text)||text;
  }
  function normalizeObjectQuery(value){
-  return normalizeResearchQuery(value).normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\\s+/g," ");
+  return normalizeResearchQuery(value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
