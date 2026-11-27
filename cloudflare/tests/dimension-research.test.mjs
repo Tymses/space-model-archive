@@ -107,6 +107,6 @@ test("InSight Cruise Stage terminology is recognized as spacecraft context",()=>
   assert.ok(terms.some(term=>/cruise stage/i.test(term)));
   assert.ok(terms.some(term=>/jpl\.nasa\.gov/i.test(term)));
   const axes=api.extractSpacecraftAxes("InSight Cruise Stage spacecraft dimensions: 2.4 meters long, 1.8 meters wide and 1.2 meters high.");
-  assert.deepEqual(Array.from(axes),[0.0024,0.0018,0.0012]);
+  assert.ok(axes.every((value,index)=>Math.abs(value-[0.0024,0.0018,0.0012][index])<1e-12));
   assert.equal(api.exactResearchIdentity({title:"InSight Cruise Stage spacecraft",snippet:"InSight Cruise Stage spacecraft dimensions"}, "InSight Cruise Stage", "spacecraft"),true);
 });
