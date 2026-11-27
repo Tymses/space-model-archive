@@ -1063,9 +1063,16 @@ restoreRouteFromHash();
   if(category==="small-bodies"){
    text=text.replace(/^\s*(?:asteroid|minor planet|minor planet no\.?)\s+/i,"");
    text=text.replace(/^\s*\(\s*(\d+)\s*\)\s*/,"$1 ");
-   // Parenthetical suffixes in catalogue model names describe a mesh/print variant,
-   // not a different physical body (e.g. "(A) (West Globe Hollow)").
+   // Parenthetical text after a numbered body is a catalogue variant, not part
+   // of its physical identity (e.g. "(A) (West Globe Hollow)").
    text=text.replace(/\s+\([^)]*\).*$/,"");
+   // Strip generic catalogue descriptors from the end, but retain numbered
+   // designations and all words that identify the actual body.
+   for(let i=0;i<3;i++){
+    const previous=text;
+    text=text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|primary|secondary)\s*$/i,"").trim();
+    if(text===previous)break;
+   }
    text=text.replace(/[–—−_]+/g," ").replace(/[()]/g," ").replace(/\s+/g," ").trim();
    return text;
   }
@@ -1076,7 +1083,7 @@ restoreRouteFromHash();
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
-   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261127-epoxi-1",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
+   if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261127-dimension-research-2",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
    const index=await curatedDimensionsPromise,keys=new Set(candidates.map(value=>normalizeObjectQuery(value,expectedCategory)).filter(Boolean));
    const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias,expectedCategory))));
    return found.length===1?found[0]:null;
@@ -1086,7 +1093,7 @@ restoreRouteFromHash();
   const record=await findCuratedDimensions(candidates,expectedCategory);
   if(!record)return false;
   const longest=Math.max(...record.axesKm);
-  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:record.uncertaintyKm,displayUnit:record.category==="spacecraft"?"m":"km"});
+  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:record.measurement||"curated scientific record",uncertaintyKm:record.uncertaintyKm,displayUnit:record.category==="spacecraft"?"m":"km"});
   const uncertainty=Number.isFinite(record.uncertaintyKm)?" Published uncertainty: ±"+fmt(record.uncertaintyKm)+" km.":"";
   const note=record.note?" "+record.note:"";
   setResearchState("complete","A matching record was found in the curated scientific dimensions index.");
@@ -1137,9 +1144,9 @@ restoreRouteFromHash();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:expectedCategory==="spacecraft"?"m":"km"});
+   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.sourceLabel||best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:best.measurement||"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:expectedCategory==="spacecraft"?"m":"km"});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
-   setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
+   setLookupStatus((best.sourceLabel||best.source||"A source")+" · "+(best.measurement||"Published dimensions")+". "+(best.note||"Evidence score is a source-quality heuristic, not a statistical probability."));
    return true;
   }
   setResearchState("complete",result.candidates?.length?"No verified result met the automatic-selection threshold. Relevant unverified candidates are available below.":"No relevant exact-name results were found. No unrelated pages are shown.");
@@ -1158,7 +1165,7 @@ restoreRouteFromHash();
    if(lookupToken!==token)return;
    if(directRecord&&(directRecord.category!=="small-bodies"||["iris","7 iris"].includes(normalizeObjectQuery(q,expectedCategory)))){
     const longest=Math.max(...directRecord.axesKm);
-    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm,displayUnit:directRecord.category==="spacecraft"?"m":"km"});
+    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:directRecord.measurement||"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm,displayUnit:directRecord.category==="spacecraft"?"m":"km"});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
     setResearchState("complete","A matching source-backed scientific record was found.");
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
@@ -1216,6 +1223,9 @@ restoreRouteFromHash();
    setLookupStatus("JPL physical axes found. Original scale and printer-fit suggestions have been calculated.");
   }catch(error){
    if(lookupToken!==token)return;
+   // A JPL ambiguity or temporary lookup failure must not hide a verified
+   // source-backed record already present in the local dimensions index.
+   if(await applyCuratedFallback([q],expectedCategory))return;
    if(proxyUrl){
     try{await runWebResearch(q,expectedCategory,lookupToken);return;}
     catch(researchError){
