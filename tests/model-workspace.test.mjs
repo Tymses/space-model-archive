@@ -226,3 +226,11 @@ test("scaling workspace exposes original, fit-to-build-plate and custom-dimensio
  assert.match(html,/value="fit">Fit to build plate/);assert.match(html,/value="custom">Custom original dimensions/);
  assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);
 });
+
+test("custom original dimensions convert mm, m and km to millimetres",()=>{
+ const app=read("app.js"),start=app.indexOf("function convertCustomDimensionToMm("),end=app.indexOf("\nfunction calculateCustomScaleDenominator",start);
+ assert.ok(start>=0&&end>start);
+ const convert=new Function(app.slice(start,end)+"\nreturn convertCustomDimensionToMm;")();
+ assert.equal(convert(25,"mm"),25);assert.equal(convert(1.5,"m"),1500);assert.equal(convert(2,"km"),2000000);
+ assert.equal(convert(0,"m"),null);assert.equal(convert(1,"cm"),null);
+});
