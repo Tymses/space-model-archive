@@ -130,7 +130,8 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["apollo 14 landing site","https://science.nasa.gov/3d-resources/apollo-14-landing-site/"],
  ["apollo 15 landing site","https://science.nasa.gov/3d-resources/apollo-15-landing-site/"],
  ["apollo 16 landing site","https://science.nasa.gov/3d-resources/apollo-16-landing-site/"],
- ["apollo lunar module","https://science.nasa.gov/3d-resources/apollo-lunar-module/"]
+ ["apollo lunar module","https://science.nasa.gov/3d-resources/apollo-lunar-module/"],
+ ["voyager probe b","https://science.nasa.gov/3d-resources/voyager-probe-b/"]
 ]);
 function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
@@ -155,7 +156,7 @@ function setSpecificModelSource(model){
         model.folderName=parts[parts.length-2];
       }
       if(generic){
-        const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name));
+        const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name))||NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.folderName));
         model.sourcePageUrl=verifiedPage||null;
       }
     }else if(generic){
