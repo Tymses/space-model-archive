@@ -1443,7 +1443,7 @@ restoreRouteFromHash();
       throw new Error("BLEND_NO_VALID_MESH: Blender "+parsed.header.version+" scene contains no importable mesh triangles. "+detail+" No substitute geometry was generated.");
      }
      object=new THREE.Group();object.add(...objects);
-     const annotationNote=annotationDiagnostics.length?" Excluded "+annotationDiagnostics.length+" likely text/label mesh(es) from printable geometry.": "";
+     const annotationNote=annotationDiagnostics.length?" Excluded "+annotationDiagnostics.length+" hidden or presentation-only scene object(s) from printable geometry.": "";
      if(meshDiagnostics.length){
       const examples=meshDiagnostics.slice(0,2).map(item=>item.object+": "+item.message).join(" | ");
       setLookupStatus("Blender "+parsed.header.version+": loaded "+blendMeshCount+" valid mesh(es); skipped "+meshDiagnostics.length+" invalid mesh object(s)."+annotationNote+" "+examples,true);
