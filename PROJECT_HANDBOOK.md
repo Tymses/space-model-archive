@@ -335,3 +335,12 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Safety branch: `backup/before-blend-scene-filtering-2026-11-27`, created from inspected `main` commit `9a6681ddc239bb72878c7193fc29b1db8b5c486c`.
 - Implementation branch: `fix/blend-scene-geometry-selection-2026-11-27`.
 - Rollback: restore the implementation branch to the safety-branch commit; no changes were made to the NASA source files or catalogue records.
+
+### Merge and publication verification — 27 November 2026
+
+- Pull request #26 was squash-merged into `main` as `f0d7c3e6c00b134ffdd649cef8590fabde303383`; the main-branch read-back matched this exact merge commit.
+- Final PR-head checks on `3ccd37d589fc063e8826ab63c3f65f3c696b5bd6` passed: model-workspace tests `46071718490`, catalogue/application validation `46071718480`, project-workflow enforcement `46071718483`, and complete catalogue link audit `46071718471`.
+- Post-merge main checks passed on the merge commit: model-workspace tests `46071777088`, catalogue/application validation `46071777090`, and complete catalogue link audit `46071777027`.
+- GitHub Pages build and deployment run `46071776448` completed successfully; the **Deploy to GitHub Pages** job completed with conclusion `success`.
+- The website deployment is confirmed. A live interactive browser import of the exact InSight BLEND file was not performed: the available GitHub text connector does not return binary file contents, and no Blender executable was available. Do not equate successful deployment with verification of that exact model's geometry.
+- Documentation follow-up safety branch: `backup/after-blend-scene-filtering-merge-2026-11-27`, created from merge commit `f0d7c3e6c00b134ffdd649cef8590fabde303383`; documentation branch: `docs/blend-scene-filtering-merge-record-2026-11-27`.
