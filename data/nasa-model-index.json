@@ -2644,7 +2644,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Polar: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Polar/Polar.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/polar/",
       "changed": "Source repository"
     },
     {
@@ -2658,7 +2658,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Quick Scatterometer (QuikSCAT): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Quick%20Scatterometer%20(QuikSCAT)/Quick%20Scatterometer%20(QuikSCAT).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/quick-scatterometer-quikscat/",
       "changed": "Source repository"
     },
     {
@@ -2672,7 +2672,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Radar Satellite-1 (RADARSAT-1): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Radar%20Satellite-1%20(RADARSAT-1)/Radar%20Satellite-1%20(RADARSAT-1).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/radar-satellite-1-radarsat-1/",
       "changed": "Source repository"
     },
     {
@@ -2686,7 +2686,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Radome: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Radome/Radome.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/radome/",
       "changed": "Source repository"
     },
     {
@@ -2700,7 +2700,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ratchet: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ratchet/Ratchet.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ratchet/",
       "changed": "Source repository"
     },
     {
@@ -2714,7 +2714,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Redstone 3 (Freedom 7): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Redstone%203%20(Freedom%207)/Redstone%203%20(Freedom%207).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/redstone-3-freedom-7/",
       "changed": "Source repository"
     },
     {
@@ -2728,7 +2728,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Regolith Advanced Surface Systems Operations Robot (RASSOR): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR)/Regolith%20Advanced%20Surface%20Systems%20Operations%20Robot%20(RASSOR).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/regolith-advanced-surface-systems-operations-robot-rassor/",
       "changed": "Source repository"
     },
     {
@@ -2742,7 +2742,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Robonaut 2: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Robonaut%202/Robonaut%202.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/robonaut-2/",
       "changed": "Source repository"
     },
     {
@@ -2756,7 +2756,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Rosetta: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Rosetta/Rosetta.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/rosetta/",
       "changed": "Source repository"
     },
     {
@@ -2770,7 +2770,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2784,7 +2784,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%202.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2798,7 +2798,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%203.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2812,7 +2812,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2826,7 +2826,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%202.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2840,7 +2840,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%203.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2854,7 +2854,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2868,7 +2868,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%202.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2882,7 +2882,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%203.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
