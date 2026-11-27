@@ -1058,8 +1058,21 @@ restoreRouteFromHash();
   text=unique.join(" ").replace(/([\p{L}]{4,})\d{1,4}$/u,"$1").trim();
   return /^(?:model|mesh|object|scene|untitled|download|file|unknown)$/i.test(text)?"":text;
  }
+ function normalizeResearchQuery(value,category=null){
+  let text=String(value||"").normalize("NFKC").replace(/\\.[^.]+$/,"").trim();
+  if(category==="small-bodies"){
+   text=text.replace(/^\\s*(?:asteroid|minor planet|minor planet no\\.?)\\s+/i,"");
+   text=text.replace(/^\\s*\\(\\s*(\\d+)\\s*\\)\\s*/,"$1 ");
+   // Parenthetical suffixes in catalogue model names describe a mesh/print variant,
+   // not a different physical body (e.g. "(A) (West Globe Hollow)").
+   text=text.replace(/\\s+\\([^)]*\\).*$/,"");
+   text=text.replace(/[–—−_]+/g," ").replace(/[()]/g," ").replace(/\\s+/g," ").trim();
+   return text;
+  }
+  return simplifySearchTerm(text)||text;
+ }
  function normalizeObjectQuery(value){
-  return simplifySearchTerm(value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+  return normalizeResearchQuery(value).normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\\s+/g," ");
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
@@ -1083,7 +1096,7 @@ restoreRouteFromHash();
  function deriveSearchTerm(model,file,object){
   const candidates=[model?.objectSearchName,model?.name,file?.name,$id("scaling-object-query").value];
   for(const candidate of candidates){
-   const simplified=simplifySearchTerm(candidate);
+   const simplified=normalizeResearchQuery(candidate,model?.category);
    if(simplified&&simplified.length>2)return simplified;
   }
   const labels=[];
@@ -1124,7 +1137,7 @@ restoreRouteFromHash();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:category==="spacecraft"?"m":"km"});
+   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:expectedCategory==="spacecraft"?"m":"km"});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
@@ -1134,7 +1147,7 @@ restoreRouteFromHash();
   return false;
  }
  async function lookupObject(query,quiet=false,expectedCategory=null){
-  const q=simplifySearchTerm(query)||String(query||"").trim();if(!q||lookupBusy)return;
+  const q=normalizeResearchQuery(query,expectedCategory);if(!q||lookupBusy)return;
   if($id("scaling-object-query").value!==q)$id("scaling-object-query").value=q;
   const lookupToken=token;
   lookupBusy=true;$id("scaling-jpl-lookup").disabled=true;
