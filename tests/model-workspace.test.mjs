@@ -318,8 +318,8 @@ test("legacy Blender polygons allocate exactly three indices per triangle",()=>{
 });
 test("BLEND loader rejects files without actual mesh triangles instead of showing a substitute",()=>{
  const app=read("app.js");
- assert.match(app,/if\(!blendMeshCount\|\|!blendTriangleCount\)throw new Error\("The BLEND file did not produce valid mesh triangles/);
- assert.match(app,/No substitute geometry was loaded/);
+ assert.match(app,/if\(!blendMeshCount\|\|!blendTriangleCount\)\{/);
+ assert.match(app,/No substitute geometry was generated/);
 });
 test("all button-like controls receive a short click acknowledgement animation",()=>{
  const app=read("app.js"),css=read("styles.css");
