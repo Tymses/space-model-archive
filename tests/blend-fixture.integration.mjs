@@ -29,4 +29,12 @@ const totals = validMeshes.reduce((sum, mesh) => ({
   polygons: sum.polygons + Number(mesh.totpoly)
 }), { vertices: 0, loops: 0, polygons: 0 });
 assert.ok(totals.vertices >= 3 && totals.loops >= 3 && totals.polygons >= 1, "Parsed mesh topology totals must be non-empty");
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, status: "BLEND_GEOMETRY_DATA_OK" }));
+const targetNames = new Set(["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"]);
+const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.has(object.aname)).map(object=>({
+  name:object.aname, loc:object.loc, size:object.size, rot:object.rot,
+  parentName:object.parent?.aname||null, dataName:object.data?.aname||null
+}));
+const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
+  unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length
+}));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, sourceObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
