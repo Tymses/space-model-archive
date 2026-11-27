@@ -66,177 +66,108 @@ function readInt32s(file, address, count) {
     return out
 }
 
-export function createBufferGeometry(meshData) {
-    if (meshData.mpoly) return createBufferGeometryLegacy(meshData)
-
-    const geometry = new THREE.BufferGeometry()
-    geometry.name = meshData.aname || ''
-
-    // Modern (Blender >= 3.6/4.0) generic attribute layout.
-    let vertices, verticesData
-    let indices, indicesData
-
-    if (meshData.vdata?.layers && meshData.vdata.totlayer > 0) {
-        for (let i = 0; i < meshData.vdata.totlayer; i++) {
-            const layer = getLayer(meshData.vdata.layers, i)
-            const data = layer.data || []
-            if (data.length === meshData.totvert) {
-                if (vertices && (layer.name !== 'position' || vertices.name === 'position')) continue
-                vertices = layer
-                verticesData = data
-            }
-        }
+function findLayerData(layers, acceptedNames, expectedCount, label) {
+    const candidates = Array.isArray(layers) ? layers : (layers ? [layers] : [])
+    const layer = candidates.find(item => acceptedNames.includes(String(item?.name || '').trim()))
+    if (!layer) {
+        const found = candidates.map(item => item?.name).filter(Boolean).join(', ') || 'none'
+        throw new Error(`Blender mesh is missing its ${label} attribute (${acceptedNames.join(' or ')}). Found: ${found}.`)
     }
-
-    if (meshData.ldata?.layers) {
-        for (let i = 0; i < meshData.ldata.totlayer; i++) {
-            const layer = getLayer(meshData.ldata.layers, i)
-            const data = layer.data || []
-            if (data.length === meshData.totloop) {
-                if (indices && (layer.name !== '.corner_vert' || indices.name === '.corner_vert')) continue
-                indices = layer
-                indicesData = data
-            }
-        }
+    if (!Array.isArray(layer.data) || layer.data.length !== expectedCount) {
+        throw new Error(`Blender ${label} attribute has an unexpected data length.`)
     }
-
-    let faceIndices = []
-    if (meshData.poly_offset_indices && meshData.totpoly > 0) {
-        const offsets = readInt32s(
-            meshData.poly_offset_indices.__blender_file__,
-            meshData.poly_offset_indices.__data_address__,
-            meshData.totpoly + 1,
-        )
-        faceIndices = [...offsets]
-    }
-
-    if (verticesData && verticesData.length > 0) {
-        const positions = new Float32Array(verticesData.length * 3)
-        for (let j = 0; j < verticesData.length; j++) {
-            const { x, y, z, co } = verticesData[j] || {}
-            if (x !== undefined) {
-                positions[j * 3] = x
-                positions[j * 3 + 1] = z
-                positions[j * 3 + 2] = -y
-            } else if (co !== undefined) {
-                positions[j * 3] = co[0]
-                positions[j * 3 + 1] = co[2]
-                positions[j * 3 + 2] = -co[1]
-            } else break
-        }
-        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
-    }
-
-    if (indicesData && indicesData.length > 0 && verticesData?.length) {
-        if (faceIndices.length > 0) {
-            // Variable-sized faces via polygon offsets; fan triangulation.
-            let totalTriangles = 0
-            for (let i = 0; i < faceIndices.length - 1; i++)
-                totalTriangles += Math.max(0, faceIndices[i + 1] - faceIndices[i] - 2)
-
-            const indexes = new Uint32Array(totalTriangles * 3)
-            let t = 0
-            for (let i = 0; i < faceIndices.length - 1; i++) {
-                const start = faceIndices[i]
-                const count = faceIndices[i + 1] - start
-                if (count >= 3) {
-                    const firstVert = indicesData[start].i
-                    for (let k = 1; k < count - 1; k++) {
-                        indexes[t++] = firstVert
-                        indexes[t++] = indicesData[start + k].i
-                        indexes[t++] = indicesData[start + k + 1].i
-                    }
-                }
-            }
-            geometry.setIndex(new THREE.BufferAttribute(indexes, 1))
-        } else {
-            const faceSize = meshData.totloop / meshData.totpoly
-            if (faceSize === 3 || faceSize === 4) {
-                const isQuad = faceSize === 4
-                const faceCount = indicesData.length / faceSize
-                const indexes = new Uint32Array(faceCount * 3 * (isQuad ? 2 : 1))
-                for (let j = 0, t = 0; j < indicesData.length; j += faceSize) {
-                    const a = indicesData[j].i
-                    const b = indicesData[j + 1].i
-                    const c = indicesData[j + 2].i
-                    indexes[t++] = a
-                    indexes[t++] = b
-                    indexes[t++] = c
-                    if (isQuad) {
-                        indexes[t++] = a
-                        indexes[t++] = c
-                        indexes[t++] = indicesData[j + 3].i
-                    }
-                }
-                geometry.setIndex(new THREE.BufferAttribute(indexes, 1))
-            }
-        }
-    }
-
-    if (geometry.attributes.position && !geometry.attributes.normal)
-        geometry.computeVertexNormals()
-
-    return geometry
+    return layer.data
+}
+function countLegacyTriangleIndices(faces) {
+    return faces.reduce((sum, face) => sum + Math.max(0, Number(face?.totloop || 0) - 2) * 3, 0)
 }
 
-function createBufferGeometryLegacy(mesh) {
-    // Pre-4.0 layout with mpoly/mloop/mvert.
-    const faces = Array.isArray(mesh.mpoly) ? (mesh.mpoly) : [mesh.mpoly]
-    const loops = mesh.mloop
-    const uvs = mesh.mloopuv
-    const verts = mesh.mvert
-
+export function createBufferGeometry(meshData) {
+    if (meshData.mpoly) return createBufferGeometryLegacy(meshData)
     const geometry = new THREE.BufferGeometry()
-    if (!faces) return geometry
-
-    const size = faces.reduce((acc, f) => acc + Math.floor((f.totloop * 3) / 2), 0)
-    const indices = new Uint32Array(size)
-    const uvArr = new Float32Array(size * 2)
-    const normals = new Float32Array(size * 3)
-    const positions = new Float32Array(size * 3)
-
-    let cur = 0
-    let computeNormals = false
-
+    geometry.name = meshData.aname || ''
+    const vertexCount = Number(meshData.totvert || 0), loopCount = Number(meshData.totloop || 0), polygonCount = Number(meshData.totpoly || 0)
+    if (vertexCount < 3 || loopCount < 3 || polygonCount < 1) throw new Error('Blender mesh has no complete polygon geometry.')
+    // Only canonical geometry attributes are valid; arbitrary layers can have the same element count.
+    const verticesData = findLayerData(meshData.vdata?.layers, ['position', '.position'], vertexCount, 'vertex position')
+    const indicesData = findLayerData(meshData.ldata?.layers, ['.corner_vert', 'corner_vert'], loopCount, 'loop vertex-index')
+    const positions = new Float32Array(vertexCount * 3)
+    for (let i = 0; i < vertexCount; i++) {
+        const vertex = verticesData[i] || {}, co = vertex.co
+        const x = vertex.x !== undefined ? Number(vertex.x) : Number(co?.[0])
+        const y = vertex.y !== undefined ? Number(vertex.y) : Number(co?.[1])
+        const z = vertex.z !== undefined ? Number(vertex.z) : Number(co?.[2])
+        if (![x, y, z].every(Number.isFinite)) throw new Error('Blender position layer contains invalid vertex coordinates.')
+        positions[i * 3] = x; positions[i * 3 + 1] = z; positions[i * 3 + 2] = -y
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    const readCornerIndex = loop => {
+        const entry = indicesData[loop]
+        const value = Number.isInteger(entry) ? entry : Number.isInteger(entry?.i) ? entry.i : Number.isInteger(entry?.value) ? entry.value : NaN
+        if (!Number.isInteger(value) || value < 0 || value >= vertexCount) throw new Error('Blender polygon references an invalid vertex index.')
+        return value
+    }
+    let faceOffsets
+    if (meshData.poly_offset_indices) {
+        faceOffsets = Array.from(readInt32s(meshData.poly_offset_indices.__blender_file__, meshData.poly_offset_indices.__data_address__, polygonCount + 1))
+        if (faceOffsets.length !== polygonCount + 1 || faceOffsets[0] !== 0 || faceOffsets[faceOffsets.length - 1] !== loopCount ||
+            faceOffsets.some((value, index) => !Number.isInteger(value) || value < 0 || value > loopCount || (index > 0 && value < faceOffsets[index - 1]))) {
+            throw new Error('Blender polygon offsets are invalid or incomplete.')
+        }
+    } else {
+        const faceSize = loopCount / polygonCount
+        if (!Number.isInteger(faceSize) || (faceSize !== 3 && faceSize !== 4)) throw new Error('Blender mesh needs polygon offsets to triangulate its faces safely.')
+        faceOffsets = Array.from({ length: polygonCount + 1 }, (_, index) => index * faceSize)
+    }
+    const triangleIndices = []
+    for (let face = 0; face < polygonCount; face++) {
+        const start = faceOffsets[face], count = faceOffsets[face + 1] - start
+        if (count < 3) throw new Error('Blender mesh contains a polygon with fewer than three vertices.')
+        const first = readCornerIndex(start)
+        for (let corner = 1; corner < count - 1; corner++) triangleIndices.push(first, readCornerIndex(start + corner), readCornerIndex(start + corner + 1))
+    }
+    if (!triangleIndices.length || triangleIndices.length % 3 !== 0) throw new Error('Blender mesh did not produce any valid triangles.')
+    geometry.setIndex(new THREE.BufferAttribute(new Uint32Array(triangleIndices), 1))
+    geometry.computeVertexNormals(); geometry.computeBoundingBox()
+    return geometry
+}
+function createBufferGeometryLegacy(mesh) {
+    // Pre-4.0 layout: fan-triangulate each n-gon into exactly n - 2 triangles.
+    const faces = Array.isArray(mesh.mpoly) ? mesh.mpoly : [mesh.mpoly]
+    const loops = mesh.mloop, uvs = mesh.mloopuv, verts = mesh.mvert
+    if (!Array.isArray(faces) || !Array.isArray(loops) || !Array.isArray(verts)) throw new Error('Legacy Blender mesh is missing its polygon, loop or vertex data.')
+    const indexCount = countLegacyTriangleIndices(faces)
+    if (!indexCount) throw new Error('Legacy Blender mesh contains no triangulatable polygons.')
+    const indices = new Uint32Array(indexCount), uvArr = new Float32Array(indexCount * 2)
+    const normals = new Float32Array(indexCount * 3), positions = new Float32Array(indexCount * 3)
+    let cursor = 0, computeNormals = false
     for (const face of faces) {
-        const len = face.totloop
-        const start = face.loopstart
-        let idx = 1
-        while (idx < len) {
-            for (let l = 0; l < 3; l++) {
-                let index = start
-                if (idx - 1 + l < len) index += idx - 1 + l
-                const loop = loops[index]
-                const { co, no } = verts[loop.v] || {}
-                indices[cur] = cur
-                if (co) {
-                    positions[cur * 3] = co[0]
-                    positions[cur * 3 + 1] = co[2]
-                    positions[cur * 3 + 2] = -co[1]
-                }
-                if (no) {
-                    normals[cur * 3] = no[0]
-                    normals[cur * 3 + 1] = no[2]
-                    normals[cur * 3 + 2] = -no[1]
-                } else computeNormals = true
-                if (uvs) {
-                    uvArr[cur * 2] = uvs[index].uv[0]
-                    uvArr[cur * 2 + 1] = uvs[index].uv[1]
-                }
-                cur++
+        const count = Number(face?.totloop || 0), start = Number(face?.loopstart || 0)
+        if (!Number.isInteger(count) || count < 3 || !Number.isInteger(start) || start < 0 || start + count > loops.length) throw new Error('Legacy Blender mesh contains an invalid polygon loop range.')
+        for (let corner = 1; corner < count - 1; corner++) {
+            for (const localIndex of [0, corner, corner + 1]) {
+                const loopIndex = start + localIndex, loop = loops[loopIndex], vertex = verts[loop?.v], co = vertex?.co
+                if (!co || co.length < 3 || ![co[0], co[1], co[2]].every(Number.isFinite)) throw new Error('Legacy Blender mesh contains an invalid vertex coordinate.')
+                indices[cursor] = cursor
+                positions[cursor * 3] = co[0]; positions[cursor * 3 + 1] = co[2]; positions[cursor * 3 + 2] = -co[1]
+                const normal = vertex.no
+                if (normal && normal.length >= 3) { normals[cursor * 3] = normal[0]; normals[cursor * 3 + 1] = normal[2]; normals[cursor * 3 + 2] = -normal[1]; }
+                else computeNormals = true
+                if (uvs?.[loopIndex]?.uv) { uvArr[cursor * 2] = uvs[loopIndex].uv[0]; uvArr[cursor * 2 + 1] = uvs[loopIndex].uv[1]; }
+                cursor++
             }
-            idx += 2
         }
     }
-
+    if (cursor !== indexCount) throw new Error('Legacy Blender mesh triangulation produced an inconsistent index count.')
+    const geometry = new THREE.BufferGeometry()
     geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
     geometry.setIndex(new THREE.BufferAttribute(indices, 1))
     geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3))
     geometry.setAttribute('uv', new THREE.BufferAttribute(uvArr, 2))
     if (computeNormals) geometry.computeVertexNormals()
+    geometry.computeBoundingBox()
     return geometry
 }
-
 function createMaterial(mat) {
     const material = new THREE.MeshPhysicalMaterial()
     material.color.setRGB(mat.r ?? 0.8, mat.g ?? 0.8, mat.b ?? 0.8)
@@ -340,6 +271,9 @@ export function createObjects(file) {
                 let geo = loadedGeo.get(object.data)
                 if (!geo) {
                     geo = createBufferGeometry(object.data)
+                    const position = geo.attributes.position
+                    const elementCount = geo.index ? geo.index.count : (position?.count || 0)
+                    if (!position || position.count < 3 || elementCount < 3) throw new Error('Blender object "' + (object.aname || 'unnamed mesh') + '" has no valid triangle geometry.')
                     loadedGeo.set(object.data, geo)
                 }
                 const mat = object.data.mat?.[0]
