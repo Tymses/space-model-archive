@@ -177,3 +177,8 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - STL export uses the currently calculated geometry in all three modes. Fit mode exports a -fit-to-build-plate.stl file; original/custom modes retain the selected 1-to-N filename convention. Fit mode tests six axis-aligned 90° orientations, but the exported STL retains the source orientation; the user may need to rotate it in the slicer to match the reported best orientation.
 - Regression coverage is added for fit factors, safety margins, proportional adjustment, custom axis mapping and mode UI. The bounding-box result still does not certify wall thickness, supports, bed adhesion or printability.
 - Implementation branch: feat/scaling-modes-2026-11-27; safety branch: backup/before-scaling-modes-2026-11-27, both based on inspected main commit ab9508c82bf77f178ca7a794be5c352d79daf13e.
+
+- Pull request #18: https://github.com/Tymses/space-model-archive/pull/18. Latest implementation commit before this verification record: 3550cc6c32f82550226eb8d9c8090d5d796a1355.
+- Final PR-head checks on that commit passed: model-workspace regression suite (24/24 tests; run 46051825819), catalogue/application validation (run 46051825826), full source/model URL audit (run 46051825956), and Enforce project workflow (run 46051825868).
+- An earlier test attempt exposed incorrectly escaped newline delimiters in the two helper-extraction tests. The tests were corrected; the final model-workspace run passed all 24 tests.
+- No manual desktop/mobile browser review was performed. Automated tests verify the calculation helpers and UI hooks, not interactive rendering or slicer behavior.
