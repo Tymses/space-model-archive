@@ -3918,7 +3918,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wilkinson Microwave Anisotropy Probe (WMAP): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wilkinson%20Microwave%20Anisotropy%20Probe%20(WMAP)/Wilkinson%20Microwave%20Anisotropy%20Probe%20(WMAP).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wilkinson-microwave-anisotropy-probe-wmap/",
       "changed": "Source repository"
     },
     {
@@ -3932,7 +3932,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wind: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wind/Wind.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wind/",
       "changed": "Source repository"
     },
     {
@@ -3946,7 +3946,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wrench: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wrench/Wrench.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench-2/",
       "changed": "Source repository"
     },
     {
@@ -3960,7 +3960,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "X-57: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/x-57-maxwell/",
       "changed": "Source repository"
     },
     {
@@ -3974,7 +3974,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "X-57: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.vsp3",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/x-57-maxwell/",
       "changed": "Source repository"
     },
     {
@@ -3988,7 +3988,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Z2 Spacesuit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Z2%20Spacesuit/Z2%20Spacesuit.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/z2-spacesuit/",
       "changed": "Source repository"
     },
     {
