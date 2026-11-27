@@ -391,3 +391,15 @@ test("Blender object transforms apply the transposed parent-inverse matrix",()=>
  assert.ok(source.includes("obj.matrix.premultiply(parentInverseThree)"));
  assert.ok(source.includes("obj.matrixAutoUpdate = false"));
 });
+
+test("Blender numeric-key vector structs are read as location, scale, rotation and quaternion",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function safeNumericVector"),end=source.indexOf("\nfunction setTransform",start);
+ assert.ok(start>=0&&end>start);
+ const helper=source.slice(start,end);
+ const {safeVec,safeQuat}=new Function(helper+"\nreturn {safeVec,safeQuat};")();
+ assert.deepEqual(safeVec({0:1,1:2,2:3},[0,0,0]),[1,2,3]);
+ assert.deepEqual(safeVec(new Float32Array([4,5,6]),[0,0,0]),[4,5,6]);
+ assert.deepEqual(safeQuat({0:1,1:0,2:0,3:0}),[1,0,0,0]);
+ assert.equal(safeQuat({0:1,1:0,2:0}),null);
+});
