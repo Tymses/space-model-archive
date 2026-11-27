@@ -17,6 +17,7 @@ test("application, Worker and local Blender importer are valid JavaScript", () =
     .replace(/export async function /g, "async function ");
   assert.doesNotThrow(() => new Function("THREE", "parser", importerScript));
   assert.doesNotThrow(() => new Function(parser.replace("export default return_object;", "return return_object;")));
+  assert.doesNotMatch(parser, /\\bdebugger\\b/);
 });
 
 test("NASA Deep Impact and Wrench records point to model-specific sources", () => {
