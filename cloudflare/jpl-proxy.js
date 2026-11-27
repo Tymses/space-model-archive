@@ -681,7 +681,7 @@ async function searchWeb(query, category) {
       const measurement = extractIdentityScopedMeasurement(raw, query, category, item.title, item.snippet);
       const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm:measurement.axesKm,uncertaintyKm:measurement.uncertaintyKm,pageChecked:true,sourceText:researchTextBlocks(raw).join("\n")};
-    } catch { return {...item,axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm,uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
+    } catch { return {...item,axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm,uncertaintyKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).uncertaintyKm,pageChecked:false,sourceText:""}; }
   }));
   const relevantCandidates = checked.filter(candidate => exactResearchIdentity(candidate, query, category));
   for (const candidate of relevantCandidates) {
