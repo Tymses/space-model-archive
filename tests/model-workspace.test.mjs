@@ -422,3 +422,12 @@ test("Blender active view-layer visibility excludes hidden and viewport-restrict
  assert.equal(visible(file,{aname:"orphan"}),false);
  assert.equal(visible(file,hidden,{includeHiddenObjects:true}),true);
 });
+
+test("Blender mesh geometry computes exact local bounds before being returned",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function createBufferGeometry(");
+ const end=source.indexOf("\nfunction ",start+10);
+ const body=source.slice(start,end>start?end:undefined);
+ assert.ok(body.includes("geometry.computeBoundingBox()"));
+ assert.ok(body.indexOf("geometry.computeBoundingBox()")<body.indexOf("return geometry"));
+});
