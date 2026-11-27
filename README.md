@@ -146,3 +146,8 @@ Blender SDNA's `TLEN` table stores the actual compiled size of each C structure,
 ### Blender conversion fallback
 
 If the in-browser BLEND parser rejects a file, the Scaling workspace offers two independent alternatives: [Innerscene BLEND to STL](https://www.innerscene.com/tools/blend-to-stl), which states that conversion runs locally in the browser (up to 200 MB), and [Shapeweld BLEND to STL](https://shapeweld.com/tools/blend-to-stl), which states that it opens the file in Blender on its server (up to 50 MB; files/results deleted after three days). These are external services, not SPACEMESHER/Worker conversions. The user must download the STL and upload it back into Scaling. Server upload is disclosed before use.
+
+
+### Automatic build-plate orientation
+
+Fit to build plate now selects the best of all six axis-aligned dimension permutations, applies a proper 3D rotation to the preview and exported STL, and then applies the proportional fit factor. The safety margin is enforced on each printer axis. The original/custom-scale modes reset to the source orientation.
