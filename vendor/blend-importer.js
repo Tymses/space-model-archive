@@ -391,12 +391,23 @@ export function createObjects(file, options = {}) {
     const blendObjects = file.objects.Object ?? []
     const loadedGeo = new Map()
     const loadedMat = new Map()
+    const includeHiddenObjects = options.includeHiddenObjects === true
+    const baseByObject = new Map((file.objects.Base || []).map(base => [base.object, Number(base.flag)]))
 
     for (const object of blendObjects) {
         let obj
         if (object.type === BLEND_OBJECT_TYPES.mesh && options.excludeAnnotations !== false && isLikelyAnnotationObject(object)) {
             const diagnostic = { object: object.aname || "unnamed mesh", data: object.data?.aname || "", code: "BLEND_ANNOTATION_EXCLUDED", message: "Likely text/label geometry was excluded from printable bounds." }
             options.onAnnotationExcluded?.(diagnostic)
+            continue
+        }
+        if (object.type === BLEND_OBJECT_TYPES.mesh && !isObjectVisibleInActiveViewLayer(file, object, { includeHiddenObjects, baseByObject })) {
+            options.onAnnotationExcluded?.({
+                object: object.aname || "unnamed mesh",
+                data: object.data?.aname || "",
+                code: "BLEND_HIDDEN_OBJECT_EXCLUDED",
+                message: "Object is hidden or excluded in the active Blender view layer."
+            })
             continue
         }
         switch (object.type) {
