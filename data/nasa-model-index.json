@@ -1860,7 +1860,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "International X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20X-ray%20Observatory/International%20X-ray%20Observatory.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/international-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -1874,7 +1874,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Interstellar Boundary Explorer (IBEX): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Interstellar%20Boundary%20Explorer%20(IBEX)/Interstellar%20Boundary%20Explorer%20(IBEX).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/interstellar-boundary-explorer-ibex/",
       "changed": "Source repository"
     },
     {
@@ -1888,7 +1888,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ionospheric Connection Explorer (ICON): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ionospheric%20Connection%20Explorer%20(ICON)/Ionospheric%20Connection%20Explorer%20(ICON).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ionospheric-connection-explorer-icon/",
       "changed": "Source repository"
     },
     {
@@ -1902,7 +1902,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "JSC Mission Control Room: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/JSC%20Mission%20Control%20Room/JSC%20Mission%20Control%20Room.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/jsc-mission-control-room/",
       "changed": "Source repository"
     },
     {
@@ -1916,7 +1916,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "James Webb Space Telescope (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)/James%20Webb%20Space%20Telescope%20(A).7z",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/james-webb-space-telescope-a/",
       "changed": "Source repository"
     },
     {
@@ -1930,7 +1930,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "James Webb Space Telescope (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(A)/James%20Webb%20Space%20Telescope%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/james-webb-space-telescope-a/",
       "changed": "Source repository"
     },
     {
@@ -1944,7 +1944,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "James Webb Space Telescope (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/James%20Webb%20Space%20Telescope%20(B)/James%20Webb%20Space%20Telescope%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/james-webb-space-telescope-b/",
       "changed": "Source repository"
     },
     {
@@ -1958,7 +1958,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Jason 1: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%201/Jason%201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/jason-1/",
       "changed": "Source repository"
     },
     {
@@ -1972,7 +1972,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Jason Continuity of Service (Sentinel-6): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%20Continuity%20of%20Service%20(Sentinel-6)/Jason%20Continuity%20of%20Service%20(Sentinel-6).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/jason-continuity-of-service-sentinel-6/",
       "changed": "Source repository"
     },
     {
@@ -1986,7 +1986,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Juno (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(A)/Juno%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/juno-a/",
       "changed": "Source repository"
     },
     {
@@ -2000,7 +2000,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Juno (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Juno%20(B)/Juno%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/juno-b/",
       "changed": "Source repository"
     },
     {
