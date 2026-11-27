@@ -16,6 +16,7 @@ function browserToMeters(elements){
 const browserByName=new Map(browser.map(item=>[item.name,item]));
 const results=[];
 let maxVertexError=0;
+const worldMin=[Infinity,Infinity,Infinity],worldMax=[-Infinity,-Infinity,-Infinity];
 for(const item of native){
  const actual=browserByName.get(item.name);
  if(!actual){results.push({name:item.name,missing:true});continue;}
@@ -30,6 +31,8 @@ for(const item of native){
  else for(let index=0;index<item.positions.length/3;index++){
   const expectedVertex=[item.positions[index*3],item.positions[index*3+2],-item.positions[index*3+1]];
   for(let axis=0;axis<3;axis++) objectVertexError=Math.max(objectVertexError,Math.abs(expectedVertex[axis]-actual.positions[index*3+axis]));
+  const world=[0,1,2].map(row=>expected[row][0]*expectedVertex[0]+expected[row][1]*expectedVertex[1]+expected[row][2]*expectedVertex[2]+expected[row][3]);
+  for(let axis=0;axis<3;axis++){worldMin[axis]=Math.min(worldMin[axis],world[axis]);worldMax[axis]=Math.max(worldMax[axis],world[axis]);}
  }
  maxVertexError=Math.max(maxVertexError,objectVertexError);
  results.push({name:item.name,maxError,localError,objectVertexError,vertices:item.vertices,polygons:item.polygons,expected,received,expectedLocalMin,expectedLocalMax,actualLocalMin:actual.localMin,actualLocalMax:actual.localMax});
@@ -38,8 +41,11 @@ const matched=results.filter(item=>!item.missing),missing=results.filter(item=>i
 const worst=[...matched].sort((a,b)=>b.maxError-a.maxError).slice(0,12);
 const maxError=Math.max(0,...matched.map(item=>item.maxError));
 const maxLocalError=Math.max(0,...matched.map(item=>item.localError));
-console.log(JSON.stringify({status:"BLEND_NATIVE_TRANSFORM_COMPARISON",browserObjects:browser.length,nativeObjects:native.length,matched:matched.length,missing:missing.map(item=>item.name),maxError,maxLocalError,maxVertexError,browserSizeMm:browserFile.sizeMm,worst}));
+const nativeWorldSizeMm=worldMax.map((value,index)=>(value-worldMin[index])*1000);
+const worldBoundsErrorMm=Math.max(...nativeWorldSizeMm.map((value,index)=>Math.abs(value-browserFile.sizeMm[index])));
+console.log(JSON.stringify({status:"BLEND_NATIVE_TRANSFORM_COMPARISON",browserObjects:browser.length,nativeObjects:native.length,matched:matched.length,missing:missing.map(item=>item.name),maxError,maxLocalError,maxVertexError,nativeWorldSizeMm,worldBoundsErrorMm,browserSizeMm:browserFile.sizeMm,worst}));
 assert.equal(missing.length,0,"Browser import omitted visible native Blender meshes: "+missing.map(item=>item.name).join(", "));
 assert.ok(maxError<=0.005,"Browser object world transforms differ from native Blender by more than 5 mm; max error "+maxError+" m");
 assert.ok(maxLocalError<=1e-5,"Browser local mesh bounds differ from native Blender by more than 0.01 mm; max error "+maxLocalError+" m");
 assert.ok(maxVertexError<=1e-6,"Browser vertex coordinates differ from native Blender by more than 0.001 mm; max error "+maxVertexError+" m");
+assert.ok(worldBoundsErrorMm<=1,"Browser STL scene bounds differ from native Blender by more than 1 mm; max error "+worldBoundsErrorMm+" mm");
