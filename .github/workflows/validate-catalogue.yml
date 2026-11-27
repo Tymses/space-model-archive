@@ -12,6 +12,7 @@ on:
       - "tests/model-workspace.test.mjs"
       - "tools/catalogue/**"
       - "tools/dimensions/**"
+      - "cloudflare/**"
       - ".github/workflows/validate-catalogue.yml"
   pull_request:
     paths:
@@ -50,5 +51,7 @@ jobs:
         run: python -m unittest discover -s tools/catalogue/tests -v
       - name: Run dimension scanner tests
         run: python -m unittest discover -s tools/dimensions -v
+      - name: Run Cloudflare Worker dimension research tests
+        run: node --test cloudflare/tests/dimension-research.test.mjs
       - name: Verify catalogue audit can be generated
         run: python tools/catalogue/audit_catalogue.py --output /tmp/catalogue-audit.json
