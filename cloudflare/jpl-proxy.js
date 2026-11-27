@@ -470,7 +470,7 @@ function extractAxes(text) {
   ));
   if (labelled) {
     const sharedUnit = (source.match(/\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\)/i) || [])[1];
-    const units = [labelled[2], labelled[4], labelled[6]].map(unitValue => unitValue || sharedUnit);
+    const units = [labelled[3], labelled[6], labelled[9]].map(unitValue => unitValue || sharedUnit);
     if (units.every(Boolean)) {
       const factors = units.map(unitValue =>
         /^(km|kilometer|kilometre)/i.test(unitValue) ? 1 :
@@ -479,7 +479,7 @@ function extractAxes(text) {
         /^(ft|feet)/i.test(unitValue) ? 0.0003048 :
         /^(m|meter|metre)/i.test(unitValue) ? 0.001 : null
       );
-      const values = [labelled[1], labelled[3], labelled[5]].map((value, index) => {
+      const values = [labelled[1], labelled[4], labelled[7]].map((value, index) => {
         const numeric = parseDimensionNumber(value);
         return numeric == null || factors[index] == null ? null : numeric * factors[index];
       });
