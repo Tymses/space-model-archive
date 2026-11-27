@@ -921,7 +921,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/Deep%20Impact.glb",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
@@ -935,7 +935,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI%20(without%20impactor).glb",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
@@ -949,7 +949,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI.glb",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
@@ -3931,7 +3931,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wrench: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wrench/Wrench.glb",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench/",
+      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Wrench",
       "changed": "Source repository"
     },
     {
@@ -6512,16 +6512,16 @@
     },
     {
       "id": "nasa-auto-cb142263c4aa",
-      "name": "wrench",
+      "name": "Wrench",
       "category": "spacecraft",
-      "kind": "Spacecraft / mission model",
+      "kind": "3D-printed ISS tool",
       "source": "NASA 3D Resources",
       "size": "711 kB",
       "format": "STL",
       "license": "NASA usage guidelines; check asset-specific notes",
-      "credit": "International Space Station Tools: NASA 3D Resources",
+      "credit": "Wrench: NASA 3D Resources · International Space Station Tools",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/International%20Space%20Station%20Tools/wrench.stl",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench/",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench-2/",
       "changed": "Source repository"
     },
     {
@@ -9084,20 +9084,6 @@
       "credit": "Whirlpool Galaxy: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Whirlpool%20Galaxy/Whirlpool%20Galaxy%20(part%202).7z",
       "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Whirlpool%20Galaxy",
-      "changed": "Source repository"
-    },
-    {
-      "id": "nasa-auto-cb142263c4aa-wrench",
-      "name": "Wrench",
-      "category": "spacecraft",
-      "kind": "Spacecraft / mission model",
-      "source": "NASA 3D Resources",
-      "size": "711 kB",
-      "format": "STL",
-      "license": "NASA usage guidelines; check asset-specific notes",
-      "credit": "Wrench: NASA 3D Resources",
-      "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Wrench/Wrench.stl",
-      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench/",
       "changed": "Source repository"
     },
     {
