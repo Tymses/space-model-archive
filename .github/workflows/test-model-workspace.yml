@@ -11,6 +11,7 @@ on:
       - "tests/model-workspace.test.mjs"
       - "tests/blend-fixture.integration.mjs"
       - "tests/blend-browser.integration.mjs"
+      - "tests/blend-fixture-browser.html"
       - ".github/workflows/test-model-workspace.yml"
   pull_request:
     paths:
