@@ -53,8 +53,12 @@ try {
     const box = new THREE.Box3().setFromObject(group);
     const size = box.getSize(new THREE.Vector3());
     let meshes=0,triangles=0;
-    const meshBounds=[];
+    const meshBounds=[],transformDetails=[];
     group.traverse(node=>{
+      if(["deck","panel_l_root","Cube.046","cable_02","arm_01_b"].includes(node.name)){
+        node.updateWorldMatrix(true,false);
+        transformDetails.push({name:node.name,matrixWorld:node.matrixWorld.elements.map(v=>Number(v.toFixed(5)))});
+      }
       if(node.isMesh&&node.geometry){
         meshes++;
         const nodeTriangles=node.geometry.index ? node.geometry.index.count/3 : (node.geometry.attributes.position?.count||0)/3;
@@ -72,7 +76,7 @@ try {
     const stlBytes = stlBuffer?.byteLength || stl?.byteLength || 0;
     const expectedBytes = 84 + Math.round(triangles)*50;
     if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
-    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics,excludedAnnotations:annotationDiagnostics.map(item=>item.object),largestMeshes:meshBounds.slice(0,20),sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null})),sceneUnits:(parsed.file.objects.Scene||[]).map(scene=>({unitSystem:scene.unit?.system,scaleLength:scene.unit?.scale_length}))};
+    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics,excludedAnnotations:annotationDiagnostics.map(item=>item.object),largestMeshes:meshBounds.slice(0,20),transformDetails,sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null})),sceneUnits:(parsed.file.objects.Scene||[]).map(scene=>({unitSystem:scene.unit?.system,scaleLength:scene.unit?.scale_length}))};
   });
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
