@@ -52,13 +52,14 @@ The **Convert to STL** button belongs in the model **View details** card, in the
 - A rejected OpenCascade initialization promise was cached, so a transient CDN/WASM initialization failure could make subsequent retries fail immediately without attempting initialization again.
 - The Convert action was rendered on collection model/archive cards and sent users directly to the Scaling workspace, bypassing the model detail page.
 
-### Intended changes in this branch
-- Normalize compressed STEP format labels to `STEP` for loader dispatch while retaining the original label for status text.
+### Changes implemented in this branch
+- Normalize compressed STEP format labels to `STEP` for loader dispatch while retaining the original label for status text. The shared normalizer is at top-level scope so both the detail route and Scaling loader can use it.
 - Clear failed OpenCascade initialization promises so the user can retry.
 - Move the Convert action to the upper-right title row of View details (Position A), removing it from collection cards.
 - Add regression coverage for STEP format normalization, retry behavior and button placement.
+- Add a dedicated GitHub Actions workflow to execute the Node model-workspace regression tests on relevant changes.
 
 ### Verification status
 - Static repository inspection completed.
 - Regression tests have been added to `tests/model-workspace.test.mjs`.
-- Automated test execution and live browser verification must be recorded after they are actually run; neither should be inferred from syntax checks or a successful GitHub commit.
+- Automated test execution is pending the GitHub Actions run for this branch. Live browser verification is not available through the GitHub repository connector and must not be inferred from a successful commit.

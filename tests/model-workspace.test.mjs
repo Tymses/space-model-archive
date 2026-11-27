@@ -80,7 +80,7 @@ test("STL conversion is launched from the View Details header, not collection ca
 test("compressed STEP format labels are normalized before loader dispatch", () => {
   const app = read("app.js");
   const start = app.indexOf("function normalizeConversionFormat(");
-  const end = app.indexOf("\n  function supportsStlConversion", start);
+  const end = app.indexOf("\nfunction supportsStlConversion", start);
   assert.ok(start >= 0 && end > start, "format normalizer must be defined");
   const normalize = new Function(app.slice(start, end) + "\nreturn normalizeConversionFormat;")();
   assert.equal(normalize("STEP (GZIP)"), "STEP");

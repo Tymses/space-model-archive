@@ -218,6 +218,12 @@ function matchesSearch(query,values){
  const words=new Set(haystack.split(" "));
  return terms.every(term=>/^\d+$/.test(term)?words.has(term):haystack.includes(term));
 }
+function normalizeConversionFormat(value){
+ const format=String(value||"").trim().toUpperCase();
+ return /\bSTEP\b.*\b(?:GZIP|GZ)\b/.test(format)?"STEP":format;
+}
+function supportsStlConversion(value){return ["FBX","3DS","LWO","BLEND","STEP","STP"].includes(normalizeConversionFormat(value));}
+
 function renderCollection(){
  const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
  const isArchiveEntry=x=>["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())||/\bGZIP\b/i.test(String(x.format||""));
@@ -897,11 +903,6 @@ restoreRouteFromHash();
   const localUrl=URL.createObjectURL(blob);objectUrls.push(localUrl);return localUrl;
  }
 
- function normalizeConversionFormat(value){
-   const format=String(value||"").trim().toUpperCase();
-   return /\bSTEP\b.*\b(?:GZIP|GZ)\b/.test(format)?"STEP":format;
-  }
-  function supportsStlConversion(value){return ["FBX","3DS","LWO","BLEND","STEP","STP"].includes(normalizeConversionFormat(value));}
   function clear(){
   resetGauges();realConfidenceScore=null;
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
@@ -929,9 +930,7 @@ restoreRouteFromHash();
     occtPromise=attempt.catch(error=>{occtPromise=null;occtScriptPromise=null;throw error;});
    }
    return occtPromise;
-  })();
-  return occtPromise;
- }
+  }
  async function stepBuffer(buffer){
   const bytes=new Uint8Array(buffer);
   if(bytes[0]===0x1f&&bytes[1]===0x8b){
