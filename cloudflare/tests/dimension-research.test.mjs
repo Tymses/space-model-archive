@@ -7,8 +7,14 @@ const workerPath = new URL("../jpl-proxy.js", import.meta.url);
 let workerSource = readFileSync(workerPath, "utf8");
 workerSource = workerSource.replace(/\nexport default \{[\s\S]*\n\};\s*$/, "");
 assert.notEqual(workerSource, "", "Worker source must be readable");
-workerSource += "\nglobalThis.__smaTest = { canonicalSmallBodyQuery, buildResearchSearchTerms, exactResearchIdentity, extractIdentityScopedMeasurement, extractSpacecraftAxes };";
-const context = { URL, URLSearchParams };
+workerSource += "\nglobalThis.__smaTest = { canonicalSmallBodyQuery, buildResearchSearchTerms, exactResearchIdentity, extractIdentityScopedMeasurement, extractSpacecraftAxes, lookupCuratedDimensions };";
+const dimensionsPath = new URL("../../data/object-dimensions-index.json", import.meta.url);
+const dimensionsIndex = JSON.parse(readFileSync(dimensionsPath, "utf8"));
+const context = {
+  URL,
+  URLSearchParams,
+  fetch: async () => ({ ok: true, json: async () => dimensionsIndex })
+};
 vm.runInNewContext(workerSource, context);
 const api = context.__smaTest;
 
@@ -52,4 +58,18 @@ test("a spacecraft result is not accepted for an asteroid query", () => {
 test("the EPOXI spacecraft parser still returns its spacecraft envelope", () => {
   const axes = api.extractSpacecraftAxes("Flyby spacecraft dimensions: 3.3 meters long, 1.7 meters wide, and 2.3 meters high.");
   assert.deepEqual(Array.from(axes), [0.0033, 0.0017, 0.0023]);
+});
+
+test("curated Worker lookup resolves Didymos model descriptors to the published record", async () => {
+  const result = await api.lookupCuratedDimensions("Didymos asteroid shape model", "small-bodies");
+  assert.equal(result.autoAccept, true);
+  assert.deepEqual(Array.from(result.best.axesKm), [0.849, 0.851, 0.62]);
+  assert.equal(result.best.uncertaintyKm, 0.015);
+  assert.equal(result.best.sourceLabel, "Daly et al. (2023), Nature 616, 443");
+});
+
+test("Dimorphos remains distinct from the Didymos primary", async () => {
+  const result = await api.lookupCuratedDimensions("Dimorphos moonlet", "small-bodies");
+  assert.equal(result.best.title.startsWith("Dimorphos"), true);
+  assert.deepEqual(Array.from(result.best.axesKm), [0.177, 0.174, 0.116]);
 });
