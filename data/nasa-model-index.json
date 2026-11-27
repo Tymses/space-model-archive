@@ -221,7 +221,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aquarius (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aquarius%20(B)/Aquarius%20(B)%20(compact).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Aquarius%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aquarius-b/",
       "changed": "Source repository"
     },
     {
@@ -235,7 +235,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aquarius (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aquarius%20(B)/Aquarius%20(B)%20(unfurled).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Aquarius%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aquarius-b/",
       "changed": "Source repository"
     },
     {
@@ -361,7 +361,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Atmosphere-Space Transition Region Explorer (ASTRE): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atmosphere-Space%20Transition%20Region%20Explorer%20(ASTRE)/Atmosphere-Space%20Transition%20Region%20Explorer%20(ASTRE).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Atmosphere-Space%20Transition%20Region%20Explorer%20(ASTRE)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/atmosphere-space-transition-region-explorer-astre/",
       "changed": "Source repository"
     },
     {
@@ -501,7 +501,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A)%20(without%20Cassini).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Cassini-Huygens%20(A)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -515,7 +515,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A)%20(without%20Hyugens).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Cassini-Huygens%20(A)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -529,7 +529,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Cassini-Huygens%20(A)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -543,7 +543,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(B)/Cassini-Huygens%20(B).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Cassini-Huygens%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-b/",
       "changed": "Source repository"
     },
     {
@@ -599,7 +599,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Chandra%20X-ray%20Observatory/Chandra%20X-ray%20Observatory.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -627,7 +627,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cloud-Aerosol Lidar and Infrared Pathfinder Satellite (CALIPSO): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO)/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Cloud-Aerosol%20Lidar%20and%20Infrared%20Pathfinder%20Satellite%20(CALIPSO)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cloud-aerosol-lidar-and-infrared-pathfinder-satellite-calipso/",
       "changed": "Source repository"
     },
     {
@@ -725,7 +725,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Constellation-X: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Constellation-X/Constellation-X.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Constellation-X",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/constellation-x/",
       "changed": "Source repository"
     },
     {
@@ -781,7 +781,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - 1 RU Generic: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%201%20RU%20Generic/CubeSat%20-%201%20RU%20Generic.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/CubeSat%20-%201%20RU%20Generic",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-1-ru-generic/",
       "changed": "Source repository"
     },
     {
@@ -795,7 +795,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - 2 RU Generic: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%202%20RU%20Generic/CubeSat%20-%202%20RU%20Generic.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/CubeSat%20-%202%20RU%20Generic",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-2-ru-generic/",
       "changed": "Source repository"
     },
     {
@@ -809,7 +809,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - ICECube: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20ICECube/CubeSat%20-%20ICECube.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/CubeSat%20-%20ICECube",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-icecube/",
       "changed": "Source repository"
     },
     {
@@ -823,7 +823,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - MiRaTa: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20MiRaTa/CubeSat%20-%20MiRaTa.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/CubeSat%20-%20MiRaTa",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-mirata/",
       "changed": "Source repository"
     },
     {
@@ -837,7 +837,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover (MSL): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Clean).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Curiosity%20Rover%20(MSL)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-msl/",
       "changed": "Source repository"
     },
     {
@@ -851,7 +851,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover (MSL): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Dirty).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Curiosity%20Rover%20(MSL)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-msl/",
       "changed": "Source repository"
     },
     {
@@ -921,7 +921,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/Deep%20Impact.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Impact%20(EPOXI)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
       "changed": "Source repository"
     },
     {
@@ -935,7 +935,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI%20(without%20impactor).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Impact%20(EPOXI)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
       "changed": "Source repository"
     },
     {
@@ -949,7 +949,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Impact%20(EPOXI)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact-epoxi/",
       "changed": "Source repository"
     },
     {
@@ -991,7 +991,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space Network 34-meter: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2034-meter/Deep%20Space%20Network%2034-meter.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2034-meter",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-34-meter/",
       "changed": "Source repository"
     },
     {
@@ -1005,7 +1005,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space Network 70-meter: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2070-meter/Deep%20Space%20Network%2070-meter.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Deep%20Space%20Network%2070-meter",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-70-meter/",
       "changed": "Source repository"
     },
     {
@@ -1047,7 +1047,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Earth Observing-1 (EO-1): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Earth%20Observing-1%20(EO-1)/Earth%20Observing-1%20(EO-1).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Earth%20Observing-1%20(EO-1)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/earth-observing-1-eo-1/",
       "changed": "Source repository"
     },
     {
@@ -1061,7 +1061,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Explorer Jupiter-C Rocket: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Explorer%20Jupiter-C%20Rocket/Explorer%20Jupiter-C%20Rocket.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Explorer%20Jupiter-C%20Rocket",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/explorer-jupiter-c-rocket/",
       "changed": "Source repository"
     },
     {
@@ -1103,7 +1103,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Fermi Gamma-ray Large Area Space Telescope: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Fermi%20Gamma-ray%20Large%20Area%20Space%20Telescope/Fermi%20Gamma-ray%20Large%20Area%20Space%20Telescope.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Fermi%20Gamma-ray%20Large%20Area%20Space%20Telescope",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/fermi-gamma-ray-large-area-space-telescope/",
       "changed": "Source repository"
     },
     {
@@ -1201,7 +1201,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Gateway: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gateway/Gateway%20Core.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Gateway",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gateway/",
       "changed": "Source repository"
     },
     {
@@ -1341,7 +1341,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "HESSI-RHESSI: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/HESSI-RHESSI/HESSI-RHESSI.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/HESSI-RHESSI",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hessi-rhessi/",
       "changed": "Source repository"
     },
     {
@@ -1355,7 +1355,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Habitat Demonstration Unit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Habitat%20Demonstration%20Unit/Habitat%20Demonstration%20Unit%20(part%201).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Habitat%20Demonstration%20Unit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/habitat-demonstration-unit/",
       "changed": "Source repository"
     },
     {
@@ -1369,7 +1369,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Habitat Demonstration Unit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Habitat%20Demonstration%20Unit/Habitat%20Demonstration%20Unit%20(part%202).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Habitat%20Demonstration%20Unit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/habitat-demonstration-unit/",
       "changed": "Source repository"
     },
     {
@@ -1439,7 +1439,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hinode (Solar-B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hinode%20(Solar-B)/Hinode%20(Solar-B).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hinode%20(Solar-B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hinode-solar-b/",
       "changed": "Source repository"
     },
     {
@@ -1453,7 +1453,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20FSS.3ds",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20SM4%20Carriers",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1467,7 +1467,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20Mule.3ds",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20SM4%20Carriers",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1481,7 +1481,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20ORUC.3ds",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20SM4%20Carriers",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1495,7 +1495,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20SLIC.3ds",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Hubble%20SM4%20Carriers",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1579,7 +1579,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(A)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(A).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(A)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-2-icesat-2-a/",
       "changed": "Source repository"
     },
     {
@@ -1593,7 +1593,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(B)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(B).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-2-icesat-2-b/",
       "changed": "Source repository"
     },
     {
@@ -1607,7 +1607,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(C)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(C).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-2-icesat-2-c/",
       "changed": "Source repository"
     },
     {
@@ -1621,7 +1621,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(arm%20deployed).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1635,7 +1635,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(arm%20deployed).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1649,7 +1649,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(panels%20deployed).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1663,7 +1663,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(panels%20deployed).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1677,7 +1677,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(panels%20stowed).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1691,7 +1691,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(panels%20stowed).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1705,7 +1705,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(stowed).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1719,7 +1719,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Lander/InSight%20Cruise%20Lander%20(stowed).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-lander/",
       "changed": "Source repository"
     },
     {
@@ -1733,7 +1733,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "InSight Cruise Stage: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20(final).blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/InSight%20Cruise%20Stage",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/insight-cruise-stage/",
       "changed": "Source repository"
     },
     {
@@ -1831,7 +1831,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "International Space Station (ISS) (D) (IGOAL): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20Space%20Station%20(ISS)%20(D)%20(IGOAL)/International%20Space%20Station%20(ISS).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/International%20Space%20Station%20(ISS)%20(D)%20(IGOAL)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/international-space-station-iss-d-igoal/",
       "changed": "Source repository"
     },
     {
@@ -1845,7 +1845,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "International X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/International%20X-ray%20Observatory/International%20X-ray%20Observatory.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/International%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/international-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -1957,7 +1957,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Jason Continuity of Service (Sentinel-6): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Jason%20Continuity%20of%20Service%20(Sentinel-6)/Jason%20Continuity%20of%20Service%20(Sentinel-6).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Jason%20Continuity%20of%20Service%20(Sentinel-6)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/jason-continuity-of-service-sentinel-6/",
       "changed": "Source repository"
     },
     {
@@ -2279,7 +2279,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Exploration Rover - Opportunity (MER-B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-exploration-rover-opportunity-mer-b/",
       "changed": "Source repository"
     },
     {
@@ -2293,7 +2293,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Exploration Rover - Spirit and Opportunity: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Spirit%20and%20Opportunity/Mars%20Exploration%20Rover%20-%20Spirit%20and%20Opportunity.blend",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Spirit%20and%20Opportunity",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-exploration-rover-spirit-and-opportunity/",
       "changed": "Source repository"
     },
     {
@@ -2307,7 +2307,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Global Surveyor: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Global%20Surveyor/Mars%20Global%20Surveyor%20(MOI).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Global%20Surveyor",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-global-surveyor/",
       "changed": "Source repository"
     },
     {
@@ -2321,7 +2321,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Global Surveyor: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Global%20Surveyor/Mars%20Global%20Surveyor%20(launch).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Global%20Surveyor",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-global-surveyor/",
       "changed": "Source repository"
     },
     {
@@ -2335,7 +2335,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Global Surveyor: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Global%20Surveyor/Mars%20Global%20Surveyor%20(mapping).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mars%20Global%20Surveyor",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-global-surveyor/",
       "changed": "Source repository"
     },
     {
@@ -2447,7 +2447,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mobile Launcher: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mobile%20Launcher/Mobile%20Launcher%20(assembled).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mobile%20Launcher",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mobile-launcher/",
       "changed": "Source repository"
     },
     {
@@ -2461,7 +2461,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mobile Launcher: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mobile%20Launcher/Mobile%20Launcher%20(pad%20only).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Mobile%20Launcher",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mobile-launcher/",
       "changed": "Source repository"
     },
     {
@@ -2517,7 +2517,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ocean Surface Topography Mission (OSTM Jason-2): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ocean%20Surface%20Topography%20Mission%20(OSTM%20Jason-2)/Ocean%20Surface%20Topography%20Mission%20(OSTM%20Jason-2).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Ocean%20Surface%20Topography%20Mission%20(OSTM%20Jason-2)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ocean-surface-topography-mission-ostm-jason-2/",
       "changed": "Source repository"
     },
     {
@@ -2559,7 +2559,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Origins, Spectral Interpretation, Resource Identification, and Security - Regolith Explorer (OSIRIS-REx): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Origins%2C%20Spectral%20Interpretation%2C%20Resource%20Identification%2C%20and%20Security%20-%20Regolith%20Explorer%20(OSIRIS-REx)/OSIRIS-REx.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Origins%2C%20Spectral%20Interpretation%2C%20Resource%20Identification%2C%20and%20Security%20-%20Regolith%20Explorer%20(OSIRIS-REx)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/origins-spectral-interpretation-resource-identification-and-security-regolith-explorer-osiris-rex/",
       "changed": "Source repository"
     },
     {
@@ -2657,7 +2657,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Radar Satellite-1 (RADARSAT-1): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Radar%20Satellite-1%20(RADARSAT-1)/Radar%20Satellite-1%20(RADARSAT-1).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Radar%20Satellite-1%20(RADARSAT-1)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/radar-satellite-1-radarsat-1/",
       "changed": "Source repository"
     },
     {
@@ -2755,7 +2755,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%201.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2769,7 +2769,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%202.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2783,7 +2783,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20body%203.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2797,7 +2797,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%201.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2811,7 +2811,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%202.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2825,7 +2825,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20radio%203.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2839,7 +2839,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%201.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2853,7 +2853,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%202.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2867,7 +2867,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite Kit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20Kit/Satellite%20Kit%20wings%203.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20Kit",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-kit/",
       "changed": "Source repository"
     },
     {
@@ -2881,7 +2881,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Satellite for Scientific Applications (SAC-C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Satellite%20for%20Scientific%20Applications%20(SAC-C)/Satellite%20for%20Scientific%20Applications%20(SAC-C).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Satellite%20for%20Scientific%20Applications%20(SAC-C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/satellite-for-scientific-applications-sac-c/",
       "changed": "Source repository"
     },
     {
@@ -3021,7 +3021,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Launch System Block 1: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Launch%20System%20Block%201/Block%201%20(GNC%20markings).7z",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Launch%20System%20Block%201",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-launch-system-block-1/",
       "changed": "Source repository"
     },
     {
@@ -3077,7 +3077,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D)%20door-prt.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20(D)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-d/",
       "changed": "Source repository"
     },
     {
@@ -3091,7 +3091,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D)%20door-stb.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20(D)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-d/",
       "changed": "Source repository"
     },
     {
@@ -3105,7 +3105,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D)%20eng.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20(D)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-d/",
       "changed": "Source repository"
     },
     {
@@ -3119,7 +3119,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20(D)/Space%20Shuttle%20(D)%20rcs.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20(D)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-d/",
       "changed": "Source repository"
     },
     {
@@ -3147,7 +3147,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/EVA%20suit.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20Parts",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3161,7 +3161,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/External%20tank.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20Parts",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3175,7 +3175,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Orbiter%20Docking%20System.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20Parts",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3189,7 +3189,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Payload.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20Parts",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3203,7 +3203,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Solid%20Rocket%20Booster.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Shuttle%20Parts",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3231,7 +3231,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Systems Loral (SSL-1300): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Systems%20Loral%20(SSL-1300)/Space%20Systems%20Loral%20(SSL-1300).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Space%20Systems%20Loral%20(SSL-1300)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-systems-loral-ssl-1300/",
       "changed": "Source repository"
     },
     {
@@ -3273,7 +3273,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20capsule%20closed.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Stardust",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3287,7 +3287,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20capsule.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Stardust",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3301,7 +3301,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20without%20capsule.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Stardust",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3329,7 +3329,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Station Explorer for X-Ray Timing and Navigation (SEXTANT): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Station%20Explorer%20for%20X-Ray%20Timing%20and%20Navigation%20(SEXTANT)/Station%20Explorer%20for%20X-Ray%20Timing%20and%20Navigation%20(SEXTANT).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Station%20Explorer%20for%20X-Ray%20Timing%20and%20Navigation%20(SEXTANT)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/station-explorer-for-x-ray-timing-and-navigation-sextant/",
       "changed": "Source repository"
     },
     {
@@ -3357,7 +3357,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Suomi National Polar-orbiting Partnership (Suomi NPP): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP)/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/suomi-national-polar-orbiting-partnership-suomi-npp/",
       "changed": "Source repository"
     },
     {
@@ -3413,7 +3413,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "TOPEX-Poseidon: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/TOPEX-Poseidon/TOPEX-Poseidon.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/TOPEX-Poseidon",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/topex-poseidon/",
       "changed": "Source repository"
     },
     {
@@ -3427,7 +3427,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "TOPEX-Poseidon: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/TOPEX-Poseidon/TOPEX-Poseidon.lwo",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/TOPEX-Poseidon",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/topex-poseidon/",
       "changed": "Source repository"
     },
     {
@@ -3441,7 +3441,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tall Dish: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(dish).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tall%20Dish",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tall-dish/",
       "changed": "Source repository"
     },
     {
@@ -3455,7 +3455,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tall Dish: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(post).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tall%20Dish",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tall-dish/",
       "changed": "Source repository"
     },
     {
@@ -3469,7 +3469,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tall Dish: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tall%20Dish/Tall%20Dish%20(turntable).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tall%20Dish",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tall-dish/",
       "changed": "Source repository"
     },
     {
@@ -3623,7 +3623,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)%20(left%20antenna).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-c/",
       "changed": "Source repository"
     },
     {
@@ -3637,7 +3637,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tracking and Data Relay Satellites (TDRS) (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)%20(right%20antenna).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tracking%20and%20Data%20Relay%20Satellites%20(TDRS)%20(C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tracking-and-data-relay-satellites-tdrs-c/",
       "changed": "Source repository"
     },
     {
@@ -3763,7 +3763,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Tselina-2: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Tselina-2/Tselina-2.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Tselina-2",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/tselina-2/",
       "changed": "Source repository"
     },
     {
@@ -3847,7 +3847,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Voyager Probe (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Voyager%20Probe%20(B)/Voyager%20Probe%20(B)%20(antenna).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Voyager%20Probe%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/voyager-probe-b/",
       "changed": "Source repository"
     },
     {
@@ -3889,7 +3889,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wide-Field Infrared Explorer (WIRE): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wide-Field%20Infrared%20Explorer%20(WIRE)/Wide-Field%20Infrared%20Explorer%20(WIRE).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Wide-Field%20Infrared%20Explorer%20(WIRE)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wide-field-infrared-explorer-wire/",
       "changed": "Source repository"
     },
     {
@@ -3945,7 +3945,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "X-57: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/X-57",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/x-57/",
       "changed": "Source repository"
     },
     {
@@ -3959,7 +3959,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "X-57: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/X-57/X-57.vsp3",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/X-57",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/x-57/",
       "changed": "Source repository"
     },
     {
@@ -4365,7 +4365,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20base.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -4379,7 +4379,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20cover.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -4393,7 +4393,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20cylinder.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -4407,7 +4407,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20panel.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -4421,7 +4421,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Chandra X-ray Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Chandra%20X-ray%20Observatory/Chandra%20top.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Chandra%20X-ray%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/chandra-x-ray-observatory/",
       "changed": "Source repository"
     },
     {
@@ -5863,7 +5863,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Galileo: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Galileo/Galileo%20probe.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Galileo",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/galileo/",
       "changed": "Source repository"
     },
     {
@@ -5877,7 +5877,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Galileo: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Galileo/Galileo%20stowed.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Galileo",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/galileo/",
       "changed": "Source repository"
     },
     {
@@ -5891,7 +5891,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Galileo: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Galileo/Galileo%20with%20armature.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Galileo",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/galileo/",
       "changed": "Source repository"
     },
     {
@@ -5905,7 +5905,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Galileo: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Galileo/Galileo%20without%20probe.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Galileo",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/galileo/",
       "changed": "Source repository"
     },
     {
@@ -7361,7 +7361,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover%20assembly%20instructions.7z",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%202020%20Perseverance%20Rover",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-2020-perseverance-rover/",
       "changed": "Source repository"
     },
     {
@@ -7375,7 +7375,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover%20parts.7z",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%202020%20Perseverance%20Rover",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-2020-perseverance-rover/",
       "changed": "Source repository"
     },
     {
@@ -8705,7 +8705,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/3D%20Foot%20x%203.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8719,7 +8719,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Bottom.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8733,7 +8733,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Dish%20part%20A.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8747,7 +8747,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Dish%20part%20B.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8761,7 +8761,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Leg%20x%203.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8775,7 +8775,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Tool1%20A.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8789,7 +8789,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Tool1%20B.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8803,7 +8803,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Tool1%20C.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8817,7 +8817,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Tool2.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
@@ -8831,7 +8831,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Viking Lander: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Viking%20Lander/Top.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Viking%20Lander",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/viking-lander/",
       "changed": "Source repository"
     },
     {
