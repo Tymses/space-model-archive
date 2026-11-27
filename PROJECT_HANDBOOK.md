@@ -57,7 +57,7 @@ The **Convert to STL** button belongs in the model **View details** card, in the
 - Clear failed OpenCascade initialization promises so the user can retry.
 - Move the Convert action to the upper-right title row of View details (Position A), removing it from collection cards.
 - Add regression coverage for STEP format normalization, retry behavior and button placement.
-- Add a dedicated GitHub Actions workflow to execute the Node model-workspace regression tests on relevant changes.
+- Extend the existing repository validation workflow so it executes the Node model-workspace regression tests on relevant changes.
 
 ### Verification status
 - Static repository inspection completed.
