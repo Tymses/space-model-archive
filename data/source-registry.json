@@ -32,8 +32,8 @@
           ],
           "status": "indexed",
           "priority": 1,
-          "knownCoverage": "Repository index currently contains 650 NASA source files; NASA's live catalogue is filterable by model type, 3D-printable assets, topic and format.",
-          "nextAction": "Refresh the complete Git-backed source listing and classify all files by object and collection."
+          "knownCoverage": "Repository index contains 650 unique NASA source files (679 index placements including 29 cross-listed planetary STL records). Of 226 NASA 3D Models folders, 221 now have verified individual NASA detail pages; five remain unresolved.",
+          "nextAction": "Recheck the five unresolved model folders for official individual detail pages and keep source-page URLs separate from direct file URLs."
         },
         {
           "id": "space-radar",
@@ -47,8 +47,8 @@
           ],
           "status": "indexed",
           "priority": 1,
-          "knownCoverage": "Repository index contains 311 assets across spacecraft, small bodies and moons; the official spacecraft catalogue and additional map assets are distinct subsets.",
-          "nextAction": "Reconcile official catalogue count, map assets and credits; do not classify all 311 as spacecraft."
+          "knownCoverage": "Repository index contains 311 assets across spacecraft, small bodies and moons: 234 have a verified model-specific source page (Space Radar or the original PDS record); 77 map/composite assets currently have no verified individual source page and therefore remain without a source-page URL in their model records.",
+          "nextAction": "Reconcile the 77 map/composite asset credits against their original NASA/PDS records; add a model source link only when the exact original object page is verified."
         },
         {
           "id": "codelove-space",
@@ -330,8 +330,8 @@
           ],
           "status": "indexed",
           "priority": 2,
-          "knownCoverage": "Repository index currently includes 19 direct OBJ records.",
-          "nextAction": "Recheck the current source listing and include every newly available target and model version."
+          "knownCoverage": "Repository index contains 19 direct OBJ records. The official JPL source presents the models in one catalogue list with individual OBJ download links; no separate per-model detail pages were identified.",
+          "nextAction": "Continue monitoring the JPL shape-model list; keep individual source-page links unset unless a dedicated model detail page becomes available."
         },
         {
           "id": "jaxa-itokawa",
