@@ -241,7 +241,8 @@ test("fit-to-build-plate calculation ignores astronomical scale, uses safety mar
  assert.ok(start>=0&&end>start);
  const calculate=new Function(app.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
  const fit=calculate([100,50,20],[100,80,50],5,100);
- assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
+ assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.deepEqual(fit.orientationIndices,[0,1,2]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
+ const rotated=calculate([100,50,20],[35,70,100],5,100);assert.deepEqual(rotated.orientationIndices,[2,1,0]);assert.deepEqual(rotated.printDimensions,[18,45,90]);assert.equal(rotated.fits,true);
  const reduced=calculate([100,50,20],[100,80,50],5,50);assert.equal(reduced.factor,0.45);assert.equal(reduced.fits,true);
  const enlarged=calculate([100,50,20],[100,80,50],5,150);assert.equal(enlarged.fits,false);
  assert.equal(calculate([10,10,10],[10,10,10],5,100).valid,false);
@@ -259,7 +260,7 @@ test("scaling workspace exposes original, fit-to-build-plate and custom-dimensio
  const html=read("index.html"),app=read("app.js");
  for(const id of ["scaling-mode","scaling-fit-margin","scaling-fit-adjustment","scaling-custom-dimension","scaling-custom-unit","scaling-custom-axis","scaling-custom-kind"])assert.match(html,new RegExp('id="'+id+'"'));
  assert.match(html,/value="fit">Fit to build plate/);assert.match(html,/value="custom">Custom original dimensions/);
- assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/exported STL keeps the source orientation/);
+ assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/automatically rotated to the selected axis-aligned orientation/);
 });
 
 test("custom original dimensions convert mm, m and km to millimetres",()=>{
