@@ -49,6 +49,8 @@ jobs:
         run: node tests/blend-browser.integration.mjs
       - name: Install native Blender for source comparison
         run: sudo apt-get update && sudo apt-get install -y blender
+      - name: Validate binary STL geometry and bounds
+        run: python3 tests/validate-binary-stl.py /tmp/insight-browser.stl /tmp/insight-browser-result.json
       - name: Upload converted InSight STL sample
         uses: actions/upload-artifact@v4
         with:
