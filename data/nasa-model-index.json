@@ -796,7 +796,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - 1 RU Generic: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%201%20RU%20Generic/CubeSat%20-%201%20RU%20Generic.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-1-ru-generic/",
       "changed": "Source repository"
     },
     {
@@ -810,7 +810,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - 2 RU Generic: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%202%20RU%20Generic/CubeSat%20-%202%20RU%20Generic.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-2-ru-generic/",
       "changed": "Source repository"
     },
     {
@@ -824,7 +824,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - ICECube: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20ICECube/CubeSat%20-%20ICECube.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-icecube/",
       "changed": "Source repository"
     },
     {
@@ -838,7 +838,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "CubeSat - MiRaTa: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/CubeSat%20-%20MiRaTa/CubeSat%20-%20MiRaTa.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cubesat-mirata/",
       "changed": "Source repository"
     },
     {
@@ -852,7 +852,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover (MSL): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Clean).blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-msl/",
       "changed": "Source repository"
     },
     {
@@ -866,7 +866,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover (MSL): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Rover%20(MSL)/Curiosity%20Rover%20(MSL)%20(Dirty).blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-msl/",
       "changed": "Source repository"
     },
     {
@@ -880,7 +880,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Scarecrow Test Rover: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Curiosity%20Scarecrow%20Test%20Rover/Curiosity%20Scarecrow%20Test%20Rover.blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-scarescrow-test-rover/",
       "changed": "Source repository"
     },
     {
@@ -894,7 +894,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cyclone Global Navigation Satellite System (CYGNSS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cyclone%20Global%20Navigation%20Satellite%20System%20(CYGNSS)/Cyclone%20Global%20Navigation%20Satellite%20System%20(CYGNSS).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cyclone-global-navigation-satellite-system-cygnss/",
       "changed": "Source repository"
     },
     {
@@ -908,7 +908,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cygnus Loop Supernova: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cygnus%20Loop%20Supernova/Cygnus%20Loop%20Supernova.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cygnus-loop-supernova/",
       "changed": "Source repository"
     },
     {
@@ -922,7 +922,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Dawn: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Dawn/Dawn.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/dawn/",
       "changed": "Source repository"
     },
     {
@@ -936,7 +936,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/Deep%20Impact.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
@@ -950,7 +950,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI%20(without%20impactor).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
@@ -964,7 +964,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Impact (EPOXI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Impact%20(EPOXI)/EPOXI.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-impact/",
       "changed": "Source repository"
     },
     {
