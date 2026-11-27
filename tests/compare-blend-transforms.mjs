@@ -19,7 +19,7 @@ for(const item of native){
  const expected=nativeToThree(item.matrix_world),received=browserToMeters(actual.matrixWorld);
  let maxError=0;
  for(let r=0;r<4;r++)for(let c=0;c<4;c++)maxError=Math.max(maxError,Math.abs(expected[r][c]-received[r][c]));
- results.push({name:item.name,maxError,vertices:item.vertices,polygons:item.polygons});
+ results.push({name:item.name,maxError,vertices:item.vertices,polygons:item.polygons,expected,received});
 }
 const matched=results.filter(item=>!item.missing),missing=results.filter(item=>item.missing);
 const worst=[...matched].sort((a,b)=>b.maxError-a.maxError).slice(0,12);
