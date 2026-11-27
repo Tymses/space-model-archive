@@ -41,7 +41,9 @@ const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
 const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collection=>({
   name:collection.id?.name||collection.name||null,
   keys:Object.keys(collection).slice(0,50),
-  gobject:collection.gobject||null,
-  children:collection.children||null
+  gobjectKeys:Object.keys(collection.gobject||{}),
+  firstObject:collection.gobject?.first?.ob?.aname||null,
+  childrenKeys:Object.keys(collection.children||{}),
+  firstChild:collection.children?.first?.collection?.id?.name||null
 }));
 console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, collectionSummary, sourceObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
