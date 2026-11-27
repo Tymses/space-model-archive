@@ -1475,6 +1475,15 @@ restoreRouteFromHash();
    }
   }catch(err){
    if(my!==token)return;clear();const errorText=String(err.message||err),safeError=errorText.replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));const helpText=format==="BLEND"?"Check that the source URL returns the original .blend binary, that the download is complete and within 75 MB, and that the file uses a supported Blender structure. Invalid mesh objects are skipped only when other valid meshes can still be imported; missing topology is never invented. For complex or unsupported scenes, open the file in Blender and export the required mesh as GLB or STL.":"Archive previews use the configured Cloudflare asset proxy when available. If the download still fails, the source may be unavailable, the URL may not point to a direct model file, or the host may block server-side access. Supported formats: STL, OBJ, PLY, GLB, GLTF, FBX, 3DS, LWO, BLEND and STEP.";stage.innerHTML='<div class="preview-placeholder"><span>⚠</span><p>Could not load this model: '+safeError+'</p><p>'+helpText+'</p></div>';
+   if(format==="BLEND"){
+    const fallback=document.createElement("div");fallback.className="blend-converter-fallback";
+    const heading=document.createElement("strong");heading.textContent="Alternative BLEND converters";
+    const note=document.createElement("p");note.textContent="These converters use a different conversion pipeline. Innerscene processes the file locally in your browser; Shapeweld opens it with Blender on its server. After downloading the STL, upload it here again for scaling.";
+    const local=document.createElement("a");local.className="action-link";local.href="https://www.innerscene.com/tools/blend-to-stl";local.target="_blank";local.rel="noopener noreferrer";local.textContent="Try Innerscene (local conversion) ↗";
+    const server=document.createElement("a");server.className="action-link secondary";server.href="https://shapeweld.com/tools/blend-to-stl";server.target="_blank";server.rel="noopener noreferrer";server.textContent="Try Shapeweld (Blender server) ↗";
+    const privacy=document.createElement("small");privacy.textContent="Shapeweld uploads the file to its server and states that uploads and results are deleted after 3 days. Do not use it for confidential models.";
+    fallback.append(heading,note,local,server,privacy);stage.append(fallback);
+   }
    $id("scaling-file-state").textContent="Preview unavailable";$id("scaling-measurement-state").textContent="Geometry unavailable";
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
