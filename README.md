@@ -43,7 +43,7 @@ The Cloudflare Worker in `cloudflare/jpl-proxy.js` now supports a restricted `ac
 ## Important limitations
 
 - Missing real-world dimensions, scale, licence or geometry are never guessed.
-- NASA models are linked to the NASA 3D Resources repository; follow NASA's usage guidelines and attribution requirements.
+- NASA model downloads are indexed from the NASA 3D Resources repository. Where an individual NASA model detail page can be verified, the source link opens that page; unresolved records do not fall back to GitHub folders or raw model files. Follow NASA's usage guidelines and attribution requirements.
 - The fit checker uses the 3D preview's bounding box. It is not a slicer simulation and does not check wall thickness, supports, bed adhesion, brim, collision clearance or arbitrary-angle packing.
 - STL, OBJ, PLY, GLB and GLTF files can be previewed in the Scaling workspace. Draco/Meshopt-compressed glTF, GLTF companion files and OBJ/MTL assets are supported. A mesh-to-STEP conversion is not presented as a proper CAD solid unless its quality is verified.
 - STEP support varies by slicer: Bambu Studio and PrusaSlicer support STEP import, while UltiMaker Cura's documented model formats do not list STEP. STL remains the broadly compatible fallback.
