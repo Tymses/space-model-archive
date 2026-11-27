@@ -140,3 +140,9 @@ The browser-based **Convert to STL** action is marked **BETA** wherever it is of
 ### Blender SDNA struct-size correction
 
 Blender SDNA's `TLEN` table stores the actual compiled size of each C structure, including alignment padding. The parser now retains that size as `SDNA[type].byteLength` when it compiles each structure and uses it for nested inline structure traversal. It no longer reads a nonexistent `SDNA[type].length` field (which was never the compiled struct size). This specifically fixes failures such as `BLEND_INVALID_DNA_SIZE` for the base `ID` structure.
+
+
+
+### Blender conversion fallback
+
+If the in-browser BLEND parser rejects a file, the Scaling workspace offers two independent alternatives: [Innerscene BLEND to STL](https://www.innerscene.com/tools/blend-to-stl), which states that conversion runs locally in the browser (up to 200 MB), and [Shapeweld BLEND to STL](https://shapeweld.com/tools/blend-to-stl), which states that it opens the file in Blender on its server (up to 50 MB; files/results deleted after three days). These are external services, not SPACEMESHER/Worker conversions. The user must download the STL and upload it back into Scaling. Server upload is disclosed before use.
