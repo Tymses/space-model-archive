@@ -106,16 +106,36 @@
       "aliases": [
         "Didymos",
         "65803 Didymos",
-        "1996 GT"
+        "1996 GT",
+        "Didymos asteroid",
+        "65803 Didymos asteroid",
+        "Didymos asteroid shape model",
+        "Didymos shape model",
+        "65803 (Didymos)"
       ],
       "axesKm": [
-        0.851,
         0.849,
+        0.851,
         0.62
       ],
-      "sourceLabel": "Ren et al., Astronomy & Astrophysics (2024)",
-      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf",
-      "category": "small-bodies"
+      "sourceLabel": "Daly et al. (2023), Nature 616, 443",
+      "sourceUrl": "https://www.nature.com/articles/s41586-023-05810-5",
+      "category": "small-bodies",
+      "uncertaintyKm": 0.015,
+      "axisUncertaintiesKm": [
+        0.015,
+        0.015,
+        0.015
+      ],
+      "axisLabels": [
+        "X",
+        "Y",
+        "Z"
+      ],
+      "measurement": "DART DRACO shape-model extents along the X, Y and Z axes",
+      "configuration": "Pre-impact primary asteroid Didymos; DRACO image-derived shape model",
+      "secondarySourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf",
+      "note": "Published extents: X 849 ± 15 m, Y 851 ± 15 m and Z 620 ± 15 m (1σ), converted to kilometres. These are the physical extents of the DART DRACO shape model, not the diameter of a volume-equivalent sphere."
     },
     {
       "name": "(433) Eros",
@@ -1082,6 +1102,39 @@
       "measurement": "Flyby spacecraft length × width × height",
       "configuration": "Deep Impact flyby spacecraft; external envelope, with solar-panel dimensions reported separately",
       "note": "The fact sheet gives 3.3 m long × 1.7 m wide × 2.3 m high. The separate 2.8 m × 2.8 m solar-panel dimensions are not included in these three body-envelope axes. This is the spacecraft, not the 103P/Hartley 2 comet visited by the EPOXI mission."
+    },
+    {
+      "name": "Dimorphos",
+      "aliases": [
+        "65803 Didymos B",
+        "Didymos B",
+        "Didymos moonlet",
+        "Dimorphos asteroid",
+        "Dimorphos asteroid shape model",
+        "DART moonlet"
+      ],
+      "axesKm": [
+        0.177,
+        0.174,
+        0.116
+      ],
+      "uncertaintyKm": 0.004,
+      "axisUncertaintiesKm": [
+        0.002,
+        0.004,
+        0.002
+      ],
+      "axisLabels": [
+        "X",
+        "Y",
+        "Z"
+      ],
+      "category": "small-bodies",
+      "sourceLabel": "Daly et al. (2023), Nature 616, 443",
+      "sourceUrl": "https://www.nature.com/articles/s41586-023-05810-5",
+      "measurement": "DART DRACO shape-model extents along the X, Y and Z axes",
+      "configuration": "Pre-impact secondary asteroid Dimorphos; DRACO image-derived shape model",
+      "note": "Published extents: X 177 ± 2 m, Y 174 ± 4 m and Z 116 ± 2 m (1σ), converted to kilometres. This is the moonlet Dimorphos, not the primary asteroid Didymos."
     }
   ]
 }
