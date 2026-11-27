@@ -3922,7 +3922,7 @@
     },
     {
       "id": "nasa-auto-7987945ac2f8",
-      "name": "Wrench",
+      "name": "Wrench (GLB model)",
       "category": "spacecraft",
       "kind": "Tool / mission hardware",
       "source": "NASA 3D Resources",
@@ -6512,7 +6512,7 @@
     },
     {
       "id": "nasa-auto-cb142263c4aa",
-      "name": "Wrench",
+      "name": "ISS 3D-printed Wrench",
       "category": "spacecraft",
       "kind": "3D-printed ISS tool",
       "source": "NASA 3D Resources",
