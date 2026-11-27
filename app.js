@@ -225,6 +225,23 @@ function findCrossListedModel(model){
  const counterpart=MODELS.find(item=>item.id===counterpartId);
  return counterpart&&counterpart.category!==model.category?counterpart:null;
 }
+function calculateFitToBuildPlate(sourceMm,bedMm,marginMm=5,adjustmentPercent=100){
+ if(!Array.isArray(sourceMm)||!Array.isArray(bedMm)||sourceMm.length!==3||bedMm.length!==3||!sourceMm.every(v=>Number.isFinite(v)&&v>0)||!bedMm.every(v=>Number.isFinite(v)&&v>0)||!Number.isFinite(marginMm)||marginMm<0||!Number.isFinite(adjustmentPercent)||adjustmentPercent<=0)return {valid:false};
+ const usableBed=bedMm.map(v=>v-2*marginMm);if(!usableBed.every(v=>Number.isFinite(v)&&v>0))return {valid:false,usableBed};
+ const rotations=[[sourceMm[0],sourceMm[1],sourceMm[2]],[sourceMm[0],sourceMm[2],sourceMm[1]],[sourceMm[1],sourceMm[0],sourceMm[2]],[sourceMm[1],sourceMm[2],sourceMm[0]],[sourceMm[2],sourceMm[0],sourceMm[1]],[sourceMm[2],sourceMm[1],sourceMm[0]]];
+ let maxFactor=0,orientation=null;for(const rotation of rotations){const factor=Math.min(...rotation.map((v,i)=>usableBed[i]/v));if(factor>maxFactor){maxFactor=factor;orientation=rotation;}}
+ const factor=maxFactor*adjustmentPercent/100,printDimensions=sourceMm.map(v=>v*factor),fits=rotations.some(rotation=>rotation.every((v,i)=>v*factor<=usableBed[i]+1e-9));
+ return {valid:true,maxFactor,factor,orientation,usableBed,printDimensions,fits,adjustmentPercent,marginMm};
+}
+function convertCustomDimensionToMm(value,unit){
+ const factors={mm:1,m:1000,km:1000000},number=Number(value);
+ return Number.isFinite(number)&&number>0&&Object.prototype.hasOwnProperty.call(factors,unit)?number*factors[unit]:null;
+}
+function calculateCustomScaleDenominator(sourceMm,realDimensionMm,axis="longest"){
+ if(!Array.isArray(sourceMm)||sourceMm.length!==3||!sourceMm.every(v=>Number.isFinite(v)&&v>0)||!Number.isFinite(realDimensionMm)||realDimensionMm<=0)return null;
+ const index=axis==="longest"?sourceMm.indexOf(Math.max(...sourceMm)):Number(axis);if(!Number.isInteger(index)||index<0||index>2)return null;
+ return realDimensionMm/sourceMm[index];
+}
 function describeOriginalScale(originalScale){
  if(!Number.isFinite(originalScale)||originalScale<=0)return "Real-world comparison unavailable";
  const difference=(1/originalScale-1)*100;
@@ -876,7 +893,7 @@ restoreRouteFromHash();
 /* Independent scaling workspace: object dimensions -> original scale -> printer-sized scale. */
 (function initScalingWorkspace(){
  const $id=id=>document.getElementById(id),unitFactors={mm:1,cm:10,m:1000,in:25.4};
- let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,activeExpectedCategory=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[],conversionContext=null,occtPromise=null,occtScriptPromise=null,descriptionToken=0;
+ let THREE=null,L=null,renderer=null,controls=null,camera=null,scene=null,root=null,active=null,activeExpectedCategory=null,raf=null,objectUrls=[],token=0,realAxesKm=null,realLongestKm=null,realSourceUrl="",realObjectName="",realConfidenceScore=null,selectedDenominator=null,currentExportFactor=1,currentExportReady=false,lookupBusy=false,curatedDimensionsPromise=null,researchCandidates=[],conversionContext=null,occtPromise=null,occtScriptPromise=null,descriptionToken=0;
  const stage=$id("scaling-preview-stage"),fmt=v=>Number(v).toLocaleString("en-US",{maximumFractionDigits:3}),dims=d=>d.map(fmt).join(" × ")+" mm";
  function setGauge(id,value,status){
   const card=$id("scaling-gauge-"+id),ring=$id("scaling-gauge-ring-"+id),number=$id("scaling-gauge-value-"+id),caption=$id("scaling-gauge-status-"+id);
@@ -920,7 +937,7 @@ restoreRouteFromHash();
   function clear(){
   resetGauges();realConfidenceScore=null;
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
-  renderer=null;controls=null;camera=null;scene=null;root=null;active=null;conversionContext=null;const convertButton=$id("scaling-convert-stl"),convertBeta=$id("scaling-convert-beta");if(convertButton){convertButton.hidden=true;convertButton.disabled=false;convertButton.textContent="Convert to STL";}if(convertBeta)convertBeta.hidden=true;
+  renderer=null;controls=null;camera=null;scene=null;root=null;active=null;conversionContext=null;currentExportReady=false;currentExportFactor=1;const convertButton=$id("scaling-convert-stl"),convertBeta=$id("scaling-convert-beta");if(convertButton){convertButton.hidden=true;convertButton.disabled=false;convertButton.textContent="Convert to STL";}if(convertBeta)convertBeta.hidden=true;
   objectUrls.forEach(url=>URL.revokeObjectURL(url));objectUrls=[];lookupBusy=false;const lookupButton=$id("scaling-jpl-lookup");if(lookupButton)lookupButton.disabled=false;researchCandidates=[];const researchResults=$id("scaling-research-results");if(researchResults){researchResults.hidden=true;researchResults.replaceChildren();}const unverifiedDetails=$id("scaling-unverified-details");if(unverifiedDetails){unverifiedDetails.hidden=true;unverifiedDetails.open=false;}const researchPanel=$id("scaling-research-panel");if(researchPanel)researchPanel.hidden=true;
  }
  async function ensure(){
@@ -1009,98 +1026,87 @@ restoreRouteFromHash();
  }
  function update(){
   if(!active)return;
-  const source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
-  $id("scaling-source-dimensions").textContent=dims(source);
-  if(!realLongestKm||!(realLongestKm>0)){
-   $id("scaling-original-scale").textContent="Not determined";$id("scaling-original-dimensions").textContent=dims(source);
-   $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
-   $id("scaling-recommendations").innerHTML="<p>Find the object above to retrieve its measured physical axes and calculate the real scale.</p>";
-   renderFit("Real-world dimensions missing","The model geometry is measured, but no verified physical extent is linked yet.",null);
-   setGauge("printability",null,"Awaiting scale");
-   $id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";
-   updatePreview(1);return;
+  const mode=$id("scaling-mode").value,source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+  $id("scaling-source-dimensions").textContent=dims(source);$id("scaling-original-dimensions").textContent=dims(source);currentExportReady=false;currentExportFactor=1;
+  $id("scaling-mode-hint").setAttribute("data-mode",mode);
+  if(mode==="fit"){
+   setGauge("reliability",null,"Not used in fit mode");selectedDenominator=null;$id("scaling-original-scale").textContent="Astronomical scale ignored";
+   if(!validBed){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Enter valid printer dimensions before fitting the model.</p>";setGauge("printability",null,"Invalid build volume");renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
+   const margin=Number($id("scaling-fit-margin").value),adjustment=Number($id("scaling-fit-adjustment").value),fit=calculateFitToBuildPlate(source,bed,margin,adjustment);
+   if(!fit.valid){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Safety margin must be non-negative and leave a positive usable volume on all axes.</p>";setGauge("printability",null,"Invalid safety margin");renderFit("Check safety margin","The selected safety margin leaves no usable space on at least one printer axis.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
+   currentExportFactor=fit.factor;currentExportReady=true;$id("scaling-selected-scale").textContent=fmt(fit.factor)+"× of source geometry";$id("scaling-print-dimensions").textContent=dims(fit.printDimensions);
+   $id("scaling-recommendations").innerHTML="<p>Maximum proportional fit: <strong>"+fmt(fit.maxFactor)+"×</strong> of the loaded geometry.</p><p>Adjustment: "+fmt(adjustment)+"% · safety margin: "+fmt(margin)+" mm on every side.</p><p>Usable volume: "+dims(fit.usableBed)+". Increase the adjustment above 100% to test a larger model; the fit indicator will warn if it crosses the safe limits. The exported STL keeps the source orientation; rotate it in your slicer if the best orientation shown requires an axis swap.</p>";
+   const actualFit=best(fit.printDimensions,fit.usableBed);$id("scaling-orientation").textContent="Best orientation: "+(actualFit.orientation?dims(actualFit.orientation):"—");
+   setGauge("printability",Math.min(100,actualFit.factor*100),fit.fits?"Fits with safety margins":"Exceeds safety-adjusted build volume");
+   renderFit(fit.fits?"Fits the selected build plate":"Exceeds the selected build plate",fit.fits?"The model fits in the selected printer volume with "+fmt(margin)+" mm clearance on every side.":"The adjusted model is larger than the safety-adjusted usable volume. Reduce the adjustment percentage.",fit.fits);updatePreview(fit.factor);return;
   }
-  const originalDenominator=realLongestKm*1e6/longest;
+  let referenceDimensionMm=null,referenceAxis="longest",referenceLabel="";
+  if(mode==="custom"){
+   setGauge("reliability",null,"User-supplied dimension · not source-rated");
+   const value=Number($id("scaling-custom-dimension").value),unit=$id("scaling-custom-unit").value;
+   referenceDimensionMm=convertCustomDimensionToMm(value,unit);referenceAxis=$id("scaling-custom-axis").value;referenceLabel=$id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension";
+   if(!$id("scaling-custom-dimension").value.trim()||!Number.isFinite(referenceDimensionMm)||referenceDimensionMm<=0){
+    $id("scaling-original-scale").textContent="Custom dimension required";$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Enter a positive real-world dimension and select the matching model axis.</p>";renderFit("Enter a custom original dimension","This mode uses your own real-world measurement; no astronomical lookup is required.",null);setGauge("printability",null,"Awaiting custom dimension");$id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";updatePreview(1);return;
+   }
+  }else{
+   if(!realLongestKm||!(realLongestKm>0)){
+    $id("scaling-original-scale").textContent="Not determined";$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Find the object above to retrieve its measured physical axes and calculate the real scale.</p>";renderFit("Real-world dimensions missing","The model geometry is measured, but no verified physical extent is linked yet.",null);setGauge("printability",null,"Awaiting scale");$id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";updatePreview(1);return;
+   }
+   referenceDimensionMm=realLongestKm*1e6;
+  }
+  const originalDenominator=mode==="custom"?calculateCustomScaleDenominator(source,referenceDimensionMm,referenceAxis):referenceDimensionMm/longest;
+  if(!Number.isFinite(originalDenominator)||originalDenominator<=0){$id("scaling-original-scale").textContent="Invalid dimension mapping";$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Select a valid model axis for the entered real-world dimension.</p>";renderFit("Check the selected model axis","The real-world measurement could not be mapped to a positive model dimension.",null);setGauge("printability",null,"Invalid dimension mapping");updatePreview(1);return;}
   $id("scaling-original-scale").textContent="1:"+fmt(originalDenominator);
-  $id("scaling-original-dimensions").textContent=dims(source);
-  if(!validBed){
-   setGauge("printability",null,"Invalid build volume");
-   renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);return;
-  }
-  const fit=best(source,bed),minimum=originalDenominator/fit.factor;
-  const choices=standards(minimum),selected=selectedDenominator&&choices.includes(selectedDenominator)?selectedDenominator:(choices[0]||null);
-  selectedDenominator=selected;
-  if(!selected){
-   $id("scaling-selected-scale").textContent="No standard scale found";
-   $id("scaling-print-dimensions").textContent="—";
-   $id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";
-   setGauge("printability",null,"No scale selected");
-   renderFit("No standard scale fits","Try splitting the model or selecting a larger build volume.",false);updatePreview(1);return;
-  }
-  const factor=originalDenominator/selected,print=source.map(v=>v*factor),fitNow=best(print,bed),fits=fitNow.factor>=1-1e-9;
-  $id("scaling-selected-scale").textContent="1:"+fmt(selected);
-  $id("scaling-print-dimensions").textContent=dims(print);
-  $id("scaling-recommendations").innerHTML=choices.slice(0,6).map((den,i)=>{
-   const size=source.map(v=>v*originalDenominator/den),isSelected=den===selected;
-   return '<button type="button" class="scaling-scale-option'+(isSelected?' is-selected':'')+'" data-denominator="'+den+'"><strong>1:'+fmt(den)+'</strong><span>'+dims(size)+'</span><small>'+(i===0?'Largest recommended size':isSelected?'Selected scale':'Smaller print')+'</small></button>';
-  }).join("");
-  $id("scaling-orientation").textContent="Best orientation: "+(fitNow.orientation?dims(fitNow.orientation):"—");
-  setGauge("printability",Math.min(100,fitNow.factor*100),fits?"Fits selected build volume":"Needs a smaller scale");
-  renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The model fits after a 90° axis-aligned rotation.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);
-  updatePreview(factor);
+  if(!validBed){setGauge("printability",null,"Invalid build volume");renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);return;}
+  const fit=best(source,bed),minimum=originalDenominator/fit.factor,choices=standards(minimum),selected=selectedDenominator&&choices.includes(selectedDenominator)?selectedDenominator:(choices[0]||null);selectedDenominator=selected;
+  if(!selected){$id("scaling-selected-scale").textContent="No standard scale found";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>No scale up to 1:1,000,000,000,000,000 fits. Consider splitting the model or using a larger printer.</p>";setGauge("printability",null,"No scale selected");renderFit("No standard scale fits","Try splitting the model or selecting a larger build volume.",false);updatePreview(1);return;}
+  const factor=originalDenominator/selected,print=source.map(v=>v*factor),fitNow=best(print,bed),fits=fitNow.factor>=1-1e-9;currentExportFactor=factor;currentExportReady=true;
+  $id("scaling-selected-scale").textContent="1:"+fmt(selected);$id("scaling-print-dimensions").textContent=dims(print);
+  $id("scaling-recommendations").innerHTML=choices.slice(0,6).map((den,i)=>{const size=source.map(v=>v*originalDenominator/den),isSelected=den===selected;return '<button type="button" class="scaling-scale-option'+(isSelected?' is-selected':'')+'" data-denominator="'+den+'"><strong>1:'+fmt(den)+'</strong><span>'+dims(size)+'</span><small>'+(i===0?'Largest recommended size':isSelected?'Selected scale':'Smaller print')+'</small></button>';}).join("");
+  $id("scaling-orientation").textContent=(mode==="custom"?referenceLabel+" · model axis "+(referenceAxis==="longest"?"longest":"XYZ"[Number(referenceAxis)])+" · ":"")+"Best orientation: "+(fitNow.orientation?dims(fitNow.orientation):"—");
+  setGauge("printability",Math.min(100,fitNow.factor*100),fits?"Fits selected build volume":"Needs a smaller scale");renderFit(fits?"Fits the selected build volume":"Does not fit at this scale",fits?"The model fits after a 90° axis-aligned rotation.":"This scale exceeds the selected build volume. Choose a smaller print (larger denominator).",fits);updatePreview(factor);
  }
  function assessmentText(id,value){const el=$id(id);if(el)el.textContent=value;}
  function openAssessment(){
   const dialog=$id("assessment-dialog");if(!dialog)return;
-  const title=$id("scaling-printer-profile")?.selectedOptions?.[0]?.textContent||"Selected printer";
-  const bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
-  const source=active?active.raw.map(v=>v*active.unitFactor):null;
-  const longest=source?Math.max(...source):null;
-  const hasPhysical=Number.isFinite(realLongestKm)&&realLongestKm>0;
-  const hasScale=hasPhysical&&Number.isFinite(selectedDenominator)&&selectedDenominator>0;
-  assessmentText("assessment-printer",title);
-  assessmentText("assessment-bed",validBed?dims(bed):"Invalid or incomplete build volume");
-  assessmentText("assessment-model",source?dims(source):"No model loaded");
-  assessmentText("assessment-object",hasPhysical?realObjectName+" · "+fmt(realLongestKm)+" km longest axis":"No verified real-world dimensions linked");
-  assessmentText("assessment-source",hasPhysical?(realSourceUrl?"Verified dimension source linked":"Dimension source not recorded"):"Not available");
-  assessmentText("assessment-scale",hasScale?"1:"+fmt(selectedDenominator):"Cannot calculate without verified physical dimensions");
-  const confidence=Number.isFinite(realConfidenceScore)?Math.round(realConfidenceScore)+" / 100 · evidence indicator":"Not rated";
-  assessmentText("assessment-confidence",confidence);
-  let verdict="Insufficient data for a print assessment",summary="Load a model and link verified real-world dimensions to calculate its intended scale.";
+  const mode=$id("scaling-mode").value,title=$id("scaling-printer-profile")?.selectedOptions?.[0]?.textContent||"Selected printer",bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+  const source=active?active.raw.map(v=>v*active.unitFactor):null,customValue=Number($id("scaling-custom-dimension").value),customUnit=$id("scaling-custom-unit").value,customDimensionMm=convertCustomDimensionToMm(customValue,customUnit),customAxis=$id("scaling-custom-axis").value;
+  const customDenominator=mode==="custom"&&source?calculateCustomScaleDenominator(source,customDimensionMm,customAxis):null;
+  const originalDenominator=mode==="original"&&source&&realLongestKm>0?realLongestKm*1e6/Math.max(...source):null;
+  const denominator=mode==="custom"?customDenominator:originalDenominator,hasScale=mode!=="fit"&&Number.isFinite(denominator)&&denominator>0&&Number.isFinite(selectedDenominator)&&selectedDenominator>0;
+  assessmentText("assessment-printer",title);assessmentText("assessment-bed",validBed?dims(bed):"Invalid or incomplete build volume");assessmentText("assessment-model",source?dims(source):"No model loaded");
+  assessmentText("assessment-object",mode==="fit"?"No physical reference used (fit mode)":mode==="custom"?($id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension")+" · "+fmt(customValue)+" "+customUnit+" · model axis "+(customAxis==="longest"?"longest":"XYZ"[Number(customAxis)]):realLongestKm>0?realObjectName+" · "+fmt(realLongestKm)+" km longest axis":"No verified real-world dimensions linked");
+  assessmentText("assessment-source",mode==="fit"?"Not required":mode==="custom"?"User-entered dimension · not source-verified":realLongestKm>0?(realSourceUrl?"Verified dimension source linked":"Dimension source not recorded"):"Not available");
+  assessmentText("assessment-scale",mode==="fit"?"Fit to build plate · "+fmt(currentExportFactor)+"×":hasScale?"Original scale 1:"+fmt(denominator)+" · selected 1:"+fmt(selectedDenominator):"Cannot calculate without a valid reference dimension");
+  assessmentText("assessment-confidence",mode==="custom"?"User supplied · not source-rated":mode==="fit"?"Not applicable":Number.isFinite(realConfidenceScore)?Math.round(realConfidenceScore)+" / 100 · evidence indicator":"Not rated");
+  let verdict="Insufficient data for a print assessment",summary="Load a model and select a scaling mode to calculate its print dimensions.";
   let orientation="—",printDims="—",clearance="—",occupancy="—",fitIndex="—",axisRows="<p>Axis-by-axis clearance is unavailable until a model and valid build volume are loaded.</p>";
-  if(source&&validBed){
-   const rawFit=best(source,bed);
-   if(!hasScale){
-    verdict="Geometry loaded; real-world scale unknown";
-    summary="The model can be checked at its current file dimensions, but no physical reference dimension is available to establish the intended scale.";
-    const fits=rawFit.factor>=1-1e-9;
-    fitIndex=fits?"100 / 100 · geometric fit at file size":Math.round(Math.max(0,rawFit.factor)*100)+" / 100 · scale-down factor";
-    orientation=rawFit.orientation?dims(rawFit.orientation):"—";
-    clearance="Not applicable to an intended scale";
-    const volumeRatio=source.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;
-    occupancy=Number.isFinite(volumeRatio)?Math.max(0,volumeRatio).toFixed(3)+"% of printer bounding volume":"—";
-   }else{
-    const factor=realLongestKm*1e6/longest/selectedDenominator;
-    const print=source.map(v=>v*factor),fit=best(print,bed),fits=fit.factor>=1-1e-9;
-    const margins=fit.orientation?fit.orientation.map((v,i)=>bed[i]-v):[];
-    const util=fit.orientation?fit.orientation.map((v,i)=>v/bed[i]*100):[];
-    const limiting=Math.max(...util);
-    const volumeRatio=print.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;
-    printDims=dims(print);orientation=fit.orientation?dims(fit.orientation):"—";
-    clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on axis "+["X","Y","Z"][i]).join(" · "):"—";
-    occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
-    fitIndex=Math.round(Math.min(100,fit.factor*100))+" / 100 · geometric scale-down index";
-    verdict=fits?"Fits the selected build volume":"Does not fit at the selected scale";
-    summary=fits?"The selected scale fits within the selected build volume in an axis-aligned 90° orientation. This is a geometric fit result, not a prediction of print success.":"At least one dimension exceeds the build volume. Increase the scale denominator or split the model.";
-    axisRows=fit.orientation?fit.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(bed[i])+' mm</strong><small>'+fmt(margins[i])+' mm clearance · '+fmt(util[i])+'% used</small></div>').join(""):"<p>Orientation unavailable.</p>";
+  if(source&&validBed&&mode==="fit"){
+   const fit=calculateFitToBuildPlate(source,bed,Number($id("scaling-fit-margin").value),Number($id("scaling-fit-adjustment").value));
+   if(!fit.valid){verdict="Invalid fit settings";summary="Check the build volume and safety margin. The safety margin must leave positive usable dimensions."; }
+   else{
+    const actual=best(fit.printDimensions,fit.usableBed),fits=fit.fits,margins=actual.orientation?actual.orientation.map((v,i)=>bed[i]-v):[],util=actual.orientation?actual.orientation.map((v,i)=>v/fit.usableBed[i]*100):[];
+    printDims=dims(fit.printDimensions);orientation=actual.orientation?dims(actual.orientation):"—";clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on printer axis "+["X","Y","Z"][i]).join(" · "):"—";
+    const volumeRatio=fit.printDimensions.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
+    fitIndex=Math.round(Math.min(100,actual.factor*100))+" / 100 · safe-volume fit index";
+    verdict=fits?"Fits the selected build plate":"Exceeds the safety-adjusted build volume";summary="Astronomical scale is ignored. Maximum fit factor "+fmt(fit.maxFactor)+"×; adjustment "+fmt(fit.adjustmentPercent)+"%; safety margin "+fmt(fit.marginMm)+" mm on every side.";
+    axisRows=actual.orientation?actual.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(fit.usableBed[i])+' mm usable</strong><small>'+fmt(margins[i])+' mm to physical bed edge · '+fmt(util[i])+'% of safe width</small></div>').join(""):"<p>Orientation unavailable.</p>";
    }
+  }else if(source&&validBed&&!hasScale){
+   const rawFit=best(source,bed),fits=rawFit.factor>=1-1e-9;verdict="Geometry loaded; original scale unavailable";summary="The model can be checked at its current file dimensions, but no usable physical reference dimension is available.";
+   fitIndex=fits?"100 / 100 · geometric fit at file size":Math.round(Math.max(0,rawFit.factor)*100)+" / 100 · scale-down factor";orientation=rawFit.orientation?dims(rawFit.orientation):"—";
+   const volumeRatio=source.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;occupancy=Number.isFinite(volumeRatio)?Math.max(0,volumeRatio).toFixed(3)+"% of printer bounding volume":"—";
+  }else if(source&&validBed&&hasScale){
+   const factor=denominator/selectedDenominator,print=source.map(v=>v*factor),fit=best(print,bed),fits=fit.factor>=1-1e-9,margins=fit.orientation?fit.orientation.map((v,i)=>bed[i]-v):[],util=fit.orientation?fit.orientation.map((v,i)=>v/bed[i]*100):[];
+   const volumeRatio=print.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;printDims=dims(print);orientation=fit.orientation?dims(fit.orientation):"—";
+   clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on axis "+["X","Y","Z"][i]).join(" · "):"—";occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
+   fitIndex=Math.round(Math.min(100,fit.factor*100))+" / 100 · geometric scale-down index";verdict=fits?"Fits the selected build volume":"Does not fit at the selected scale";
+   summary=fits?"The selected scale fits within the selected build volume in an axis-aligned 90° orientation. This is a geometric fit result, not a prediction of print success.":"At least one dimension exceeds the build volume. Increase the scale denominator or split the model.";
+   axisRows=fit.orientation?fit.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(bed[i])+' mm</strong><small>'+fmt(margins[i])+' mm clearance · '+fmt(util[i])+'% used</small></div>').join(""):"<p>Orientation unavailable.</p>";
   }else if(source&&!validBed){verdict="Printer dimensions need attention";summary="Enter positive width, depth and height values before relying on a fit result.";}
-  assessmentText("assessment-verdict",verdict);assessmentText("assessment-summary",summary);
-  assessmentText("assessment-print-dimensions",printDims);assessmentText("assessment-orientation",orientation);
-  assessmentText("assessment-clearance",clearance);assessmentText("assessment-occupancy",occupancy);
-  assessmentText("assessment-fit-index",fitIndex);
-  const axes=$id("assessment-axis-breakdown");if(axes)axes.innerHTML=axisRows;
-  dialog.showModal();
+  assessmentText("assessment-verdict",verdict);assessmentText("assessment-summary",summary);assessmentText("assessment-print-dimensions",printDims);assessmentText("assessment-orientation",orientation);
+  assessmentText("assessment-clearance",clearance);assessmentText("assessment-occupancy",occupancy);assessmentText("assessment-fit-index",fitIndex);
+  const axes=$id("assessment-axis-breakdown");if(axes)axes.innerHTML=axisRows;dialog.showModal();
  }
  ["reliability","printability"].forEach(key=>{
   const card=$id("scaling-gauge-"+key);if(!card)return;
@@ -1479,9 +1485,17 @@ restoreRouteFromHash();
    setLookupStatus("STL conversion failed: "+(error?.message||error),true);
   }
  }
+ function syncScalingModeUI(){
+  const mode=$id("scaling-mode").value;
+  $id("scaling-object-search").hidden=mode!=="original";
+  $id("scaling-object-result").hidden=mode!=="original"||!realLongestKm;
+  $id("scaling-custom-dimension-panel").hidden=mode!=="custom";
+  $id("scaling-fit-options").hidden=mode!=="fit";
+  $id("scaling-mode-hint").textContent=mode==="fit"?"Astronomical dimensions and original scale are ignored. The model is fitted to the selected usable build volume.":mode==="custom"?"Enter one real-world dimension and map it to the matching model axis. No online object lookup is required.":"Use verified scientific dimensions to calculate the original scale and standard printable scales.";
+ }
  function resetWorkspace(){
   clear();descriptionToken++;$id("scaling-model-description").hidden=true;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
-  $id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;
+  $id("scaling-mode").value="original";$id("scaling-custom-dimension").value="";$id("scaling-custom-unit").value="mm";$id("scaling-custom-axis").value="longest";$id("scaling-custom-kind").value="diameter";$id("scaling-fit-margin").value="5";$id("scaling-fit-adjustment").value="100";$id("scaling-fit-adjustment-value").textContent="100%";syncScalingModeUI();$id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, choose how to scale it and check the selected build volume.";$id("scaling-archive-context").hidden=true;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
   $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";$id("scaling-model-description").hidden=true;$id("scaling-convert-stl").hidden=true;$id("scaling-convert-beta").hidden=true;
@@ -1519,12 +1533,13 @@ restoreRouteFromHash();
  $id("scaling-convert-stl").addEventListener("click",convertActiveModelToStl);
  $id("scaling-units").addEventListener("change",()=>{if(!active)return;active.unitFactor=unitFactors[$id("scaling-units").value];root.scale.setScalar(active.unitFactor);update();});
  $id("scaling-download-scaled").addEventListener("click",()=>{
-  if(!root||!active||!selectedDenominator||!realLongestKm){setLookupStatus("Load a model, identify its object and select a printable scale before exporting.",true);return;}
+  if(!root||!active||!currentExportReady){setLookupStatus("Load a model and complete the selected scaling mode before exporting.",true);return;}
   try{
    root.updateMatrixWorld(true);
-   const exporter=new L.STLExporter(),data=exporter.parse(root,{binary:true}),blob=new Blob([data],{type:"model/stl"}),name=($id("scaling-model-name").textContent||"space-model").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").toLowerCase()||"scaled-model";
-   const href=URL.createObjectURL(blob),a=document.createElement("a");a.href=href;a.download=name+"-1-to-"+selectedDenominator+".stl";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),30000);
-   setLookupStatus("Scaled binary STL exported at 1:"+fmt(selectedDenominator)+".");
+   const exporter=new L.STLExporter(),data=exporter.parse(root,{binary:true}),blob=new Blob([data],{type:"model/stl"}),name=($id("scaling-model-name").textContent||"space-model").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").toLowerCase()||"scaled-model",mode=$id("scaling-mode").value;
+   const suffix=mode==="fit"?"-fit-to-build-plate":"-1-to-"+fmt(selectedDenominator);
+   const href=URL.createObjectURL(blob),a=document.createElement("a");a.href=href;a.download=name+suffix+".stl";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(href),30000);
+   setLookupStatus(mode==="fit"?"Fit-to-build-plate STL exported at "+fmt(currentExportFactor)+"× source geometry.":"Scaled binary STL exported at 1:"+fmt(selectedDenominator)+".");
   }catch(error){setLookupStatus("STL export failed: "+(error.message||error),true);}
  });
  $id("scaling-research-results").addEventListener("click",e=>{
@@ -1534,9 +1549,12 @@ restoreRouteFromHash();
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
+ $id("scaling-mode").addEventListener("change",()=>{selectedDenominator=null;syncScalingModeUI();update();});
+ ["scaling-custom-dimension","scaling-custom-unit","scaling-custom-axis","scaling-custom-kind","scaling-fit-margin"].forEach(id=>$id(id).addEventListener("input",()=>{selectedDenominator=null;update();}));
+ $id("scaling-fit-adjustment").addEventListener("input",e=>{$id("scaling-fit-adjustment-value").textContent=e.target.value+"%";update();});
  $id("scaling-jpl-lookup").addEventListener("click",()=>lookupObject($id("scaling-object-query").value,false,activeExpectedCategory));
  $id("scaling-object-query").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();lookupObject(e.currentTarget.value,false,activeExpectedCategory);}});
- $id("scaling-recommendations").addEventListener("click",e=>{
+ $id("scaling-recommendations").addEventListener("click",e=>{if($id("scaling-mode").value==="fit")return;
   const button=e.target.closest("[data-denominator]");if(!button)return;
   selectedDenominator=Number(button.dataset.denominator);update();
  });

@@ -166,3 +166,19 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Rollback reference: `backup/before-workflow-enforcement-2026-11-27` at `27ec0c89a990509b25b968e294accdaf6a5d52c6`.
 
 - Pull-request CI verified: **Enforce project workflow** run `46047333620` passed. Both its process-attestation step and its same-PR handbook-update step succeeded on PR #16.
+
+
+## 10. Scaling modes — 27 November 2026
+
+- The existing **Original astronomical scale** mode remains the source-backed workflow: verified physical dimensions determine the original denominator and standard printable scales.
+- **Fit to build plate** is independent of astronomical dimensions. It scales loaded geometry proportionally to the maximum bounding-box fit across six axis-aligned 90° orientations, after applying the configured safety margin on every side (default 5 mm). The proportional adjustment defaults to 100%; lower values shrink the maximum-fit model and higher values deliberately test a larger model, with a no-fit warning when safe limits are exceeded.
+- **Custom original dimensions** accepts one user-entered real-world measurement (diameter, length, height, longest axis or other) in mm, m or km. The user maps that measurement to the longest model axis or an explicit X/Y/Z mesh axis. The derived original denominator is then used by the existing standard-scale recommender; all other model axes remain proportional.
+- Custom dimensions are user-supplied and are not represented as scientifically verified. The astronomical lookup panel is hidden outside Original mode.
+- STL export uses the currently calculated geometry in all three modes. Fit mode exports a -fit-to-build-plate.stl file; original/custom modes retain the selected 1-to-N filename convention. Fit mode tests six axis-aligned 90° orientations, but the exported STL retains the source orientation; the user may need to rotate it in the slicer to match the reported best orientation.
+- Regression coverage is added for fit factors, safety margins, proportional adjustment, custom axis mapping and mode UI. The bounding-box result still does not certify wall thickness, supports, bed adhesion or printability.
+- Implementation branch: feat/scaling-modes-2026-11-27; safety branch: backup/before-scaling-modes-2026-11-27, both based on inspected main commit ab9508c82bf77f178ca7a794be5c352d79daf13e.
+
+- Pull request #18: https://github.com/Tymses/space-model-archive/pull/18. Implementation commit before this verification-record update: 7e65787c7f2ccce8da113388f69a53bae38a0d62.
+- PR-head checks on that implementation commit passed: model-workspace regression suite (24/24 tests; run 46052035631), catalogue/application validation (run 46052035623), full source/model URL audit (run 46052035624), and Enforce project workflow (run 46052035629).
+- An earlier test attempt exposed incorrectly escaped newline delimiters in the two helper-extraction tests. The tests were corrected; the final model-workspace run passed all 24 tests.
+- The README paragraph break was corrected and verified before these final checks. No manual desktop/mobile browser review was performed. Automated tests verify the calculation helpers and UI hooks, not interactive rendering or slicer behavior.

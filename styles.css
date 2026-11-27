@@ -420,3 +420,13 @@
 .detail-cross-listings[hidden]{display:none}
 .detail-cross-listings a{color:var(--accent);font-weight:700;text-decoration:none}
 .detail-cross-listings a:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* Additional scaling modes */
+.scaling-mode-panel,.scaling-custom-dimension-panel,.scaling-fit-options{display:grid;gap:9px;padding:13px;border:1px solid var(--line);border-radius:12px;background:var(--surface-low)}
+.scaling-mode-panel>label,.scaling-custom-dimension-panel>label,.scaling-fit-options>label{font-size:11px;font-weight:650;color:var(--muted)}
+.scaling-custom-measure-row{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:8px}
+.scaling-fit-options>label{display:flex;align-items:center;justify-content:space-between}.scaling-fit-options label strong{margin-left:auto;color:var(--ink);font-variant-numeric:tabular-nums}
+.scaling-fit-options input[type=range]{width:100%;accent-color:var(--accent)}
+.scaling-custom-dimension-panel .field-hint,.scaling-fit-options .field-hint{margin:0}
+
+.scaling-object-search[hidden],.scaling-object-result[hidden],.scaling-custom-dimension-panel[hidden],.scaling-fit-options[hidden]{display:none!important}

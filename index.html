@@ -93,7 +93,7 @@
 </section>
 <section class="scaling-view" id="scaling-view" hidden>
   <div class="page-heading scaling-page-heading">
-    <div><p class="overline" id="scaling-page-overline">PRINT WORKSPACE</p><h1 id="scaling-page-title">Model scaling</h1><p class="subheading" id="scaling-page-subtitle">Load a model, identify its real-world dimensions and find a printable scale.</p></div>
+    <div><p class="overline" id="scaling-page-overline">PRINT WORKSPACE</p><h1 id="scaling-page-title">Model scaling</h1><p class="subheading" id="scaling-page-subtitle">Load a model, choose how to scale it and check the selected build volume.</p></div>
     <span class="archive-count" id="scaling-file-state">No model loaded</span>
   </div>
   <div class="scaling-workspace">
@@ -109,13 +109,40 @@
       </section>
     </section>
     <section class="scaling-settings-panel">
-      <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
+      <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Choose scaling mode</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
       <p class="scaling-model-name" id="scaling-model-name">No model selected</p>
       <section class="scaling-archive-context" id="scaling-archive-context" hidden aria-label="Archive model information">
         <div><span id="scaling-archive-meta">ARCHIVE MODEL</span><a id="scaling-archive-source" class="scaling-archive-source-link" href="#" target="_blank" rel="noopener">—</a></div>
         <div class="scaling-archive-actions"><a id="scaling-download-link" class="action-link" href="#">Download</a><a id="scaling-source-link" class="action-link secondary" href="#" target="_blank" rel="noopener">Original source page ↗</a></div><small class="spacecraft-mesh-note" id="spacecraft-mesh-note" hidden>Some spacecraft meshes may need repair in your slicer: right-click the model and select “Fix Model”.</small>
       </section>
-      <div class="scaling-object-search">
+      <section class="scaling-mode-panel" aria-label="Scaling mode">
+        <label for="scaling-mode">Scaling mode</label>
+        <select class="scale-input" id="scaling-mode">
+          <option value="original">Original astronomical scale</option>
+          <option value="fit">Fit to build plate</option>
+          <option value="custom">Custom original dimensions</option>
+        </select>
+        <p class="field-hint" id="scaling-mode-hint">Use verified scientific dimensions to calculate the original scale and standard printable scales.</p>
+      </section>
+      <section class="scaling-custom-dimension-panel" id="scaling-custom-dimension-panel" hidden>
+        <div class="scaling-section-heading"><div><p class="overline">CUSTOM REFERENCE</p><h2>Original object dimension</h2></div></div>
+        <label for="scaling-custom-kind">Dimension type</label>
+        <select class="scale-input" id="scaling-custom-kind"><option value="diameter">Diameter</option><option value="length">Length</option><option value="height">Height</option><option value="longest-axis">Longest axis</option><option value="other">Other dimension</option></select>
+        <label for="scaling-custom-dimension">Real-world measurement</label>
+        <div class="scaling-custom-measure-row"><input class="scale-input" id="scaling-custom-dimension" type="number" min="0.000000001" step="any" placeholder="Enter measured dimension"><select class="scale-input" id="scaling-custom-unit" aria-label="Dimension unit"><option value="mm">mm</option><option value="m">m</option><option value="km">km</option></select></div>
+        <label for="scaling-custom-axis">This measurement corresponds to model axis</label>
+        <select class="scale-input" id="scaling-custom-axis"><option value="longest">Longest model axis (automatic)</option><option value="0">Model X axis</option><option value="1">Model Y axis</option><option value="2">Model Z axis</option></select>
+        <p class="field-hint">Choose the mesh axis that represents the entered real-world diameter, length or height. The other axes are scaled proportionally.</p>
+      </section>
+      <section class="scaling-fit-options" id="scaling-fit-options" hidden>
+        <div class="scaling-section-heading"><div><p class="overline">FIT SETTINGS</p><h2>Usable build plate</h2></div></div>
+        <label for="scaling-fit-margin">Safety margin on every side (mm)</label>
+        <input class="scale-input" id="scaling-fit-margin" type="number" min="0" max="100" step="0.5" value="5">
+        <label for="scaling-fit-adjustment">Proportional size adjustment <strong id="scaling-fit-adjustment-value">100%</strong></label>
+        <input class="scale-input" id="scaling-fit-adjustment" type="range" min="10" max="200" step="1" value="100">
+        <p class="field-hint">100% uses the maximum safe size. Lower values shrink it; higher values test a larger model and may exceed the safe build volume.</p>
+      </section>
+      <div class="scaling-object-search" id="scaling-object-search">
         <label for="scaling-object-query">Object, spacecraft, moon or surface feature</label>
         <div class="scaling-search-row"><input class="scale-input" id="scaling-object-query" type="search" placeholder="Automatically derived from model name or filename"><button class="lookup-button" id="scaling-jpl-lookup" type="button" title="Search scientific records for the real object dimensions. Review the source before relying on a result.">Find dimensions</button></div>
         <p class="field-hint" id="scaling-lookup-status" aria-live="polite">The model name is detected automatically. Scientific databases are checked first, followed by broader public-web research.</p>

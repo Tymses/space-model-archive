@@ -200,3 +200,37 @@ test("STL conversion controls are visibly marked beta wherever conversion is off
  assert.match(app,/convertBeta\)convertBeta\.hidden=true/);
  assert.match(css,/\.beta-badge\[hidden\]\{display:none\}/);
 });
+
+test("fit-to-build-plate calculation ignores astronomical scale, uses safety margins and applies proportional adjustment",()=>{
+ const app=read("app.js"),start=app.indexOf("function calculateFitToBuildPlate("),end=app.indexOf("\nfunction calculateCustomScaleDenominator",start);
+ assert.ok(start>=0&&end>start);
+ const calculate=new Function(app.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
+ const fit=calculate([100,50,20],[100,80,50],5,100);
+ assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
+ const reduced=calculate([100,50,20],[100,80,50],5,50);assert.equal(reduced.factor,0.45);assert.equal(reduced.fits,true);
+ const enlarged=calculate([100,50,20],[100,80,50],5,150);assert.equal(enlarged.fits,false);
+ assert.equal(calculate([10,10,10],[10,10,10],5,100).valid,false);
+});
+test("custom original dimensions map to a selected model axis and calculate proportional original scale",()=>{
+ const app=read("app.js"),start=app.indexOf("function calculateCustomScaleDenominator("),end=app.indexOf("\nfunction describeOriginalScale",start);
+ assert.ok(start>=0&&end>start);
+ const calculate=new Function(app.slice(start,end)+"\nreturn calculateCustomScaleDenominator;")();
+ assert.equal(calculate([200,100,50],400000,"longest"),2000);
+ assert.equal(calculate([200,100,50],400000,"1"),4000);
+ assert.equal(calculate([200,100,50],400000,"2"),8000);
+ assert.equal(calculate([200,100,50],0,"longest"),null);
+});
+test("scaling workspace exposes original, fit-to-build-plate and custom-dimension modes",()=>{
+ const html=read("index.html"),app=read("app.js");
+ for(const id of ["scaling-mode","scaling-fit-margin","scaling-fit-adjustment","scaling-custom-dimension","scaling-custom-unit","scaling-custom-axis","scaling-custom-kind"])assert.match(html,new RegExp('id="'+id+'"'));
+ assert.match(html,/value="fit">Fit to build plate/);assert.match(html,/value="custom">Custom original dimensions/);
+ assert.match(app,/Astronomical scale ignored/);assert.match(app,/calculateCustomScaleDenominator/);assert.match(app,/currentExportReady/);assert.match(app,/exported STL keeps the source orientation/);
+});
+
+test("custom original dimensions convert mm, m and km to millimetres",()=>{
+ const app=read("app.js"),start=app.indexOf("function convertCustomDimensionToMm("),end=app.indexOf("\nfunction calculateCustomScaleDenominator",start);
+ assert.ok(start>=0&&end>start);
+ const convert=new Function(app.slice(start,end)+"\nreturn convertCustomDimensionToMm;")();
+ assert.equal(convert(25,"mm"),25);assert.equal(convert(1.5,"m"),1500);assert.equal(convert(2,"km"),2000000);
+ assert.equal(convert(0,"m"),null);assert.equal(convert(1,"cm"),null);
+});
