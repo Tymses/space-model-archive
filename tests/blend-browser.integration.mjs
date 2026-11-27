@@ -78,6 +78,7 @@ try {
   assert.ok(result.triangles>0);
   assert.ok(result.stlBytes>84);
   assert.ok(result.sizeMm.every(value=>Number.isFinite(value)&&value>0));
+  assert.ok(Math.max(...result.sizeMm)<10000,"Presentation meshes or broken parent transforms inflated the InSight printable bounds: "+result.sizeMm.join(" × ")+" mm");
   console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_OK",...result}));
 } finally {
   await browser.close();
