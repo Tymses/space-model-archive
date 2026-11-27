@@ -403,3 +403,19 @@ test("Blender numeric-key vector structs are read as location, scale, rotation a
  assert.deepEqual(safeQuat({0:1,1:0,2:0,3:0}),[1,0,0,0]);
  assert.equal(safeQuat({0:1,1:0,2:0}),null);
 });
+
+test("Blender active view-layer visibility excludes hidden and viewport-restricted objects",()=>{
+ const source=read("vendor/blend-importer.js");
+ const start=source.indexOf("function isObjectVisibleInActiveViewLayer("),end=source.indexOf("\n}",start);
+ assert.ok(start>=0&&end>start);
+ const helper=source.slice(start,end+2);
+ const visible=new Function(helper+"\nreturn isObjectVisibleInActiveViewLayer;")();
+ const shown={aname:"shown",restrictflag:0},renderHidden={aname:"render-hidden",restrictflag:0},hidden={aname:"hidden",restrictflag:0},viewportHidden={aname:"viewport-hidden",restrictflag:1};
+ const file={objects:{Base:[{object:shown,flag:214},{object:renderHidden,flag:86},{object:hidden,flag:0},{object:viewportHidden,flag:128}]}};
+ assert.equal(visible(file,shown),true);
+ assert.equal(visible(file,renderHidden),true);
+ assert.equal(visible(file,hidden),false);
+ assert.equal(visible(file,viewportHidden),false);
+ assert.equal(visible(file,{aname:"orphan"}),false);
+ assert.equal(visible(file,hidden,{includeHiddenObjects:true}),true);
+});
