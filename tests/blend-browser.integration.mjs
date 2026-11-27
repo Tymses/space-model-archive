@@ -47,7 +47,9 @@ try {
       onMeshError:diagnostic=>meshDiagnostics.push(diagnostic),
       onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)
     });
-    const group = new THREE.Group(); group.add(...objects); group.updateMatrixWorld(true);
+    const group = new THREE.Group(); group.add(...objects);
+    // BLEND coordinates are metres in the Scaling workspace; mirror its mm conversion.
+    group.scale.setScalar(1000); group.updateMatrixWorld(true);
     const box = new THREE.Box3().setFromObject(group);
     const size = box.getSize(new THREE.Vector3());
     let meshes=0,triangles=0;
@@ -60,9 +62,11 @@ try {
     if(!meshes||!triangles) throw new Error("No valid triangle meshes reached Three.js scene builder.");
     if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>0)) throw new Error("Invalid scene bounds: "+size.toArray().join(","));
     const stl = new exporterModule.STLExporter().parse(group,{binary:true});
+    const stlBuffer = stl instanceof ArrayBuffer ? stl : stl?.buffer;
+    const stlBytes = stlBuffer?.byteLength || stl?.byteLength || 0;
     const expectedBytes = 84 + Math.round(triangles)*50;
-    if(!(stl instanceof ArrayBuffer)||stl.byteLength!==expectedBytes) throw new Error("Binary STL size mismatch: "+(stl?.byteLength||0)+" vs "+expectedBytes);
-    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray().map(v=>v*1000),stlBytes:stl.byteLength,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length};
+    if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
+    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length};
   });
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
