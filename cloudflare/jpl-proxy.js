@@ -403,38 +403,108 @@ function sourceWeight(host) {
   if (/wikipedia\.org$/.test(host)) return 10;
   return 5;
 }
+/**
+ * Parse a numeric token without guessing when a single separator is ambiguous.
+ * Examples:
+ *   2,875.508 / 2.875,508 -> 2875.508
+ *   2,3 / 2.3             -> 2.3
+ *   0,001 / 0.001         -> 0.001
+ *   2,300                 -> null (could mean 2.3 or 2300)
+ */
+function parseDimensionNumber(token) {
+  const value = String(token || "").trim().replace(/[\s\u00a0\u202f']/g, "");
+  if (!value || !/^[\d.,]+$/.test(value)) return null;
+  if (/^\d+$/.test(value)) {
+    const integer = Number(value);
+    return Number.isFinite(integer) ? integer : null;
+  }
+
+  const lastComma = value.lastIndexOf(",");
+  const lastDot = value.lastIndexOf(".");
+  let normalized = value;
+
+  if (lastComma >= 0 && lastDot >= 0) {
+    const decimalSeparator = lastComma > lastDot ? "," : ".";
+    const groupingSeparator = decimalSeparator === "," ? "." : ",";
+    const decimalIndex = value.lastIndexOf(decimalSeparator);
+    const integerPart = value.slice(0, decimalIndex);
+    const fractionPart = value.slice(decimalIndex + 1);
+    const groupingPattern = new RegExp("^\\d{1,3}(?:" + (groupingSeparator === "." ? "\\." : ",") + "\\d{3})+$");
+    if (!fractionPart || !/^\\d+$/.test(fractionPart) || !groupingPattern.test(integerPart)) return null;
+    normalized = integerPart.split(groupingSeparator).join("") + "." + fractionPart;
+  } else {
+    const separator = lastComma >= 0 ? "," : ".";
+    const pieces = value.split(separator);
+    if (pieces.length === 2) {
+      const [integerPart, fractionPart] = pieces;
+      if (!integerPart || !fractionPart || !/^\\d+$/.test(integerPart) || !/^\\d+$/.test(fractionPart)) return null;
+      // A single three-digit suffix is inherently ambiguous (2,300 vs 2.300).
+      // A leading zero makes the decimal interpretation explicit (0,001).
+      if (fractionPart.length === 3 && !/^0+$/.test(integerPart)) return null;
+      normalized = integerPart + "." + fractionPart;
+    } else {
+      // Repeated separators are accepted only as conventional 3-digit grouping.
+      if (!/^\\d{1,3}(?:[,.]\\d{3})+$/.test(value)) return null;
+      normalized = value.replace(/[,.]/g, "");
+    }
+  }
+
+  const number = Number(normalized);
+  return Number.isFinite(number) ? number : null;
+}
+
 function extractAxes(text) {
-  const s = decode(text).replace(/,/g, ".").replace(/\u00d7/g, " x ").replace(/[–—]/g, "-");
+  const source = decode(text).replace(/\\u00d7/g, " x ").replace(/[–—]/g, "-");
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
-  const number = "(?:\\d+(?:\\.\\d+)?|\\.\\d+)";
+  const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
   const patterns = [
-    new RegExp("(" + number + ")\\s*(?:x|by|,|×)\\s*(" + number + ")(?:\\s*(?:x|by|,|×)\\s*(" + number + "))?\\s*" + unit, "i"),
-    new RegExp("(" + number + ")\\s*" + unit + "\\s*(?:x|by|,|×)\\s*(" + number + ")\\s*" + unit + "(?:\\s*(?:x|by|,|×)\\s*(" + number + ")\\s*" + unit + ")?", "i"),
+    new RegExp("(" + number + ")\\s*(?:x|by)\\s*(" + number + ")(?:\\s*(?:x|by)\\s*(" + number + "))?\\s*" + unit, "i"),
+    new RegExp("(" + number + ")\\s*" + unit + "\\s*(?:x|by)\\s*(" + number + ")\\s*" + unit + "(?:\\s*(?:x|by)\\s*(" + number + ")\\s*" + unit + ")?", "i"),
     new RegExp("(?:dimensions|extent|measures|measuring|size|approximately|about|length)\\D{0,35}(" + number + ")\\s*" + unit + "\\D{1,15}(" + number + ")\\s*" + unit, "i")
   ];
-  for (let patternIndex=0; patternIndex<patterns.length; patternIndex++) {
-    const match = s.match(patterns[patternIndex]);
+
+  for (let patternIndex = 0; patternIndex < patterns.length; patternIndex++) {
+    const match = source.match(patterns[patternIndex]);
     if (!match) continue;
-    let vals = [];
-    if (patternIndex===0) {
-      const u=match[4];vals=[{v:Number(match[1]),u},{v:Number(match[2]),u}];if(match[3])vals.push({v:Number(match[3]),u});
-    } else if (match[5] && match[6]) {
-      vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]},{v:Number(match[5]),u:match[6]}];
-    } else if (match[3] && match[4]) {
-      vals = [{v:Number(match[1]),u:match[2]},{v:Number(match[3]),u:match[4]}];
+    let values = [];
+    if (patternIndex === 0) {
+      const unitValue = match[4];
+      values = [{ value: match[1], unit: unitValue }, { value: match[2], unit: unitValue }];
+      if (match[3]) values.push({ value: match[3], unit: unitValue });
+    } else if (patternIndex === 1) {
+      values = [{ value: match[1], unit: match[2] }, { value: match[3], unit: match[4] }];
+      if (match[5] && match[6]) values.push({ value: match[5], unit: match[6] });
+    } else {
+      values = [{ value: match[1], unit: match[2] }, { value: match[3], unit: match[4] }];
     }
-    const factor = u => /^(km|kilometer|kilometre)/i.test(u) ? 1 : /^(cm)/i.test(u) ? 0.00001 : /^(mm)/i.test(u) ? 0.000001 : /^(ft|feet)/i.test(u) ? 0.0003048 : /^(m|meter|metre)/i.test(u) ? 0.001 : null;
-    const axes = vals.map(x => factor(x.u) == null ? null : x.v * factor(x.u));
-    if (axes.length >= 2 && axes.every(x => Number.isFinite(x) && x > 0) && Math.max(...axes) < 1e9) return axes;
+
+    const factor = unitValue =>
+      /^(km|kilometer|kilometre)/i.test(unitValue) ? 1 :
+      /^cm/i.test(unitValue) ? 0.00001 :
+      /^mm/i.test(unitValue) ? 0.000001 :
+      /^(ft|feet)/i.test(unitValue) ? 0.0003048 :
+      /^(m|meter|metre)/i.test(unitValue) ? 0.001 : null;
+
+    const axes = values.map(item => {
+      const numericValue = parseDimensionNumber(item.value);
+      const multiplier = factor(item.unit);
+      return numericValue == null || multiplier == null ? null : numericValue * multiplier;
+    });
+    if (axes.length >= 2 && axes.every(axis => Number.isFinite(axis) && axis > 0) && Math.max(...axes) < 1e9) return axes;
   }
   return null;
 }
+
 function extractUncertainty(text) {
-  const match = decode(text).replace(/,/g, ".").match(/(?:±|\+\/\-)\s*(\d+(?:\.\d+)?)\s*(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)/i);
+  const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)";
+  const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
+  const match = decode(text).match(new RegExp("(?:±|\\\\+\\\\/-)\\\\s*(" + number + ")\\\\s*" + unit, "i"));
   if (!match) return null;
-  const unit = match[2].toLowerCase();
-  const factor = /^(km|kilometer|kilometre)/.test(unit) ? 1 : /^(cm)/.test(unit) ? 0.00001 : /^(mm)/.test(unit) ? 0.000001 : 0.001;
-  return Number(match[1]) * factor;
+  const numericValue = parseDimensionNumber(match[1]);
+  if (numericValue == null) return null;
+  const unitValue = match[2].toLowerCase();
+  const factor = /^(km|kilometer|kilometre)/.test(unitValue) ? 1 : /^cm/.test(unitValue) ? 0.00001 : /^mm/.test(unitValue) ? 0.000001 : 0.001;
+  return numericValue * factor;
 }
 /** @param {ResearchCandidate} candidate @param {string} query */
 function confidence(candidate, query) {
