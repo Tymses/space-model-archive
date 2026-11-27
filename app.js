@@ -147,6 +147,32 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["asteroid 4179 toutatis","https://science.nasa.gov/3d-resources/asteroid-4179-toutatis/"],
  ["asteroid 433 eros","https://science.nasa.gov/3d-resources/asteroid-433-eros/"]
 ]);
+function exactMeshBounds(root) {
+  root.updateMatrixWorld(true);
+  const bounds = new THREE.Box3();
+  const point = new THREE.Vector3();
+  let usedVertices = 0;
+  root.traverse(node => {
+    if (!node.isMesh || !node.geometry?.attributes?.position) return;
+    const geometry = node.geometry;
+    const position = geometry.attributes.position;
+    const index = geometry.index;
+    const start = Math.max(0, Number(geometry.drawRange?.start) || 0);
+    const available = index ? index.count : position.count;
+    const requested = geometry.drawRange?.count;
+    const count = Number.isFinite(requested) ? Math.max(0, Math.min(requested, available - start)) : available - start;
+    for (let offset = start; offset < start + count; offset++) {
+      const vertexIndex = index ? index.getX(offset) : offset;
+      point.fromBufferAttribute(position, vertexIndex).applyMatrix4(node.matrixWorld);
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y) || !Number.isFinite(point.z)) continue;
+      bounds.expandByPoint(point);
+      usedVertices++;
+    }
+  });
+  if (!usedVertices || bounds.isEmpty()) throw new Error("Model has no finite triangle geometry.");
+  return bounds;
+}
+
 function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
   .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
@@ -378,7 +404,7 @@ async function renderExtended3DPreview(model){
   renderer.domElement.style.cssText="display:block;width:100%;height:360px;touch-action:none";
   scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));
   const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);scene.add(object);
-  const bounds=new THREE.Box3().setFromObject(object);if(bounds.isEmpty())throw new Error("The file contains no visible mesh geometry.");
+  const bounds=exactMeshBounds(object);
   const size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z)||1;
   object.position.sub(center);camera.position.set(maxDim*1.7,maxDim*1.3,maxDim*1.9);camera.near=Math.max(maxDim/10000,.001);camera.far=maxDim*100;camera.updateProjectionMatrix();
   const controls=new orbitModule.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;
@@ -1459,7 +1485,7 @@ restoreRouteFromHash();
      const geo=await new L[format]().loadAsync(url);geo.computeVertexNormals();object=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x91a9bb,metalness:.12,roughness:.58,side:THREE.DoubleSide}));
     }
    if(my!==token){renderer.dispose();return;}
-   object.updateMatrixWorld(true);const box=new THREE.Box3().setFromObject(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
+   object.updateMatrixWorld(true);const box=exactMeshBounds(object),size=box.getSize(new THREE.Vector3()),center=box.getCenter(new THREE.Vector3());
    if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>=0)||Math.max(size.x,size.y,size.z)<=0)throw Error("Model has empty or invalid geometry bounds.");
    root=new THREE.Group();root.position.copy(center).multiplyScalar(-1);root.add(object);scene.add(root);
    const unit=(format==="GLB"||format==="GLTF"||format==="BLEND")?"m":"mm";$id("scaling-units").value=unit;
