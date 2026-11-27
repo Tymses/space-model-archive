@@ -53,3 +53,5 @@ jobs:
         run: |
           curl --fail --location --retry 3 --output /tmp/insight-native.blend "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20%28final%29.blend"
           blender --background /tmp/insight-native.blend --python-exit-code 1 --python tests/blend-native-inspection.py -- /tmp/insight-native.stl
+      - name: Compare browser and native Blender object transforms
+        run: node tests/compare-blend-transforms.mjs
