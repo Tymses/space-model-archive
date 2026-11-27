@@ -1060,6 +1060,28 @@
       "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "measurement": "Approximate published regional extent",
       "note": "NASA describes the Tharsis volcanic region as approximately 2,400 miles (3,860 km) across; this is a regional envelope, not a surveyed STL bounding box."
+    },
+    {
+      "name": "Deep Impact flyby spacecraft (EPOXI)",
+      "aliases": [
+        "EPOXI",
+        "EPOXI spacecraft",
+        "Deep Impact",
+        "Deep Impact spacecraft",
+        "Deep Impact flyby spacecraft",
+        "Deep Impact flyby vehicle"
+      ],
+      "axesKm": [
+        0.0033,
+        0.0017,
+        0.0023
+      ],
+      "category": "spacecraft",
+      "sourceLabel": "EPOXI Comet Encounter Fact Sheet (University of Maryland / NASA mission team)",
+      "sourceUrl": "https://epoxi.astro.umd.edu/pdfs/EPOXI-FlybyFactSheet.pdf",
+      "measurement": "Flyby spacecraft length × width × height",
+      "configuration": "Deep Impact flyby spacecraft; external envelope, with solar-panel dimensions reported separately",
+      "note": "The fact sheet gives 3.3 m long × 1.7 m wide × 2.3 m high. The separate 2.8 m × 2.8 m solar-panel dimensions are not included in these three body-envelope axes. This is the spacecraft, not the 103P/Hartley 2 comet visited by the EPOXI mission."
     }
   ]
 }

@@ -495,6 +495,47 @@ function extractAxes(text) {
   return null;
 }
 
+function extractSpacecraftAxes(text) {
+  const source = plain(decode(String(text || "")));
+  const blocks = source.split(/(?<=[.!?])\s+|[\r\n]+/).map(value => value.trim()).filter(Boolean);
+  const factor = unit => /^(km|kilometer|kilometre)/i.test(unit) ? 1 :
+    /^cm/i.test(unit) ? 0.00001 : /^mm/i.test(unit) ? 0.000001 :
+    /^(ft|feet)/i.test(unit) ? 0.0003048 : /^(m|meter|metre)/i.test(unit) ? 0.001 : null;
+  const number = String.raw`(\d+(?:[.,]\d+)?)`;
+  const unit = String.raw`(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)`;
+  for (const block of blocks) {
+    if (!/spacecraft|space vehicle|flyby vehicle|probe|orbiter/i.test(block)) continue;
+    let match = block.match(new RegExp(
+      "dimensions?\\s*(?:are|of)?\\s*:?\\s*" + number + "\\s*" + unit +
+      "\\s*(?:\\([^)]*\\)\\s*)?(?:long|length)\\D{0,40}" +
+      number + "\\s*" + unit + "\\s*(?:\\([^)]*\\)\\s*)?(?:wide|width)\\D{0,40}" +
+      number + "\\s*" + unit + "\\s*(?:\\([^)]*\\)\\s*)?(?:high|height)", "i"
+    ));
+    if (match) {
+      const values = [1,3,5].map((index, i) => {
+        const n = parseDimensionNumber(match[index]);
+        const f = factor(match[index+1]);
+        return n == null || f == null ? null : n*f;
+      });
+      if (values.every(value => Number.isFinite(value) && value > 0)) return values;
+    }
+    match = block.match(new RegExp(
+      "(?:spacecraft|space vehicle|flyby vehicle|probe|orbiter)[^.;]{0,100}?" +
+      "(?:dimensions?|measures?|measuring|size)\\s*(?:are|of)?\\s*:?\\s*" +
+      number + "\\s*(?:x|×|by)\\s*" + number + "\\s*(?:x|×|by)\\s*" + number + "\\s*" + unit, "i"
+    ));
+    if (match) {
+      const f = factor(match[4]);
+      const values = [1,2,3].map(index => {
+        const n = parseDimensionNumber(match[index]);
+        return n == null || f == null ? null : n*f;
+      });
+      if (values.every(value => Number.isFinite(value) && value > 0)) return values;
+    }
+  }
+  return null;
+}
+
 function extractUncertainty(text) {
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
@@ -597,19 +638,19 @@ async function searchWeb(query, category) {
   const checked = await Promise.all(pages.slice(0, 18).map(async item => {
     try {
       const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
-      if (!response.ok) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:""};
+      if (!response.ok) return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:""};
       const contentType = (response.headers.get("content-type") || "").toLowerCase();
       if (contentType.includes("pdf") || contentType.includes("octet-stream") || contentType.startsWith("image/")) {
-        return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+        return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:"", nonHtml:true};
       }
       const raw = (await response.text()).slice(0, 900000);
-      if (raw.startsWith("%PDF-")) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+      if (raw.startsWith("%PDF-")) return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:"", nonHtml:true};
       const text = plain(raw).slice(0, 60000);
-      const axesKm = extractAxes(text) || extractAxes(item.title+" "+item.snippet);
+      const axesKm = category === "spacecraft" ? (extractSpacecraftAxes(text) || extractSpacecraftAxes(item.title+" "+item.snippet)) : (extractAxes(text) || extractAxes(item.title+" "+item.snippet));
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
       const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceText:text};
-    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
+    } catch { return {...item,axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
   }));
   const relevantCandidates = checked.filter(candidate => exactResearchIdentity(candidate, query, category));
   for (const candidate of relevantCandidates) {
