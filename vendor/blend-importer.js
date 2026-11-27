@@ -31,7 +31,7 @@ export function inspectBlendHeader(buffer) {
     if (!["_", "-"].includes(pointerMarker) || !["v", "V"].includes(endianMarker) || !/^\d{3}$/.test(version)) {
         throw new Error("BLEND_INVALID_HEADER: The Blender header contains an unsupported pointer, byte-order or version marker.")
     }
-    return { version: version[0] + "." + version[1] + "." + version[2], versionCode: version, pointerSize: pointerMarker === "_" ? 4 : 8, endian: endianMarker === "V" ? "big" : "little" }
+    return { version: version[0] + "." + String(Number(version.slice(1))), versionCode: version, pointerSize: pointerMarker === "_" ? 4 : 8, endian: endianMarker === "V" ? "big" : "little" }
 }
 
 async function readLimitedStream(stream, limit) {
@@ -85,6 +85,7 @@ export async function parseBlend(buffer, name = '') {
         }
     }
     const header = inspectBlendHeader(data)
+    if (header.endian !== "little") throw new Error("BLEND_UNSUPPORTED_ENDIAN: This importer currently supports little-endian Blender files only.")
     return new Promise((resolve, reject) => {
         parser.onParseReady = (file, error) => {
             if (!file || error) reject(new Error("BLEND_PARSE_FAILED: " + (error ?? "The Blender parser returned no scene data.")))
