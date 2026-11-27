@@ -132,4 +132,8 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Added a regression test covering both labels, conditional visibility, explanatory tooltip and badge styling.
 - This label communicates the current reliability limitation; it does not claim that every supported file has been tested.
 - Implementation branch: `ui/stl-conversion-beta-2026-11-27`; safety branch: `backup/before-stl-beta-2026-11-27`, created from inspected `main` commit `49e5772c20179f6d115e8bd2f66e4b0c9d0a4e36`.
-- Verification and merge status will be recorded after automated checks complete.
+- Pull request #15 merged into `main` as `d8b71bab5468c8f07fa666c9687063f9850ddc45`.
+- Pull-request model-workspace regression run `46028214156` passed; catalogue validation run `46028214200` passed, including Node regression tests, JSON/catalogue validation, catalogue unit tests, dimension scanner tests and audit generation; complete source/model link audit run `46028214141` passed.
+- The regression test for the beta labels passed in both the dedicated model-workspace job and the validation workflow.
+- Safety branch for this verification-record update: `backup/before-stl-beta-verification-record-2026-11-27`, created from inspected `main` commit `d8b71bab5468c8f07fa666c9687063f9850ddc45`.
+- No manual interactive browser review or post-merge Pages deployment check was performed in this task; the merge is confirmed, but live visual publication is not claimed.
