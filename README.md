@@ -151,3 +151,8 @@ If the in-browser BLEND parser rejects a file, the Scaling workspace offers two 
 ### Automatic build-plate orientation
 
 Fit to build plate now selects the best of all six axis-aligned dimension permutations, applies a proper 3D rotation to the preview and exported STL, and then applies the proportional fit factor. The safety margin is enforced on each printer axis. The original/custom-scale modes reset to the source orientation.
+
+
+### Blender parent-inverse transforms
+
+The importer applies each Blender object's `parentinv` matrix in the correct order and coordinate basis before attaching the object to its parent. This preserves Blender's world-space placement for parented meshes; ignoring this matrix can stretch the scene bounds and separate otherwise correctly sized parts.
