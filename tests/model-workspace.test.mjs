@@ -358,11 +358,15 @@ test("Blender parser advances nested DNA structures by their compiled byte size"
  assert.ok(start>=0&&end>start,"compiled SDNA byte-size helper must exist");
  const helper=source.slice(start,end+2);
  const getSize=new Function(helper+"\nreturn getBlenderStructByteLength;")();
- assert.equal(getSize({MVert:{length:12},CustomDataLayer:{length:24}},"MVert"),12);
- assert.equal(getSize({MVert:{length:12}},"MVert"),12);
+ assert.equal(getSize({MVert:{byteLength:12},CustomDataLayer:{byteLength:24}},"MVert"),12);
+ assert.equal(getSize({MVert:{byteLength:12}},"MVert"),12);
  assert.throws(()=>getSize({},"MissingType"),/BLEND_INVALID_DNA_SIZE/);
- assert.throws(()=>getSize({Broken:{length:0}},"Broken"),/BLEND_INVALID_DNA_SIZE/);
+ assert.throws(()=>getSize({Broken:{byteLength:0}},"Broken"),/BLEND_INVALID_DNA_SIZE/);
+ assert.throws(()=>getSize({ID:{length:8}},"ID"),/BLEND_INVALID_DNA_SIZE/);
  assert.ok(source.includes("const memberByteLength = getBlenderStructByteLength(current_SDNA_template.SDNA, type)"));
+ assert.ok(source.includes("byteLength: compiledByteLength"));
+ assert.ok(source.includes("const compiled_struct_byte_length = lengths[struct_type_index]"));
+ assert.ok(source.includes("getSDNAStructureConstructor(struct_name, obj, compiled_struct_byte_length)"));
  assert.ok(source.includes("memberEnd > data_block_end"));
  assert.ok(source.includes("memberStart + memberByteLength"));
 });
