@@ -131,7 +131,13 @@ const NASA_VERIFIED_MODEL_PAGES = new Map([
  ["apollo 15 landing site","https://science.nasa.gov/3d-resources/apollo-15-landing-site/"],
  ["apollo 16 landing site","https://science.nasa.gov/3d-resources/apollo-16-landing-site/"],
  ["apollo lunar module","https://science.nasa.gov/3d-resources/apollo-lunar-module/"],
- ["voyager probe b","https://science.nasa.gov/3d-resources/voyager-probe-b/"]
+ ["voyager probe b","https://science.nasa.gov/3d-resources/voyager-probe-b/"],
+ ["asteroid 216 kleopatra","https://science.nasa.gov/3d-resources/asteroid-216-kleopatra/"],
+ ["asteroid 25143 itokawa","https://science.nasa.gov/3d-resources/asteroid-25143-itokawa/"],
+ ["asteroid 4 vesta a","https://science.nasa.gov/3d-resources/asteroid-4-vesta-a/"],
+ ["asteroid 4 vesta b","https://science.nasa.gov/3d-resources/asteroid-4-vesta-b/"],
+ ["apollo 16 landing site","https://science.nasa.gov/3d-resources/apollo-16-landing-site/"],
+ ["curiosity landing site","https://science.nasa.gov/3d-resources/curiosity-landing-site/"]
 ]);
 function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
@@ -157,7 +163,8 @@ function setSpecificModelSource(model){
       }
       const folderPage="https://github.com/nasa/NASA-3D-Resources/tree/master/"+parts.slice(marker,parts.length-1).map(encodeURIComponent).join("/");
       const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name))||NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.folderName));
-      model.sourcePageUrl=verifiedPage||folderPage;
+      const suppliedNasaPage=source&&source.hostname==="science.nasa.gov"&&source.pathname.startsWith("/3d-resources/")?source.toString():null;
+      model.sourcePageUrl=verifiedPage||suppliedNasaPage||folderPage;
     }else if(asset&&asset.hostname==="www.spaceradar.ai"&&asset.pathname.startsWith("/models/")&&model.source==="Space Radar map assets"){
       const slug=decodeURIComponent(asset.pathname.split("/").pop()).replace(/\.glb$/i,"");
       model.sourcePageUrl="https://www.spaceradar.ai/model/?id="+encodeURIComponent(slug);
