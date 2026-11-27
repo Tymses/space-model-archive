@@ -61,7 +61,8 @@ try {
       }
       if(node.isMesh&&node.geometry){
         node.updateWorldMatrix(true,false);
-        objectTransforms.push({name:node.name,matrixWorld:node.matrixWorld.elements.slice(),vertices:node.geometry.attributes.position?.count||0,triangles:node.geometry.index?node.geometry.index.count/3:(node.geometry.attributes.position?.count||0)/3});
+        node.geometry.computeBoundingBox();
+        objectTransforms.push({name:node.name,matrixWorld:node.matrixWorld.elements.slice(),localMin:node.geometry.boundingBox.min.toArray(),localMax:node.geometry.boundingBox.max.toArray(),vertices:node.geometry.attributes.position?.count||0,triangles:node.geometry.index?node.geometry.index.count/3:(node.geometry.attributes.position?.count||0)/3});
         meshes++;
         vertices += node.geometry.attributes.position?.count||0;
         indices += node.geometry.index?.count||0;
