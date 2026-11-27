@@ -50,7 +50,14 @@ try {
     const group = new THREE.Group(); group.add(...objects);
     // BLEND coordinates are metres in the Scaling workspace; mirror its mm conversion.
     group.scale.setScalar(1000); group.updateMatrixWorld(true);
-    const box = new THREE.Box3().setFromObject(group);
+    const box = new THREE.Box3();
+    const point = new THREE.Vector3();
+    group.traverse(node=>{
+      if(!node.isMesh||!node.geometry?.attributes?.position)return;
+      const position=node.geometry.attributes.position,index=node.geometry.index;
+      const count=index?index.count:position.count;
+      for(let i=0;i<count;i++){const vertex=index?index.getX(i):i;point.fromBufferAttribute(position,vertex).applyMatrix4(node.matrixWorld);box.expandByPoint(point);}
+    });
     const size = box.getSize(new THREE.Vector3());
     let meshes=0,triangles=0,vertices=0,indices=0;
     const meshBounds=[],transformDetails=[],objectTransforms=[];
