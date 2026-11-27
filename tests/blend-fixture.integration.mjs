@@ -19,4 +19,14 @@ assert.ok(parsed && Array.isArray(parsed.object_array), "Parser must return Blen
 assert.ok(parsed.object_array.length > 0, "Parser must return non-empty Blender datablocks");
 const meshes = parsed.objects?.Mesh || [];
 assert.ok(meshes.length > 0, "NASA InSight fixture must contain parsed Mesh datablocks");
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, status: "BLEND_PARSE_OK" }));
+const validMeshes = meshes.filter(mesh =>
+  Number(mesh?.totvert) > 0 && Number(mesh?.totloop) > 0 && Number(mesh?.totpoly) > 0
+);
+assert.ok(validMeshes.length > 0, "NASA InSight fixture must contain mesh datablocks with non-empty vertex, loop and polygon topology");
+const totals = validMeshes.reduce((sum, mesh) => ({
+  vertices: sum.vertices + Number(mesh.totvert),
+  loops: sum.loops + Number(mesh.totloop),
+  polygons: sum.polygons + Number(mesh.totpoly)
+}), { vertices: 0, loops: 0, polygons: 0 });
+assert.ok(totals.vertices >= 3 && totals.loops >= 3 && totals.polygons >= 1, "Parsed mesh topology totals must be non-empty");
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, status: "BLEND_GEOMETRY_DATA_OK" }));
