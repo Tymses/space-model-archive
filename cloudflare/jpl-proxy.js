@@ -506,7 +506,7 @@ function extractSpacecraftAxes(text) {
   for (const block of blocks) {
     if (!/spacecraft|space vehicle|flyby vehicle|probe|orbiter/i.test(block)) continue;
     let match = block.match(new RegExp(
-      "dimensions?\\s*:?\\s*" + number + "\\s*" + unit +
+      "dimensions?\\s*(?:are|of)?\\s*:?\\s*" + number + "\\s*" + unit +
       "\\s*(?:\\([^)]*\\)\\s*)?(?:long|length)\\D{0,40}" +
       number + "\\s*" + unit + "\\s*(?:\\([^)]*\\)\\s*)?(?:wide|width)\\D{0,40}" +
       number + "\\s*" + unit + "\\s*(?:\\([^)]*\\)\\s*)?(?:high|height)", "i"
@@ -638,19 +638,19 @@ async function searchWeb(query, category) {
   const checked = await Promise.all(pages.slice(0, 18).map(async item => {
     try {
       const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
-      if (!response.ok) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:""};
+      if (!response.ok) return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:""};
       const contentType = (response.headers.get("content-type") || "").toLowerCase();
       if (contentType.includes("pdf") || contentType.includes("octet-stream") || contentType.startsWith("image/")) {
-        return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+        return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:"", nonHtml:true};
       }
       const raw = (await response.text()).slice(0, 900000);
-      if (raw.startsWith("%PDF-")) return {...item, axesKm:extractAxes(item.title+" "+item.snippet), pageChecked:false, sourceText:"", nonHtml:true};
+      if (raw.startsWith("%PDF-")) return {...item, axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)), pageChecked:false, sourceText:"", nonHtml:true};
       const text = plain(raw).slice(0, 60000);
-      const axesKm = category === "spacecraft" ? (extractSpacecraftAxes(text) || extractSpacecraftAxes(item.title+" "+item.snippet)) : (extractAxes(text) || extractAxes(item.title+" "+item.snippet));
+      const axesKm = category === "spacecraft" ? (extractSpacecraftAxes(text) || extractSpacecraftAxes(item.title+" "+item.snippet)) : (extractAxes(text) || (category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)));
       const uncertaintyKm = extractUncertainty(text) ?? extractUncertainty(item.snippet);
       const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm,uncertaintyKm,pageChecked:true,sourceText:text};
-    } catch { return {...item,axesKm:extractAxes(item.title+" "+item.snippet),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
+    } catch { return {...item,axesKm:(category === "spacecraft" ? extractSpacecraftAxes(item.title+" "+item.snippet) : extractAxes(item.title+" "+item.snippet)),uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
   }));
   const relevantCandidates = checked.filter(candidate => exactResearchIdentity(candidate, query, category));
   for (const candidate of relevantCandidates) {
