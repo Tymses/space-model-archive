@@ -316,6 +316,20 @@ function setTransform(object, obj) {
     obj.updateMatrix()
 }
 
+const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|watermark|copyright)(?:[._ -]?\\d+)?$/i
+
+/**
+ * Blender scenes often contain extruded text meshes for titles and labels.
+ * These are not part of the physical object and can dominate the print bounds.
+ * Only conservative, whole-name matches are excluded; all other geometry stays.
+ */
+export function isLikelyAnnotationObject(object) {
+    const names = [object?.aname, object?.data?.aname]
+        .map(value => String(value || '').trim())
+        .filter(Boolean)
+    return names.some(name => ANNOTATION_OBJECT_NAME.test(name))
+}
+
 export function createObjects(file, options = {}) {
     const objects = []
     const childMap = new Map()
@@ -326,6 +340,11 @@ export function createObjects(file, options = {}) {
 
     for (const object of blendObjects) {
         let obj
+        if (object.type === BLEND_OBJECT_TYPES.mesh && options.excludeAnnotations !== false && isLikelyAnnotationObject(object)) {
+            const diagnostic = { object: object.aname || "unnamed mesh", data: object.data?.aname || "", code: "BLEND_ANNOTATION_EXCLUDED", message: "Likely text/label geometry was excluded from printable bounds." }
+            options.onAnnotationExcluded?.(diagnostic)
+            continue
+        }
         switch (object.type) {
             case BLEND_OBJECT_TYPES.mesh: {
                 if (!object.data) break
