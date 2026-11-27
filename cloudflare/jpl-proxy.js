@@ -1035,6 +1035,23 @@ async function fetchModelSourceDescription(value) {
   }
   return null;
 }
+function sourceDescriptionMatchesModel(name, sourceSummary) {
+  if (!sourceSummary || !sourceSummary.summary) return false;
+  const normalize = value => String(value || "").normalize("NFKD").toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ").trim();
+  const modelName = normalize(name);
+  const title = normalize(sourceSummary.title);
+  const summary = normalize(sourceSummary.summary);
+  if (!modelName) return false;
+  // A page title containing the complete model name is the strongest match.
+  if (title && (title.includes(modelName) || modelName.includes(title))) return true;
+  // Otherwise require a distinctive model-name token in the actual source text.
+  // Generic words such as "spacecraft", "model" or "NASA" are deliberately ignored.
+  const ignored = new Set(["model","space","spacecraft","mission","satellite","planet","asset","nasa","3d","the","and","with","without","for"]);
+  const tokens = modelName.split(" ").filter(token => token.length >= 4 && !ignored.has(token));
+  return tokens.length > 0 && tokens.some(token => summary.includes(token));
+}
+
 async function describeArchiveModel(input) {
   const name = String(input.name || "").trim().slice(0, 180) || "Untitled model";
   const kind = String(input.kind || "").trim().slice(0, 140);
@@ -1049,13 +1066,16 @@ async function describeArchiveModel(input) {
     "height-maps": "surface elevation data"
   })[category] || "space-related models";
   const sourceUrl = String(input.sourceUrl || "").slice(0, 2048);
-  const sourceSummary = await fetchModelSourceDescription(sourceUrl);
-  const metadata = name + " is catalogued in the " + categoryLabel + " collection" +
-    (kind ? " as " + kind : "") + ". The archive provides a " + format + " model from " + source + ".";
+  const fetchedSummary = await fetchModelSourceDescription(sourceUrl);
+  const sourceSummary = sourceDescriptionMatchesModel(name, fetchedSummary) ? fetchedSummary : null;
+  // Do not mix free-text "kind" labels into the description: catalogues sometimes
+  // contain broad or conflicting labels (e.g. a spacecraft stored as a map asset).
+  const metadata = name + " is listed in SPACEMESHER's " + categoryLabel + " collection. " +
+    "The archive entry provides a " + format + " file sourced from " + source + ".";
   const scaleNote = " The file format does not establish the object's real-world scale; use a separately cited physical measurement when calculating print scale.";
-  const description = (sourceSummary ? sourceSummary.summary + " " + metadata : metadata) + scaleNote;
+  const description = (sourceSummary ? sourceSummary.summary + " " : "") + metadata + scaleNote;
   return {
-    name, description, provenance: sourceSummary ? "Original source page summary plus archive metadata" : "Automatically generated from archive metadata",
+    name, description, provenance: sourceSummary ? "Matching original source page summary plus archive metadata" : "Automatically generated from archive metadata; source summary omitted because it could not be matched to this model",
     sourceTitle: sourceSummary?.title || "", sourceUrl: sourceSummary?.url || sourceUrl || "",
     generated: !sourceSummary, format, source
   };
