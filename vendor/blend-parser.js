@@ -410,7 +410,7 @@ function worker_code () {
                 const jsName = name === 'void' ? 'void_' : name
                 const blen_struct = Function('function ' + jsName + '(){}; return ' + jsName)();
 
-                // if(name === 'CustomDataLayer') debugger
+                // if(name === 'CustomDataLayer') /* upstream debug trap removed */
 
                 blen_struct.prototype = new BLENDER_STRUCTURE();
                 blen_struct.prototype.blender_name = name;
@@ -566,7 +566,7 @@ function worker_code () {
 
             this.__data_address__ = _data_offset;
 
-            // if(this.blender_name === 'CustomDataLayer') debugger
+            // if(this.blender_name === 'CustomDataLayer') /* upstream debug trap removed */
 
             if (struct === null) return this;
 
@@ -790,7 +790,7 @@ function worker_code () {
 
                             // const n = names[data.getInt16(offset2 + 2, BIG_ENDIAN)]
                             // if(obj.find((o, i)=>i%3===0 && o===n)){
-                            //     debugger
+                            //     /* upstream debug trap removed */
                             // }
                             obj.push(names[data.getInt16(offset2 + 2, BIG_ENDIAN)], types[data.getInt16(offset2, BIG_ENDIAN)], lengths[data.getInt16(offset2, BIG_ENDIAN)]);
                             offset2 += 4;
@@ -819,7 +819,7 @@ function worker_code () {
             // this is not the case, see blend-load-test.blend and Ruins_Assets.blend
             // if ((offset % 4) > 0) {
             //     console.log('fix', offset, offset % 4)
-            //     debugger
+            //     /* upstream debug trap removed */
             //     offset = (4 - (offset % 4)) + offset;
             // }
             for (let j = 0; j < 8; j++) {
@@ -830,7 +830,7 @@ function worker_code () {
                 break
             }
             if(data.getInt8(offset) === 0) {
-                debugger
+                /* upstream debug trap removed */
             }
 
             data_offset = offset;
@@ -853,7 +853,7 @@ function worker_code () {
                 break
             }
             // if(blockLength === 1) {
-            //     debugger
+            //     /* upstream debug trap removed */
             // }
 
             // last_offset = offset
