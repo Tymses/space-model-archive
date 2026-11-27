@@ -202,7 +202,7 @@ test("STL conversion controls are visibly marked beta wherever conversion is off
 });
 
 test("fit-to-build-plate calculation ignores astronomical scale, uses safety margins and applies proportional adjustment",()=>{
- const app=read("app.js"),start=app.indexOf("function calculateFitToBuildPlate("),end=app.indexOf("\\nfunction calculateCustomScaleDenominator",start);
+ const app=read("app.js"),start=app.indexOf("function calculateFitToBuildPlate("),end=app.indexOf("\nfunction calculateCustomScaleDenominator",start);
  assert.ok(start>=0&&end>start);
  const calculate=new Function(app.slice(start,end)+"\\nreturn calculateFitToBuildPlate;")();
  const fit=calculate([100,50,20],[100,80,50],5,100);
@@ -212,7 +212,7 @@ test("fit-to-build-plate calculation ignores astronomical scale, uses safety mar
  assert.equal(calculate([10,10,10],[10,10,10],5,100).valid,false);
 });
 test("custom original dimensions map to a selected model axis and calculate proportional original scale",()=>{
- const app=read("app.js"),start=app.indexOf("function calculateCustomScaleDenominator("),end=app.indexOf("\\nfunction describeOriginalScale",start);
+ const app=read("app.js"),start=app.indexOf("function calculateCustomScaleDenominator("),end=app.indexOf("\nfunction describeOriginalScale",start);
  assert.ok(start>=0&&end>start);
  const calculate=new Function(app.slice(start,end)+"\\nreturn calculateCustomScaleDenominator;")();
  assert.equal(calculate([200,100,50],400000,"longest"),2000);
