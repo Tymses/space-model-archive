@@ -137,3 +137,30 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - The regression test for the beta labels passed in both the dedicated model-workspace job and the validation workflow.
 - Safety branch for this verification-record update: `backup/before-stl-beta-verification-record-2026-11-27`, created from inspected `main` commit `d8b71bab5468c8f07fa666c9687063f9850ddc45`.
 - No manual interactive browser review or post-merge Pages deployment check was performed in this task; the merge is confirmed, but live visual publication is not claimed.
+
+
+## 9. Enforced project-workflow record — 27 November 2026
+
+### Pre-flight completed
+- Inspected actual GitHub `main` head: `27ec0c89a990509b25b968e294accdaf6a5d52c6` (*Record STL conversion beta verification*), recent commits, open PRs (none), all visible backup branches and active feature/work branches.
+- Created safety branch `backup/before-workflow-enforcement-2026-11-27` directly from that inspected main commit, without changing existing backups.
+- Created implementation branch `chore/workflow-enforcement-2026-11-27` from the same commit.
+- Read the repository handbook, README, editorial workflow, existing GitHub workflows, local project instructions and the available documentation search results.
+- The separate BOGY project diary is recorded as residing in a personal Library outside this repository. It is not accessible from this task environment; it was not read, edited or synchronized, and no synchronization is claimed.
+
+### Changes in this branch
+- Added `SPACEMESHER_WORKFLOW_CHECKLIST.md`, a visible binding pre-flight/post-flight checklist for every project-specific response and change.
+- Added `.github/pull_request_template.md` with five mandatory process attestations and evidence fields.
+- Added `.github/workflows/enforce-project-workflow.yml`. On every pull request to `main`, it fails unless all five PR attestations are checked and `PROJECT_HANDBOOK.md` is changed in the same PR.
+- Updated this handbook and README to point to the new process control.
+
+### Verification and limit
+- Reviewed the generated workflow, template and checklist against the intended conditions. CI execution is pending the pull request; it must not be reported as passed before GitHub Actions finishes.
+- This CI job is a real automated failure condition for incomplete pull requests. To turn it into a merge block, a repository administrator must configure the GitHub branch protection/ruleset for `main` to require the **Enforce project workflow** status check. No branch-protection configuration was visible or modifiable through the available repository tools.
+- The job cannot prove that a person actually read documents, inspected a remote state, or updated an inaccessible external diary. It records and checks the required attestation and same-PR handbook update only.
+
+### Documentation, tests and rollback
+- Accessible documentation updated and verified: `PROJECT_HANDBOOK.md`, `README.md`, `SPACEMESHER_WORKFLOW_CHECKLIST.md`, and the PR template.
+- Not updated because inaccessible: the separate BOGY personal-Library diary.
+- Automated tests: pending CI on this pull request; no application code changed. Workflow syntax has been reviewed but no local GitHub Actions runner is available.
+- Rollback reference: `backup/before-workflow-enforcement-2026-11-27` at `27ec0c89a990509b25b968e294accdaf6a5d52c6`.
