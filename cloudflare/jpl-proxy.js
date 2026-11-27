@@ -668,8 +668,16 @@ function buildResearchSearchTerms(query, category) {
   if (category === "small-bodies") {
     terms.push('"' + q + '" asteroid dimensions km');
     terms.push('"' + q + '" physical extent minor planet');
+    terms.push('site:echo.jpl.nasa.gov/asteroids "' + q + '" dimensions');
+    terms.push('site:science.nasa.gov "' + q + '" physical dimensions');
+  } else if (category === "moons") {
+    terms.push('site:science.nasa.gov "' + q + '" moon dimensions');
+    terms.push('site:pds.nasa.gov "' + q + '" shape model extent');
+  } else if (category === "spacecraft") {
+    terms.push('site:nasa.gov "' + q + '" spacecraft dimensions');
+    terms.push('site:esa.int "' + q + '" spacecraft dimensions');
   }
-  return [...new Set(terms)].slice(0, 6);
+  return [...new Set(terms)].slice(0, 8);
 }
 function categoryContextMatches(text, category) {
   const value = norm(text);
