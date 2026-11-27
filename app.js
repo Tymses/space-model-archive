@@ -136,43 +136,50 @@ function normalizeSourceTitle(value){
  return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"")
   .toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
 }
+function fallbackSourceCatalogue(model){
+ const source=String(model.source||"").toLowerCase();
+ if(source.includes("nasa 3d resources")||source==="nasa")return "https://science.nasa.gov/3d-resources/";
+ if(source.includes("space radar"))return "https://www.spaceradar.ai/";
+ if(source.includes("3d asteroid catalogue"))return "https://3d-asteroids.space/";
+ if(source.includes("nasa/jpl"))return "https://echo.jpl.nasa.gov/asteroids/shapes/shapes.html";
+ if(source.includes("nasa pds"))return "https://pds.nasa.gov/";
+ if(source.includes("esa"))return "https://www.esa.int/";
+ return "";
+}
 function setSpecificModelSource(model){
-  const file=model.file||"";
-  const originalSource=model.sourcePageUrl||model.sourceUrl||"";
-  try{
-    const asset=file?new URL(file):null;
-    const source=originalSource?new URL(originalSource):null;
-    const generic=!source||source.pathname==="/"||
-      ["/3d-resources/","/3d-resources","/models/","/models","/"].includes(source.pathname)||
-      (source.hostname==="3d-asteroids.space"&&source.pathname==="/moons/");
-    if(asset&&asset.hostname==="raw.githubusercontent.com"&&
-       asset.pathname.includes("/NASA-3D-Resources/")){
-      const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
-      const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
-      if(marker>=0&&parts.length>marker+2){
-        const directory=parts.slice(marker,parts.length-1).join("/");
-        model.folderKey="nasa:"+directory.toLowerCase();
-        model.folderName=parts[parts.length-2];
-      }
-      if(generic){
-        const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name));
-        model.sourcePageUrl=verifiedPage||null;
-      }
-    }else if(generic){
-      // A catalogue homepage, model-file host or GitHub mirror is not a
-      // model-specific source page. Leave the source link unavailable until
-      // the exact original record has been found and added to the data.
-      model.sourcePageUrl=null;
-    }else{
-      // Keep explicitly supplied deep links, including provider record IDs.
-      model.sourcePageUrl=source.toString();
-    }
-  }catch{
-    if(!originalSource)model.sourcePageUrl=null;
+ const file=model.file||"";
+ const originalSource=model.sourcePageUrl||model.sourceUrl||"";
+ try{
+  const asset=file?new URL(file):null;
+  const source=originalSource?new URL(originalSource):null;
+  const generic=!source||source.pathname==="/"||
+   ["/3d-resources/","/3d-resources","/models/","/models","/"].includes(source.pathname)||
+   (source.hostname==="3d-asteroids.space"&&source.pathname==="/moons/");
+  if(asset&&asset.hostname==="raw.githubusercontent.com"&&asset.pathname.includes("/NASA-3D-Resources/")){
+   const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
+   const marker=parts.findIndex(part=>part==="3D Models"||part==="3D Printing");
+   if(marker>=0&&parts.length>marker+2){
+    const directory=parts.slice(marker,parts.length-1).join("/");
+    model.folderKey="nasa:"+directory.toLowerCase();
+    model.folderName=parts[parts.length-2];
+   }
+   if(generic){
+    const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name));
+    model.sourcePageUrl=verifiedPage||null;
+   }
+  }else if(generic){
+   // Keep the original catalogue URL as a clickable fallback. Exact model pages
+   // remain in sourcePageUrl only when they are actually known and verified.
+   model.sourcePageUrl=null;
+  }else{
+   model.sourcePageUrl=source.toString();
   }
-  if(model.sourcePageUrl)model.sourceUrl=model.sourcePageUrl;
-  else model.sourceUrl=null;
-  return model;
+ }catch{
+  if(!originalSource)model.sourcePageUrl=null;
+ }
+ if(model.sourcePageUrl)model.sourceUrl=model.sourcePageUrl;
+ else model.sourceUrl=originalSource||fallbackSourceCatalogue(model)||null;
+ return model;
 }
 for(const model of MODELS)setSpecificModelSource(model);
 
@@ -441,6 +448,7 @@ const expandedCatalogCounts = { nasa: 0, spaceRadar: 0, jpl: 0, smallBodyPackage
 function addCatalogModel(model) {
   setSpecificModelSource(model);
   remoteCatalogueRecord(model);
+  if(!model.sourceUrl)model.sourceUrl=fallbackSourceCatalogue(model)||null;
   const assetKey = value => {
     try { const url = new URL(value); url.hash = ""; return url.toString(); }
     catch { return String(value || "").trim(); }
