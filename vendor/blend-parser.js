@@ -6,7 +6,7 @@
  * not sufficient to advance through nested struct arrays safely.
  */
 function getBlenderStructByteLength(schemas, type) {
-    const byteLength = schemas?.[type]?.length
+    const byteLength = schemas?.[type]?.byteLength
     if (!Number.isSafeInteger(byteLength) || byteLength <= 0) {
         throw new Error(`BLEND_INVALID_DNA_SIZE: Blender structure "${type}" has no valid compiled byte size.`)
     }
@@ -420,7 +420,7 @@ function worker_code () {
     };
 
     MASTER_SDNA_SCHEMA.prototype = {
-        getSDNAStructureConstructor: function (name, struct) {
+        getSDNAStructureConstructor: function (name, struct, compiledByteLength) {
             if (struct) {
                 const jsName = name === 'void' ? 'void_' : name
                 const blen_struct = Function('function ' + jsName + '(){}; return ' + jsName)();
@@ -434,6 +434,8 @@ function worker_code () {
 
                 const DNA = this.SDNA[name] = {
                     constructor: blen_struct,
+                    // SDNA TLEN stores the actual compiled C struct size, including padding.
+                    byteLength: compiledByteLength,
                 };
                 let offset = 0;
                 // Create properties of struct
@@ -797,7 +799,9 @@ function worker_code () {
 
                     // Create constructor objects from list of SDNA structs
                     while (curr_count < structure_count) {
-                        const struct_name = types[data.getInt16(offset2, BIG_ENDIAN)];
+                        const struct_type_index = data.getInt16(offset2, BIG_ENDIAN);
+                        const struct_name = types[struct_type_index];
+                        const compiled_struct_byte_length = lengths[struct_type_index];
                         offset2 += 2;
                         const obj = [];
                         count = data.getInt16(offset2, BIG_ENDIAN);
@@ -818,7 +822,7 @@ function worker_code () {
                         }
 
                         // Create a SDNA constructor by passing [type,name,lenth] array as second argument
-                        current_SDNA_template.getSDNAStructureConstructor(struct_name, obj);
+                        current_SDNA_template.getSDNAStructureConstructor(struct_name, obj, compiled_struct_byte_length);
                         curr_count++;
                     }
                     current_SDNA_template.SDNA_SET = true;
