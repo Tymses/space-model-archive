@@ -1258,7 +1258,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "GeoTailSAT: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/GeoTailSAT/GeoTailSAT.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/geotailsat/",
       "changed": "Source repository"
     },
     {
@@ -1272,7 +1272,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Geostationary Operational Environmental Satellites: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Geostationary%20Operational%20Environmental%20Satellites/Geostationary%20Operational%20Environmental%20Satellites.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/geostationary-operational-environmental-satellites/",
       "changed": "Source repository"
     },
     {
@@ -1286,7 +1286,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Global Hawk: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Global%20Hawk/Global%20Hawk.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/global-hawk/",
       "changed": "Source repository"
     },
     {
@@ -1300,7 +1300,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Global Precipitation Measurement: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Global%20Precipitation%20Measurement/Global%20Precipitation%20Measurement.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/global-precipitation-measurement/",
       "changed": "Source repository"
     },
     {
@@ -1314,7 +1314,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Gravity Recovery and Climate Experiment (GRACE) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(A)/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gravity-recovery-and-climate-experiment-grace-a/",
       "changed": "Source repository"
     },
     {
@@ -1328,7 +1328,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Gravity Recovery and Climate Experiment (GRACE) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(B)/Gravity%20Recovery%20and%20Climate%20Experiment%20(GRACE)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gravity-recovery-and-climate-experiment-grace-b/",
       "changed": "Source repository"
     },
     {
@@ -1342,7 +1342,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Grease Gun: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Grease%20Gun/Grease%20gun.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/grease-gun/",
       "changed": "Source repository"
     },
     {
@@ -1356,7 +1356,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "HESSI-RHESSI: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/HESSI-RHESSI/HESSI-RHESSI.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hessi-rhessi/",
       "changed": "Source repository"
     },
     {
@@ -1370,7 +1370,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Habitat Demonstration Unit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Habitat%20Demonstration%20Unit/Habitat%20Demonstration%20Unit%20(part%201).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/habitat-demonstration-unit/",
       "changed": "Source repository"
     },
     {
@@ -1384,7 +1384,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Habitat Demonstration Unit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Habitat%20Demonstration%20Unit/Habitat%20Demonstration%20Unit%20(part%202).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/habitat-demonstration-unit/",
       "changed": "Source repository"
     },
     {
@@ -1398,7 +1398,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hammer: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hammer/Hammer.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hammer/",
       "changed": "Source repository"
     },
     {
