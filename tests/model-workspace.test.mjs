@@ -262,3 +262,35 @@ test("STL conversion performs triangle and estimated-byte checks before calling 
  assert.ok(converter.indexOf("countMeshTriangles(root)")<converter.indexOf("new L.STLExporter()"));
  assert.ok(converter.indexOf("estimatedBytes>MAX_BROWSER_MODEL_BYTES")<converter.indexOf("new L.STLExporter()"));
 });
+
+
+test("Blender modern meshes select only canonical position and corner-vertex layers",()=>{
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("function findLayerData("),end=source.indexOf("\\nfunction countLegacyTriangleIndices",start);
+ assert.ok(start>=0&&end>start);
+ const find=new Function(source.slice(start,end)+"\\nreturn findLayerData;")();
+ const position=[{x:1,y:2,z:3},{x:4,y:5,z:6},{x:7,y:8,z:9}];
+ const layers=[{name:"orig_index",data:[{i:7},{i:8},{i:9}]},{name:"position",data:position}];
+ assert.equal(find(layers,["position"],3,"vertex position"),position);
+ assert.throws(()=>find([{name:"orig_index",data:position}],["position"],3,"vertex position"),/missing its vertex position attribute/);
+ assert.throws(()=>find([{name:".corner_edge",data:[{i:0},{i:1},{i:2}]}],[".corner_vert"],3,"loop vertex-index"),/missing its loop vertex-index attribute/);
+});
+test("legacy Blender polygons allocate exactly three indices per triangle",()=>{
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("function countLegacyTriangleIndices("),end=source.indexOf("\\nexport function createBufferGeometry",start);
+ assert.ok(start>=0&&end>start);
+ const count=new Function(source.slice(start,end)+"\\nreturn countLegacyTriangleIndices;")();
+ assert.equal(count([{totloop:3}]),3);assert.equal(count([{totloop:4}]),6);assert.equal(count([{totloop:5}]),9);
+ assert.equal(count([{totloop:3},{totloop:4},{totloop:6}]),21);
+});
+test("BLEND loader rejects files without actual mesh triangles instead of showing a substitute",()=>{
+ const app=read("app.js");
+ assert.match(app,/if\(!blendMeshCount\|\|!blendTriangleCount\)throw new Error\("The BLEND file did not produce valid mesh triangles/);
+ assert.match(app,/No substitute geometry was loaded/);
+});
+test("all button-like controls receive a short click acknowledgement animation",()=>{
+ const app=read("app.js"),css=read("styles.css");
+ assert.match(app,/initButtonClickFeedback/);
+ assert.match(app,/button, \[role="button"\], input\[type="button"\], input\[type="submit"\], \.upload-button, \.action-link/);
+ assert.match(app,/is-click-feedback/);assert.match(css,/@keyframes spacemesher-button-press/);
+ assert.match(css,/\.is-click-feedback\{animation:spacemesher-button-press 240ms/);
+ assert.match(css,/prefers-reduced-motion:reduce\)\{\.is-click-feedback\{animation:none!important\}\}/);
+});
