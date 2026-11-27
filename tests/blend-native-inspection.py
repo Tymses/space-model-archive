@@ -37,6 +37,8 @@ for obj in mesh_objects:
             "dimensions": list(obj.dimensions),
             "scale": list(obj.scale),
             "location": list(obj.location),
+            "matrix_world": [list(row) for row in obj.matrix_world],
+            "matrix_parent_inverse": [list(row) for row in obj.matrix_parent_inverse],
             "parent": obj.parent.name if obj.parent else None,
             "data": obj.data.name if obj.data else None,
             "vertices": len(obj.data.vertices),
