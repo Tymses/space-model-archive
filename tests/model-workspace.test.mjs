@@ -416,6 +416,7 @@ test("Blender active view-layer visibility excludes hidden and viewport-restrict
  assert.equal(visible(file,renderHidden),true);
  assert.equal(visible(file,hidden),false);
  assert.equal(visible(file,viewportHidden),false);
+ file.objects.Base.push({object:childOfHiddenCamera,flag:214});assert.equal(visible(file,childOfHiddenCamera),true);
  assert.equal(visible(file,{aname:"orphan"}),false);
  assert.equal(visible(file,hidden,{includeHiddenObjects:true}),true);
 });
