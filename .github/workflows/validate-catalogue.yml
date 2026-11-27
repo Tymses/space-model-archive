@@ -15,6 +15,10 @@ on:
       - ".github/workflows/validate-catalogue.yml"
   pull_request:
     paths:
+      - "app.js"
+      - "index.html"
+      - "styles.css"
+      - "tests/model-workspace.test.mjs"
       - "data/**"
       - "tools/catalogue/**"
       - "tools/dimensions/**"
