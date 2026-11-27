@@ -54,11 +54,12 @@ native_transforms = [{
     "matrix_world": [list(row) for row in obj.matrix_world],
     "local_min": [min(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
     "local_max": [max(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
+    "positions": [list(vertex.co) for vertex in obj.data.vertices],
     "vertices": len(obj.data.vertices),
     "polygons": len(obj.data.polygons)
 } for obj in printable_objects if len(obj.data.polygons) > 0]
 with open("/tmp/spacemesher-native-transforms.json", "w", encoding="utf-8") as handle:
-    json.dump(native_transforms, handle)
+    json.dump({"objects": native_transforms}, handle)
 native_totals = {
     "vertices": sum(len(obj.data.vertices) for obj in printable_objects),
     "polygons": sum(len(obj.data.polygons) for obj in printable_objects),
