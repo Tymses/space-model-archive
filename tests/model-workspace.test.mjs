@@ -161,7 +161,7 @@ test("BLEND loader can skip invalid objects while preserving valid mesh objects"
  const importer=read("vendor/blend-importer.js"),app=read("app.js");
  assert.match(importer,/createObjects\(file, options = \{\}\)/);
  assert.match(importer,/options\.onMeshError\(diagnostic\)/);
- assert.match(app,/createObjects\(parsed\.file,\{onMeshError:diagnostic=>meshDiagnostics\.push\(diagnostic\)\}\)/);
+ assert.match(app,/createObjects\\(parsed\\.file,\\{onMeshError:diagnostic=>meshDiagnostics\\.push\\(diagnostic\\),onAnnotationExcluded:diagnostic=>annotationDiagnostics\\.push\\(diagnostic\\)\\}\\)/);
  assert.match(app,/loaded .* valid mesh\(es\); skipped .* invalid mesh object\(s\)/);
  assert.match(app,/BLEND_NO_VALID_MESH/);
  assert.match(app,/missing topology is never invented/);
