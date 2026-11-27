@@ -39,8 +39,8 @@ jobs:
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           changed="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
-          printf '%s\\n' "$changed"
-          if ! printf '%s\\n' "$changed" | grep -Fxq "PROJECT_HANDBOOK.md"; then
+          printf '%s\n' "$changed"
+          if ! printf '%s\n' "$changed" | grep -Fxq "PROJECT_HANDBOOK.md"; then
             echo "::error::Every project PR must update PROJECT_HANDBOOK.md with the completed pre-flight/post-flight record."
             exit 1
           fi
