@@ -59,11 +59,14 @@ test("all previously dead NASA pages now use a live NASA page or exact source fo
   for (const [id, url] of Object.entries(expected)) assert.equal(byId.get(id)?.sourceUrl, url, id);
 });
 
-test("archive cards and print workspace expose the new conversion and description flows", () => {
+test("STL conversion is launched from the View Details header, not collection cards", () => {
   const app = read("app.js");
   const html = read("index.html");
-  assert.match(app, /data-convert-model/);
-  assert.match(app, /data-convert-archive/);
+  assert.doesNotMatch(app, /data-convert-model|data-convert-archive/);
+  assert.match(app, /detail-convert-stl/);
+  assert.match(app, /supportsStlConversion\(model\.format\)/);
+  assert.match(html, /class="detail-title-line"/);
+  assert.match(html, /id="detail-convert-stl"/);
   assert.match(app, /archiveCardNote/);
   assert.match(app, /data-open-counterpart/);
   assert.match(app, /async function convertActiveModelToStl/);
@@ -72,6 +75,23 @@ test("archive cards and print workspace expose the new conversion and descriptio
   assert.match(html, /id="scaling-model-description"/);
   assert.match(html, /\.blend/);
   assert.match(html, /\.step/);
+});
+
+test("compressed STEP format labels are normalized before loader dispatch", () => {
+  const app = read("app.js");
+  const start = app.indexOf("function normalizeConversionFormat(");
+  const end = app.indexOf("\n  function supportsStlConversion", start);
+  assert.ok(start >= 0 && end > start, "format normalizer must be defined");
+  const normalize = new Function(app.slice(start, end) + "\nreturn normalizeConversionFormat;")();
+  assert.equal(normalize("STEP (GZIP)"), "STEP");
+  assert.equal(normalize("STEP GZ"), "STEP");
+  assert.equal(normalize("STEP"), "STEP");
+  assert.equal(normalize("BLEND"), "BLEND");
+});
+
+test("failed OpenCascade initialization can be retried", () => {
+  const app = read("app.js");
+  assert.match(app, /occtPromise=attempt\.catch\(error=>\{occtPromise=null;occtScriptPromise=null;throw error;\}\)/);
 });
 
 test("Worker only proxies newly supported geometry extensions from approved hosts", () => {
