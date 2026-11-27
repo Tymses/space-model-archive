@@ -46,7 +46,11 @@ const viewLayerDetails=(parsed.objects?.ViewLayer||[]).map(layer=>({
   firstLayerFlag:layer.layer_collections?.first?.flag??null,
   objectBasesKeys:Object.keys(layer.object_bases||{}),
   firstBaseName:layer.object_bases?.first?.object?.aname||null,
-  firstBaseFlag:layer.object_bases?.first?.flag??null
+  firstBaseFlag:layer.object_bases?.first?.flag??null,
+  objectBaseListCount:layer.object_bases?.__list__?.length||0,
+  objectBaseSamples:(layer.object_bases?.__list__||[]).filter(base=>["arm_01_b","arm_01_c","arm_02_b","arm_02_c","arm_03_b","arm_03_c","shovel_b","shovel_c","grapple_b","SEIS","deck","arm_01"].includes(base.object?.aname)).map(base=>({object:base.object?.aname,flag:base.flag})),
+  layerCollectionListCount:layer.layer_collections?.__list__?.length||0,
+  layerCollectionSamples:(layer.layer_collections?.__list__||[]).map(item=>({name:item.collection?.id?.name,flag:item.flag,children:item.children?.__list__?.map(child=>({name:child.collection?.id?.name,flag:child.flag}))||[]}))
 }));
 const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).map(layer=>({
   collectionName:layer.collection?.id?.name||null,flag:layer.flag,
