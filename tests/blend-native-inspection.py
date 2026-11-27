@@ -14,7 +14,7 @@ bpy.context.view_layer.update()
 depsgraph = bpy.context.evaluated_depsgraph_get()
 mesh_objects = [obj for obj in scene.objects if obj.type == "MESH"]
 visible_mesh_objects = [obj for obj in mesh_objects if obj.visible_get()]
-visible_details = [{"name":obj.name,"hide_viewport":obj.hide_viewport,"hide_render":obj.hide_render,"hide_get":obj.hide_get(),"visible":obj.visible_get(),"flag":obj.flag,"restrictflag":obj.restrictflag,"collections":[c.name for c in obj.users_collection]} for obj in mesh_objects]
+visible_details = [{"name":obj.name,"hide_viewport":obj.hide_viewport,"hide_render":obj.hide_render,"hide_get":obj.hide_get(),"visible":obj.visible_get(),"collections":[c.name for c in obj.users_collection]} for obj in mesh_objects]
 hidden_details = [item for item in visible_details if not item["visible"]]
 annotation_name = re.compile(r"^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$", re.I)
 environment_name = re.compile(r"^(?:ground[._ -]?and[._ -]?sky[._ -]?dome|sky[._ -]?dome|world[._ -]?background)$", re.I)
