@@ -12,6 +12,7 @@ on:
     branches: [main]
     paths:
       - "data/**"
+      - "app.js"
       - "tools/catalogue/check_links.py"
       - ".github/workflows/catalogue-link-audit.yml"
   schedule:
