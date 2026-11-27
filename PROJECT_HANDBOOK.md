@@ -308,5 +308,5 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Implementation branch: `fix/workflow-checkbox-matching-2026-11-27`.
 - Changed files: `.github/workflows/enforce-project-workflow.yml`, `PROJECT_HANDBOOK.md`.
 - Previous failing run: `46068626601` on PR #24; the **Require the process attestation** step failed and checkout/handbook check were skipped.
-- Verification: the workflow change has been committed; a new PR CI run is required to confirm the corrected matcher and handbook check. No passing CI is claimed yet.
+- Verification: PR-head workflow run `46070228527` passed. The **Require the process attestation** step and **Require handbook update in the same PR** step both completed successfully. The run covered the corrected matcher and same-PR handbook requirement; no application test suite was triggered because this PR changes only the workflow and handbook. GitHub Pages deployment remains pending until merge.
 - Rollback reference: `backup/before-workflow-checkbox-ci-fix-2026-11-27` at `524263a57f3327eafb796dde2e665bd9006e943a`.
