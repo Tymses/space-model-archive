@@ -370,3 +370,11 @@ test("Blender parser advances nested DNA structures by their compiled byte size"
  assert.ok(source.includes("memberEnd > data_block_end"));
  assert.ok(source.includes("memberStart + memberByteLength"));
 });
+
+test("BLEND parse failures offer independent converter fallbacks with upload disclosure",()=>{
+ const app=read("app.js");
+ assert.ok(app.includes("https://www.innerscene.com/tools/blend-to-stl"));
+ assert.ok(app.includes("https://shapeweld.com/tools/blend-to-stl"));
+ assert.ok(app.includes("Shapeweld uploads the file to its server"));
+ assert.ok(app.includes("fallback.append(heading,note,local,server,privacy)"));
+});
