@@ -618,7 +618,9 @@ function researchTextBlocks(value) {
   const htmlBlocks = source.match(/<(?:p|li|tr|blockquote|dd|dt|h[1-6])\b[^>]*>[\s\S]*?<\/(?:p|li|tr|blockquote|dd|dt|h[1-6])>/gi) || [];
   const blocks = htmlBlocks.map(plain).filter(Boolean);
   if (blocks.length) return blocks;
-  return plain(source).split(/(?<=[.!?])\s+|[\r\n]+/).map(value => value.trim()).filter(Boolean);
+  const lineBlocks = source.split(/\r?\n/).map(plain).filter(Boolean);
+  if (lineBlocks.length > 1) return lineBlocks;
+  return plain(source).split(/(?<=[.!?])\s+/).map(value => value.trim()).filter(Boolean);
 }
 function blockMatchesResearchIdentity(block, query, category) {
   const normalized = normalizeResearchQuery(query, category);
