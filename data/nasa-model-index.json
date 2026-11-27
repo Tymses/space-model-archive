@@ -3924,7 +3924,7 @@
       "id": "nasa-auto-7987945ac2f8",
       "name": "Wrench",
       "category": "spacecraft",
-      "kind": "Spacecraft / mission model",
+      "kind": "Tool / mission hardware",
       "source": "NASA 3D Resources",
       "size": "30 kB",
       "format": "GLB",
