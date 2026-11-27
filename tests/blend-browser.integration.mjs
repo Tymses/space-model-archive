@@ -88,11 +88,15 @@ try {
     const stlBytes = stlBuffer?.byteLength || stl?.byteLength || 0;
     const expectedBytes = 84 + Math.round(triangles)*50;
     if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
-    return {version:parsed.header.version,meshes,vertices,indices,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics,excludedAnnotations:annotationDiagnostics.map(item=>item.object),largestMeshes:meshBounds.slice(0,20),transformDetails,objectTransforms,sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null})),sceneUnits:(parsed.file.objects.Scene||[]).map(scene=>({unitSystem:scene.unit?.system,scaleLength:scene.unit?.scale_length}))};
+    const stlBytesArray = new Uint8Array(stlBuffer);
+    let stlBinary = "";
+    for(let offset=0;offset<stlBytesArray.length;offset+=0x8000) stlBinary += String.fromCharCode(...stlBytesArray.subarray(offset,offset+0x8000));
+    const stlBase64 = btoa(stlBinary);
+    return {version:parsed.header.version,meshes,vertices,indices,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,stlBase64,meshErrors:meshDiagnostics,excludedAnnotations:annotationDiagnostics.map(item=>item.object),largestMeshes:meshBounds.slice(0,20),transformDetails,objectTransforms,sourceObjects:(parsed.file.objects.Object||[]).filter(o=>["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"].includes(o.aname)).map(o=>({name:o.aname,loc:o.loc,size:o.size,rot:o.rot,quat:o.quat,parent:o.parent?.aname||null,data:o.data?.aname||null})),sceneUnits:(parsed.file.objects.Scene||[]).map(scene=>({unitSystem:scene.unit?.system,scaleLength:scene.unit?.scale_length}))};
   });
   await writeFile("/tmp/spacemesher-browser-transforms.json",JSON.stringify({objects:result.objectTransforms,sizeMm:result.sizeMm}));
-  await writeFile("/tmp/insight-browser.stl",new Uint8Array(stlBuffer));
-  console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_DIAGNOSTIC",...result,objectTransforms:undefined}));
+  await writeFile("/tmp/insight-browser.stl",Buffer.from(result.stlBase64,"base64"));
+  console.log(JSON.stringify({status:"BROWSER_BLEND_TO_STL_DIAGNOSTIC",...result,objectTransforms:undefined,stlBase64:undefined}));
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
   assert.ok(result.stlBytes>84);
