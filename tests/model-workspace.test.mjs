@@ -177,3 +177,8 @@ test("NASA Pahrump Hills source records use the official NASA catalogue when no 
  const index=JSON.parse(read("data/nasa-model-index.json"));const byId=new Map(index.files.map(item=>[item.id,item]));
  for(const id of ["nasa-auto-054edfd18207","nasa-auto-d4c3298e3f16"])assert.equal(byId.get(id)?.sourceUrl,"https://science.nasa.gov/3d-resources/",id);
 });
+
+test("Pahrump Hills terrain cross-listings do not retain GitHub source folders", () => {
+ const index=JSON.parse(read("data/nasa-model-index.json"));const byId=new Map(index.files.map(item=>[item.id,item]));
+ for(const id of ["nasa-auto-054edfd18207-heightmap","nasa-auto-d4c3298e3f16-heightmap"])assert.equal(byId.get(id)?.sourceUrl,"https://science.nasa.gov/3d-resources/",id);
+});
