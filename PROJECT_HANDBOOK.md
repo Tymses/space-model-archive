@@ -93,3 +93,5 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - PR validation runs `46024935554` (catalogue validation), `46024935075` (model workspace tests) and `46024935005` (catalogue link audit) all succeeded.
 - Post-merge runs `46025013503` (catalogue validation), `46025013532` (model workspace tests), `46025013620` (catalogue link audit) and `46025013089` (GitHub Pages build/deployment) all succeeded.
 - The visible Terrain collection rename, visible cross-listing labels, scale-percentage wording and compact beginner workflow are still editorial follow-up tasks documented in `EDITORIAL_WORKFLOW.md`; they were not implemented in this PR.
+
+- Follow-up source-link check: the two Pahrump Hills terrain variants did not have a verified individual NASA 3D detail page in the current research. Their source links therefore point to the official NASA 3D Resources catalogue, not the GitHub mirror folder.
