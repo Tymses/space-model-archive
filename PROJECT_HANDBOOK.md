@@ -146,7 +146,7 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Created safety branch `backup/before-workflow-enforcement-2026-11-27` directly from that inspected main commit, without changing existing backups.
 - Created implementation branch `chore/workflow-enforcement-2026-11-27` from the same commit.
 - Read the repository handbook, README, editorial workflow, existing GitHub workflows, local project instructions and the available documentation search results.
-- The separate BOGY project diary is recorded as residing in a personal Library outside this repository. It is not accessible from this task environment; it was not read, edited or synchronized, and no synchronization is claimed.
+- The separate BOGY project diary `SPACEMESHER_BOGY_Praktikumstagebuch_23-25_November_2026(1).docx` was located in the personal Library and its full extracted text was read through Files. The original DOCX could not be materialized as raw bytes (`no authorized raw-byte materialization path`), so a format-preserving edit was unavailable. It was not modified; no synchronization is claimed.
 
 ### Changes in this branch
 - Added `SPACEMESHER_WORKFLOW_CHECKLIST.md`, a visible binding pre-flight/post-flight checklist for every project-specific response and change.
@@ -161,8 +161,10 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 
 ### Documentation, tests and rollback
 - Accessible documentation updated and verified: `PROJECT_HANDBOOK.md`, `README.md`, `SPACEMESHER_WORKFLOW_CHECKLIST.md`, and the PR template.
-- Not updated because inaccessible: the separate BOGY personal-Library diary.
+- Separate BOGY personal-Library diary: full extracted text read; original DOCX not updated because raw-byte materialization was denied. This limitation is documented; no synchronization is claimed.
 - Automated tests: pending CI on this pull request; no application code changed. Workflow syntax has been reviewed but no local GitHub Actions runner is available.
 - Rollback reference: `backup/before-workflow-enforcement-2026-11-27` at `27ec0c89a990509b25b968e294accdaf6a5d52c6`.
 
-- Pull-request CI verified: **Enforce project workflow** run `46047333620` passed. Both its process-attestation step and its same-PR handbook-update step succeeded on PR #16.
+- Pull-request CI verified: **Enforce project workflow** runs `46047333620`, `46047443710` and `46047558242` passed. The process-attestation step and same-PR handbook-update step succeeded on PR #16.
+- PR #16 merged into `main` as `ab9508c82bf77f178ca7a794be5c352d79daf13e`.
+- Follow-up diary-access record branch: `docs/workflow-diary-access-record-2026-11-27`, with safety branch `backup/before-workflow-diary-record-2026-11-27` based on `ab9508c82bf77f178ca7a794be5c352d79daf13e`. The separate Library DOCX was readable as extracted text but could not be edited in place because Files denied raw-byte materialization.
