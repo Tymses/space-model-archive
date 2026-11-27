@@ -371,17 +371,10 @@ function isObjectVisibleInActiveViewLayer(file, object, options = {}) {
     const bases = file?.objects?.Base
     if (!Array.isArray(bases) || bases.length === 0) return true
     const baseByObject = options.baseByObject || new Map(bases.map(base => [base.object, Number(base.flag)]))
-    const seen = new Set()
-    let current = object
-    while (current && !seen.has(current)) {
-        seen.add(current)
-        const baseFlag = baseByObject.get(current)
-        if (baseFlag === undefined || baseFlag === 0) return false
-        // Blender Object.restrictflag bit 0 is OB_RESTRICT_VIEWPORT.
-        if ((Number(current.restrictflag) || 0) & 1) return false
-        current = current.parent
-    }
-    return true
+    const baseFlag = baseByObject.get(object)
+    if (baseFlag === undefined || baseFlag === 0) return false
+    // Blender Object.restrictflag bit 0 is OB_RESTRICT_VIEWPORT.
+    return !((Number(object.restrictflag) || 0) & 1)
 }
 
 export function createObjects(file, options = {}) {
