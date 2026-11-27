@@ -6,6 +6,8 @@ on:
     paths:
       - "data/**"
       - "app.js"
+      - "cloudflare/**"
+      - "tests/**"
       - "tools/catalogue/check_links.py"
       - ".github/workflows/catalogue-link-audit.yml"
   push:
