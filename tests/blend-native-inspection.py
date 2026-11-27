@@ -40,8 +40,9 @@ for obj in printable_objects:
     for i in range(3):
         minimum[i] = min(minimum[i], lo[i])
         maximum[i] = max(maximum[i], hi[i])
-    for vertex in obj.data.vertices:
-        point = obj.matrix_world @ vertex.co
+    used_vertex_indices = {index for polygon in obj.data.polygons for index in polygon.vertices}
+    for vertex_index in used_vertex_indices:
+        point = obj.matrix_world @ obj.data.vertices[vertex_index].co
         for i in range(3):
             raw_minimum[i] = min(raw_minimum[i], point[i])
             raw_maximum[i] = max(raw_maximum[i], point[i])
@@ -55,6 +56,7 @@ native_transforms = [{
     "local_min": [min(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
     "local_max": [max(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
     "positions": [float(component) for vertex in obj.data.vertices for component in vertex.co],
+    "used_vertex_indices": sorted({index for polygon in obj.data.polygons for index in polygon.vertices}),
     "vertices": len(obj.data.vertices),
     "polygons": len(obj.data.polygons)
 } for obj in printable_objects if len(obj.data.polygons) > 0]
