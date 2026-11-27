@@ -10,6 +10,7 @@ on:
       - "vendor/blend-parser.js"
       - "tests/model-workspace.test.mjs"
       - "tests/blend-fixture.integration.mjs"
+      - "tests/blend-browser.integration.mjs"
       - ".github/workflows/test-model-workspace.yml"
   pull_request:
     paths:
@@ -38,3 +39,9 @@ jobs:
         run: node --test tests/model-workspace.test.mjs
       - name: Parse official NASA InSight BLEND fixture
         run: node tests/blend-fixture.integration.mjs
+      - name: Install Chromium for browser conversion integration
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Run browser BLEND to STL integration
+        run: node tests/blend-browser.integration.mjs
