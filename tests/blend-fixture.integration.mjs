@@ -46,4 +46,4 @@ const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collect
   childrenKeys:Object.keys(collection.children||{}),
   firstChild:collection.children?.first?.collection?.id?.name||null
 }));
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, collectionSummary, sourceObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, collectionSummary, sourceObjects, flaggedObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
