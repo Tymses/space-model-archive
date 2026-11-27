@@ -204,7 +204,7 @@ test("STL conversion controls are visibly marked beta wherever conversion is off
 test("fit-to-build-plate calculation ignores astronomical scale, uses safety margins and applies proportional adjustment",()=>{
  const app=read("app.js"),start=app.indexOf("function calculateFitToBuildPlate("),end=app.indexOf("\nfunction calculateCustomScaleDenominator",start);
  assert.ok(start>=0&&end>start);
- const calculate=new Function(app.slice(start,end)+"\\nreturn calculateFitToBuildPlate;")();
+ const calculate=new Function(app.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
  const fit=calculate([100,50,20],[100,80,50],5,100);
  assert.equal(fit.valid,true);assert.equal(fit.maxFactor,0.9);assert.deepEqual(fit.printDimensions,[90,45,18]);assert.equal(fit.fits,true);assert.deepEqual(fit.usableBed,[90,70,40]);
  const reduced=calculate([100,50,20],[100,80,50],5,50);assert.equal(reduced.factor,0.45);assert.equal(reduced.fits,true);
@@ -214,7 +214,7 @@ test("fit-to-build-plate calculation ignores astronomical scale, uses safety mar
 test("custom original dimensions map to a selected model axis and calculate proportional original scale",()=>{
  const app=read("app.js"),start=app.indexOf("function calculateCustomScaleDenominator("),end=app.indexOf("\nfunction describeOriginalScale",start);
  assert.ok(start>=0&&end>start);
- const calculate=new Function(app.slice(start,end)+"\\nreturn calculateCustomScaleDenominator;")();
+ const calculate=new Function(app.slice(start,end)+"\nreturn calculateCustomScaleDenominator;")();
  assert.equal(calculate([200,100,50],400000,"longest"),2000);
  assert.equal(calculate([200,100,50],400000,"1"),4000);
  assert.equal(calculate([200,100,50],400000,"2"),8000);
