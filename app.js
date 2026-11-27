@@ -495,7 +495,7 @@ async function loadExpandedCatalogs() {
   }
 
   try {
-    const response = await fetch("./data/spaceradar-model-index.json?v=20261127-03");
+    const response = await fetch("./data/spaceradar-model-index.json?v=20261127-04");
     if (!response.ok) throw new Error("Space Radar index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
