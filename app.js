@@ -573,7 +573,7 @@ function addCatalogModel(model) {
 }
 async function loadExpandedCatalogs() {
   try {
-    const response = await fetch("./data/nasa-model-index.json?v=20261127-model-links-2");
+    const response = await fetch("./data/nasa-model-index.json?v=20261127-model-links-3");
     if (!response.ok) throw new Error("NASA index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
@@ -1440,6 +1440,7 @@ restoreRouteFromHash();
    if(base.sourceUrl)archiveSource.href=base.sourceUrl;else archiveSource.removeAttribute("href");
    const source=$id("scaling-source-link");source.hidden=!base.sourceUrl;if(base.sourceUrl)source.href=base.sourceUrl;else source.removeAttribute("href");
    await load(file,"STL",convertedModel,null,[],false);
+   if(!root)throw new Error("The converted STL could not be reloaded into the preview.");
    $id("scaling-file-state").textContent="Converted STL";
    $id("scaling-format").textContent="STL · CONVERTED";
    $id("scaling-archive-meta").textContent="STL · converted from "+originalFormat;
