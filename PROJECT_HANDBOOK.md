@@ -182,3 +182,12 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - PR-head checks on that implementation commit passed: model-workspace regression suite (24/24 tests; run 46052035631), catalogue/application validation (run 46052035623), full source/model URL audit (run 46052035624), and Enforce project workflow (run 46052035629).
 - An earlier test attempt exposed incorrectly escaped newline delimiters in the two helper-extraction tests. The tests were corrected; the final model-workspace run passed all 24 tests.
 - The README paragraph break was corrected and verified before these final checks. No manual desktop/mobile browser review was performed. Automated tests verify the calculation helpers and UI hooks, not interactive rendering or slicer behavior.
+
+
+## 11. Scaling modes merge and post-merge verification — 27 November 2026
+
+- Pull request #18 was squash-merged into main as commit 9c6acd8915f71a991802979ad27862f78a771370.
+- Post-merge main head was read back and matched the merge commit exactly.
+- Post-merge checks passed: model-workspace regression suite (run 46052230611), catalogue/application validation (run 46052230800), full source/model URL audit (run 46052230543), GitHub Pages build (run 46052229473, build job 140686124352) and the Deploy to GitHub Pages job in that run (job 140686276470).
+- The successful Pages deployment is confirmed by the completed Deploy to GitHub Pages step. No manual interactive desktop/mobile browser review was performed.
+- Documentation-only follow-up branch: docs/scaling-modes-merge-record-2026-11-27. Safety branch: backup/after-scaling-modes-merge-2026-11-27, created from verified main commit 9c6acd8915f71a991802979ad27862f78a771370.
