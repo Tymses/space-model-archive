@@ -4,7 +4,7 @@
 .scaling-preview-stage{height:430px}
 .scaling-geometry-line{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
 .scaling-geometry-line strong{color:var(--ink);font-size:12px;font-variant-numeric:tabular-nums}
-.scaling-geometry-line label{display:flex;align-items:center;gap:7px}
+.scaling-geometry-line label{display:flex;align-items:center;gap:7px}.scaling-source-description{padding:18px 20px 22px;border-top:1px solid var(--line);background:var(--surface)}.scaling-source-description-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.scaling-source-description-heading .overline{margin:0;color:var(--muted);font-size:10px;letter-spacing:.08em}.scaling-source-description-heading a{font-size:11px;font-weight:650;color:var(--accent);text-decoration:none}.scaling-source-description p{max-width:78ch;margin:10px 0 0;color:var(--ink);font-size:12px;line-height:1.65;white-space:pre-line}
 .scaling-geometry-line select{width:76px;min-height:32px;padding:5px 8px}
 .scaling-settings-panel{display:flex;flex-direction:column;gap:14px}
 .scaling-settings-panel .scaling-model-name{margin:0}
