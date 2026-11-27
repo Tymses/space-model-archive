@@ -411,7 +411,7 @@
  #model-grid.result-grid,#model-grid .model-folder-grid{grid-template-columns:minmax(0,1fr)!important}
 }
 
-.detail-title-line{display:flex;align-items:center;justify-content:space-between;gap:16px}.detail-convert-button{flex-shrink:0;white-space:nowrap}@media(max-width:600px){.detail-title-line{align-items:flex-start;flex-wrap:wrap}}
+.detail-title-line{display:flex;align-items:center;justify-content:space-between;gap:16px}.detail-convert-button{flex-shrink:0;white-space:nowrap}.beta-badge{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;padding:3px 7px;border:1px solid #d7a64a;border-radius:5px;background:#fff7e8;color:#8a5a12;font-size:9px;font-weight:800;letter-spacing:.08em;line-height:1.2}.beta-badge[hidden]{display:none}@media(max-width:600px){.detail-title-line{align-items:flex-start;flex-wrap:wrap}}
 
 
 /* Editorial cross-listing cues */
