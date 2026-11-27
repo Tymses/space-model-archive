@@ -82,3 +82,14 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Changed the unresolved NASA source resolver fallback to the official NASA 3D Resources catalogue instead of a GitHub mirror folder.
 - Added regression coverage for NASA source links and satellite categories.
 - The visible Terrain collection rename, visible cross-listing UI, scale wording and compact beginner workflow remain planned phases, not completed changes.
+
+
+### Editorial readiness implementation — 27 November 2026
+- Pull request #11 merged as commit `0015a1e9fa86e5dc4d4ea8d07fcd466baf60c79c`.
+- Added `EDITORIAL_WORKFLOW.md` with category definitions, source and download-link rules, scale language, cross-listing policy, beginner workflow, per-record review process, acceptance checklist and phased definition of done.
+- Reclassified six ICESat/ICESat-2/Jason-2 variants and the Deep Space Station antenna assembly into Spacecraft / mission hardware. Planetary feature NASA records no longer include those satellite models.
+- Updated 20 NASA planetary feature source URLs to official NASA 3D Resources model pages where verified, and copied those source pages to their matching terrain cross-listings.
+- For NASA raw-file records without a verified model-specific NASA page, the source resolver now uses the official NASA 3D Resources catalogue instead of a GitHub mirror folder. Five other NASA spacecraft entries use their official NASA catalogue or mission pages.
+- PR validation runs `46024935554` (catalogue validation), `46024935075` (model workspace tests) and `46024935005` (catalogue link audit) all succeeded.
+- Post-merge runs `46025013503` (catalogue validation), `46025013532` (model workspace tests), `46025013620` (catalogue link audit) and `46025013089` (GitHub Pages build/deployment) all succeeded.
+- The visible Terrain collection rename, visible cross-listing labels, scale-percentage wording and compact beginner workflow are still editorial follow-up tasks documented in `EDITORIAL_WORKFLOW.md`; they were not implemented in this PR.
