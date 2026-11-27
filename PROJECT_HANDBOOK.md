@@ -122,3 +122,14 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - GitHub Pages build and deployment run `46026810918` completed successfully, including the `Deploy to GitHub Pages` step.
 - A manual interactive browser review was not performed in this session. Automated CI and deployment success do not substitute for checking the live website at desktop and mobile breakpoints.
 - P3 automation now covers the new UI/editorial acceptance cases as regression tests. Human review is still required for source meaning, licensing and scientific identity; the tests do not certify every future catalogue record automatically.
+
+
+## 8. STL conversion beta label — 27 November 2026
+
+- Marked both supported conversion entry points (the model detail header and the Scaling workspace upload row) with a visible **BETA** label.
+- The label appears only when the corresponding conversion action is available and is hidden again when the model is cleared or does not support conversion.
+- Added the caution text: “Conversion may not work for all models or file formats.” The conversion implementation, supported formats, browser-only processing and safety limits are unchanged.
+- Added a regression test covering both labels, conditional visibility, explanatory tooltip and badge styling.
+- This label communicates the current reliability limitation; it does not claim that every supported file has been tested.
+- Implementation branch: `ui/stl-conversion-beta-2026-11-27`; safety branch: `backup/before-stl-beta-2026-11-27`, created from inspected `main` commit `49e5772c20179f6d115e8bd2f66e4b0c9d0a4e36`.
+- Verification and merge status will be recorded after automated checks complete.

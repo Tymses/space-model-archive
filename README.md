@@ -118,3 +118,8 @@ GitHub Actions validates JSON syntax, checks stable IDs in the core catalogue in
 Supported non-STL source formats can be converted locally in the browser: FBX, 3DS, LWO, Blender `.blend`, STEP and STP. Compressed STEP files labelled `STEP (GZIP)` are normalized to the STEP parser after their GZIP payload is decompressed. Conversion uses Three.js STL export for the loaded geometry and OpenCascade for STEP tessellation. The source file is not uploaded by the conversion action. The browser workflow retains its 75 MB output limit and 5-million-triangle safety limit; very large or unsupported scenes may still fail and should be checked in a dedicated CAD/mesh tool.
 
 The **Convert to STL** action is placed in the top-right title row of the model **View details** page (Position A). It is not shown on collection preview cards. See [the project handbook](PROJECT_HANDBOOK.md) for the required repository workflow, current implementation notes and verification status.
+
+
+### STL conversion status
+
+The browser-based **Convert to STL** action is marked **BETA** wherever it is offered. Conversion may not work for all models or file formats. It remains a best-effort browser conversion; inspect every exported STL in your slicer before printing.

@@ -188,3 +188,15 @@ test("terrain collection uses its editorial public name and preserves its stable
 test("NASA terrain cross-listings are visible on cards and detail pages",()=>{const app=read("app.js"),html=read("index.html");assert.match(app,/function findCrossListedModel\(model\)/);assert.match(app,/Also in:/);assert.match(app,/#detail-cross-listings/);assert.match(html,/id="detail-cross-listings"/);const start=app.indexOf("function findCrossListedModel("),end=app.indexOf("\nfunction describeOriginalScale",start);const find=new Function("MODELS",app.slice(start,end)+"\nreturn findCrossListedModel;")([{id:"nasa-auto-74bc0bbbc9d0",category:"planetary"},{id:"nasa-auto-74bc0bbbc9d0-heightmap",category:"height-maps"}]);assert.equal(find({id:"nasa-auto-74bc0bbbc9d0",category:"planetary"}).category,"height-maps");assert.equal(find({id:"nasa-auto-74bc0bbbc9d0-heightmap",category:"height-maps"}).category,"planetary");});
 test("original scale explains whether the source file is larger or smaller than reality",()=>{const app=read("app.js"),start=app.indexOf("function describeOriginalScale("),end=app.indexOf("\nfunction normalizeConversionFormat",start);assert.ok(start>=0&&end>start);const describe=new Function(app.slice(start,end)+"\nreturn describeOriginalScale;")();assert.equal(describe(1/1.036),"Original file is 3.6% larger than the real-world reference");assert.equal(describe(1/0.964),"Original file is 3.6% smaller than the real-world reference");assert.match(describe(1),/matches the real-world reference/);});
 test("beginner workflow starts at archive discovery and finishes in the users slicer",()=>{const html=read("index.html");assert.match(html,/<strong>Find a model<\/strong>/);assert.match(html,/<strong>Check the source and preview<\/strong>/);assert.match(html,/<strong>Prepare scale and size<\/strong>/);assert.match(html,/<strong>Finish in your slicer<\/strong>/);assert.doesNotMatch(html,/<strong>G-code<\/strong>/);});
+
+
+test("STL conversion controls are visibly marked beta wherever conversion is offered",()=>{
+ const html=read("index.html"),app=read("app.js"),css=read("styles.css");
+ assert.match(html,/id="detail-convert-beta"[^>]*hidden>BETA/);
+ assert.match(html,/id="scaling-convert-beta"[^>]*hidden>BETA/);
+ assert.match(html,/Conversion may not work for all models or file formats/);
+ assert.match(app,/convertBeta\.hidden=!canConvert/);
+ assert.match(app,/convertBeta\)convertBeta\.hidden=!convertable/);
+ assert.match(app,/convertBeta\)convertBeta\.hidden=true/);
+ assert.match(css,/\.beta-badge\[hidden\]\{display:none\}/);
+});

@@ -7,10 +7,10 @@
 <meta name="description" content="SPACEMESHER — find, explore and prepare space-related 3D models for 3D printing.">
 <title>SPACEMESHER — Space-related 3D Models</title>
 <link rel="icon" href="assets/favicon.svg?v=20261125-2" type="image/svg+xml">
-<link rel="stylesheet" href="styles.css?v=20261127-model-descriptions-2">
+<link rel="stylesheet" href="styles.css?v=20261127-stl-beta-1">
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
 <script src="config.js?v=20261125-3"></script>
-<script src="app.js?v=20261127-conversion-1" defer></script>
+<script src="app.js?v=20261127-conversion-beta-1" defer></script>
 <script src="view-counter.js?v=20261125-2" defer></script>
 </head>
 <body>
@@ -49,7 +49,7 @@
   <p class="collection-footnote" id="collection-footnote"></p>
 </section>
 <section class="detail-view" id="detail-view" hidden>
-  <div class="detail-header"><div><p class="overline" id="detail-category">SPACECRAFT</p><div class="detail-title-line"><h1 id="detail-title">Model</h1><button class="action-link detail-convert-button" id="detail-convert-stl" type="button" hidden>Convert to STL</button></div><p class="subheading" id="detail-subtitle"></p></div><a class="text-back" href="#" id="detail-back">← Back to collection</a></div>
+  <div class="detail-header"><div><p class="overline" id="detail-category">SPACECRAFT</p><div class="detail-title-line"><h1 id="detail-title">Model</h1><button class="action-link detail-convert-button" id="detail-convert-stl" type="button" hidden>Convert to STL</button><span class="beta-badge" id="detail-convert-beta" title="Conversion may not work for all models or file formats." aria-label="Beta: conversion may not work for all models or file formats." hidden>BETA</span></div><p class="subheading" id="detail-subtitle"></p></div><a class="text-back" href="#" id="detail-back">← Back to collection</a></div>
   <div class="detail-cross-listings" id="detail-cross-listings" hidden aria-label="Other collections"></div>
   <div class="detail-layout">
     <section class="preview-panel" aria-label="3D model preview">
@@ -100,7 +100,7 @@
     <section class="scaling-preview-panel">
       <div class="preview-toolbar"><span>3D MODEL</span><span id="scaling-format">UPLOAD A MODEL</span></div>
       <div class="scaling-preview-stage" id="scaling-preview-stage"><div class="preview-placeholder"><span>◈</span><p>Upload STL, OBJ, PLY, GLB, FBX, BLEND or STEP files.</p></div></div>
-      <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model files</label><input id="scaling-file" type="file" multiple accept=".stl,.obj,.ply,.glb,.gltf,.bin,.mtl,.png,.jpg,.jpeg,.webp,.fbx,.3ds,.lwo,.blend,.step,.stp,.gz"><button class="action-link secondary" id="scaling-convert-stl" type="button" hidden>Convert to STL</button><span>STL · OBJ · PLY · GLB · GLTF · FBX · BLEND · STEP · 3DS · LWO</span></div>
+      <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model files</label><input id="scaling-file" type="file" multiple accept=".stl,.obj,.ply,.glb,.gltf,.bin,.mtl,.png,.jpg,.jpeg,.webp,.fbx,.3ds,.lwo,.blend,.step,.stp,.gz"><button class="action-link secondary" id="scaling-convert-stl" type="button" hidden>Convert to STL</button><span class="beta-badge" id="scaling-convert-beta" title="Conversion may not work for all models or file formats." aria-label="Beta: conversion may not work for all models or file formats." hidden>BETA</span><span>STL · OBJ · PLY · GLB · GLTF · FBX · BLEND · STEP · 3DS · LWO</span></div>
       <div class="scaling-geometry-line"><span>Measured model size</span><strong id="scaling-source-dimensions">—</strong><label title="STL has no unit metadata. STEP is imported in mm and BLEND defaults to m; FBX, 3DS and LWO units can vary, so confirm the measured size before conversion.">File unit<select class="scale-input" id="scaling-units"><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option><option value="in">in</option></select></label></div>
       <section class="scaling-model-description" id="scaling-model-description" hidden aria-live="polite">
         <div class="scaling-description-heading"><p class="overline">MODEL DESCRIPTION</p><span id="scaling-description-status">Generating description…</span></div>
