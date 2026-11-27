@@ -978,7 +978,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space 1: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%201/Deep%20Space%201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-1/",
       "changed": "Source repository"
     },
     {
@@ -992,7 +992,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space Climate Observatory (DSCOVR) (Triana): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Climate%20Observatory%20(DSCOVR)%20(Triana)/Deep%20Space%20Climate%20Observatory%20(DSCOVR)%20(Triana).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-climate-observatory-dscovr-triana/",
       "changed": "Source repository"
     },
     {
@@ -1006,7 +1006,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space Network 34-meter: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2034-meter/Deep%20Space%20Network%2034-meter.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-34-meter/",
       "changed": "Source repository"
     },
     {
@@ -1020,7 +1020,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deep Space Network 70-meter: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deep%20Space%20Network%2070-meter/Deep%20Space%20Network%2070-meter.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deep-space-network-70-meter/",
       "changed": "Source repository"
     },
     {
@@ -1034,7 +1034,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Deformation, Ecosystem Structure, and Dynamics of Ice (DESDynI): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Deformation%2C%20Ecosystem%20Structure%2C%20and%20Dynamics%20of%20Ice%20(DESDynI)/Deformation%2C%20Ecosystem%20Structure%2C%20and%20Dynamics%20of%20Ice%20(DESDynI).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/deformation-ecosystem-structure-and-dynamics-of-ice-desdyni/",
       "changed": "Source repository"
     },
     {
@@ -1048,7 +1048,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "ESAS Crew Module: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/ESAS%20Crew%20Module/ESAS%20Crew%20Module.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/esas-crew-module/",
       "changed": "Source repository"
     },
     {
@@ -1062,7 +1062,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Earth Observing-1 (EO-1): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Earth%20Observing-1%20(EO-1)/Earth%20Observing-1%20(EO-1).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/earth-observing-1-eo-1/",
       "changed": "Source repository"
     },
     {
@@ -1076,7 +1076,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Explorer Jupiter-C Rocket: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Explorer%20Jupiter-C%20Rocket/Explorer%20Jupiter-C%20Rocket.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/explorer-jupiter-c-rocket/",
       "changed": "Source repository"
     },
     {
@@ -1090,7 +1090,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Extravehicular Mobility Unit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Extravehicular%20Mobility%20Unit/Extravehicular%20Mobility%20Unit.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/extravehicular-mobility-unit/",
       "changed": "Source repository"
     },
     {
@@ -1104,7 +1104,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Far Ultraviolet Spectroscopic Explorer: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Far%20Ultraviolet%20Spectroscopic%20Explorer/Far%20Ultraviolet%20Spectroscopic%20Explorer.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/far-ultraviolet-spectroscopic-explorer/",
       "changed": "Source repository"
     },
     {
