@@ -1017,16 +1017,17 @@ restoreRouteFromHash();
  function animate(){if(!renderer)return;raf=requestAnimationFrame(animate);if(controls)controls.update();renderer.render(scene,camera);}
  window.addEventListener("resize",resize);
  function setLookupStatus(message,isError=false){const el=$id("scaling-lookup-status");el.textContent=message;el.classList.toggle("is-error",isError);}
- function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote="",uncertaintyKm=null,confidenceScore=null}){
+ function showDimensions({name,axesKm,longestAxisKm,sourceUrl,sourceLabel="JPL SBDB",confidenceLabel="Verified source",confidenceNote="",uncertaintyKm=null,confidenceScore=null,displayUnit="km"}){
   realAxesKm=axesKm;realLongestKm=longestAxisKm;realSourceUrl=sourceUrl;realObjectName=name;
   const fallbackScore=/high evidence/i.test(confidenceLabel)?95:/moderate evidence/i.test(confidenceLabel)?75:/limited evidence/i.test(confidenceLabel)?45:/verified|jpl|curated/i.test(confidenceLabel)?90:null;
   realConfidenceScore=Number.isFinite(confidenceScore)?Math.max(0,Math.min(100,confidenceScore)):fallbackScore;
   setGauge("reliability",realConfidenceScore,realConfidenceScore===null?"Evidence unavailable":confidenceLabel);
   $id("scaling-object-result").hidden=false;$id("scaling-object-name").textContent=name;
-  $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v)+" km").join(" × ");
-  $id("scaling-object-longest").textContent=fmt(longestAxisKm)+" km";
+  const outputFactor=displayUnit==="m"?1000:1,outputUnit=displayUnit==="m"?"m":"km";
+  $id("scaling-object-axes").textContent=axesKm.map(v=>fmt(v*outputFactor)+" "+outputUnit).join(" × ");
+  $id("scaling-object-longest").textContent=fmt(longestAxisKm*outputFactor)+" "+outputUnit;
   const quality=$id("scaling-object-confidence");if(quality)quality.textContent=confidenceLabel+(confidenceNote?" · "+confidenceNote:"");
-  const uncertainty=$id("scaling-object-uncertainty");if(uncertainty)uncertainty.textContent=Number.isFinite(uncertaintyKm)?"± "+fmt(uncertaintyKm)+" km":"Not stated by source";
+  const uncertainty=$id("scaling-object-uncertainty");if(uncertainty)uncertainty.textContent=Number.isFinite(uncertaintyKm)?"± "+fmt(uncertaintyKm*outputFactor)+" "+outputUnit:"Not stated by source";
   const link=$id("scaling-reference-source");link.href=sourceUrl;link.textContent="Open "+sourceLabel+" record ↗";
   selectedDenominator=null;update();
  }
@@ -1072,7 +1073,7 @@ restoreRouteFromHash();
   const record=await findCuratedDimensions(candidates,expectedCategory);
   if(!record)return false;
   const longest=Math.max(...record.axesKm);
-  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:record.uncertaintyKm});
+  showDimensions({name:record.name,axesKm:record.axesKm,longestAxisKm:longest,sourceUrl:record.sourceUrl,sourceLabel:record.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:record.uncertaintyKm,displayUnit:record.category==="spacecraft"?"m":"km"});
   const uncertainty=Number.isFinite(record.uncertaintyKm)?" Published uncertainty: ±"+fmt(record.uncertaintyKm)+" km.":"";
   const note=record.note?" "+record.note:"";
   setResearchState("complete","A matching record was found in the curated scientific dimensions index.");
@@ -1123,7 +1124,7 @@ restoreRouteFromHash();
   renderResearchCandidates(result.candidates||[],!!result.autoAccept);
   if(result.autoAccept&&result.best?.axesKm){
    const best=result.best;
-   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score});
+   showDimensions({name:query,axesKm:best.axesKm,longestAxisKm:Math.max(...best.axesKm),sourceUrl:best.url,sourceLabel:best.source||"web source",confidenceLabel:qualityLabel(best.quality),confidenceNote:"heuristic source assessment",uncertaintyKm:best.uncertaintyKm,confidenceScore:best.score,displayUnit:category==="spacecraft"?"m":"km"});
    setResearchState("complete","A strong source candidate was selected. "+(result.agreementCount?"Independent sources agree on the longest axis.":"No independent dimensional cross-check was found; review the source."));
    setLookupStatus("A promising source was selected automatically. Evidence score is a source-quality heuristic, not a statistical probability.");
    return true;
@@ -1144,7 +1145,7 @@ restoreRouteFromHash();
    if(lookupToken!==token)return;
    if(directRecord&&(directRecord.category!=="small-bodies"||["iris","7 iris"].includes(normalizeObjectQuery(q)))){
     const longest=Math.max(...directRecord.axesKm);
-    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm});
+    showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm,displayUnit:directRecord.category==="spacecraft"?"m":"km"});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
     setResearchState("complete","A matching source-backed scientific record was found.");
     setLookupStatus((directRecord.category==="spacecraft"?"Spacecraft dimensions":directRecord.category==="moons"?"Moon dimensions":"Terrain footprint")+" from "+(directRecord.sourceLabel||"scientific reference")+"."+(directRecord.configuration?" Configuration: "+directRecord.configuration+".":"")+(directRecord.note?" "+directRecord.note:"")+uncertainty);
@@ -1277,7 +1278,7 @@ restoreRouteFromHash();
    $id("scaling-file-state").textContent=file?"Local upload":"Archive model";$id("scaling-measurement-state").textContent="Geometry measured";update();
    if(model&&Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0){
     const axes=Array.isArray(model.realDimensionsKm)&&model.realDimensionsKm.length>=2?model.realDimensionsKm:[model.realLongestAxisKm];
-    showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source"});
+    showDimensions({name:model.name,axesKm:axes,longestAxisKm:model.realLongestAxisKm,sourceUrl:model.realDimensionUrl||"#",sourceLabel:"verified source",displayUnit:model.category==="spacecraft"?"m":"km"});
     setLookupStatus("Using the existing existing verified measurement.");
    }else{
     const query=deriveSearchTerm(model,file,object)||$id("scaling-object-query").value.trim();
@@ -1332,7 +1333,7 @@ restoreRouteFromHash();
  $id("scaling-research-results").addEventListener("click",e=>{
   const button=e.target.closest("[data-research-index]");if(!button)return;
   const candidate=researchCandidates[Number(button.dataset.researchIndex)];if(!candidate?.axesKm)return;
-  showDimensions({name:$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm,confidenceScore:candidate.score});
+  showDimensions({name:$id("scaling-object-query").value,axesKm:candidate.axesKm,longestAxisKm:Math.max(...candidate.axesKm),sourceUrl:candidate.url,sourceLabel:candidate.source||"web source",confidenceLabel:qualityLabel(candidate.quality),confidenceNote:"manually selected candidate",uncertaintyKm:candidate.uncertaintyKm,confidenceScore:candidate.score,displayUnit:activeExpectedCategory==="spacecraft"?"m":"km"});
   setResearchState("complete","You selected this source. Check its original publication and measurement context before relying on the scale.");
   setLookupStatus("Selected candidate from "+candidate.source+". The source is linked above; measurement uncertainty may not be stated.");
  });
