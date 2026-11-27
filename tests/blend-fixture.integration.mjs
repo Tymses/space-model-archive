@@ -35,6 +35,13 @@ const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.
   parentName:object.parent?.aname||null, dataName:object.data?.aname||null, dataTopology:object.data?{totvert:object.data.totvert,totloop:object.data.totloop,totpoly:object.data.totpoly}:null
 }));
 const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
-  unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length
+  unitSystem:scene.unit?.system, scaleLength:scene.unit?.scale_length,
+  keys:Object.keys(scene).slice(0,80), collectionName:scene.master_collection?.id?.name||scene.collection?.id?.name||null
 }));
-console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, sourceObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
+const collectionSummary=(parsed.objects?.Collection||[]).slice(0,20).map(collection=>({
+  name:collection.id?.name||collection.name||null,
+  keys:Object.keys(collection).slice(0,50),
+  gobject:collection.gobject||null,
+  children:collection.children||null
+}));
+console.log(JSON.stringify({ bytes: buffer.byteLength, datablocks: parsed.object_array.length, meshDatablocks: meshes.length, validMeshes: validMeshes.length, totals, sceneUnits, collectionSummary, sourceObjects, status: "BLEND_GEOMETRY_DATA_OK" }));
