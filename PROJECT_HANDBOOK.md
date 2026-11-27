@@ -344,3 +344,27 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - GitHub Pages build and deployment run `46071776448` completed successfully; the **Deploy to GitHub Pages** job completed with conclusion `success`.
 - The website deployment is confirmed. A live interactive browser import of the exact InSight BLEND file was not performed: the available GitHub text connector does not return binary file contents, and no Blender executable was available. Do not equate successful deployment with verification of that exact model's geometry.
 - Documentation follow-up safety branch: `backup/after-blend-scene-filtering-merge-2026-11-27`, created from merge commit `f0d7c3e6c00b134ffdd649cef8590fabde303383`; documentation branch: `docs/blend-scene-filtering-merge-record-2026-11-27`.
+
+
+## 18. Blender parser nested-structure byte offsets — 27 November 2026
+
+### User report and evidence
+- The user supplied a fresh screenshot of **InSight Cruise Stage (final)** after conversion. It shows large, connected flat geometry dominating the preview and the spacecraft meshes appearing much smaller and separated. The user correctly questioned whether the fault is in the converter rather than only unwanted scene annotations.
+- Review of the current `vendor/blend-parser.js` found a concrete parser defect in `BLENDER_STRUCTURE.prototype.setData`: it declared a local `length` variable but never assigned it before using it to advance through inline nested SDNA structures. The method receives the parent datablock end as `data_block_length`, but did not use it to validate nested offsets. This could make nested structures be read at invalid offsets and corrupt parsed mesh/object data.
+- The prior PR #26 annotation-name filter only excludes a narrow set of explicitly named text/label meshes. It cannot correct malformed datablock parsing and should be treated as a mitigation, not the root fix.
+
+### Implementation
+- Added `getBlenderStructByteLength(schemas, type)`, which reads the compiled byte size from the SDNA schema and rejects missing, zero or invalid sizes.
+- Updated nested inline-structure parsing to advance by the exact compiled size, use correct per-element start/end offsets for struct arrays, and validate the nested range against the parent datablock boundary.
+- Removed the previously uninitialized `length` stride from `setData`.
+- Added regression coverage for known SDNA byte sizes, invalid schema sizes and use of bounded nested offsets.
+- Updated README conversion documentation to describe the corrected offset handling and explicit rejection of invalid nested layouts.
+
+### Verification and limits
+- Inspected main commit: `9630b37c07ba7d06bda42e7c4132fabe5080b922`.
+- Safety branch: `backup/before-blend-parser-struct-length-fix-2026-11-27`.
+- Implementation branch: `fix/blend-parser-struct-length-2026-11-27`.
+- Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `README.md`, `PROJECT_HANDBOOK.md`.
+- The user screenshot is visual evidence of incorrect output, but it does not by itself prove which Blender datablock is malformed. This parser bug is confirmed by source inspection and is a credible cause of corrupted geometry; the exact InSight binary still needs a real end-to-end conversion after CI.
+- Do not claim that the screenshot model is fixed until the exact NASA `.blend` file has been converted and its preview/bounds checked. Browser/Blender manual verification is not available through the GitHub source connector.
+- Rollback: `backup/before-blend-parser-struct-length-fix-2026-11-27` at `9630b37c07ba7d06bda42e7c4132fabe5080b922`.
