@@ -1,6 +1,7 @@
 import bpy
 import json
 import os
+import re
 import sys
 from mathutils import Vector
 
@@ -11,13 +12,20 @@ output_path = args[0]
 scene = bpy.context.scene
 depsgraph = bpy.context.evaluated_depsgraph_get()
 mesh_objects = [obj for obj in scene.objects if obj.type == "MESH"]
+annotation_name = re.compile(r"^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$", re.I)
+environment_name = re.compile(r"^(?:ground[._ -]?and[._ -]?sky[._ -]?dome|sky[._ -]?dome|world[._ -]?background)$", re.I)
+printable_objects = [obj for obj in mesh_objects if not (
+    (obj.parent and obj.parent.type == "CAMERA") or
+    annotation_name.match(obj.name) or environment_name.match(obj.name) or
+    (obj.data and (annotation_name.match(obj.data.name) or environment_name.match(obj.data.name)))
+)]
 if not mesh_objects:
     raise RuntimeError("Native Blender found no mesh objects")
 
 minimum = [float("inf")] * 3
 maximum = [float("-inf")] * 3
 details = []
-for obj in mesh_objects:
+for obj in printable_objects:
     evaluated = obj.evaluated_get(depsgraph)
     corners = [evaluated.matrix_world @ Vector(corner) for corner in evaluated.bound_box]
     lo = [min(point[i] for point in corners) for i in range(3)]
@@ -51,9 +59,9 @@ scene_units = {
 }
 for obj in bpy.context.selected_objects:
     obj.select_set(False)
-for obj in mesh_objects:
+for obj in printable_objects:
     obj.select_set(True)
-bpy.context.view_layer.objects.active = mesh_objects[0]
+bpy.context.view_layer.objects.active = printable_objects[0]
 if hasattr(bpy.ops.wm, "stl_export"):
     bpy.ops.wm.stl_export(filepath=output_path, export_selected_objects=True)
 elif hasattr(bpy.ops.export_mesh, "stl"):
@@ -66,6 +74,8 @@ result = {
     "status": "NATIVE_BLENDER_STL_OK",
     "version": bpy.app.version_string,
     "mesh_objects": len(mesh_objects),
+    "printable_objects": len(printable_objects),
+    "excluded_presentation_objects": len(mesh_objects) - len(printable_objects),
     "scene_units": scene_units,
     "bounds": [maximum[i] - minimum[i] for i in range(3)],
     "largest_objects": details[:20],
