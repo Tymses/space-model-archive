@@ -32,6 +32,7 @@ test("NASA Deep Impact and Wrench records point to model-specific sources", () =
   assert.equal(stl[0].sourceUrl, "https://science.nasa.gov/3d-resources/wrench-2/");
   assert.match(stl[0].file, /International%20Space%20Station%20Tools\/wrench\.stl$/);
   assert.equal(glb.length, 1);
+  assert.equal(glb[0].kind, "Tool / mission hardware");
   assert.match(glb[0].sourceUrl, /^https:\/\/github\.com\/nasa\/NASA-3D-Resources\/tree\/master\/3D%20Models\/Wrench$/);
 });
 
