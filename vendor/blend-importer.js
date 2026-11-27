@@ -286,8 +286,23 @@ function createCamera(object) {
     return new THREE.PerspectiveCamera(fov, (d.sensor_x || 36) / sensorHeight, d.clipsta || 0.1, d.clipend || 1000)
 }
 
+function safeNumericVector(value, length, fallback = null) {
+    let values
+    if (Array.isArray(value) || ArrayBuffer.isView(value)) {
+        values = Array.from(value).slice(0, length)
+    } else if (value && typeof value === 'object') {
+        values = Array.from({ length }, (_, index) => value[index] ?? value[String(index)])
+    }
+    if (!values || values.length !== length || !values.every(item => Number.isFinite(Number(item)))) return fallback
+    return values.map(Number)
+}
+
 function safeVec(v, fallback) {
-    return Array.isArray(v) && v.length >= 3 ? v : fallback
+    return safeNumericVector(v, 3, fallback)
+}
+
+function safeQuat(v) {
+    return safeNumericVector(v, 4, null)
 }
 
 function setTransform(object, obj) {
@@ -298,8 +313,8 @@ function setTransform(object, obj) {
     obj.scale.set(size[0], size[2], size[1])
     obj.position.set(loc[0], loc[2], -loc[1])
 
-    const quat = object.quat
-    if ((!object.rotmode || object.rotmode === 0) && Array.isArray(quat) && quat.length >= 4) {
+    const quat = safeQuat(object.quat)
+    if ((!object.rotmode || object.rotmode === 0) && quat) {
         obj.quaternion.set(quat[1], quat[3], -quat[2], quat[0]) // wxyz
     } else {
         const order = EULER_MODES[object.rotmode] ?? 'XYZ'
