@@ -353,10 +353,10 @@ test("Blender scene builder can explicitly retain annotation meshes when request
 
 test("Blender parser advances nested DNA structures by their compiled byte size",()=>{
  const source=read("vendor/blend-parser.js");
- const start=source.indexOf("export function getBlenderStructByteLength(");
+ const start=source.indexOf("function getBlenderStructByteLength(");
  const end=source.indexOf("\n}",start);
  assert.ok(start>=0&&end>start,"compiled SDNA byte-size helper must exist");
- const helper=source.slice(start,end+2).replace("export function ","function ");
+ const helper=source.slice(start,end+2);
  const getSize=new Function(helper+"\nreturn getBlenderStructByteLength;")();
  assert.equal(getSize({MVert:{length:12},CustomDataLayer:{length:24}},"MVert"),12);
  assert.equal(getSize({MVert:{length:12}},"MVert"),12);
