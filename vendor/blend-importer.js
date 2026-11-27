@@ -316,7 +316,8 @@ function setTransform(object, obj) {
     obj.updateMatrix()
 }
 
-const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|watermark|copyright)(?:[._ -]?\d+)?$/i
+const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$/i
+const PRESENTATION_ENVIRONMENT_NAME = /^(?:ground[._ -]?and[._ -]?sky[._ -]?dome|sky[._ -]?dome|world[._ -]?background)$/i
 
 /**
  * Blender scenes often contain extruded text meshes for titles and labels.
@@ -327,7 +328,10 @@ export function isLikelyAnnotationObject(object) {
     const names = [object?.aname, object?.data?.aname]
         .map(value => String(value || '').trim())
         .filter(Boolean)
-    return names.some(name => ANNOTATION_OBJECT_NAME.test(name))
+    // Camera-parented meshes are presentation overlays (e.g. the NASA/JPL logo),
+    // not part of the physical spacecraft. Known sky/ground domes are environment.
+    return object?.parent?.type === BLEND_OBJECT_TYPES.camera ||
+        names.some(name => ANNOTATION_OBJECT_NAME.test(name) || PRESENTATION_ENVIRONMENT_NAME.test(name))
 }
 
 export function createObjects(file, options = {}) {
