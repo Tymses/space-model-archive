@@ -234,3 +234,13 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Automated tests and GitHub Actions validation are pending; no test success or live browser verification is claimed until the PR checks and a manual browser test are completed.
 - Rollback reference: `backup/before-blend-geometry-and-button-feedback-2026-11-27` at `daed045b9267934e5574bad301f20e7ff45403bb`.
 - Implementation branch: `fix/blend-geometry-and-button-feedback-2026-11-27`.
+
+
+### Post-merge verification — 27 November 2026
+- Pull request #21 was squash-merged into `main` as `e86b7e35c9a4404ff7b901bc5d2ba6b297f9b51d`.
+- PR-head model-workspace regression suite passed all 31 tests (run `46064694914`); this includes the four new Blender and button-feedback tests.
+- PR-head catalogue/application validation passed (run `46064695162`), the complete source/model link audit passed (run `46064694916`), and the mandatory project-workflow check passed (run `46064695011`).
+- Read-back from `main` confirmed that the importer, application code, styles, tests, README and handbook match the merged PR contents.
+- The NASA source record for Mars 2020 Perseverance Rover points to the original NASA/JPL Blender file. The binary `.blend` could not be downloaded through the available GitHub file connector (it returned no binary content), so no claim is made that this exact 20.92 MB file was manually converted or visually compared after the fix. The regression suite validates the importer logic, not this specific external binary.
+- No post-merge GitHub Pages deployment run or interactive browser verification was available in the recorded workflow results. The live preview and actual rover appearance still require a manual browser check after the published site updates.
+- Documentation follow-up branch: `docs/blend-fix-verification-record-2026-11-27`; safety branch: `backup/before-blend-verification-record-2026-11-27`, created from merge commit `e86b7e35c9a4404ff7b901bc5d2ba6b297f9b51d`.
