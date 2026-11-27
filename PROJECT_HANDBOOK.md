@@ -98,3 +98,6 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 
 - Follow-up PR #12 merged as `2430c2d8bc18307007e216d146d7470e15f46920`: both Pahrump Hills variants now use the official NASA 3D Resources catalogue as their source because no model-specific NASA detail page was verified.
 - PR #12 validation, model-workspace regression tests and full catalogue link audit all passed (runs `46025238601`, `46025238500`, `46025238489`). Post-merge validation and model-workspace tests passed (runs `46025295024`, `46025295061`); post-merge link audit passed (`46025295101`); GitHub Pages build and deployment passed (`46025295126`).
+
+- Follow-up PR #13 merged as `ba569586cee16d089ec12e954d62ad437f6b03e9`: both Pahrump Hills terrain cross-listing records now use the official NASA 3D Resources catalogue, matching their primary records. No individual NASA model detail page was verified for these variants.
+- PR #13 catalogue validation, model-workspace regression tests and catalogue link audit passed (runs `46025511805`, `46025511713`, `46025511571`). Post-merge catalogue validation, model-workspace tests and link audit passed (runs `46025590825`, `46025590882`, `46025590943`). The post-merge Pages build completed successfully; the deploy job was still running when this handbook entry was written (run `46025590626`).
