@@ -49,6 +49,13 @@ jobs:
         run: node tests/blend-browser.integration.mjs
       - name: Install native Blender for source comparison
         run: sudo apt-get update && sudo apt-get install -y blender
+      - name: Upload converted InSight STL sample
+        uses: actions/upload-artifact@v4
+        with:
+          name: insight-cruise-stage-browser-stl
+          path: /tmp/insight-browser.stl
+          if-no-files-found: error
+          retention-days: 7
       - name: Export NASA fixture with native Blender
         run: |
           curl --fail --location --retry 3 --output /tmp/insight-native.blend "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20%28final%29.blend"
