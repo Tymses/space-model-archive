@@ -350,7 +350,7 @@ test("Blender scene builder can explicitly retain annotation meshes when request
  assert.ok(source.includes("options.onAnnotationExcluded?.(diagnostic)"));
  const app=read("app.js");
  assert.ok(app.includes("onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)"));
- assert.ok(app.includes("likely text/label mesh(es)"));
+ assert.ok(app.includes("hidden or presentation-only scene object(s)"));
 });
 
 
