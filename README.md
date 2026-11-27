@@ -135,3 +135,8 @@ The **Convert to STL** action is placed in the top-right title row of the model 
 ### STL conversion status
 
 The browser-based **Convert to STL** action is marked **BETA** wherever it is offered. Conversion may not work for all models or file formats. It remains a best-effort browser conversion; inspect every exported STL in your slicer before printing.
+
+
+### Blender SDNA struct-size correction
+
+Blender SDNA's `TLEN` table stores the actual compiled size of each C structure, including alignment padding. The parser now retains that size as `SDNA[type].byteLength` when it compiles each structure and uses it for nested inline structure traversal. It no longer reads a nonexistent `SDNA[type].length` field (which was never the compiled struct size). This specifically fixes failures such as `BLEND_INVALID_DNA_SIZE` for the base `ID` structure.
