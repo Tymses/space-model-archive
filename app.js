@@ -171,7 +171,8 @@ function setSpecificModelSource(model){
       model.sourcePageUrl=source.toString();
     }
   }catch{
-    if(!originalSource)model.sourcePageUrl=null;
+    model.sourcePageUrl=null;
+    model.sourceUrl=null;
   }
   if(model.sourcePageUrl)model.sourceUrl=model.sourcePageUrl;
   else model.sourceUrl=null;
@@ -462,7 +463,7 @@ function addCatalogModel(model) {
     const sourceQuality = value => {
       try {
         const url = new URL(value);
-        if (url.hostname === "models.spaceradar.ai" && url.pathname.startsWith("/model/")) return 4;
+        if (["models.spaceradar.ai","www.spaceradar.ai"].includes(url.hostname) && url.pathname.startsWith("/model/")) return 4;
         if (url.pathname === "/" || ["/3d-resources", "/3d-resources/"].includes(url.pathname)) return 0;
         if (url.hostname === "raw.githubusercontent.com") return 0;
         if (url.hostname === "github.com" && url.pathname.includes("/tree/")) return 0;
@@ -481,7 +482,7 @@ function addCatalogModel(model) {
 }
 async function loadExpandedCatalogs() {
   try {
-    const response = await fetch("./data/nasa-model-index.json?v=20261126-19");
+    const response = await fetch("./data/nasa-model-index.json?v=20261127-01");
     if (!response.ok) throw new Error("NASA index HTTP " + response.status);
     const index = await response.json();
     for (const model of index.files || []) addCatalogModel(model);
