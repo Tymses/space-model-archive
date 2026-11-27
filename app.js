@@ -1425,8 +1425,8 @@ restoreRouteFromHash();
      const bytes=await response.arrayBuffer();if(bytes.byteLength>MAX_BROWSER_MODEL_BYTES)throw new Error("BLEND_TOO_LARGE: The Blender download exceeds the 75 MB browser limit.");
      const blend=await import("./vendor/blend-importer.js");
      const parsed=await blend.parseBlend(bytes,model?.name||file?.name||"Blender scene");
-     const meshDiagnostics=[];
-     const objects=blend.createObjects(parsed.file,{onMeshError:diagnostic=>meshDiagnostics.push(diagnostic)});
+     const meshDiagnostics=[],annotationDiagnostics=[];
+     const objects=blend.createObjects(parsed.file,{onMeshError:diagnostic=>meshDiagnostics.push(diagnostic),onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)});
      let blendMeshCount=0,blendTriangleCount=0;
      for(const item of objects)item.traverse?.(node=>{if(node.isMesh&&node.geometry){blendMeshCount++;blendTriangleCount+=node.geometry.index?node.geometry.index.count/3:(node.geometry.attributes.position?.count||0)/3;}});
      if(!blendMeshCount||!blendTriangleCount){
@@ -1434,11 +1434,12 @@ restoreRouteFromHash();
       throw new Error("BLEND_NO_VALID_MESH: Blender "+parsed.header.version+" scene contains no importable mesh triangles. "+detail+" No substitute geometry was generated.");
      }
      object=new THREE.Group();object.add(...objects);
+     const annotationNote=annotationDiagnostics.length?" Excluded "+annotationDiagnostics.length+" likely text/label mesh(es) from printable geometry.": "";
      if(meshDiagnostics.length){
       const examples=meshDiagnostics.slice(0,2).map(item=>item.object+": "+item.message).join(" | ");
-      setLookupStatus("Blender "+parsed.header.version+": loaded "+blendMeshCount+" valid mesh(es); skipped "+meshDiagnostics.length+" invalid mesh object(s). "+examples,true);
+      setLookupStatus("Blender "+parsed.header.version+": loaded "+blendMeshCount+" valid mesh(es); skipped "+meshDiagnostics.length+" invalid mesh object(s)."+annotationNote+" "+examples,true);
      }else{
-      setLookupStatus("Blender "+parsed.header.version+" scene parsed; "+blendMeshCount+" mesh(es), "+Math.round(blendTriangleCount).toLocaleString("en-US")+" triangles.");
+      setLookupStatus("Blender "+parsed.header.version+" scene parsed; "+blendMeshCount+" mesh(es), "+Math.round(blendTriangleCount).toLocaleString("en-US")+" triangles."+annotationNote);
      }
     }else if(format==="STEP"||format==="STP"){
      const response=await fetch(url);if(!response.ok)throw new Error("STEP download returned HTTP "+response.status+".");
