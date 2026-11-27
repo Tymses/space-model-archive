@@ -172,7 +172,7 @@ function setSpecificModelSource(model){
       const folderPage="https://github.com/nasa/NASA-3D-Resources/tree/master/"+parts.slice(marker,parts.length-1).map(encodeURIComponent).join("/");
       const verifiedPage=NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.name))||NASA_VERIFIED_MODEL_PAGES.get(normalizeSourceTitle(model.folderName));
       const suppliedNasaPage=source&&source.hostname==="science.nasa.gov"&&source.pathname.startsWith("/3d-resources/")?source.toString():null;
-      model.sourcePageUrl=verifiedPage||suppliedNasaPage||folderPage;
+      model.sourcePageUrl=verifiedPage||suppliedNasaPage||"https://science.nasa.gov/3d-resources/";
     }else if(asset&&asset.hostname==="www.spaceradar.ai"&&asset.pathname.startsWith("/models/")&&model.source==="Space Radar map assets"){
       const slug=decodeURIComponent(asset.pathname.split("/").pop()).replace(/\.glb$/i,"");
       model.sourcePageUrl="https://www.spaceradar.ai/model/?id="+encodeURIComponent(slug);

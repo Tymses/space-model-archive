@@ -1543,8 +1543,8 @@
     {
       "id": "nasa-auto-8bb9044d2bf0",
       "name": "Ice, Clouds, and Land Elevation Satellite (ICESat) (A)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "1.10 MB",
       "format": "GLB",
@@ -1557,8 +1557,8 @@
     {
       "id": "nasa-auto-9939a1032569",
       "name": "Ice, Clouds, and Land Elevation Satellite (ICESat) (B)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "2.72 MB",
       "format": "GLB",
@@ -1571,8 +1571,8 @@
     {
       "id": "nasa-auto-68ce25824a7a",
       "name": "Ice, Clouds, and Land Elevation Satellite 2 (ICESat 2) (A)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "1.43 MB",
       "format": "GLB",
@@ -1585,8 +1585,8 @@
     {
       "id": "nasa-auto-d0ea1fde4097",
       "name": "Ice, Clouds, and Land Elevation Satellite 2 (ICESat 2) (B)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "1.91 MB",
       "format": "GLB",
@@ -1599,8 +1599,8 @@
     {
       "id": "nasa-auto-311a2780b948",
       "name": "Ice, Clouds, and Land Elevation Satellite 2 (ICESat 2) (C)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "8.64 MB",
       "format": "GLB",
@@ -2509,8 +2509,8 @@
     {
       "id": "nasa-auto-420d5ed71dcd",
       "name": "Ocean Surface Topography Mission (OSTM Jason 2)",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Spacecraft / Earth-observation satellite",
       "source": "NASA 3D Resources",
       "size": "903 kB",
       "format": "GLB",
@@ -2923,7 +2923,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Skylab: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Skylab/Skylab.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Skylab",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository"
     },
     {
@@ -2937,7 +2937,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Solar Dynamics Observatory: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Dynamics%20Observatory/Solar%20Dynamics%20Observatory.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Dynamics%20Observatory",
+      "sourceUrl": "https://science.nasa.gov/mission/sdo/",
       "changed": "Source repository"
     },
     {
@@ -2951,7 +2951,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Solar Radiation and Climate Experiment (SORCE): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Radiation%20and%20Climate%20Experiment%20(SORCE)/Solar%20Radiation%20and%20Climate%20Experiment%20(SORCE).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Radiation%20and%20Climate%20Experiment%20(SORCE)",
+      "sourceUrl": "https://science.nasa.gov/earth/earth-observatory/solar-radiation-and-climate-experiment-sorce-fact-sheet/",
       "changed": "Source repository"
     },
     {
@@ -2965,7 +2965,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Solar Sail Concept: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20Sail%20Concept/Solar%20Sail%20Concept.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Sail%20Concept",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/",
       "changed": "Source repository"
     },
     {
@@ -2979,7 +2979,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Solar TErrestrial RElations Observatory (STEREO): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO)/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO).glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO)",
+      "sourceUrl": "https://science.nasa.gov/mission/stereo/",
       "changed": "Source repository"
     },
     {
@@ -3931,7 +3931,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Wrench: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Wrench/Wrench.glb",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Wrench",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/wrench-2/",
       "changed": "Source repository"
     },
     {
@@ -4259,8 +4259,8 @@
     {
       "id": "nasa-auto-75cc8e54cb2c",
       "name": "Elevation assembly",
-      "category": "planetary",
-      "kind": "Planetary surface model",
+      "category": "spacecraft",
+      "kind": "Ground-station antenna hardware",
       "source": "NASA 3D Resources",
       "size": "363 kB",
       "format": "STL",
@@ -4533,7 +4533,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Landing%20Site/Curiosity%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-landing-site/",
       "changed": "Source repository"
     },
     {
@@ -4645,7 +4645,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover Path: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Rover%20Path/Curiosity%20Rover%20Path.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Rover%20Path",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-path/",
       "changed": "Source repository"
     },
     {
@@ -5849,7 +5849,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Gale Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Gale%20Crater/Gale%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Gale%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gale-crater/",
       "changed": "Source repository"
     },
     {
@@ -7165,7 +7165,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Linne Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Linne%20Crater/Linne%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Linne%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/linne-crater/",
       "changed": "Source repository"
     },
     {
@@ -7179,7 +7179,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Gale Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Gale%20Crater/Mars%20-%20Gale%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Gale%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-inside-gale-crater/",
       "changed": "Source repository"
     },
     {
@@ -7221,7 +7221,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Spirit Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Spirit%20Landing%20Site/Mars%20-%20Spirit%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Spirit%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-spirit-landing-site/",
       "changed": "Source repository"
     },
     {
@@ -7235,7 +7235,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Spirit Rover Path: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Spirit%20Rover%20Path/Mars%20-%20Spirit%20Rover%20Path.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Spirit%20Rover%20Path",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-spirit-rover-path/",
       "changed": "Source repository"
     },
     {
@@ -7249,7 +7249,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Tharsis: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Tharsis/Mars%20-%20Tharsis.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Tharsis",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-tharsis/",
       "changed": "Source repository"
     },
     {
@@ -7263,7 +7263,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(B)/Mars%20-%20Valles%20Marineris%20(B).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -7277,7 +7277,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(C)/Mars%20-%20Valles%20Marineris%20(C).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris-c/",
       "changed": "Source repository"
     },
     {
@@ -7291,7 +7291,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%201).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -7305,7 +7305,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%202).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -7319,7 +7319,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%203).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -7333,7 +7333,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Victoria Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Victoria%20Crater/Mars%20-%20Victoria%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Victoria%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-victoria-crater/",
       "changed": "Source repository"
     },
     {
@@ -7529,7 +7529,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Aristarchus Region: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Aristarchus%20Region/Moon%20-%20Aristarchus%20Region.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Aristarchus%20Region",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-aristarchus-region/",
       "changed": "Source repository"
     },
     {
@@ -7543,7 +7543,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Copernicus Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Copernicus%20Crater/Moon%20-%20Copernicus%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Copernicus%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-copernicus-crater/",
       "changed": "Source repository"
     },
     {
@@ -7557,7 +7557,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Gassendi Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Gassendi%20Crater/Moon%20-%20Gassendi%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Gassendi%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-gassendi-crater/",
       "changed": "Source repository"
     },
     {
@@ -7571,7 +7571,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Mount Hadley: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Mount%20Hadley/Moon%20-%20Mount%20Hadley.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Mount%20Hadley",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-mount-hadley/",
       "changed": "Source repository"
     },
     {
@@ -7585,7 +7585,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Tycho: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Tycho/Moon%20-%20Tycho.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Tycho",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-tycho/",
       "changed": "Source repository"
     },
     {
@@ -7879,7 +7879,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Opportunity Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Opportunity%20Landing%20Site/Opportunity%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Opportunity%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/opportunity-landing-site/",
       "changed": "Source repository"
     },
     {
@@ -9195,7 +9195,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Landing%20Site/Curiosity%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-landing-site/",
       "changed": "Source repository"
     },
     {
@@ -9209,7 +9209,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Curiosity Rover Path: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Curiosity%20Rover%20Path/Curiosity%20Rover%20Path.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Curiosity%20Rover%20Path",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/curiosity-rover-path/",
       "changed": "Source repository"
     },
     {
@@ -9223,7 +9223,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Gale Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Gale%20Crater/Gale%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Gale%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/gale-crater/",
       "changed": "Source repository"
     },
     {
@@ -9237,7 +9237,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Linne Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Linne%20Crater/Linne%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Linne%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/linne-crater/",
       "changed": "Source repository"
     },
     {
@@ -9251,7 +9251,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Gale Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Gale%20Crater/Mars%20-%20Gale%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Gale%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-inside-gale-crater/",
       "changed": "Source repository"
     },
     {
@@ -9293,7 +9293,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Spirit Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Spirit%20Landing%20Site/Mars%20-%20Spirit%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Spirit%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-spirit-landing-site/",
       "changed": "Source repository"
     },
     {
@@ -9307,7 +9307,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Spirit Rover Path: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Spirit%20Rover%20Path/Mars%20-%20Spirit%20Rover%20Path.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Spirit%20Rover%20Path",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-spirit-rover-path/",
       "changed": "Source repository"
     },
     {
@@ -9321,7 +9321,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Tharsis: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Tharsis/Mars%20-%20Tharsis.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Tharsis",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-tharsis/",
       "changed": "Source repository"
     },
     {
@@ -9335,7 +9335,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(B)/Mars%20-%20Valles%20Marineris%20(B).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(B)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -9349,7 +9349,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(C)/Mars%20-%20Valles%20Marineris%20(C).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris%20(C)",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris-c/",
       "changed": "Source repository"
     },
     {
@@ -9363,7 +9363,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%201).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -9377,7 +9377,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%202).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -9391,7 +9391,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Valles Marineris: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Valles%20Marineris/Mars%20-%20Valles%20Marineris%20(part%203).stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Valles%20Marineris",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-valles-marineris/",
       "changed": "Source repository"
     },
     {
@@ -9405,7 +9405,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars - Victoria Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Mars%20-%20Victoria%20Crater/Mars%20-%20Victoria%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Mars%20-%20Victoria%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-trek-victoria-crater/",
       "changed": "Source repository"
     },
     {
@@ -9419,7 +9419,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Aristarchus Region: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Aristarchus%20Region/Moon%20-%20Aristarchus%20Region.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Aristarchus%20Region",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-aristarchus-region/",
       "changed": "Source repository"
     },
     {
@@ -9433,7 +9433,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Copernicus Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Copernicus%20Crater/Moon%20-%20Copernicus%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Copernicus%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-copernicus-crater/",
       "changed": "Source repository"
     },
     {
@@ -9447,7 +9447,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Gassendi Crater: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Gassendi%20Crater/Moon%20-%20Gassendi%20Crater.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Gassendi%20Crater",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-gassendi-crater/",
       "changed": "Source repository"
     },
     {
@@ -9461,7 +9461,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Mount Hadley: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Mount%20Hadley/Moon%20-%20Mount%20Hadley.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Mount%20Hadley",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-mount-hadley/",
       "changed": "Source repository"
     },
     {
@@ -9475,7 +9475,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Moon - Tycho: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Moon%20-%20Tycho/Moon%20-%20Tycho.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Moon%20-%20Tycho",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/moon-tycho/",
       "changed": "Source repository"
     },
     {
@@ -9489,7 +9489,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Opportunity Landing Site: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Printing/Opportunity%20Landing%20Site/Opportunity%20Landing%20Site.stl",
-      "sourceUrl": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Printing/Opportunity%20Landing%20Site",
+      "sourceUrl": "https://science.nasa.gov/3d-resources/opportunity-landing-site/",
       "changed": "Source repository"
     }
   ]
