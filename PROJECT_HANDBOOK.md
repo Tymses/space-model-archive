@@ -328,7 +328,10 @@ This standing policy does not authorize merging when checks fail, the diff is un
 
 ### Verification and limits
 - Added regression tests for conservative object-name matching, avoiding substring false positives, explicit opt-out and UI diagnostics.
-- No local Node runtime, Blender executable or binary fixture could be run in this environment. GitHub Actions must validate the code and tests; the exact NASA binary still requires an end-to-end import/visual comparison in a browser.
+- Local verification: Node.js 22.16.0 was available. The isolated annotation-name classifier passed five positive/negative cases. A local Git clone was blocked by unavailable DNS/network access; Blender is not installed in the runtime.
+- First PR-head CI attempt failed because an existing regression assertion expected the old `createObjects` callback argument exactly. The assertion was updated to include the new annotation-diagnostic callback; this was a test expectation mismatch, not a runtime failure.
+- Final PR-head checks on `cb11a985eb0a4931171a10704114033d1f936603` passed: model-workspace regression suite run `46071652614`, catalogue/application validation run `46071652577`, workflow enforcement run `46071652573`, and complete catalogue link audit run `46071652607`.
+- The exact NASA binary still requires an end-to-end import/visual comparison in a browser. The GitHub text connector rejected the binary response; the NASA repository tree and file sizes were verified, but the file bytes were not locally retrieved.
 - Safety branch: `backup/before-blend-scene-filtering-2026-11-27`, created from inspected `main` commit `9a6681ddc239bb72878c7193fc29b1db8b5c486c`.
 - Implementation branch: `fix/blend-scene-geometry-selection-2026-11-27`.
 - Rollback: restore the implementation branch to the safety-branch commit; no changes were made to the NASA source files or catalogue records.
