@@ -431,3 +431,28 @@ test("Blender mesh geometry computes exact local bounds before being returned",(
  assert.ok(body.includes("geometry.computeBoundingBox()"));
  assert.ok(body.indexOf("geometry.computeBoundingBox()")<body.indexOf("return geometry"));
 });
+
+test("manual original dimensions convert units and select the chosen model axis",()=>{
+ const source=read("app.js"),start=source.indexOf("function calculateFitToBuildPlate("),end=source.indexOf("function describeOriginalScale(",start);
+ assert.ok(start>=0&&end>start);
+ const helpers=new Function(source.slice(start,end)+"\nreturn {convertCustomDimensionToMm,calculateCustomScaleDenominator};")();
+ assert.equal(helpers.convertCustomDimensionToMm(3.4,"m"),3400);
+ assert.equal(helpers.convertCustomDimensionToMm(3400,"mm"),3400);
+ assert.equal(helpers.convertCustomDimensionToMm(-1,"m"),null);
+ const model=[6135.377,1584.011,3620.992];
+ assert.ok(Math.abs(helpers.calculateCustomScaleDenominator(model,3400,"longest")-(3400/6135.377))<1e-12);
+ assert.ok(Math.abs(helpers.calculateCustomScaleDenominator(model,1000,"1")-(1000/1584.011))<1e-12);
+});
+test("automatic printer-bed fit chooses a safe axis orientation and proportional scale",()=>{
+ const source=read("app.js"),start=source.indexOf("function calculateFitToBuildPlate("),end=source.indexOf("function convertCustomDimensionToMm(",start);
+ assert.ok(start>=0&&end>start);
+ const fit=new Function(source.slice(start,end)+"\nreturn calculateFitToBuildPlate;")();
+ const result=fit([6135.377,1584.011,3620.992],[256,256,256],5,100);
+ assert.equal(result.valid,true);assert.equal(result.fits,true);
+ assert.ok(result.factor>0&&result.factor<1);
+ assert.ok(result.printDimensions.every((value,index)=>value<=result.usableBed[index]+1e-9));
+ assert.equal(result.usableBed[0],246);
+ assert.equal(fit([100,100,100],[256,256,256],200,100).valid,false);
+ assert.equal(fit([100,100,100],[256,256,256],5,110).fits,true);
+ assert.equal(fit([100,100,100],[256,256,256],5,300).fits,false);
+});
