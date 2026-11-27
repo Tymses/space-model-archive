@@ -28,7 +28,7 @@
     <button class="category-card" data-category="small-bodies" title="Explore asteroids, comets, dwarf planets and meteorite samples"><span class="category-index">03</span><span class="category-icon" aria-hidden="true">✺</span><span class="category-name">Asteroids &amp; comets</span><span class="category-desc">Small bodies, their shapes, surfaces and missions</span><span class="category-arrow" aria-hidden="true">↗</span></button>
     <button class="category-card" data-category="moons" title="Explore natural satellites and their 3D shape models"><span class="category-index">04</span><span class="category-icon" aria-hidden="true">◕</span><span class="category-name">Moons</span><span class="category-desc">Natural satellites and their shape models</span><span class="category-arrow" aria-hidden="true">↗</span></button>
     <div class="category-divider"><span>Terrain data &amp; generation</span></div>
-    <button class="category-card" data-category="height-maps" title="Find elevation data and tools that turn planetary terrain into printable 3D geometry"><span class="category-index">05 · DATA COLLECTION</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Height maps</span><span class="category-desc">Printable terrain meshes, elevation data and tools for creating 3D terrain</span><span class="category-arrow" aria-hidden="true">↗</span></button>
+    <button class="category-card" data-category="height-maps" title="Find elevation data and tools that turn planetary terrain into printable 3D geometry"><span class="category-index">05 · DATA COLLECTION</span><span class="category-icon" aria-hidden="true">▥</span><span class="category-name">Terrain data &amp; printable terrain</span><span class="category-desc">Elevation data, printable terrain models and tools to create 3D terrain</span><span class="category-arrow" aria-hidden="true">↗</span></button>
   </div>
   <a class="home-scaling-link" href="#scaling" id="home-scaling-link" title="Upload your own 3D file or prepare an archive model for printing"><span><span class="overline">PRINT WORKSPACE</span><strong>Scaling &amp; 3D Print</strong><small>Scale archive models or upload your own 3D file.</small></span><span class="home-scaling-arrow" aria-hidden="true">↗</span></a>
 </section>
@@ -50,6 +50,7 @@
 </section>
 <section class="detail-view" id="detail-view" hidden>
   <div class="detail-header"><div><p class="overline" id="detail-category">SPACECRAFT</p><div class="detail-title-line"><h1 id="detail-title">Model</h1><button class="action-link detail-convert-button" id="detail-convert-stl" type="button" hidden>Convert to STL</button></div><p class="subheading" id="detail-subtitle"></p></div><a class="text-back" href="#" id="detail-back">← Back to collection</a></div>
+  <div class="detail-cross-listings" id="detail-cross-listings" hidden aria-label="Other collections"></div>
   <div class="detail-layout">
     <section class="preview-panel" aria-label="3D model preview">
       <div class="preview-toolbar"><span>3D PREVIEW</span><span id="preview-format">GLB</span></div>
@@ -82,7 +83,7 @@
       <div class="dimension-summary"><span>Loaded model dimensions</span><strong id="model-dimensions">Waiting for 3D preview…</strong></div>
       <div class="dimension-summary"><span>Calculated print dimensions</span><strong id="print-dimensions">—</strong></div>
       <div class="fit-result" id="fit-result" aria-live="polite"><span class="fit-indicator"></span><div><strong id="fit-title">Awaiting model dimensions</strong><p id="fit-description">The fit check starts when the 3D model has loaded.</p></div></div>
-      <p class="scale-factor" id="scale-factor">Recommended size factor: —</p><div class="scale-recommendations" id="scale-recommendations"><strong>Scale recommendations</strong><p>Load a model and enter its real-world longest-axis dimension to calculate the original scale and printable alternatives.</p></div>
+      <p class="scale-factor" id="scale-factor">Original file vs real-world reference: —</p><div class="scale-recommendations" id="scale-recommendations"><strong>Scale recommendations</strong><p>Load a model and enter its real-world longest-axis dimension to calculate the original scale and printable alternatives.</p></div>
     </div>
   </div>
   <p class="scale-disclaimer">This is a geometric bounding-box check, not a slicing simulation. It tests axis-aligned 90° rotations and does not account for brim, supports, clips or printer-specific usable-area margins. The original download is not modified; apply the suggested scale in your slicer.</p>
@@ -181,7 +182,7 @@
     <button class="guide-tab" id="guide-tab-printing" role="tab" aria-selected="false" aria-controls="guide-panel-printing" data-guide-tab="printing">3D printing</button>
   </div>
   <div class="guide-panel" id="guide-panel-purpose" role="tabpanel" aria-labelledby="guide-tab-purpose">
-    <h2>What is SPACEMESHER?</h2><p>SPACEMESHER is an index for discovering space-related 3D geometry: spacecraft, planetary landscapes, asteroids, comets, moons and height maps. It brings together files and links from scientific institutions, mission teams and independent projects.</p>
+    <h2>What is SPACEMESHER?</h2><p>SPACEMESHER is an index for discovering space-related 3D geometry: spacecraft, planetary landscapes, asteroids, comets, moons and terrain data. It brings together files and links from scientific institutions, mission teams and independent projects.</p>
     <p>The archive helps you find a model, inspect its geometry, understand where it came from and—where reliable measurements exist—compare its scale with the real object. Original files remain with their providers whenever possible; SPACEMESHER links to them rather than claiming ownership.</p>
     <p><strong>Important:</strong> a catalogue entry is not always a downloadable model. The separate sections tell you whether an entry is a verified file, a page to investigate, a source or a generator.</p>
   </div>
@@ -196,7 +197,7 @@
   </div>
   <div class="guide-panel" id="guide-panel-printing" role="tabpanel" aria-labelledby="guide-tab-printing" hidden>
     <h2>The 3D-printing workflow</h2>
-    <ol class="print-workflow"><li><strong>Design / source data</strong><span>Create geometry in CAD or obtain a scientific model or terrain export.</span></li><li><strong>3D file</strong><span>Save or download a format such as STL, 3MF, OBJ, PLY, GLB or STEP. Not every format is accepted by every slicer.</span></li><li><strong>Slicer</strong><span>Open the model in software such as Bambu Studio, OrcaSlicer or PrusaSlicer. Orient it, choose material, layer height, supports and print settings.</span></li><li><strong>G-code</strong><span>The slicer converts the prepared model and settings into printer instructions (usually G-code).</span></li><li><strong>Transfer</strong><span>Send the G-code over the network or copy it to a memory card / USB drive, depending on the printer.</span></li><li><strong>Printer</strong><span>The printer reads the instructions and builds the object layer by layer.</span></li></ol>
+    <ol class="print-workflow"><li><strong>Find a model</strong><span>Choose a collection and open a model file, archive package or original source page. Check whether the entry is a direct download or a reference.</span></li><li><strong>Check the source and preview</strong><span>Review the original provider, file format, licence and attribution. Open the 3D preview where available, or download and extract the model package.</span></li><li><strong>Prepare scale and size</strong><span>Use Scaling &amp; 3D Print to inspect geometry, enter or confirm a verified real-world dimension, choose a scale and check the printer build volume.</span></li><li><strong>Finish in your slicer</strong><span>Open the downloaded or exported file in your slicer. Inspect the mesh, orientation, walls and supports, choose print settings and slice the model.</span></li></ol>
     <p><strong>SPACEMESHER does not include a slicer and does not send G-code to your printer.</strong> Its Scaling workspace previews geometry, calculates scale and checks a bounding box against a build volume. This is not a slicing simulation and cannot guarantee a successful print.</p>
     <p><strong>Tip:</strong> GLB/glTF normally stores dimensions in metres. STL, OBJ and PLY may not specify units, so check the source documentation or choose the correct file unit yourself.</p>
   </div>

@@ -412,3 +412,11 @@
 }
 
 .detail-title-line{display:flex;align-items:center;justify-content:space-between;gap:16px}.detail-convert-button{flex-shrink:0;white-space:nowrap}@media(max-width:600px){.detail-title-line{align-items:flex-start;flex-wrap:wrap}}
+
+
+/* Editorial cross-listing cues */
+.cross-listing-label{display:inline-flex;align-items:center;max-width:100%;margin:2px 0 8px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:10px;line-height:1.35;background:var(--surface-low)}
+.detail-cross-listings{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 18px;padding:10px 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface-low);font-size:11px;color:var(--muted)}
+.detail-cross-listings[hidden]{display:none}
+.detail-cross-listings a{color:var(--accent);font-weight:700;text-decoration:none}
+.detail-cross-listings a:hover{text-decoration:underline;text-underline-offset:3px}
