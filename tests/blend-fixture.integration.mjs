@@ -40,7 +40,13 @@ const viewLayerDetails=(parsed.objects?.ViewLayer||[]).map(layer=>({
   keys:Object.keys(layer).slice(0,80),
   name:layer.name||null,
   layerCollectionName:layer.layer_collection?.collection?.id?.name||layer.layer_collection?.id?.name||null,
-  layerCollectionFlag:layer.layer_collection?.flag??null
+  layerCollectionFlag:layer.layer_collection?.flag??null,
+  layerCollectionsKeys:Object.keys(layer.layer_collections||{}),
+  firstLayerName:layer.layer_collections?.first?.collection?.id?.name||null,
+  firstLayerFlag:layer.layer_collections?.first?.flag??null,
+  objectBasesKeys:Object.keys(layer.object_bases||{}),
+  firstBaseName:layer.object_bases?.first?.object?.aname||null,
+  firstBaseFlag:layer.object_bases?.first?.flag??null
 }));
 const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).map(layer=>({
   collectionName:layer.collection?.id?.name||null,flag:layer.flag,
