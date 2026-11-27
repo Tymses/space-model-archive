@@ -18,7 +18,7 @@ visible_details = [{"name":obj.name,"hide_viewport":obj.hide_viewport,"hide_rend
 hidden_details = [item for item in visible_details if not item["visible"]]
 annotation_name = re.compile(r"^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$", re.I)
 environment_name = re.compile(r"^(?:ground[._ -]?and[._ -]?sky[._ -]?dome|sky[._ -]?dome|world[._ -]?background)$", re.I)
-printable_objects = [obj for obj in mesh_objects if not (
+printable_objects = [obj for obj in visible_mesh_objects if not (
     (obj.parent and obj.parent.type == "CAMERA") or
     annotation_name.match(obj.name) or environment_name.match(obj.name) or
     (obj.data and (annotation_name.match(obj.data.name) or environment_name.match(obj.data.name)))
