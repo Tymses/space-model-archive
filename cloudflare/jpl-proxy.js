@@ -991,7 +991,7 @@ const DESCRIPTION_HOSTS = new Set([
   "sketchfab.com","www.sketchfab.com"
 ]);
 function readHtmlAttribute(tag, name) {
-  const match = String(tag || "").match(new RegExp("\\b" + name + "\\s*=\\s*(['\\\"])([\\\\s\\\\S]*?)\\\\1", "i"));
+  const match = String(tag || "").match(new RegExp("\\b" + name + "\\s*=\\s*(['\"])(.*?)\\1", "i"));
   return match ? decode(match[2]) : "";
 }
 async function fetchModelSourceDescription(value) {
@@ -1018,7 +1018,7 @@ async function fetchModelSourceDescription(value) {
     if (!response.ok) return null;
     let html = "";
     try { html = (await response.text()).slice(0, 1200000); } catch { return null; }
-    const meta = [...html.matchAll(/<meta\\b[^>]*>/gi)].map(match => match[0]);
+    const meta = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]);
     const descriptions = meta.map(tag => ({
       key: (readHtmlAttribute(tag, "name") || readHtmlAttribute(tag, "property")).toLowerCase(),
       value: readHtmlAttribute(tag, "content")
@@ -1026,11 +1026,11 @@ async function fetchModelSourceDescription(value) {
     const preferred = descriptions.find(item => item.key === "og:description") || descriptions.find(item => item.key === "description") || descriptions[0];
     if (preferred?.value) {
       const summary = plain(preferred.value).slice(0, 620);
-      if (summary.length >= 35) return { summary, url: current.toString(), title: plain((html.match(/<title\\b[^>]*>([\\s\\S]*?)<\\/title>/i) || [])[1] || "").slice(0, 160) };
+      if (summary.length >= 35) return { summary, url: current.toString(), title: plain((html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "").slice(0, 160) };
     }
-    const main = (html.match(/<(?:main|article)\\b[\\s\\S]*?<\\/(?:main|article)>/i) || [])[0] || html;
-    const paragraphs = [...main.matchAll(/<p\\b[^>]*>([\\s\\S]*?)<\\/p>/gi)].map(match => plain(match[1])).filter(text => text.length >= 60);
-    if (paragraphs.length) return { summary: paragraphs[0].slice(0, 620), url: current.toString(), title: plain((html.match(/<title\\b[^>]*>([\\s\\S]*?)<\\/title>/i) || [])[1] || "").slice(0, 160) };
+    const main = (html.match(/<(?:main|article)\b[\s\S]*?<\/(?:main|article)>/i) || [])[0] || html;
+    const paragraphs = [...main.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map(match => plain(match[1])).filter(text => text.length >= 60);
+    if (paragraphs.length) return { summary: paragraphs[0].slice(0, 620), url: current.toString(), title: plain((html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "").slice(0, 160) };
     return null;
   }
   return null;
