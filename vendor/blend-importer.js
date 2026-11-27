@@ -16,7 +16,7 @@ export async function parseBlend(buffer, name = '') {
     const magic = new Uint8Array(buffer, 0, 4)
     if (ZSTD_MAGIC.every((b, i) => magic[i] === b)) {
         // Blender >= 3.0 default "Compress" uses Zstandard.
-        const { decompress } = await import("https://cdn.jsdelivr.net/npm/fzstd@0.1.1/+esm");
+        const { decompress } = await import("https://esm.sh/fzstd@0.1.1");
         const decompressed = decompress(new Uint8Array(buffer));
         data = decompressed.buffer.slice(decompressed.byteOffset, decompressed.byteOffset + decompressed.byteLength)
     } else if (GZIP_MAGIC.every((b, i) => magic[i] === b)) {
