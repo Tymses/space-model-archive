@@ -314,6 +314,23 @@ function setTransform(object, obj) {
         obj.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2))
 
     obj.updateMatrix()
+    // Blender stores parentinv as a row-vector matrix (translation in row 4);
+    // the parser exposes that raw layout, while Three.js uses column vectors.
+    const parentInverse = object.parentinv
+    if (parentInverse) {
+        const value = (row, column) => Number(parentInverse?.[row]?.[column] ?? parentInverse?.[row]?.[String(column)])
+        const matrixValues = Array.from({ length: 4 }, (_, row) =>
+            Array.from({ length: 4 }, (_, column) => value(column, row)))
+        if (matrixValues.every(row => row.every(Number.isFinite))) {
+            const blenderMatrix = new THREE.Matrix4().set(...matrixValues.flat())
+            const basis = new THREE.Matrix4().makeRotationX(-Math.PI / 2)
+            const parentInverseThree = basis.clone().multiply(blenderMatrix).multiply(basis.clone().invert())
+            obj.matrix.premultiply(parentInverseThree)
+            // Preserve the exact parent-inverse transform (including shear).
+            obj.matrixAutoUpdate = false
+            obj.matrixWorldNeedsUpdate = true
+        }
+    }
 }
 
 const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$/i
