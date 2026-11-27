@@ -35,7 +35,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Check every indexed source and model URL
-        run: python tools/catalogue/check_links.py --output link-audit.json --workers 24
+        run: python tools/catalogue/check_links.py --output link-audit.json --workers 24 --fail-on-broken
       - name: Upload link audit report
         uses: actions/upload-artifact@v4
         with:
