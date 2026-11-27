@@ -43,6 +43,8 @@ const viewLayerDetails=(parsed.objects?.ViewLayer||[]).map(layer=>({
   layerCollectionFlag:layer.layer_collection?.flag??null,
   layerCollectionsKeys:Object.keys(layer.layer_collections||{}),
   firstLayerName:layer.layer_collections?.first?.collection?.id?.name||null,
+  firstLayerNextName:layer.layer_collections?.first?.next?.collection?.id?.name||null,
+  firstLayerNextKeys:Object.keys(layer.layer_collections?.first?.next||{}),
   firstLayerFlag:layer.layer_collections?.first?.flag??null,
   objectBasesKeys:Object.keys(layer.object_bases||{}),
   firstBaseName:layer.object_bases?.first?.object?.aname||null,
@@ -59,9 +61,12 @@ const layerCollectionDetails=(parsed.objects?.LayerCollection||[]).slice(0,100).
 const hiddenNames=new Set(["SEIS","arm_01_b","arm_01_c","arm_02_b","arm_02_c","arm_03_b","arm_03_c","shovel_b","shovel_c","grapple_b","shovel_arrow","arm_03_arrow","arm_02_arrow","arm_01_arrow"]);
 const baseDetails=(parsed.objects?.Base||[]).filter(base=>hiddenNames.has(base.object?.aname)||Number(base.flag||0)!==0).slice(0,200).map(base=>({object:base.object?.aname||null,flag:base.flag}));
 const listChain=(first,selector,max=300)=>{const result=[],seen=new Set();let current=first;while(current&&result.length<max&&!seen.has(current)){seen.add(current);result.push(selector(current));current=current.next;}return result;};
+const walkLayer=(layer,depth=0)=>!layer||depth>8?null:{
+ name:layer.collection?.id?.name||null,flag:layer.flag,
+ children:listChain(layer.layer_collections?.first,item=>walkLayer(item,depth+1))
+};
 const activeLayerChain=(parsed.objects?.ViewLayer||[]).map(layer=>({
- name:layer.name,
- layers:listChain(layer.layer_collections?.first,item=>({name:item.collection?.id?.name||null,flag:item.flag,childFirst:item.layer_collections?.first?.collection?.id?.name||null}))
+ name:layer.name,root:walkLayer(layer.layer_collections?.first)
 }));
 const collectionMembership=(parsed.objects?.Collection||[]).map(collection=>({
  name:collection.id?.name||null,
