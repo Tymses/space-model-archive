@@ -70,6 +70,10 @@ for obj in mesh_objects:
             "vertices": len(obj.data.vertices),
             "polygons": len(obj.data.polygons)
         })
+def layer_tree(layer):
+    return {"name": layer.name, "exclude": layer.exclude, "hide_viewport": layer.hide_viewport,
+            "children": [layer_tree(child) for child in layer.children]}
+view_layer_tree = layer_tree(bpy.context.view_layer.layer_collection)
 scene_units = {
     "system": scene.unit_settings.system,
     "scale_length": scene.unit_settings.scale_length,
@@ -98,7 +102,7 @@ result = {
     "native_totals": native_totals,
     "printable_objects": len(printable_objects),
     "excluded_presentation_objects": len(mesh_objects) - len(printable_objects),
-    "scene_units": scene_units,
+    "scene_units": scene_units,\n    "view_layer_tree": view_layer_tree,
     "bounds": [maximum[i] - minimum[i] for i in range(3)],
     "raw_bounds": [raw_maximum[i] - raw_minimum[i] for i in range(3)],
     "largest_objects": details[:20],
