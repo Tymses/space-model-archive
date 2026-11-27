@@ -101,6 +101,10 @@
       <div class="scaling-preview-stage" id="scaling-preview-stage"><div class="preview-placeholder"><span>◈</span><p>Upload a downloaded STL, OBJ, PLY or GLB model.</p></div></div>
       <div class="scaling-upload"><label class="upload-button" for="scaling-file">Choose model files</label><input id="scaling-file" type="file" multiple accept=".stl,.obj,.ply,.glb,.gltf,.bin,.mtl,.png,.jpg,.jpeg,.webp"><span>STL · OBJ · PLY · GLB · GLTF</span></div>
       <div class="scaling-geometry-line"><span>Measured model size</span><strong id="scaling-source-dimensions">—</strong><label title="STL, OBJ and PLY do not reliably store physical units. Choose the unit used by the file coordinates.">File unit<select class="scale-input" id="scaling-units"><option value="mm">mm</option><option value="cm">cm</option><option value="m">m</option><option value="in">in</option></select></label></div>
+      <section class="scaling-source-description" id="scaling-source-description" hidden aria-live="polite">
+        <div class="scaling-source-description-heading"><span class="overline">SOURCE DESCRIPTION</span><a id="scaling-source-description-link" href="#" target="_blank" rel="noopener" hidden>Original page ↗</a></div>
+        <p id="scaling-source-description-text">The original source description will appear here.</p>
+      </section>
     </section>
     <section class="scaling-settings-panel">
       <div class="scaling-section-heading"><div><p class="overline">STEP 1</p><h2>Identify the object</h2></div><span class="measurement-state" id="scaling-measurement-state">Waiting for model</span></div>
