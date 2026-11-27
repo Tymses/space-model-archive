@@ -402,3 +402,5 @@ This standing policy does not authorize merging when checks fail, the diff is un
 
 
 - Worker dimension-search refinement: added cruise-stage/cruise-module spacecraft context, dedicated overall-envelope and cruise-stage query variants, and a JPL domain query. Exact object identity checks remain mandatory. Regression test uses InSight Cruise Stage phrasing and does not invent or accept a dimension value.
+
+- First Worker-search test run exposed only a floating-point exact-equality assertion (1.8 m converted to 0.0018000000000000002 km); the test now uses a 1e-12 tolerance. No production search logic was changed in response to that test-only precision issue.
