@@ -77,6 +77,7 @@ test("Worker only proxies newly supported geometry extensions from approved host
   assert.match(worker, /\["gz", "application\/gzip"\]/);
   assert.match(worker, /const DESCRIPTION_HOSTS = new Set/);
   assert.match(worker, /action"\) === "describe"/);
+  assert.match(worker, /file format does not establish the object\x27s real-world scale/);
 });
 
 test("BLEND importer supports Zstandard and gzip compressed projects", () => {
