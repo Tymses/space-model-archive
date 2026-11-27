@@ -166,3 +166,14 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Rollback reference: `backup/before-workflow-enforcement-2026-11-27` at `27ec0c89a990509b25b968e294accdaf6a5d52c6`.
 
 - Pull-request CI verified: **Enforce project workflow** run `46047333620` passed. Both its process-attestation step and its same-PR handbook-update step succeeded on PR #16.
+
+
+## 10. Scaling modes — 27 November 2026
+
+- The existing **Original astronomical scale** mode remains the source-backed workflow: verified physical dimensions determine the original denominator and standard printable scales.
+- **Fit to build plate** is independent of astronomical dimensions. It scales loaded geometry proportionally to the maximum bounding-box fit across six axis-aligned 90° orientations, after applying the configured safety margin on every side (default 5 mm). The proportional adjustment defaults to 100%; lower values shrink the maximum-fit model and higher values deliberately test a larger model, with a no-fit warning when safe limits are exceeded.
+- **Custom original dimensions** accepts one user-entered real-world measurement (diameter, length, height, longest axis or other) in mm, m or km. The user maps that measurement to the longest model axis or an explicit X/Y/Z mesh axis. The derived original denominator is then used by the existing standard-scale recommender; all other model axes remain proportional.
+- Custom dimensions are user-supplied and are not represented as scientifically verified. The astronomical lookup panel is hidden outside Original mode.
+- STL export uses the currently calculated geometry in all three modes. Fit mode exports a -fit-to-build-plate.stl file; original/custom modes retain the selected 1-to-N filename convention.
+- Regression coverage is added for fit factors, safety margins, proportional adjustment, custom axis mapping and mode UI. The bounding-box result still does not certify wall thickness, supports, bed adhesion or printability.
+- Implementation branch: feat/scaling-modes-2026-11-27; safety branch: backup/before-scaling-modes-2026-11-27, both based on inspected main commit ab9508c82bf77f178ca7a794be5c352d79daf13e.
