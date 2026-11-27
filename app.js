@@ -1415,35 +1415,79 @@ restoreRouteFromHash();
    renderFit("Could not measure model","No scale can be calculated until the geometry loads.",null);
   }
  }
+ async function convertActiveModelToStl(){
+  if(!root||!active||!conversionContext){setLookupStatus("Load a supported 3D model before converting it.",true);return;}
+  const button=$id("scaling-convert-stl"),context=conversionContext,originalFormat=context.displayFormat||context.format;
+  if(button){button.disabled=true;button.textContent="Converting…";}
+  setLookupStatus("Converting "+originalFormat+" geometry to a binary STL in this browser. No model file is uploaded.");
+  try{
+   root.updateMatrixWorld(true);
+   const exporter=new L.STLExporter(),data=exporter.parse(root,{binary:true});
+   const outputBytes=data?.byteLength||data?.buffer?.byteLength||0;
+   if(!outputBytes)throw new Error("The STL exporter returned an empty file.");
+   if(outputBytes>75*1024*1024)throw new Error("The converted STL exceeds the 75 MB safety limit.");
+   const base=context.model?{...context.model}:{
+    id:"local-converted-"+Date.now(),
+    name:(context.file?.name||"Converted model").replace(/\.(?:step|stp)\.gz$/i,"").replace(/\.[^.]+$/,""),
+    category:null,kind:"User-uploaded 3D model",source:"Local file",license:"User-provided",sourceUrl:""
+   };
+   const safeName=String(base.name||"converted-model").replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").toLowerCase()||"converted-model";
+   const file=new File([data],safeName+".stl",{type:"model/stl"});
+   const convertedModel={...base,format:"STL",size:(file.size/1024).toFixed(0)+" kB",convertedFile:file,convertedFromFormat:originalFormat,convertToStl:false,downloadDirect:true};
+   $id("scaling-archive-context").hidden=false;
+   $id("scaling-archive-meta").textContent="STL · converted from "+originalFormat;
+   const archiveSource=$id("scaling-archive-source");archiveSource.textContent=base.source||"Local file";archiveSource.hidden=!base.sourceUrl;
+   if(base.sourceUrl)archiveSource.href=base.sourceUrl;else archiveSource.removeAttribute("href");
+   const source=$id("scaling-source-link");source.hidden=!base.sourceUrl;if(base.sourceUrl)source.href=base.sourceUrl;else source.removeAttribute("href");
+   await load(file,"STL",convertedModel,null,[],false);
+   $id("scaling-file-state").textContent="Converted STL";
+   $id("scaling-format").textContent="STL · CONVERTED";
+   $id("scaling-archive-meta").textContent="STL · converted from "+originalFormat;
+   $id("scaling-download-link").textContent="Download converted STL ↧";
+   setLookupStatus("Converted "+originalFormat+" to STL locally. The STL is now loaded in the normal preview and scaling workspace; check the measured size and file unit before printing.");
+  }catch(error){
+   if(button){button.disabled=false;button.textContent="Retry STL conversion";}
+   setLookupStatus("STL conversion failed: "+(error?.message||error),true);
+  }
+ }
  function resetWorkspace(){
-  clear();realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
+  clear();descriptionToken++;$id("scaling-model-description").hidden=true;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
   $id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
-  $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";
+  $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";$id("scaling-model-description").hidden=true;$id("scaling-convert-stl").hidden=true;
   $id("scaling-original-scale").textContent="Waiting for dimensions";$id("scaling-original-dimensions").textContent="—";
   $id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";
   $id("scaling-recommendations").innerHTML="<p>Load a model and identify its object to calculate scale suggestions.</p>";
   renderFit("Awaiting model and object dimensions","The model is checked against the selected printer once its real-world dimensions are found.",null);
-  $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload STL, OBJ, PLY, GLB or GLTF model files.</p></div>';
+  $id("scaling-orientation").textContent="—";stage.innerHTML='<div class="preview-placeholder"><span>◈</span><p>Upload STL, OBJ, PLY, GLB, GLTF, FBX, BLEND or STEP model files.</p></div>';
   setLookupStatus(proxyUrl?"Searches JPL for physical axes (extent), not just an average diameter.":"JPL lookup requires the free proxy to be configured once.",!proxyUrl);
  }
- window.addEventListener("sma-scaling-open",e=>{
+ window.addEventListener("sma-scaling-open",async e=>{
   const model=e.detail?.model;resetWorkspace();
-  if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false){
+  if(model&&model.downloadDirect!==false){
+   const originalFormat=String(model.format||"").toUpperCase();
+   const format=/\b(?:STEP|STP)\b/i.test(originalFormat)?"STEP":originalFormat;
+   const supported=["GLB","GLTF","STL","OBJ","PLY","FBX","3DS","LWO","BLEND","STEP","STP"].includes(format);
+   if(!supported){$id("scaling-model-name").textContent=model.name||"Unsupported model";setLookupStatus("This file format has no safe in-browser STL converter yet.",true);return;}
    $id("scaling-page-overline").textContent="ARCHIVE MODEL";$id("scaling-page-title").textContent=model.name;$id("scaling-page-subtitle").textContent=model.kind+" · interactive preview, dimensions and print scale";
    $id("scaling-archive-context").hidden=false;$id("scaling-archive-meta").textContent=model.format+" · "+model.size;const archiveSource=$id("scaling-archive-source");archiveSource.textContent=model.source||"Original source";archiveSource.hidden=!model.sourceUrl;if(model.sourceUrl)archiveSource.href=model.sourceUrl;else archiveSource.removeAttribute("href");
    const download=$id("scaling-download-link");download.href=model.file;download.textContent="Download "+model.format+" ↧";download.toggleAttribute("download",model.downloadDirect!==false);const source=$id("scaling-source-link");source.hidden=!model.sourceUrl;if(model.sourceUrl)source.href=model.sourceUrl;else source.removeAttribute("href");const meshNote=$id("spacecraft-mesh-note");if(meshNote)meshNote.hidden=model.category!=="spacecraft";
-   $id("scaling-object-query").value=model.name||"";load(null,model.format,model,model.file);
+   $id("scaling-object-query").value=model.name||"";loadModelDescription(model,null,model.format);
+   await load(null,format,model,model.file,[],!!model.convertToStl);
+   if(model.convertToStl&&root)await convertActiveModelToStl();
   }else{$id("scaling-model-name").textContent="Upload your downloaded model";}
  });
  $id("scaling-file").addEventListener("change",e=>{
   const files=Array.from(e.target.files||[]);if(!files.length)return;
-  const supported=["STL","OBJ","PLY","GLB","GLTF"],file=files.find(f=>supported.includes(f.name.split(".").pop().toUpperCase()));
+  const extOf=file=>/\.(?:step|stp)\.gz$/i.test(file.name)?"STEP":file.name.split(".").pop().toUpperCase();
+  const supported=["STL","OBJ","PLY","GLB","GLTF","FBX","3DS","LWO","BLEND","STEP","STP"],file=files.find(f=>supported.includes(extOf(f)));
   if(!file){$id("scaling-file-state").textContent="No supported model file selected";return;}
-  const ext=file.name.split(".").pop().toUpperCase(),companions=files.filter(f=>f!==file);
-  $id("scaling-object-query").value="";load(file,ext,null,null,companions);
+  const ext=extOf(file),companions=files.filter(f=>f!==file);
+  const model={id:"local-"+file.name,name:file.name.replace(/\.(?:step|stp)\.gz$/i,"").replace(/\.[^.]+$/,""),category:null,kind:"User-uploaded 3D model",source:"Local file",size:(file.size/1024).toFixed(0)+" kB",format:ext,license:"User-provided",sourceUrl:"",downloadDirect:true};
+  $id("scaling-object-query").value="";loadModelDescription(model,file,ext);load(file,ext,model,null,companions);
  });
+ $id("scaling-convert-stl").addEventListener("click",convertActiveModelToStl);
  $id("scaling-units").addEventListener("change",()=>{if(!active)return;active.unitFactor=unitFactors[$id("scaling-units").value];root.scale.setScalar(active.unitFactor);update();});
  $id("scaling-download-scaled").addEventListener("click",()=>{
   if(!root||!active||!selectedDenominator||!realLongestKm){setLookupStatus("Load a model, identify its object and select a printable scale before exporting.",true);return;}
