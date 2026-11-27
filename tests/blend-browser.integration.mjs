@@ -53,12 +53,17 @@ try {
     const box = new THREE.Box3().setFromObject(group);
     const size = box.getSize(new THREE.Vector3());
     let meshes=0,triangles=0;
+    const meshBounds=[];
     group.traverse(node=>{
       if(node.isMesh&&node.geometry){
         meshes++;
-        triangles += node.geometry.index ? node.geometry.index.count/3 : (node.geometry.attributes.position?.count||0)/3;
+        const nodeTriangles=node.geometry.index ? node.geometry.index.count/3 : (node.geometry.attributes.position?.count||0)/3;
+        triangles += nodeTriangles;
+        const nodeBox=new THREE.Box3().setFromObject(node),nodeSize=nodeBox.getSize(new THREE.Vector3());
+        meshBounds.push({name:node.name||"(unnamed)",sizeMm:nodeSize.toArray().map(v=>Number(v.toFixed(2))),triangles:Math.round(nodeTriangles)});
       }
     });
+    meshBounds.sort((a,b)=>(b.sizeMm[0]*b.sizeMm[1]*b.sizeMm[2])-(a.sizeMm[0]*a.sizeMm[1]*a.sizeMm[2]));
     if(!meshes||!triangles) throw new Error("No valid triangle meshes reached Three.js scene builder.");
     if(![size.x,size.y,size.z].every(v=>Number.isFinite(v)&&v>0)) throw new Error("Invalid scene bounds: "+size.toArray().join(","));
     const stl = new exporterModule.STLExporter().parse(group,{binary:true});
@@ -66,7 +71,7 @@ try {
     const stlBytes = stlBuffer?.byteLength || stl?.byteLength || 0;
     const expectedBytes = 84 + Math.round(triangles)*50;
     if(stlBytes!==expectedBytes) throw new Error("Binary STL size mismatch: "+stlBytes+" vs "+expectedBytes);
-    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length};
+    return {version:parsed.header.version,meshes,triangles:Math.round(triangles),sizeMm:size.toArray(),stlBytes,meshErrors:meshDiagnostics.length,excludedAnnotations:annotationDiagnostics.length,largestMeshes:meshBounds.slice(0,20)};
   });
   assert.ok(result.meshes>0);
   assert.ok(result.triangles>0);
