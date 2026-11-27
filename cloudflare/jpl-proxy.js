@@ -464,9 +464,9 @@ function extractAxes(text) {
   const axisNumber = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
   const axisUnit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
   const labelled = source.match(new RegExp(
-    "(?:^|\\\\b)x(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?[\\\\s,;]+"
-    + "y(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?[\\\\s,;]+"
-    + "z(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?", "i"
+    "(?:^|\\b)x(?:\\s*[- ]?axis)?\\s*[:=]\\s*(" + axisNumber + ")(?:\\s*(?:±|\\+\\/-)\\s*" + axisNumber + ")?\\s*(" + axisUnit + ")?[\\s,;]+"
+    + "y(?:\\s*[- ]?axis)?\\s*[:=]\\s*(" + axisNumber + ")(?:\\s*(?:±|\\+\\/-)\\s*" + axisNumber + ")?\\s*(" + axisUnit + ")?[\\s,;]+"
+    + "z(?:\\s*[- ]?axis)?\\s*[:=]\\s*(" + axisNumber + ")(?:\\s*(?:±|\\+\\/-)\\s*" + axisNumber + ")?\\s*(" + axisUnit + ")?", "i"
   ));
   if (labelled) {
     const sharedUnit = (source.match(/\\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\\)/i) || [])[1];
