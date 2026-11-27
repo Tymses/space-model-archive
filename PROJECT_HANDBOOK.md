@@ -213,3 +213,24 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Manual testing of representative FBX, 3DS, LWO, BLEND, STEP and GZIP STEP files remains separate from automated checks. No live desktop/mobile browser review is claimed.
 - Safety branch: `backup/before-conversion-memory-guards-2026-11-27` at inspected `main` commit `9edf7c70503b3cc7787f6097c54a4326c88b30f8`.
 - Implementation branch: `fix/conversion-memory-guards-2026-11-27`.
+
+
+## 13. Blender mesh fidelity and button feedback — 27 November 2026
+
+### Pre-flight
+- Read this handbook, the workflow checklist, PR template and README conversion notes. Inspected `main` at `daed045b9267934e5574bad301f20e7ff45403bb`, recent commits, and the relevant converter backup branch `backup/before-conversion-memory-guards-2026-11-27`. The Blender importer matched the inspected pre-memory-guard version; the latest memory-guard commit changed only STEP decompression and STL output limits.
+- Created safety branch `backup/before-blend-geometry-and-button-feedback-2026-11-27` and implementation branch `fix/blend-geometry-and-button-feedback-2026-11-27` from that exact main commit.
+- The separate BOGY diary was located in the personal Library, but this repository task does not edit that separate file. No external-diary synchronization is claimed.
+
+### Confirmed code-level defects and changes
+- The modern Blender importer previously accepted any vertex CustomData layer whose item count matched `totvert`, and any loop layer whose count matched `totloop`. Those counts are not unique to geometry: attributes such as `orig_index`, `radius`, `corner_edge` or UV layers can have the same length. If the canonical `position` or `.corner_vert` layer was absent or not selected, the importer could build positions/indices from unrelated attributes and emit a geometrically incorrect mesh. The importer now requires the canonical position and corner-vertex layers (with known naming variants) and fails explicitly when they are missing or malformed.
+- The legacy Blender triangulator allocated `floor(3n/2)` indices per polygon and stepped through corners in increments of two. This does not equal the correct `3(n-2)` indices for an n-gon: triangles received trailing degenerate indices and polygons with five or more corners could lose geometry. It now triangulates each polygon as a fan with exactly `n-2` triangles, validates loop/vertex references and coordinates, and allocates the exact index count.
+- The BLEND loading path now requires at least one actual mesh and one triangle before presenting the model as loaded. It fails explicitly rather than allowing an empty/non-mesh scene to be mistaken for a valid preview.
+- Added a shared delegated click-feedback animation for native buttons and button-like upload/action controls. It provides a brief scale pulse after activation and respects `prefers-reduced-motion`.
+
+### Tests and documentation
+- Added regression tests for strict modern attribute-layer selection, legacy triangle counts, rejection of BLEND scenes without mesh triangles, and global button feedback.
+- Updated README conversion notes and this handbook. The separate BOGY Library diary was not edited.
+- Automated tests and GitHub Actions validation are pending; no test success or live browser verification is claimed until the PR checks and a manual browser test are completed.
+- Rollback reference: `backup/before-blend-geometry-and-button-feedback-2026-11-27` at `daed045b9267934e5574bad301f20e7ff45403bb`.
+- Implementation branch: `fix/blend-geometry-and-button-feedback-2026-11-27`.
