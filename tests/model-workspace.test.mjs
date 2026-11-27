@@ -349,3 +349,20 @@ test("Blender scene builder can explicitly retain annotation meshes when request
  assert.ok(app.includes("onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)"));
  assert.ok(app.includes("likely text/label mesh(es)"));
 });
+
+
+test("Blender parser advances nested DNA structures by their compiled byte size",()=>{
+ const source=read("vendor/blend-parser.js");
+ const start=source.indexOf("export function getBlenderStructByteLength(");
+ const end=source.indexOf("\\n}",start);
+ assert.ok(start>=0&&end>start,"compiled SDNA byte-size helper must exist");
+ const helper=source.slice(start,end+2).replace("export function ","function ");
+ const getSize=new Function(helper+"\\nreturn getBlenderStructByteLength;")();
+ assert.equal(getSize({MVert:{length:12},CustomDataLayer:{length:24}},"MVert"),12);
+ assert.equal(getSize({MVert:{length:12}},"MVert"),12);
+ assert.throws(()=>getSize({},"MissingType"),/BLEND_INVALID_DNA_SIZE/);
+ assert.throws(()=>getSize({Broken:{length:0}},"Broken"),/BLEND_INVALID_DNA_SIZE/);
+ assert.match(source,/const memberByteLength = getBlenderStructByteLength\\(current_SDNA_template\\.SDNA, type\\)/);
+ assert.match(source,/memberEnd > data_block_end/);
+ assert.match(source,/memberStart \\+ memberByteLength/);
+});
