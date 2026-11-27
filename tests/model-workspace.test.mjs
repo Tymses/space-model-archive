@@ -234,3 +234,31 @@ test("custom original dimensions convert mm, m and km to millimetres",()=>{
  assert.equal(convert(25,"mm"),25);assert.equal(convert(1.5,"m"),1500);assert.equal(convert(2,"km"),2000000);
  assert.equal(convert(0,"m"),null);assert.equal(convert(1,"cm"),null);
 });
+
+test("GZIP decompression is streamed and stops before exceeding the 75 MB model limit",async()=>{
+ const app=read("app.js"),start=app.indexOf("async function readStreamWithinLimit("),end=app.indexOf("\\nfunction estimateBinaryStlBytes",start);
+ assert.ok(start>=0&&end>start);
+ const readLimited=new Function(app.slice(start,end)+"\\nreturn readStreamWithinLimit;")();
+ const allowed=await readLimited(new ReadableStream({start(controller){controller.enqueue(new Uint8Array([1,2,3]));controller.enqueue(new Uint8Array([4,5]));controller.close();}}),5,"too large");
+ assert.deepEqual([...new Uint8Array(allowed)],[1,2,3,4,5]);
+ await assert.rejects(()=>readLimited(new ReadableStream({start(controller){controller.enqueue(new Uint8Array([1,2,3]));controller.enqueue(new Uint8Array([4,5,6]));}}),5,"decompressed STEP exceeds limit"),/decompressed STEP exceeds limit/);
+});
+test("binary STL output size is rejected before allocating the export buffer",()=>{
+ const app=read("app.js"),start=app.indexOf("function estimateBinaryStlBytes("),end=app.indexOf("\\nfunction countMeshTriangles",start);
+ assert.ok(start>=0&&end>start);
+ const estimate=new Function(app.slice(start,end)+"\\nreturn estimateBinaryStlBytes;")();
+ const limit=75*1024*1024;
+ assert.equal(estimate(0),84);
+ assert.equal(estimate(100),5084);
+ assert.ok(estimate(1572862)<=limit);
+ assert.ok(estimate(1572863)>limit);
+ assert.equal(estimate(-1),null);
+ assert.equal(estimate(Infinity),null);
+});
+test("STL conversion performs triangle and estimated-byte checks before calling STLExporter",()=>{
+ const app=read("app.js"),start=app.indexOf("async function convertActiveModelToStl"),end=app.indexOf("\\n function syncScalingModeUI",start);
+ assert.ok(start>=0&&end>start);
+ const converter=app.slice(start,end);
+ assert.ok(converter.indexOf("countMeshTriangles(root)")<converter.indexOf("new L.STLExporter()"));
+ assert.ok(converter.indexOf("estimatedBytes>MAX_BROWSER_MODEL_BYTES")<converter.indexOf("new L.STLExporter()"));
+});
