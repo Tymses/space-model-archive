@@ -36,6 +36,26 @@ test("NASA Deep Impact and Wrench records point to model-specific sources", () =
   assert.match(glb[0].sourceUrl, /^https:\/\/github\.com\/nasa\/NASA-3D-Resources\/tree\/master\/3D%20Models\/Wrench$/);
 });
 
+test("all previously dead NASA pages now use a live NASA page or exact source folder", () => {
+  const index = JSON.parse(read("data/nasa-model-index.json"));
+  const byId = new Map(index.files.map(item => [item.id, item]));
+  const expected = {
+    "nasa-auto-6779e0fd7d41": "https://science.nasa.gov/3d-resources/curiosity-scarescrow-test-rover/",
+    "nasa-auto-fae6c14137ae": "https://science.nasa.gov/3d-resources/g292-01-8-supernova-remnant/",
+    "nasa-auto-7f1f2a785853": "https://science.nasa.gov/3d-resources/gateway-lunar-space-station/",
+    "nasa-auto-62d260861742": "https://science.nasa.gov/3d-resources/pioneer/",
+    "nasa-auto-164dd4594a7b": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Skylab",
+    "nasa-auto-3159443bc1e2": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Dynamics%20Observatory",
+    "nasa-auto-e3bd379865ff": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Radiation%20and%20Climate%20Experiment%20(SORCE)",
+    "nasa-auto-f4f7e17d18c2": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20Sail%20Concept",
+    "nasa-auto-e581425c8d36": "https://github.com/nasa/NASA-3D-Resources/tree/master/3D%20Models/Solar%20TErrestrial%20RElations%20Observatory%20(STEREO)",
+    "nasa-auto-ae543fdbdccb": "https://science.nasa.gov/3d-resources/solar-and-heliospheric-observatory-soho/",
+    "nasa-auto-5f06eab80de7": "https://science.nasa.gov/3d-resources/x-57-maxwell/",
+    "nasa-auto-1b9a809402d2": "https://science.nasa.gov/3d-resources/x-57-maxwell/"
+  };
+  for (const [id, url] of Object.entries(expected)) assert.equal(byId.get(id)?.sourceUrl, url, id);
+});
+
 test("archive cards and print workspace expose the new conversion and description flows", () => {
   const app = read("app.js");
   const html = read("index.html");
