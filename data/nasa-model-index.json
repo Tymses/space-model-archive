@@ -1412,7 +1412,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Headquarters Building: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Headquarters%20Building/Headquarters%20Building.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/headquarters-building/",
       "changed": "Source repository"
     },
     {
@@ -1426,7 +1426,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Helmet: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Helmet/Helmet.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/helmet/",
       "changed": "Source repository"
     },
     {
@@ -1440,7 +1440,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "High Energy Transient Explorer: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/High%20Energy%20Transient%20Explorer/High%20Energy%20Transient%20Explorer.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/high-energy-transient-explorer/",
       "changed": "Source repository"
     },
     {
@@ -1454,7 +1454,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hinode (Solar-B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hinode%20(Solar-B)/Hinode%20(Solar-B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hinode-solar-b/",
       "changed": "Source repository"
     },
     {
@@ -1468,7 +1468,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20FSS.3ds",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1482,7 +1482,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20Mule.3ds",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1496,7 +1496,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20ORUC.3ds",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1510,7 +1510,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble SM4 Carriers: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20SM4%20Carriers/Shuttle%20Carrier%20-%20SLIC.3ds",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-sm4-carriers/",
       "changed": "Source repository"
     },
     {
@@ -1524,7 +1524,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble Space Telescope (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(A)/Hubble%20Space%20Telescope%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-space-telescope-a/",
       "changed": "Source repository"
     },
     {
@@ -1538,7 +1538,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble Space Telescope (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(B)/Hubble%20Space%20Telescope%20(B).7z",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-space-telescope-b/",
       "changed": "Source repository"
     },
     {
@@ -1552,7 +1552,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Hubble Space Telescope (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Hubble%20Space%20Telescope%20(B)/Hubble%20Space%20Telescope%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/hubble-space-telescope-b/",
       "changed": "Source repository"
     },
     {
@@ -1566,7 +1566,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite (ICESat) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite%20(ICESat)%20(A)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite%20(ICESat)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-icesat-a/",
       "changed": "Source repository"
     },
     {
@@ -1580,7 +1580,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite (ICESat) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite%20(ICESat)%20(B)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite%20(ICESat)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-icesat-b/",
       "changed": "Source repository"
     },
     {
@@ -1594,7 +1594,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ice, Clouds, and Land Elevation Satellite-2 (ICESat-2) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(A)/Ice%2C%20Clouds%2C%20and%20Land%20Elevation%20Satellite-2%20(ICESat-2)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ice-clouds-and-land-elevation-satellite-2-icesat-2-a/",
       "changed": "Source repository"
     },
     {
