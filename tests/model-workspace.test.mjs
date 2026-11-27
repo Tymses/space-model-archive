@@ -26,13 +26,15 @@ test("NASA Deep Impact and Wrench records point to model-specific sources", () =
   assert.equal(deepImpact.length, 3);
   assert.ok(deepImpact.every(item => item.sourceUrl === "https://science.nasa.gov/3d-resources/deep-impact/"));
 
-  const wrenches = index.files.filter(item => item.name.toLowerCase() === "wrench");
+  const wrenches = index.files.filter(item => /wrench/i.test(item.name));
   const stl = wrenches.filter(item => item.format === "STL");
   const glb = wrenches.filter(item => item.format === "GLB");
   assert.equal(stl.length, 1, "duplicate Wrench STL records must not be listed twice");
+  assert.equal(stl[0].name, "ISS 3D-printed Wrench");
   assert.equal(stl[0].sourceUrl, "https://science.nasa.gov/3d-resources/wrench-2/");
   assert.match(stl[0].file, /International%20Space%20Station%20Tools\/wrench\.stl$/);
   assert.equal(glb.length, 1);
+  assert.equal(glb[0].name, "Wrench (GLB model)");
   assert.equal(glb[0].kind, "Tool / mission hardware");
   assert.match(glb[0].sourceUrl, /^https:\/\/github\.com\/nasa\/NASA-3D-Resources\/tree\/master\/3D%20Models\/Wrench$/);
 });
