@@ -52,6 +52,12 @@ The Cloudflare Worker in `cloudflare/jpl-proxy.js` now supports a restricted `ac
 - NASA Solar System Treks generates files based on the selected world and area, so the archive links to the portal rather than pretending there is one fixed model file.
 - The curated asteroid, moon, comet and dwarf-planet entries now point to individual object pages as remote candidates. The source site does not document a public API, so the Worker discovers actual linked file URLs from each object page at request time. A candidate is not promoted until its mesh URL passes the Worker probe. Pages without a verified OBJ/PLY remain in Sources; direct endpoints and file sizes are never guessed.
 
+### Blender conversion behavior
+
+- The browser-side Blender parser reconstructs mesh geometry from Blender datablocks; it is not equivalent to evaluating a scene in Blender itself. Unsupported modifiers, dependencies and scene features may still produce incomplete results.
+- Mesh objects with conservative whole-name matches for text, labels, annotations, captions, titles, legends, dimensions, scale bars, watermarks or copyright are excluded from printable geometry by default because extruded scene labels can distort the preview and bounding box. The importer reports how many were excluded. Callers can opt back in with `excludeAnnotations: false`; unmatched mesh objects are retained.
+- This name-based exclusion is a targeted mitigation, not a general semantic classifier. It does not prove that the remaining scene is the intended physical object. Inspect the preview and STL in a slicer; complex or inaccurate Blender scenes should be exported from Blender itself after applying the intended modifiers and selecting the physical meshes.
+
 ## Catalogue completeness and data quality
 
 - Collection records are classified by what they actually provide: direct mesh/CAD files, catalogue-page references, scientific dataset archives, viewers or generators. The collection interface no longer labels a source detail page as a direct model download; ZIP/7Z packages are separated from individual mesh files.

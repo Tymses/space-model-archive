@@ -161,7 +161,7 @@ test("BLEND loader can skip invalid objects while preserving valid mesh objects"
  const importer=read("vendor/blend-importer.js"),app=read("app.js");
  assert.match(importer,/createObjects\(file, options = \{\}\)/);
  assert.match(importer,/options\.onMeshError\(diagnostic\)/);
- assert.match(app,/createObjects\(parsed\.file,\{onMeshError:diagnostic=>meshDiagnostics\.push\(diagnostic\)\}\)/);
+ assert.match(app,/createObjects\(parsed\.file,\{onMeshError:diagnostic=>meshDiagnostics\.push\(diagnostic\),onAnnotationExcluded:diagnostic=>annotationDiagnostics\.push\(diagnostic\)\}\)/);
  assert.match(app,/loaded .* valid mesh\(es\); skipped .* invalid mesh object\(s\)/);
  assert.match(app,/BLEND_NO_VALID_MESH/);
  assert.match(app,/missing topology is never invented/);
@@ -328,4 +328,24 @@ test("all button-like controls receive a short click acknowledgement animation",
  assert.match(app,/is-click-feedback/);assert.match(css,/@keyframes spacemesher-button-press/);
  assert.match(css,/\.is-click-feedback\{animation:spacemesher-button-press 240ms/);
  assert.match(css,/prefers-reduced-motion:reduce\)\{\.is-click-feedback\{animation:none!important\}\}/);
+});
+
+test("Blender annotation meshes are excluded by conservative whole-name matching",()=>{
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("const ANNOTATION_OBJECT_NAME"),end=source.indexOf("\nexport function createObjects",start);
+ assert.ok(start>=0&&end>start,"annotation classifier must be defined before scene construction");
+ const helper=source.slice(start,end).replace("export function isLikelyAnnotationObject","function isLikelyAnnotationObject");
+ const classify=new Function(helper+"\nreturn isLikelyAnnotationObject;")();
+ assert.equal(classify({aname:"Text",data:{aname:"Text"}}),true);
+ assert.equal(classify({aname:"Text.001",data:{aname:"Text.001"}}),true);
+ assert.equal(classify({aname:"Mission label",data:{aname:"Mission label"}}),false);
+ assert.equal(classify({aname:"Solar Panel",data:{aname:"TexturedMesh"}}),false);
+ assert.equal(classify({aname:"Cube",data:{aname:"Cube.001"}}),false);
+});
+test("Blender scene builder can explicitly retain annotation meshes when requested",()=>{
+ const source=read("vendor/blend-importer.js");
+ assert.ok(source.includes("options.excludeAnnotations !== false && isLikelyAnnotationObject(object)"));
+ assert.ok(source.includes("options.onAnnotationExcluded?.(diagnostic)"));
+ const app=read("app.js");
+ assert.ok(app.includes("onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)"));
+ assert.ok(app.includes("likely text/label mesh(es)"));
 });
