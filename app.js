@@ -142,9 +142,12 @@ function setSpecificModelSource(model){
   try{
     const asset=file?new URL(file):null;
     const source=originalSource?new URL(originalSource):null;
+    const githubFolder=!!source&&source.hostname.toLowerCase()==="github.com"&&/\/tree(?:\/|$)/i.test(source.pathname);
+    const githubRawAsset=!!source&&source.hostname.toLowerCase()==="raw.githubusercontent.com";
     const generic=!source||source.pathname==="/"||
       ["/3d-resources/","/3d-resources","/models/","/models","/"].includes(source.pathname)||
-      (source.hostname==="3d-asteroids.space"&&source.pathname==="/moons/");
+      (source.hostname==="3d-asteroids.space"&&source.pathname==="/moons/")||
+      githubFolder||githubRawAsset;
     if(asset&&asset.hostname==="raw.githubusercontent.com"&&
        asset.pathname.includes("/NASA-3D-Resources/")){
       const parts=decodeURIComponent(asset.pathname).split("/").filter(Boolean);
@@ -259,9 +262,10 @@ function renderCollection(){
   try{path=new URL(data.file).pathname.toLowerCase();}catch{}
   const extension=format==="ZIP"?/\.zip$/i:format==="7Z"?/\.7z$/i:format==="TAR"?/\.tar$/i:format==="GZ"?/\.gz$/i:format.includes("STEP")?/\.step\.gz$/i:null;
   const direct=data.downloadDirect!==false&&/^https:\/\//i.test(String(data.file||""))&&!!extension&&extension.test(path);
-  const target=direct?data.file:(data.sourceUrl||data.file||"#");
+  const target=direct?data.file:String(data.sourceUrl||"").trim();
   const action=direct?(String(data.format||"").toUpperCase().includes("STEP")?"Download compressed STEP ↗":"Download archive ↗"):"Open source page ↗";
-  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><a class="card-action" href="'+escapeCardText(target)+'" target="_blank" rel="noopener">'+action+'</a></div></article>';
+  const actionLink=target?'<a class="card-action" href="'+escapeCardText(target)+'" target="_blank" rel="noopener">'+action+'</a>':'<span class="card-action" aria-disabled="true" title="No verified model-specific source page is available.">Source page not verified</span>';
+  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small>'+actionLink+'</div></article>';
  }).join("");
  remoteModelGrid.innerHTML=remoteCandidates.map(data=>'<article class="result-card model-card remote-model-card"><div class="result-meta"><span class="result-type model-type">Remote · on demand</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>Original model page. SPACEMESHER checks for reachable OBJ/PLY files only when you open it.</p><div class="card-bottom"><small>No local copy is stored</small><button class="card-action" data-remote-model="'+data.id+'">Find model files →</button></div></article>').join("");
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
@@ -460,6 +464,8 @@ function addCatalogModel(model) {
         const url = new URL(value);
         if (url.hostname === "models.spaceradar.ai" && url.pathname.startsWith("/model/")) return 4;
         if (url.pathname === "/" || ["/3d-resources", "/3d-resources/"].includes(url.pathname)) return 0;
+        if (url.hostname === "raw.githubusercontent.com") return 0;
+        if (url.hostname === "github.com" && url.pathname.includes("/tree/")) return 0;
         if (url.hostname === "github.com" && url.pathname.includes("/blob/")) return 1;
         return 2;
       } catch { return 0; }
