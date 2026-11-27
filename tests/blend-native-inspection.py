@@ -10,6 +10,7 @@ if not args:
     raise RuntimeError("Expected output STL path after --")
 output_path = args[0]
 scene = bpy.context.scene
+bpy.context.view_layer.update()
 depsgraph = bpy.context.evaluated_depsgraph_get()
 mesh_objects = [obj for obj in scene.objects if obj.type == "MESH"]
 annotation_name = re.compile(r"^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|logo|brand|watermark|copyright|credit)(?:[._ -]?\d+)?$", re.I)
@@ -45,7 +46,7 @@ for obj in mesh_objects:
             "dimensions": list(obj.dimensions),
             "scale": list(obj.scale),
             "location": list(obj.location),
-            "matrix_world": [list(row) for row in obj.matrix_world],
+            "matrix_world": [list(row) for row in obj.evaluated_get(depsgraph).matrix_world],
             "matrix_parent_inverse": [list(row) for row in obj.matrix_parent_inverse],
             "parent": obj.parent.name if obj.parent else None,
             "data": obj.data.name if obj.data else None,
