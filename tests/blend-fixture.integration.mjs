@@ -31,7 +31,7 @@ const totals = validMeshes.reduce((sum, mesh) => ({
 assert.ok(totals.vertices >= 3 && totals.loops >= 3 && totals.polygons >= 1, "Parsed mesh topology totals must be non-empty");
 const targetNames = new Set(["deck","panel_l_root","Cube.046","logo_NASA_JPL","ground_and_sky_dome"]);
 const sourceObjects = (parsed.objects?.Object || []).filter(object=>targetNames.has(object.aname)).map(object=>({
-  name:object.aname, loc:object.loc, size:object.size, rot:object.rot,
+  name:object.aname, loc:object.loc, size:object.size, rot:object.rot, quat:object.quat, obmat:object.obmat, parentinv:object.parentinv,
   parentName:object.parent?.aname||null, dataName:object.data?.aname||null
 }));
 const sceneUnits = (parsed.objects?.Scene || []).map(scene=>({
