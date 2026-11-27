@@ -2014,7 +2014,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Kepler (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(A)/Kepler%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/kepler-a/",
       "changed": "Source repository"
     },
     {
@@ -2028,7 +2028,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Kepler (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Kepler%20(B)/Kepler%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/kepler-b/",
       "changed": "Source repository"
     },
     {
@@ -2042,7 +2042,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Landsat 1, 2, and 3: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%201%2C%202%2C%20and%203/Landsat%201%2C%202%2C%20and%203.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/landsat-1-2-and-3/",
       "changed": "Source repository"
     },
     {
@@ -2056,7 +2056,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Landsat 4 and 5: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%204%20and%205/Landsat%204%20and%205.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/landsat-4-and-5/",
       "changed": "Source repository"
     },
     {
@@ -2070,7 +2070,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Landsat 7: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%207/Landsat%207.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/landsat-7/",
       "changed": "Source repository"
     },
     {
@@ -2084,7 +2084,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Landsat 8: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Landsat%208/Landsat%208.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/landsat-8/",
       "changed": "Source repository"
     },
     {
@@ -2098,7 +2098,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Laser Interferometer Space Antenna (LISA) (2006): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Laser%20Interferometer%20Space%20Antenna%20(LISA)%20(2006)/Laser%20Interferometer%20Space%20Antenna%20(LISA)%20(2006).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/laser-interferometer-space-antenna-lisa-2006/",
       "changed": "Source repository"
     },
     {
@@ -2112,7 +2112,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Lunar Atmosphere and Dust Environment Explorer (LADEE): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Lunar%20Atmosphere%20and%20Dust%20Environment%20Explorer%20(LADEE)/Lunar%20Atmosphere%20and%20Dust%20Environment%20Explorer%20(LADEE).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/lunar-atmosphere-and-dust-environment-explorer-ladee/",
       "changed": "Source repository"
     },
     {
@@ -2126,7 +2126,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Lunar Laser Communications Demonstration (LLCD): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Lunar%20Laser%20Communications%20Demonstration%20(LLCD)/Lunar%20Laser%20Communications%20Demonstration%20(LLCD).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/lunar-laser-communications-demonstration-llcd/",
       "changed": "Source repository"
     },
     {
@@ -2140,7 +2140,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Lunar Reconnaissance Orbiter (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Lunar%20Reconnaissance%20Orbiter%20(A)/Lunar%20Reconnaissance%20Orbiter%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-a/",
       "changed": "Source repository"
     },
     {
