@@ -368,3 +368,14 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - The user screenshot is visual evidence of incorrect output, but it does not by itself prove which Blender datablock is malformed. This parser bug is confirmed by source inspection and is a credible cause of corrupted geometry; the exact InSight binary still needs a real end-to-end conversion after CI.
 - Do not claim that the screenshot model is fixed until the exact NASA `.blend` file has been converted and its preview/bounds checked. Browser/Blender manual verification is not available through the GitHub source connector.
 - Rollback: `backup/before-blend-parser-struct-length-fix-2026-11-27` at `9630b37c07ba7d06bda42e7c4132fabe5080b922`.
+
+
+### Merge and publication verification — 27 November 2026
+
+- Pull request #28 was squash-merged into `main` as `5a5426db35d28027098f9656f12a21fea5b6265f`; the main-branch read-back matched the merge commit.
+- Final PR-head checks on `8a20df55e7bd1eaec523301264dbc7a5171801b5` passed: workflow enforcement `46072618558`, model-workspace tests `46072618607`, catalogue/application validation `46072618504`, and complete catalogue link audit `46072618548`.
+- The dedicated model-workspace run `46072615936` and catalogue/application validation run `46072615912` also passed on the preceding code-identical PR head `899840a00c3668081ca0fcb82f3ff7bf57e911af`; the final head's complete checks are the four runs above.
+- Post-merge main checks on `5a5426db35d28027098f9656f12a21fea5b6265f` passed: model-workspace `46072701687` and catalogue/application validation `46072701714`.
+- GitHub Pages build and deployment run `46072701220` completed successfully, including the **Deploy to GitHub Pages** job.
+- The website deployment is confirmed. The exact InSight `.blend` file has not yet been converted end-to-end in a browser, so the fix is not claimed to have visually resolved that specific file. The parser regression test and CI establish the code-level correction only.
+- Documentation follow-up safety branch: `backup/after-blend-parser-offset-fix-2026-11-27`, created from merge commit `5a5426db35d28027098f9656f12a21fea5b6265f`; documentation branch: `docs/blend-parser-offset-fix-verification-2026-11-27`.
