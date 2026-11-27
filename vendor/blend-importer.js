@@ -326,11 +326,11 @@ function setTransform(object, obj) {
 
 export function createObjects(file) {
     const objects = []
-    const childMap = new Map<any, THREE.Object3D[]>()
-    const objMap = new Map<any, THREE.Object3D>()
+    const childMap = new Map()
+    const objMap = new Map()
     const blendObjects = file.objects.Object ?? []
-    const loadedGeo = new Map<any, THREE.BufferGeometry>()
-    const loadedMat = new Map<any, THREE.Material>()
+    const loadedGeo = new Map()
+    const loadedMat = new Map()
 
     for (const object of blendObjects) {
         let obj
