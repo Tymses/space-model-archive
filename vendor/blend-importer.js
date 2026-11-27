@@ -277,7 +277,7 @@ function createLight(lamp) {
     }
 }
 
-function createCamera(object)3D | undefined {
+function createCamera(object) {
     const d = object.data
     if (!d) return undefined
     if (d.type === 1) {
@@ -298,7 +298,7 @@ function safeVec(v, fallback) {
     return Array.isArray(v) && v.length >= 3 ? v : fallback
 }
 
-function setTransform(object, obj3D) {
+function setTransform(object, obj) {
     obj.name = object.aname
     const size = safeVec(object.size, [1, 1, 1])
     const loc = safeVec(object.loc, [0, 0, 0])
@@ -324,8 +324,8 @@ function setTransform(object, obj3D) {
     obj.updateMatrix()
 }
 
-export function createObjects(file)3D[] {
-    const objects3D[] = []
+export function createObjects(file) {
+    const objects = []
     const childMap = new Map<any, THREE.Object3D[]>()
     const objMap = new Map<any, THREE.Object3D>()
     const blendObjects = file.objects.Object ?? []
@@ -333,7 +333,7 @@ export function createObjects(file)3D[] {
     const loadedMat = new Map<any, THREE.Material>()
 
     for (const object of blendObjects) {
-        let obj3D | undefined
+        let obj
         switch (object.type) {
             case BLEND_OBJECT_TYPES.mesh: {
                 if (!object.data) break
