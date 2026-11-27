@@ -382,7 +382,6 @@ function restoreRouteFromHash(){
 }
 window.addEventListener("hashchange",restoreRouteFromHash);
 window.addEventListener("popstate",restoreRouteFromHash);
-restoreRouteFromHash();
 $("#search-input").addEventListener("input",renderCollection);$("#source-filter").addEventListener("change",renderCollection);$("#type-filter").addEventListener("change",renderCollection);
 $("#guide-link").addEventListener("click",e=>{e.preventDefault();routeGuide();});$("#scaling-link").addEventListener("click",e=>{e.preventDefault();routeScaling();});
  document.querySelectorAll("[data-guide-tab]").forEach(tab=>tab.addEventListener("click",()=>{
@@ -645,6 +644,8 @@ async function loadExpandedCatalogs() {
   if (location.hash.startsWith("#scaling/") || location.hash.startsWith("#model/")) restoreRouteFromHash();
 }
 loadExpandedCatalogs();
+// Initialize the first route only after expandedCatalogCounts and all catalog loaders exist.
+restoreRouteFromHash();
 
 // --- SMA print preparation: live model dimensions, scale and printer fit ---
 (function initPrintAssessment(){
