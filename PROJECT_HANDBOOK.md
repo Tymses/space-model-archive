@@ -310,3 +310,25 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Previous failing run: `46068626601` on PR #24; the **Require the process attestation** step failed and checkout/handbook check were skipped.
 - Verification: PR-head workflow run `46070228527` passed. The **Require the process attestation** step and **Require handbook update in the same PR** step both completed successfully. The run covered the corrected matcher and same-PR handbook requirement; no application test suite was triggered because this PR changes only the workflow and handbook. GitHub Pages deployment remains pending until merge.
 - Rollback reference: `backup/before-workflow-checkbox-ci-fix-2026-11-27` at `524263a57f3327eafb796dde2e665bd9006e943a`.
+
+
+## 17. Blender scene geometry selection — 27 November 2026
+
+### User-reported defect and investigation
+- The user supplied a screenshot of the NASA **InSight Cruise Stage (final)** Blender model after browser conversion. The preview contained large inverted text geometry crossing the spacecraft, and the reported bounding dimensions were approximately 25,885.846 × 12,732.971 × 34,735.645 mm. This is direct evidence that the imported scene bounds include geometry unrelated to the intended printable spacecraft.
+- The official NASA repository tree was inspected. It contains both `InSight Cruise Stage (final).blend` (21,801,160 bytes) and `InSight Cruise Stage.blend` (6,065,288 bytes), plus corresponding preview PNGs. The binary itself could not be read by the available GitHub text connector or web cache in this task; no claim is made that the exact NASA binary was locally parsed or visually regression-tested.
+- The existing importer creates a Three.js object for every Blender mesh object and includes every one in the preview/export bounds. It had no exclusion policy for Blender text/annotation meshes.
+
+### Implementation
+- Added a conservative whole-name classifier for mesh objects named exactly like common scene annotations (Text, Label, Annotation, Caption, Title, Legend, Dimension, Scale Bar, Watermark or Copyright, including Blender numeric suffixes).
+- These likely annotation meshes are excluded from printable scene geometry by default and reported separately to the user. Other mesh objects are preserved.
+- Added an explicit importer option `excludeAnnotations: false` to retain all meshes when a user needs the original scene content.
+- Updated the browser conversion status to report the count of excluded text/label meshes.
+- This is a targeted mitigation for the demonstrated class of scene contamination, not a complete Blender runtime. Modifiers, linked libraries, geometry nodes, fonts not converted to mesh, and other unsupported Blender scene behavior are not evaluated by the current parser.
+
+### Verification and limits
+- Added regression tests for conservative object-name matching, avoiding substring false positives, explicit opt-out and UI diagnostics.
+- No local Node runtime, Blender executable or binary fixture could be run in this environment. GitHub Actions must validate the code and tests; the exact NASA binary still requires an end-to-end import/visual comparison in a browser.
+- Safety branch: `backup/before-blend-scene-filtering-2026-11-27`, created from inspected `main` commit `9a6681ddc239bb72878c7193fc29b1db8b5c486c`.
+- Implementation branch: `fix/blend-scene-geometry-selection-2026-11-27`.
+- Rollback: restore the implementation branch to the safety-branch commit; no changes were made to the NASA source files or catalogue records.
