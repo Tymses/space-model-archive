@@ -37,6 +37,13 @@ for obj in printable_objects:
         maximum[i] = max(maximum[i], hi[i])
     details.append({"name": obj.name, "dimensions": size, "vertices": len(evaluated.data.vertices), "polygons": len(evaluated.data.polygons)})
 details.sort(key=lambda item: item["dimensions"][0] * item["dimensions"][1] * item["dimensions"][2], reverse=True)
+for obj in printable_objects:
+    obj.data.calc_loop_triangles()
+native_totals = {
+    "vertices": sum(len(obj.data.vertices) for obj in printable_objects),
+    "polygons": sum(len(obj.data.polygons) for obj in printable_objects),
+    "loop_triangles": sum(len(obj.data.loop_triangles) for obj in printable_objects),
+}
 target_names = {"deck","panel_l_root","Cube.046","arm_03.001","cable_02","arm_01_b","logo_NASA_JPL","ground_and_sky_dome","roll_pressure_inlet","roll_grapple","roll_RISE Antenna","roll_solar_panels"}
 selected_details = []
 for obj in mesh_objects:
@@ -74,7 +81,7 @@ if not os.path.isfile(output_path) or os.path.getsize(output_path) <= 84:
 result = {
     "status": "NATIVE_BLENDER_STL_OK",
     "version": bpy.app.version_string,
-    "mesh_objects": len(mesh_objects),
+    "mesh_objects": len(mesh_objects),\n    "native_totals": native_totals,
     "printable_objects": len(printable_objects),
     "excluded_presentation_objects": len(mesh_objects) - len(printable_objects),
     "scene_units": scene_units,
