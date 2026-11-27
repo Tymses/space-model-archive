@@ -276,7 +276,84 @@ function viewerAssetUrl(rawUrl){
   }catch(_){}
   return rawUrl;
 }
-function routeModel(id,push=true){document.querySelectorAll(".remote-resolution-status,.remote-variants,.remote-resolution-loader").forEach(node=>node.remove());const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+(model.remoteCandidate?'Original model files are fetched from the source only when requested.':model.format+' file ready to download. Preview is not available for this file format.')+'</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML=(model.sourceUrl?'<a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Open original source page ↗</a>':'')+(model.downloadDirect===false?'':'<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↓</a>');
+
+let activeFormatPreviewCleanup=null;
+function previewMessage(text){
+ const box=document.createElement("div");box.className="preview-placeholder";const p=document.createElement("p");p.textContent=text;box.append(p);return box;
+}
+async function renderExtended3DPreview(model){
+ const stage=$("#preview-stage");stage.replaceChildren(previewMessage("Loading "+model.format+" preview…"));
+ try{
+  const base="https://cdn.jsdelivr.net/npm/three@0.170.0/";
+  const [THREE,orbitModule,loaderModule]=await Promise.all([
+   import(base+"build/three.module.js"),
+   import(base+"examples/jsm/controls/OrbitControls.js"),
+   model.format==="FBX"?import(base+"examples/jsm/loaders/FBXLoader.js"):model.format==="3DS"?import(base+"examples/jsm/loaders/TDSLoader.js"):import(base+"examples/jsm/loaders/LWOLoader.js")
+  ]);
+  if(currentModel!==model)return;
+  let object;
+  const resourcePath=model.file.slice(0,model.file.lastIndexOf("/")+1);
+  if(model.format==="FBX")object=await new loaderModule.FBXLoader().loadAsync(model.file);
+  else if(model.format==="3DS"){const loader=new loaderModule.TDSLoader();loader.setResourcePath(resourcePath);object=await loader.loadAsync(model.file);}
+  else{const data=await new loaderModule.LWOLoader().loadAsync(model.file);object=new THREE.Group();(data.meshes||[]).forEach(mesh=>object.add(mesh));}
+  if(currentModel!==model)return;
+  if(!object||!object.children?.length&& !object.geometry)throw new Error("No renderable mesh was found in this file.");
+  const scene=new THREE.Scene();scene.background=new THREE.Color(0xf0f3f6);
+  const camera=new THREE.PerspectiveCamera(38,Math.max(stage.clientWidth,1)/360,.001,1e9);
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(stage.clientWidth,360);
+  renderer.domElement.style.cssText="display:block;width:100%;height:360px;touch-action:none";
+  scene.add(new THREE.HemisphereLight(0xffffff,0x8796a5,2));
+  const light=new THREE.DirectionalLight(0xffffff,2);light.position.set(2,3,4);scene.add(light);scene.add(object);
+  const bounds=new THREE.Box3().setFromObject(object);if(bounds.isEmpty())throw new Error("The file contains no visible mesh geometry.");
+  const size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3()),maxDim=Math.max(size.x,size.y,size.z)||1;
+  object.position.sub(center);camera.position.set(maxDim*1.7,maxDim*1.3,maxDim*1.9);camera.near=Math.max(maxDim/10000,.001);camera.far=maxDim*100;camera.updateProjectionMatrix();
+  const controls=new orbitModule.OrbitControls(camera,renderer.domElement);controls.enableDamping=true;
+  const draw=()=>renderer.render(scene,camera);controls.addEventListener("change",draw);
+  stage.replaceChildren(renderer.domElement);draw();
+  const resize=()=>{if(currentModel!==model)return;camera.aspect=Math.max(stage.clientWidth,1)/360;camera.updateProjectionMatrix();renderer.setSize(stage.clientWidth,360);draw();};
+  const observer=new ResizeObserver(resize);observer.observe(stage);
+  activeFormatPreviewCleanup=()=>{observer.disconnect();controls.dispose();renderer.dispose();object.traverse?.(node=>{node.geometry?.dispose?.();if(Array.isArray(node.material))node.material.forEach(m=>m.dispose?.());else node.material?.dispose?.();});};
+ }catch(error){if(currentModel===model)stage.replaceChildren(previewMessage("Preview could not be loaded: "+(error?.message||"unsupported or inaccessible file")+". You can still download the original file."));}
+}
+async function inspectArchive(model,button,output){
+ button.disabled=true;button.textContent="Reading archive…";output.replaceChildren(previewMessage("Loading archive listing in your browser. No files are extracted."));
+ try{
+  const response=await fetch(model.file);if(!response.ok)throw new Error("Archive download returned HTTP "+response.status+".");
+  const declared=Number(response.headers.get("Content-Length"));if(declared>80*1024*1024)throw new Error("Archive is larger than the 80 MB in-browser preview limit.");
+  const buffer=await response.arrayBuffer();if(buffer.byteLength>80*1024*1024)throw new Error("Archive is larger than the 80 MB in-browser preview limit.");
+  const outputLines=[];
+  const module=await import("https://cdn.jsdelivr.net/npm/7z-wasm@1.2.0/7zz.es6.js");
+  const factory=module.default||module.SevenZip||module;
+  const sevenZip=await factory({print:line=>outputLines.push(String(line)),printErr:line=>outputLines.push(String(line)),locateFile:(path)=>"https://cdn.jsdelivr.net/npm/7z-wasm@1.2.0/"+path});
+  sevenZip.FS.writeFile("/spacemesher-preview-archive",new Uint8Array(buffer));
+  try{sevenZip.callMain(["l","-slt","/spacemesher-preview-archive"]);}catch(error){if(!/ExitStatus|exit\(/i.test(String(error)))throw error;}
+  const text=outputLines.join("\n");const blocks=text.split(/\n\s*\n/);const entries=[];
+  for(const block of blocks){const path=(block.match(/^Path = (.+)$/m)||[])[1];if(!path||path==="/spacemesher-preview-archive")continue;const size=(block.match(/^Size = (\d+)$/m)||[])[1];const folder=/^Folder = \+$/m.test(block);if(!folder)entries.push({path,size:size?Number(size):null});}
+  const wrap=document.createElement("div");wrap.className="archive-preview-list";const heading=document.createElement("strong");heading.textContent=entries.length+" file(s) in archive";wrap.append(heading);
+  if(!entries.length){const p=document.createElement("p");p.textContent=text.slice(0,1800)||"The archive could be read, but no file entries were returned.";wrap.append(p);}
+  else{const list=document.createElement("ul");for(const entry of entries.slice(0,120)){const li=document.createElement("li");li.textContent=entry.path+(entry.size!==null?" · "+(entry.size/1024/1024).toFixed(2)+" MB":"");list.append(li);}wrap.append(list);if(entries.length>120){const p=document.createElement("p");p.textContent="Showing first 120 entries.";wrap.append(p);}}
+  output.replaceChildren(wrap);button.textContent="Refresh archive contents";button.disabled=false;
+ }catch(error){output.replaceChildren(previewMessage("Archive preview unavailable: "+(error?.message||"unknown error")+". Download and extract the archive locally to inspect its contents."));button.textContent="Try archive preview again";button.disabled=false;}
+}
+function renderSpecialPreview(model){
+ const stage=$("#preview-stage");stage.replaceChildren();
+ if(["FBX","3DS","LWO"].includes(model.format)){renderExtended3DPreview(model);return;}
+ if(["7Z","ZIP","TAR","GZ","GZIP"].includes(model.format)){
+  const panel=document.createElement("div");panel.className="archive-preview";
+  const title=document.createElement("strong");title.textContent="Archive contents";const note=document.createElement("p");note.textContent="Inspect filenames and uncompressed sizes without extracting the files. Processing happens in your browser.";
+  const button=document.createElement("button");button.type="button";button.className="action-link";button.textContent="Preview archive contents";
+  const output=document.createElement("div");output.className="archive-preview-output";button.addEventListener("click",()=>inspectArchive(model,button,output));panel.append(title,note,button,output);stage.append(panel);return;
+ }
+ if(model.format==="BLEND"){
+  const panel=document.createElement("div");panel.className="archive-preview";
+  const title=document.createElement("strong");title.textContent="Blender project preview";
+  const note=document.createElement("p");note.textContent="A .blend file stores a complete Blender scene and cannot be rendered by the standard web 3D loader. Open the file in a browser-based BLEND viewer; download the file first, then choose it in that viewer. The file is opened by the external viewer, not uploaded by SPACEMESHER.";
+  const download=document.createElement("a");download.className="action-link";download.href=model.file;download.textContent="Download BLEND file";download.setAttribute("download","");
+  const viewer=document.createElement("a");viewer.className="action-link secondary";viewer.href="https://0xr.space/";viewer.target="_blank";viewer.rel="noopener";viewer.textContent="Open BLEND viewer ↗";
+  panel.append(title,note,download,viewer);stage.append(panel);
+ }
+}
+function routeModel(id,push=true){document.querySelectorAll(".remote-resolution-status,.remote-variants,.remote-resolution-loader").forEach(node=>node.remove());activeFormatPreviewCleanup?.();activeFormatPreviewCleanup=null;const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else if(["FBX","3DS","LWO","7Z","ZIP","TAR","GZ","GZIP","BLEND"].includes(model.format)){renderSpecialPreview(model);}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+(model.remoteCandidate?'Original model files are fetched from the source only when requested.':model.format+' file ready to download. Preview is not available for this file format.')+'</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML=(model.sourceUrl?'<a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Open original source page ↗</a>':'')+(model.downloadDirect===false?'':'<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↓</a>');
 if(model.remoteCandidate){
  const status=document.createElement("p");status.className="remote-resolution-status";status.textContent="Die Originalseite wird erst beim Öffnen nach konkreten Modelldateien durchsucht.";
  const variants=document.createElement("div");variants.className="remote-variants";
