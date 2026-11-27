@@ -2154,7 +2154,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Lunar Reconnaissance Orbiter (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Lunar%20Reconnaissance%20Orbiter%20(B)/Lunar%20Reconnaissance%20Orbiter%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/lunar-reconnaissance-orbiter-b/",
       "changed": "Source repository"
     },
     {
@@ -2168,7 +2168,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "MErcury Surface, Space ENvironment, GEochemistry, and Ranging (MESSENGER): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER)/MErcury%20Surface%2C%20Space%20ENvironment%2C%20GEochemistry%2C%20and%20Ranging%20(MESSENGER).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mercury-surface-space-environment-geochemistry-and-ranging-messenger/",
       "changed": "Source repository"
     },
     {
@@ -2182,7 +2182,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Magellan: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magellan/Magellan.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/magellan/",
       "changed": "Source repository"
     },
     {
@@ -2196,7 +2196,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Magnetospheric Multiscale (MMS) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magnetospheric%20Multiscale%20(MMS)%20(A)/Magnetospheric%20Multiscale%20(MMS)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/magnetospheric-multiscale-mms-a/",
       "changed": "Source repository"
     },
     {
@@ -2210,7 +2210,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Magnetospheric Multiscale (MMS) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Magnetospheric%20Multiscale%20(MMS)%20(B)/Magnetospheric%20Multiscale%20(MMS)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/magnetospheric-multiscale-mms-b/",
       "changed": "Source repository"
     },
     {
@@ -2224,7 +2224,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mark III Spacesuit: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mark%20III%20Spacesuit/Mark%20III%20Spacesuit.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mark-iii-spacesuit/",
       "changed": "Source repository"
     },
     {
@@ -2238,7 +2238,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover.blend",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-2020-perseverance-rover/",
       "changed": "Source repository"
     },
     {
@@ -2252,7 +2252,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars 2020 Perseverance Rover: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%202020%20Perseverance%20Rover/Mars%202020%20Perseverance%20Rover.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-2020-perseverance-rover/",
       "changed": "Source repository"
     },
     {
@@ -2266,7 +2266,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Atmosphere and Volatile EvolutioN (MAVEN) (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A)/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-atmosphere-and-volatile-evolution-maven-a/",
       "changed": "Source repository"
     },
     {
@@ -2280,7 +2280,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Atmosphere and Volatile EvolutioN (MAVEN) (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(B)/Mars%20Atmosphere%20and%20Volatile%20EvolutioN%20(MAVEN)%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-atmosphere-and-volatile-evolution-maven-b/",
       "changed": "Source repository"
     },
     {
@@ -2294,7 +2294,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Mars Exploration Rover - Opportunity (MER-B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B)/Mars%20Exploration%20Rover%20-%20Opportunity%20(MER-B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/mars-exploration-rover-opportunity-mer-b/",
       "changed": "Source repository"
     },
     {
