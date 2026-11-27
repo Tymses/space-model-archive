@@ -1071,14 +1071,14 @@ restoreRouteFromHash();
   }
   return simplifySearchTerm(text)||text;
  }
- function normalizeObjectQuery(value){
-  return normalizeResearchQuery(value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
+ function normalizeObjectQuery(value,category=null){
+  return normalizeResearchQuery(value,category).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim().replace(/\s+/g," ");
  }
  async function findCuratedDimensions(candidates,expectedCategory=null){
   try{
    if(!curatedDimensionsPromise)curatedDimensionsPromise=fetch("data/object-dimensions-index.json?v=20261127-epoxi-1",{cache:"no-cache"}).then(response=>{if(!response.ok)throw new Error("Fallback database is unavailable");return response.json();});
-   const index=await curatedDimensionsPromise,keys=new Set(candidates.map(normalizeObjectQuery).filter(Boolean));
-   const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias))));
+   const index=await curatedDimensionsPromise,keys=new Set(candidates.map(value=>normalizeObjectQuery(value,expectedCategory)).filter(Boolean));
+   const found=(index.records||[]).filter(record=>(!expectedCategory||record.category===expectedCategory||(record.categoryAliases||[]).includes(expectedCategory))&&[record.name,...(record.aliases||[])].some(alias=>keys.has(normalizeObjectQuery(alias,expectedCategory))));
    return found.length===1?found[0]:null;
   }catch(error){curatedDimensionsPromise=null;return null;}
  }
@@ -1156,7 +1156,7 @@ restoreRouteFromHash();
   try{
    const directRecord=await findCuratedDimensions([q],expectedCategory);
    if(lookupToken!==token)return;
-   if(directRecord&&(directRecord.category!=="small-bodies"||["iris","7 iris"].includes(normalizeObjectQuery(q)))){
+   if(directRecord&&(directRecord.category!=="small-bodies"||["iris","7 iris"].includes(normalizeObjectQuery(q,expectedCategory)))){
     const longest=Math.max(...directRecord.axesKm);
     showDimensions({name:directRecord.name,axesKm:directRecord.axesKm,longestAxisKm:longest,sourceUrl:directRecord.sourceUrl,sourceLabel:directRecord.sourceLabel||"scientific reference",confidenceLabel:"High evidence",confidenceNote:"curated scientific record",uncertaintyKm:directRecord.uncertaintyKm,displayUnit:directRecord.category==="spacecraft"?"m":"km"});
     const uncertainty=Number.isFinite(directRecord.uncertaintyKm)?" Published uncertainty: ±"+fmt(directRecord.uncertaintyKm)+" km.":"";
