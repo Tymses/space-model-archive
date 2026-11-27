@@ -806,6 +806,7 @@ async function lookupCuratedDimensions(query, category) {
     if (axesKm.length < 2 || axesKm.length > 3 || !axesKm.every(value => Number.isFinite(value) && value > 0) || !/^https:\/\//i.test(record.sourceUrl || "")) return null;
     const candidate = {
       url: record.sourceUrl,
+      matchedObject: record.name,
       title: record.name + " — " + (record.measurement || "published physical dimensions"),
       snippet: [record.measurement, record.configuration, record.note].filter(Boolean).join(". "),
       axesKm,
