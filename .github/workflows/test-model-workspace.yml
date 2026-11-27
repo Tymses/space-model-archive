@@ -11,6 +11,7 @@ on:
       - "tests/model-workspace.test.mjs"
       - "tests/blend-fixture.integration.mjs"
       - "tests/blend-browser.integration.mjs"
+      - "tests/blend-native-inspection.py"
       - "tests/blend-fixture-browser.html"
       - ".github/workflows/test-model-workspace.yml"
   pull_request:
@@ -46,3 +47,9 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Run browser BLEND to STL integration
         run: node tests/blend-browser.integration.mjs
+      - name: Install native Blender for source comparison
+        run: sudo apt-get update && sudo apt-get install -y blender
+      - name: Export NASA fixture with native Blender
+        run: |
+          curl --fail --location --retry 3 --output /tmp/insight-native.blend "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/InSight%20Cruise%20Stage/InSight%20Cruise%20Stage%20%28final%29.blend"
+          blender --background /tmp/insight-native.blend --python tests/blend-native-inspection.py -- /tmp/insight-native.stl
