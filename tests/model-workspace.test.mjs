@@ -142,7 +142,7 @@ test("BLEND header validation distinguishes valid, truncated, HTML and unsupport
  const bigEndian=new TextEncoder().encode("BLENDER-V405").buffer;
  assert.equal(inspect(bigEndian).endian,"big");
  assert.throws(()=>inspect(new ArrayBuffer(8)),/BLEND_INVALID_HEADER/);
- assert.throws(()=>inspect(new TextEncoder().encode("<html>error").buffer),/BLEND_NOT_A_FILE/);
+ assert.throws(()=>inspect(new TextEncoder().encode("<html>error!!").buffer),/BLEND_NOT_A_FILE/);
  assert.throws(()=>inspect(new TextEncoder().encode("NOTBLENDxxxx").buffer),/BLEND_INVALID_HEADER/);
 });
 
