@@ -668,18 +668,18 @@ async function searchWeb(query, category) {
   const checked = await Promise.all(pages.slice(0, 18).map(async item => {
     try {
       const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
-      if (!response.ok) return {...item, axesKm:extractIdentityScopedMeasurement(item.title+" "+item.snippet,query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:""};
+      if (!response.ok) return {...item, axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:""};
       const contentType = (response.headers.get("content-type") || "").toLowerCase();
       if (contentType.includes("pdf") || contentType.includes("octet-stream") || contentType.startsWith("image/")) {
-        return {...item, axesKm:extractIdentityScopedMeasurement(item.title+" "+item.snippet,query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:"", nonHtml:true};
+        return {...item, axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:"", nonHtml:true};
       }
       const raw = (await response.text()).slice(0, 900000);
-      if (raw.startsWith("%PDF-")) return {...item, axesKm:extractIdentityScopedMeasurement(item.title+" "+item.snippet,query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:"", nonHtml:true};
+      if (raw.startsWith("%PDF-")) return {...item, axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:"", nonHtml:true};
       const text = plain(raw).slice(0, 60000);
       const measurement = extractIdentityScopedMeasurement(raw, query, category, item.title, item.snippet);
       const titleMatch = (raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1];
       return {...item,title:plain(titleMatch)||item.title,snippet:(text||item.snippet).slice(0,520),axesKm:measurement.axesKm,uncertaintyKm:measurement.uncertaintyKm,pageChecked:true,sourceText:researchTextBlocks(raw).join("\n")};
-    } catch { return {...item,axesKm:extractIdentityScopedMeasurement(item.title+" "+item.snippet,query,category,item.title,item.snippet).axesKm,uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
+    } catch { return {...item,axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm,uncertaintyKm:extractUncertainty(item.snippet),pageChecked:false,sourceText:""}; }
   }));
   const relevantCandidates = checked.filter(candidate => exactResearchIdentity(candidate, query, category));
   for (const candidate of relevantCandidates) {
