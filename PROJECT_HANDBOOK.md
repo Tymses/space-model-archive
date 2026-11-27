@@ -392,3 +392,10 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Implementation branch: `fix/blend-dna-struct-size-2026-11-27`.
 - Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `README.md`, `PROJECT_HANDBOOK.md`.
 - Rollback: reset to the safety branch commit above.
+
+
+### External fallback and server-side runtime investigation
+- The exact NASA file now parses in GitHub Actions with 150 Mesh datablocks and 149 with non-empty topology (182,166 vertices, 412,199 loops and 103,482 polygons). The final PR-head integration run is recorded after completion.
+- The UI now offers two independent fallback converters only when a BLEND import fails: Innerscene (local browser processing, provider-stated 200 MB limit) and Shapeweld (server-side Blender, provider-stated 50 MB limit and three-day deletion). The Shapeweld upload disclosure is shown in the UI. These are manual external fallbacks; the user must download the STL and re-upload it to Scaling.
+- A Cloudflare account check found the deployed Worker `sma-jpl-proxy`. Its current GET-only code handles model assets and dimension research, not file conversion. The Cloudflare Containers API returned an explicit authorization/plan error: Containers require Workers Paid. No paid plan upgrade, API key, third-party upload, or Worker deployment was authorized or performed. A real integrated server-side Blender converter therefore remains blocked by the current Cloudflare plan; do not describe the current Worker as a converter.
+- The Scaling workspace already includes Custom original dimensions (mm/m/km, longest or X/Y/Z axis) and Fit to build plate (selected printer volume, 5 mm default margin, six axis-aligned orientations and proportional adjustment). These were verified in current main code and were not duplicated. Fit mode calculates an STL export factor and exports the fitted geometry; it does not physically rotate the STL to the best orientation.
