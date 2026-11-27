@@ -437,14 +437,14 @@ function parseDimensionNumber(token) {
     const pieces = value.split(separator);
     if (pieces.length === 2) {
       const [integerPart, fractionPart] = pieces;
-      if (!integerPart || !fractionPart || !/^\\d+$/.test(integerPart) || !/^\\d+$/.test(fractionPart)) return null;
+      if (!integerPart || !fractionPart || !/^\d+$/.test(integerPart) || !/^\d+$/.test(fractionPart)) return null;
       // A single three-digit suffix is inherently ambiguous (2,300 vs 2.300).
       // A leading zero makes the decimal interpretation explicit (0,001).
       if (fractionPart.length === 3 && !/^0+$/.test(integerPart)) return null;
       normalized = integerPart + "." + fractionPart;
     } else {
       // Repeated separators are accepted only as conventional 3-digit grouping.
-      if (!/^\\d{1,3}(?:[,.]\\d{3})+$/.test(value)) return null;
+      if (!/^\d{1,3}(?:[,.]\d{3})+$/.test(value)) return null;
       normalized = value.replace(/[,.]/g, "");
     }
   }
@@ -454,7 +454,7 @@ function parseDimensionNumber(token) {
 }
 
 function extractAxes(text) {
-  const source = decode(text).replace(/\\u00d7/g, " x ").replace(/[–—]/g, "-");
+  const source = decode(text).replace(/\u00d7/g, " x ").replace(/[–—]/g, "-");
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
   const patterns = [
@@ -498,7 +498,7 @@ function extractAxes(text) {
 function extractUncertainty(text) {
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
-  const match = decode(text).match(new RegExp("(?:±|\\\\+\\\\/-)\\\\s*(" + number + ")\\\\s*" + unit, "i"));
+  const match = decode(text).match(new RegExp("(?:±|\\+\\/-)\\s*(" + number + ")\\s*" + unit, "i"));
   if (!match) return null;
   const numericValue = parseDimensionNumber(match[1]);
   if (numericValue == null) return null;
