@@ -112,6 +112,8 @@ SPACEMESHER's original source code is released under the **MIT License**; origin
 
 GitHub Actions validates JSON syntax, checks stable IDs in the core catalogue indexes, runs the catalogue and dimension-scanner tests, and verifies that the catalogue audit can be generated. See [the validation workflow](.github/workflows/validate-catalogue.yml). This does not automatically certify that external model URLs remain online; source availability still needs periodic checks.
 
+Every pull request to `main` is also checked by the [project-workflow enforcement](.github/workflows/enforce-project-workflow.yml): it requires the completed [process attestation template](.github/pull_request_template.md) and a same-PR update to [PROJECT_HANDBOOK.md](PROJECT_HANDBOOK.md). The visible [pre-flight/post-flight checklist](SPACEMESHER_WORKFLOW_CHECKLIST.md) defines the required documentation, GitHub, backup and external-diary handling. Configure this status check as required in GitHub branch protection to block merges; the check cannot prove that documents were actually read or that an inaccessible external diary was synchronized.
+
 
 ## Browser-based STL conversion
 
