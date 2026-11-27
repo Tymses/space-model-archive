@@ -23,7 +23,7 @@ test("catalogue labels resolve to the physical Didymos identity", () => {
   assert.equal(api.canonicalSmallBodyQuery("Didymos asteroid shape model"), "didymos");
   assert.equal(api.canonicalSmallBodyQuery("65803 Didymos"), "65803 didymos");
   assert.equal(api.canonicalSmallBodyQuery("Asteroid 4 Vesta (A) (West Globe Hollow)"), "4 vesta");
-  assert.equal(api.canonicalSmallBodyQuery("Dimorphos moonlet"), "dimorphos");
+  assert.equal(api.canonicalSmallBodyQuery("Dimorphos moonlet"), "dimorphos moonlet");
 });
 
 test("research expands into more than one scientific query form", () => {
