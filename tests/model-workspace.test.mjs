@@ -14,7 +14,8 @@ test("application, Worker and local Blender importer are valid JavaScript", () =
   const importerScript = importer
     .replace(/^import .*;$/gm, "")
     .replace(/export function /g, "function ")
-    .replace(/export async function /g, "async function ");
+    .replace(/export async function /g, "async function ")
+    .replace(/export const /g, "const ");
   assert.doesNotThrow(() => new Function("THREE", "parser", importerScript));
   assert.doesNotThrow(() => new Function(parser.replace("export default return_object;", "return return_object;")));
   assert.doesNotMatch(parser, /\bdebugger\b/);
@@ -130,6 +131,40 @@ test("BLEND importer supports Zstandard and gzip compressed projects", () => {
   assert.match(importer, /fzstd@0\.1\.1/);
   assert.match(importer, /DecompressionStream\('gzip'\)/);
   assert.match(importer, /export function createObjects/);
+});
+
+test("BLEND header validation distinguishes valid, truncated, HTML and unsupported headers",()=>{
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("export function inspectBlendHeader("),end=source.indexOf("\nasync function readLimitedStream",start);
+ assert.ok(start>=0&&end>start);
+ const inspect=new Function(source.slice(start,end).replace("export function ","function ")+"\nreturn inspectBlendHeader;")();
+ const valid=new TextEncoder().encode("BLENDER-v405").buffer;
+ assert.deepEqual(inspect(valid),{version:"4.5",versionCode:"405",pointerSize:8,endian:"little"});
+ const bigEndian=new TextEncoder().encode("BLENDER-V405").buffer;
+ assert.equal(inspect(bigEndian).endian,"big");
+ assert.throws(()=>inspect(new ArrayBuffer(8)),/BLEND_INVALID_HEADER/);
+ assert.throws(()=>inspect(new TextEncoder().encode("<html>error").buffer),/BLEND_NOT_A_FILE/);
+ assert.throws(()=>inspect(new TextEncoder().encode("NOTBLENDxxxx").buffer),/BLEND_INVALID_HEADER/);
+});
+
+test("BLEND decompression and parsing enforce bounded, validated input",()=>{
+ const importer=read("vendor/blend-importer.js"),app=read("app.js"),parser=read("vendor/blend-parser.js");
+ assert.match(importer,/MAX_BLEND_BYTES = 75 \* 1024 \* 1024/);
+ assert.match(importer,/readLimitedStream\(new Blob\(\[buffer\]\)\.stream\(\)\.pipeThrough\(new DecompressionStream\("gzip"\)\), MAX_BLEND_BYTES\)/);
+ assert.match(importer,/BLEND_DECOMPRESSION_FAILED/);
+ assert.match(importer,/BLEND_UNSUPPORTED_ENDIAN/);
+ assert.match(app,/Content-Length/);
+ assert.match(app,/BLEND_TOO_LARGE/);
+ assert.match(parser,/ERROR = null;/);
+});
+
+test("BLEND loader can skip invalid objects while preserving valid mesh objects",()=>{
+ const importer=read("vendor/blend-importer.js"),app=read("app.js");
+ assert.match(importer,/createObjects\(file, options = \{\}\)/);
+ assert.match(importer,/options\.onMeshError\(diagnostic\)/);
+ assert.match(app,/createObjects\(parsed\.file,\{onMeshError:diagnostic=>meshDiagnostics\.push\(diagnostic\)\}\)/);
+ assert.match(app,/loaded .* valid mesh\(es\); skipped .* invalid mesh object\(s\)/);
+ assert.match(app,/BLEND_NO_VALID_MESH/);
+ assert.match(app,/missing topology is never invented/);
 });
 
 test("source descriptions are included only when they identify the selected model", () => {
