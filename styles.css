@@ -410,3 +410,5 @@
 @media(max-width:600px){
  #model-grid.result-grid,#model-grid .model-folder-grid{grid-template-columns:minmax(0,1fr)!important}
 }
+
+.detail-title-line{display:flex;align-items:center;justify-content:space-between;gap:16px}.detail-convert-button{flex-shrink:0;white-space:nowrap}@media(max-width:600px){.detail-title-line{align-items:flex-start;flex-wrap:wrap}}

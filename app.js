@@ -218,6 +218,12 @@ function matchesSearch(query,values){
  const words=new Set(haystack.split(" "));
  return terms.every(term=>/^\d+$/.test(term)?words.has(term):haystack.includes(term));
 }
+function normalizeConversionFormat(value){
+ const format=String(value||"").trim().toUpperCase();
+ return /\bSTEP\b.*\b(?:GZIP|GZ)\b/.test(format)?"STEP":format;
+}
+function supportsStlConversion(value){return ["FBX","3DS","LWO","BLEND","STEP","STP"].includes(normalizeConversionFormat(value));}
+
 function renderCollection(){
  const q=$("#search-input").value.trim(),source=$("#source-filter").value,type=$("#type-filter").value;
  const isArchiveEntry=x=>["ZIP","7Z","TAR","GZ"].includes(String(x.format||"").toUpperCase())||/\bGZIP\b/i.test(String(x.format||""));
@@ -248,7 +254,6 @@ function renderCollection(){
  };
  modelGroup.hidden=!models.length;archiveGroup.hidden=!archives.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
- const canConvertModelFormat=value=>["FBX","3DS","LWO","BLEND","STEP","STP"].includes(String(value||"").toUpperCase())||/\bSTEP\b.*\b(?:GZIP|GZ)\b/i.test(String(value||""));
  const archiveCardNote=data=>{
   const format=String(data.format||"").toUpperCase();
   if(format==="7Z")return "7Z package · "+data.size+" · extract a mesh file from the archive before preview or STL conversion";
@@ -257,10 +262,7 @@ function renderCollection(){
   if(/STEP/.test(format))return "Compressed STEP model · "+data.size+" · convert to STL in the browser";
   return data.format+" · "+data.size+" · "+data.license;
  };
- const renderModelCard=data=>{
-  const convert=canConvertModelFormat(data.format)?'<button class="card-action" data-convert-model="'+escapeCardText(data.id)+'">Convert to STL</button>':"";
-  return '<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><span><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button>'+convert+'</span></div></article>';
- };
+ const renderModelCard=data=>'<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button></div></article>';
  for(const model of models){
   const folderInfo=getFolderInfo(model);
   const key=folderInfo?.key||null;
@@ -285,7 +287,7 @@ function renderCollection(){
  modelGrid.innerHTML=[...folderMarkup,...individualModels.map(renderModelCard)].join("");
  archiveGrid.innerHTML=archives.map(data=>{
   const counterpart=String(data.format||"").toUpperCase()==="VSP3"?MODELS.find(item=>item.id!==data.id&&item.name===data.name&&item.format==="GLB"):null;
-  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(archiveCardNote(data))+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><span><button class="card-action" data-archive-model="'+escapeCardText(data.id)+'">View details →</button>'+(canConvertModelFormat(data.format)?'<button class="card-action" data-convert-archive="'+escapeCardText(data.id)+'">Convert to STL</button>':counterpart?'<button class="card-action" data-open-counterpart="'+escapeCardText(counterpart.id)+'">Open GLB preview</button>':'')+'</span></div></article>';
+  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(archiveCardNote(data))+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><span><button class="card-action" data-archive-model="'+escapeCardText(data.id)+'">View details →</button>'+(counterpart?'<button class="card-action" data-open-counterpart="'+escapeCardText(counterpart.id)+'">Open GLB preview</button>':'')+'</span></div></article>';
  }).join("");
  remoteModelGrid.innerHTML=remoteCandidates.map(data=>'<article class="result-card model-card remote-model-card"><div class="result-meta"><span class="result-type model-type">Remote · on demand</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>Original model page. SPACEMESHER checks for reachable OBJ/PLY files only when you open it.</p><div class="card-bottom"><small>No local copy is stored</small><button class="card-action" data-remote-model="'+data.id+'">Find model files →</button></div></article>').join("");
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
@@ -383,7 +385,7 @@ function renderSpecialPreview(model){
   panel.append(title,note,download,viewer);stage.append(panel);
  }
 }
-function routeModel(id,push=true){document.querySelectorAll(".remote-resolution-status,.remote-variants,.remote-resolution-loader").forEach(node=>node.remove());activeFormatPreviewCleanup?.();activeFormatPreviewCleanup=null;const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else if(["FBX","3DS","LWO","7Z","ZIP","TAR","GZ","GZIP","BLEND"].includes(model.format)){renderSpecialPreview(model);}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+(model.remoteCandidate?'Original model files are fetched from the source only when requested.':model.format+' file ready to download. Preview is not available for this file format.')+'</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML=(model.sourceUrl?'<a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Open original source page ↗</a>':'')+(model.downloadDirect===false?'':'<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↓</a>');
+function routeModel(id,push=true){document.querySelectorAll(".remote-resolution-status,.remote-variants,.remote-resolution-loader").forEach(node=>node.remove());activeFormatPreviewCleanup?.();activeFormatPreviewCleanup=null;const model=MODELS.find(x=>x.id===id);if(!model)return;currentModel=model;setView("detail");$("#detail-category").textContent=CATEGORIES[model.category].title.toUpperCase();$("#detail-title").textContent=model.name;const convertButton=$("#detail-convert-stl");if(convertButton){convertButton.hidden=!supportsStlConversion(model.format);convertButton.disabled=false;convertButton.textContent="Convert to STL";convertButton.onclick=()=>routeScaling({...model,convertToStl:true});}$("#detail-subtitle").textContent=model.kind+" · "+model.source;$("#preview-format").textContent=model.format;if(model.format==="GLB"){$("#preview-stage").innerHTML='<model-viewer src="'+viewerAssetUrl(model.file)+'" alt="3D preview of '+model.name+'" camera-controls auto-rotate shadow-intensity="0.8" exposure="1" interaction-prompt="auto" loading="eager"></model-viewer>';}else if(model.format==="STL"){$("#preview-stage").innerHTML='<div class="stl-preview-loading" id="stl-preview-loading">Loading STL geometry…</div>';}else if(["FBX","3DS","LWO","7Z","ZIP","TAR","GZ","GZIP","BLEND"].includes(model.format)){renderSpecialPreview(model);}else{$("#preview-stage").innerHTML='<div class="preview-placeholder"><span>⬡</span><p>'+(model.remoteCandidate?'Original model files are fetched from the source only when requested.':model.format+' file ready to download. Preview is not available for this file format.')+'</p></div>'; }$("#preview-controls").hidden=!["GLB","STL"].includes(model.format);$("#scale-panel").hidden=true;const viewer=$("#preview-stage model-viewer");$("#scale-range").value="1";$("#scale-value").textContent="1.0×";const hasVerifiedDimension=Number.isFinite(model.realLongestAxisKm)&&model.realLongestAxisKm>0;const realDimensionText=hasVerifiedDimension?((model.realLongestAxisKm>=1?model.realLongestAxisKm.toLocaleString("en-US")+" km":(model.realLongestAxisKm*1000).toLocaleString("en-US")+" m")+(Number.isFinite(model.realLongestAxisUncertaintyKm)?" ± "+(model.realLongestAxisUncertaintyKm>=1?model.realLongestAxisUncertaintyKm.toLocaleString("en-US")+" km":(model.realLongestAxisUncertaintyKm*1000).toLocaleString("en-US")+" m"):"")):"Not verified";$("#real-length").value=hasVerifiedDimension?String(model.realLongestAxisKm*1000000):"";const dimensionHint=$("#scale-panel .field-hint");if(dimensionHint)dimensionHint.textContent=hasVerifiedDimension?"Auto-filled from "+(model.realDimensionSource||"a verified physical-dimension source")+". Check the cited source before using the scale result.":"No verified longest-axis measurement is linked to this model. Enter a value only if you can verify it from a reliable source.";const rows=[["File format",model.format],["File size",model.size],["Licence",model.license],["Last updated",model.changed],["Verified real-world longest axis",realDimensionText],["Dimension source",hasVerifiedDimension?(model.realDimensionSource||"Verified source")+" · "+(model.realDimensionUrl||""):"Not available"],["Original scale","Open Scaling to calculate when a verified real-world dimension is known"]];$("#spec-list").innerHTML=rows.map(([k,v])=>'<div class="spec-row"><dt>'+k+'</dt><dd>'+v+'</dd></div>').join("");$("#detail-actions").innerHTML=(model.sourceUrl?'<a class="action-link secondary" href="'+model.sourceUrl+'" target="_blank" rel="noopener">Open original source page ↗</a>':'')+(model.downloadDirect===false?'':'<a class="action-link" href="'+model.file+'" download>Download '+model.format+' ↓</a>');
 if(model.remoteCandidate){
  const status=document.createElement("p");status.className="remote-resolution-status";status.textContent="Die Originalseite wird erst beim Öffnen nach konkreten Modelldateien durchsucht.";
  const variants=document.createElement("div");variants.className="remote-variants";
@@ -397,13 +399,9 @@ const legacyRouteModel=routeModel;
 routeModel=(id,push=true)=>{const model=MODELS.find(item=>item.id===id);if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false)return routeScaling(model,push);return legacyRouteModel(id,push);};
 document.querySelectorAll("[data-category]").forEach(b=>b.addEventListener("click",()=>routeCollection(b.dataset.category)));
 $("#model-grid").addEventListener("click",e=>{
- const convert=e.target.closest("[data-convert-model]");
- if(convert){const model=MODELS.find(item=>item.id===convert.dataset.convertModel);if(model)routeScaling({...model,convertToStl:true});return;}
  const b=e.target.closest("[data-model]");if(!b)return;const model=MODELS.find(item=>item.id===b.dataset.model);if(model&&["GLB","GLTF","STL","OBJ","PLY"].includes(model.format)&&model.downloadDirect!==false)routeScaling(model);else routeModel(b.dataset.model);
 });
 $("#archive-grid").addEventListener("click",e=>{
- const convert=e.target.closest("[data-convert-archive]");
- if(convert){const model=MODELS.find(item=>item.id===convert.dataset.convertArchive);if(model)routeScaling({...model,convertToStl:true});return;}
  const counterpart=e.target.closest("[data-open-counterpart]");
  if(counterpart){const model=MODELS.find(item=>item.id===counterpart.dataset.openCounterpart);if(model)routeScaling(model);return;}
  const b=e.target.closest("[data-archive-model]");if(!b)return;routeModel(b.dataset.archiveModel);
@@ -905,7 +903,7 @@ restoreRouteFromHash();
   const localUrl=URL.createObjectURL(blob);objectUrls.push(localUrl);return localUrl;
  }
 
- function clear(){
+  function clear(){
   resetGauges();realConfidenceScore=null;
   token++;if(raf)cancelAnimationFrame(raf);if(controls)controls.dispose();if(renderer){renderer.dispose();renderer.domElement.remove();}
   renderer=null;controls=null;camera=null;scene=null;root=null;active=null;conversionContext=null;const convertButton=$id("scaling-convert-stl");if(convertButton){convertButton.hidden=true;convertButton.disabled=false;convertButton.textContent="Convert to STL";}
@@ -917,19 +915,22 @@ restoreRouteFromHash();
   THREE=t;L={STL:s.STLLoader,OBJ:o.OBJLoader,PLY:p.PLYLoader,GLB:g.GLTFLoader,Orbit:c.OrbitControls,DRACO:d.DRACOLoader,STLExporter:e.STLExporter,MeshoptDecoder:x.MeshoptDecoder,MTL:m.MTLLoader,FBX:fbx.FBXLoader,TDS:tds.TDSLoader,LWO:lwo.LWOLoader};
  }
  async function getOcct(){
-  if(!occtPromise)occtPromise=(async()=>{
-   if(!window.occtimportjs){
-    if(!occtScriptPromise)occtScriptPromise=new Promise((resolve,reject)=>{
-     const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.23/dist/occt-import-js.js";script.async=true;
-     script.onload=resolve;script.onerror=()=>reject(new Error("OpenCascade STEP converter could not be loaded."));document.head.appendChild(script);
-    });
-    await occtScriptPromise;
+   if(!occtPromise){
+    const attempt=(async()=>{
+     if(!window.occtimportjs){
+      if(!occtScriptPromise)occtScriptPromise=new Promise((resolve,reject)=>{
+       const script=document.createElement("script");script.src="https://cdn.jsdelivr.net/npm/occt-import-js@0.0.23/dist/occt-import-js.js";script.async=true;
+       script.onload=resolve;script.onerror=()=>reject(new Error("OpenCascade STEP converter could not be loaded."));document.head.appendChild(script);
+      });
+      await occtScriptPromise;
+     }
+     const factory=window.occtimportjs;if(typeof factory!=="function")throw new Error("OpenCascade converter did not expose its browser API.");
+     return factory({locateFile:path=>"https://cdn.jsdelivr.net/npm/occt-import-js@0.0.23/dist/"+path});
+    })();
+    occtPromise=attempt.catch(error=>{occtPromise=null;occtScriptPromise=null;throw error;});
    }
-   const factory=window.occtimportjs;if(typeof factory!=="function")throw new Error("OpenCascade converter did not expose its browser API.");
-   return factory({locateFile:path=>"https://cdn.jsdelivr.net/npm/occt-import-js@0.0.23/dist/"+path});
-  })();
-  return occtPromise;
- }
+   return occtPromise;
+  }
  async function stepBuffer(buffer){
   const bytes=new Uint8Array(buffer);
   if(bytes[0]===0x1f&&bytes[1]===0x8b){
@@ -1333,7 +1334,7 @@ restoreRouteFromHash();
   }
  }
  async function load(file,format,model=null,url=null,companions=[],skipLookup=false) {
-  clear();format=String(format||"").toUpperCase();activeExpectedCategory=model?.category||null;conversionContext={model,file,format,displayFormat:model?.format||format};const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
+  clear();const displayFormat=model?.format||format;format=normalizeConversionFormat(format);activeExpectedCategory=model?.category||null;conversionContext={model,file,format,displayFormat};const my=token;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
   $id("scaling-object-result").hidden=true;$id("scaling-measurement-state").textContent="Loading geometry…";
   $id("scaling-file-state").textContent="Loading model…";$id("scaling-model-name").textContent=model?model.name:file.name;
   $id("scaling-format").textContent=format;$id("scaling-source-dimensions").textContent="Loading…";

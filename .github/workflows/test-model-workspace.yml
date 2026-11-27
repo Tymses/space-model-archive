@@ -1,0 +1,37 @@
+name: Test model workspace
+
+on:
+  push:
+    paths:
+      - "app.js"
+      - "index.html"
+      - "styles.css"
+      - "vendor/blend-importer.js"
+      - "vendor/blend-parser.js"
+      - "tests/model-workspace.test.mjs"
+      - ".github/workflows/test-model-workspace.yml"
+  pull_request:
+    paths:
+      - "app.js"
+      - "index.html"
+      - "styles.css"
+      - "vendor/blend-importer.js"
+      - "vendor/blend-parser.js"
+      - "tests/model-workspace.test.mjs"
+      - ".github/workflows/test-model-workspace.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  model-workspace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run model workspace regression tests
+        run: node --test tests/model-workspace.test.mjs

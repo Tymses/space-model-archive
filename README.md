@@ -111,3 +111,10 @@ SPACEMESHER's original source code is released under the **MIT License**; origin
 ## Automated repository checks
 
 GitHub Actions validates JSON syntax, checks stable IDs in the core catalogue indexes, runs the catalogue and dimension-scanner tests, and verifies that the catalogue audit can be generated. See [the validation workflow](.github/workflows/validate-catalogue.yml). This does not automatically certify that external model URLs remain online; source availability still needs periodic checks.
+
+
+## Browser-based STL conversion
+
+Supported non-STL source formats can be converted locally in the browser: FBX, 3DS, LWO, Blender `.blend`, STEP and STP. Compressed STEP files labelled `STEP (GZIP)` are normalized to the STEP parser after their GZIP payload is decompressed. Conversion uses Three.js STL export for the loaded geometry and OpenCascade for STEP tessellation. The source file is not uploaded by the conversion action. The browser workflow retains its 75 MB output limit and 5-million-triangle safety limit; very large or unsupported scenes may still fail and should be checked in a dedicated CAD/mesh tool.
+
+The **Convert to STL** action is placed in the top-right title row of the model **View details** page (Position A). It is not shown on collection preview cards. See [the project handbook](PROJECT_HANDBOOK.md) for the required repository workflow, current implementation notes and verification status.
