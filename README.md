@@ -161,3 +161,6 @@ The importer applies each Blender object's `parentinv` matrix in the correct ord
 ### Active Blender view-layer selection
 
 BLEND imports now respect the active Blender view layer: objects hidden by view-layer Base flags or the viewport restriction flag are skipped, while render-hidden but viewport-visible geometry is preserved. This prevents alternate manipulator poses and other hidden scene variants from being mixed into the printable model. Advanced callers can set `includeHiddenObjects: true` to inspect every mesh datablock.
+
+
+For model dimensions and automatic printer-bed fitting, SPACEMESHER measures only vertices referenced by actual mesh triangles, transformed through the full object hierarchy. Isolated/unreferenced vertices and stale cached geometry bounds do not distort the printable dimensions.
