@@ -164,3 +164,5 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Not updated because inaccessible: the separate BOGY personal-Library diary.
 - Automated tests: pending CI on this pull request; no application code changed. Workflow syntax has been reviewed but no local GitHub Actions runner is available.
 - Rollback reference: `backup/before-workflow-enforcement-2026-11-27` at `27ec0c89a990509b25b968e294accdaf6a5d52c6`.
+
+- Pull-request CI verified: **Enforce project workflow** run `46047333620` passed. Both its process-attestation step and its same-PR handbook-update step succeeded on PR #16.
