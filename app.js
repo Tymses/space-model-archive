@@ -1070,7 +1070,7 @@ restoreRouteFromHash();
    // designations and all words that identify the actual body.
    for(let i=0;i<3;i++){
     const previous=text;
-    text=text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|moonlets?|primary|secondary)\s*$/i,"").trim();
+    text=text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|primary|secondary)\s*$/i,"").trim();
     if(text===previous)break;
    }
    text=text.replace(/[–—−_]+/g," ").replace(/[()]/g," ").replace(/\s+/g," ").trim();
