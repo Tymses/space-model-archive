@@ -249,6 +249,16 @@ function describeOriginalScale(originalScale){
  const amount=Math.abs(difference).toFixed(1)+"%";
  return difference>0?"Original file is "+amount+" larger than the real-world reference":"Original file is "+amount+" smaller than the real-world reference";
 }
+const MAX_BROWSER_MODEL_BYTES=75*1024*1024;
+const MAX_BROWSER_MODEL_TRIANGLES=5000000;
+async function readStreamWithinLimit(stream,maxBytes,errorMessage){
+ const reader=stream.getReader(),chunks=[];let total=0;
+ try{while(true){const {done,value}=await reader.read();if(done)break;total+=value.byteLength;if(total>maxBytes){try{await reader.cancel();}catch{}throw new Error(errorMessage);}chunks.push(value);}}
+ finally{try{reader.releaseLock();}catch{}}
+ const output=new Uint8Array(total);let offset=0;for(const chunk of chunks){output.set(chunk,offset);offset+=chunk.byteLength;}return output.buffer;
+}
+function estimateBinaryStlBytes(triangleCount){if(!Number.isFinite(triangleCount)||triangleCount<0)return null;return 84+50*Math.ceil(triangleCount);}
+function countMeshTriangles(root){let triangles=0;root?.traverse?.(node=>{if(!node.isMesh||!node.geometry)return;const geometry=node.geometry,count=geometry.index?geometry.index.count:(geometry.attributes.position?.count||0);triangles+=Math.floor(count/3);});return triangles;}
 function normalizeConversionFormat(value){
  const format=String(value||"").trim().toUpperCase();
  return /\bSTEP\b.*\b(?:GZIP|GZ)\b/.test(format)?"STEP":format;
@@ -966,10 +976,13 @@ restoreRouteFromHash();
   const bytes=new Uint8Array(buffer);
   if(bytes[0]===0x1f&&bytes[1]===0x8b){
    if(typeof DecompressionStream==="undefined")throw new Error("This browser cannot decompress GZIP STEP files.");
-   return await new Response(new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer();
+   const stream=new Blob([buffer]).stream().pipeThrough(new DecompressionStream("gzip"));
+   return await readStreamWithinLimit(stream,MAX_BROWSER_MODEL_BYTES,"Decompressed STEP file exceeds the 75 MB browser safety limit.");
   }
+  if(buffer.byteLength>MAX_BROWSER_MODEL_BYTES)throw new Error("STEP file exceeds the 75 MB browser safety limit.");
   return buffer;
  }
+
  function occtMeshGroup(result){
   if(!result?.success||!Array.isArray(result.meshes)||!result.meshes.length)throw new Error("STEP file could not be tessellated into printable mesh geometry.");
   const group=new THREE.Group();
@@ -1361,7 +1374,7 @@ restoreRouteFromHash();
   const remoteSource=!file&&typeof url==="string"&&url.startsWith("https://");
   const originalUrl=url;
   try{
-   if(file&&file.size>75*1024*1024)throw new Error("Files larger than 75 MB cannot be previewed or converted in the browser.");
+   if(file&&file.size>MAX_BROWSER_MODEL_BYTES)throw new Error("Files larger than 75 MB cannot be previewed or converted in the browser.");
    if(file){url=URL.createObjectURL(file);objectUrls.push(url);}
    if(remoteSource&&format!=="GLTF")url=await fetchRemoteAsset(originalUrl);
    await ensure();if(my!==token)return;
@@ -1429,7 +1442,7 @@ restoreRouteFromHash();
    camera.position.set(max*1.7,max*1.3,max*1.9);camera.near=Math.max(max/10000,.001);camera.far=Math.max(max*100,1000);camera.updateProjectionMatrix();
    controls=new L.Orbit(camera,renderer.domElement);controls.enableDamping=true;resize();animate();
    let triangleCount=0;object.traverse(node=>{if(node.isMesh&&node.geometry){const geometry=node.geometry;triangleCount+=geometry.index?geometry.index.count/3:(geometry.attributes.position?.count||0)/3;}});
-   if(triangleCount>5000000)throw new Error("This model exceeds the 5-million-triangle browser conversion safety limit.");
+   if(triangleCount>MAX_BROWSER_MODEL_TRIANGLES)throw new Error("This model exceeds the 5-million-triangle browser conversion safety limit.");
    const convertButton=$id("scaling-convert-stl"),convertable=["FBX","3DS","LWO","BLEND","STEP","STP"].includes(format);
    if(convertButton){convertButton.hidden=!convertable;convertButton.disabled=false;convertButton.textContent="Convert "+(conversionContext?.displayFormat||format)+" to STL";}const convertBeta=$id("scaling-convert-beta");if(convertBeta)convertBeta.hidden=!convertable;
    $id("scaling-file-state").textContent=model?.convertedFile?"Converted STL":file?"Local upload":"Archive model";$id("scaling-measurement-state").textContent="Geometry measured";update();
@@ -1456,10 +1469,15 @@ restoreRouteFromHash();
   setLookupStatus("Converting "+originalFormat+" geometry to a binary STL in this browser. No model file is uploaded.");
   try{
    root.updateMatrixWorld(true);
+   const triangleCount=countMeshTriangles(root),estimatedBytes=estimateBinaryStlBytes(triangleCount);
+   if(triangleCount>MAX_BROWSER_MODEL_TRIANGLES)throw new Error("This model exceeds the 5-million-triangle browser conversion safety limit.");
+   if(!estimatedBytes)throw new Error("The STL output size could not be estimated safely.");
+   if(estimatedBytes>MAX_BROWSER_MODEL_BYTES)throw new Error("The estimated STL output exceeds the 75 MB safety limit. Reduce the model complexity before converting.");
    const exporter=new L.STLExporter(),data=exporter.parse(root,{binary:true});
    const outputBytes=data?.byteLength||data?.buffer?.byteLength||0;
    if(!outputBytes)throw new Error("The STL exporter returned an empty file.");
-   if(outputBytes>75*1024*1024)throw new Error("The converted STL exceeds the 75 MB safety limit.");
+   if(outputBytes>MAX_BROWSER_MODEL_BYTES)throw new Error("The converted STL exceeds the 75 MB safety limit.");
+
    const base=context.model?{...context.model}:{
     id:"local-converted-"+Date.now(),
     name:(context.file?.name||"Converted model").replace(/\.(?:step|stp)\.gz$/i,"").replace(/\.[^.]+$/,""),

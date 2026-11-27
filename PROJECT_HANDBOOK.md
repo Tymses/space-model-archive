@@ -191,3 +191,25 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Post-merge checks passed: model-workspace regression suite (run 46052230611), catalogue/application validation (run 46052230800), full source/model URL audit (run 46052230543), GitHub Pages build (run 46052229473, build job 140686124352) and the Deploy to GitHub Pages job in that run (job 140686276470).
 - The successful Pages deployment is confirmed by the completed Deploy to GitHub Pages step. No manual interactive desktop/mobile browser review was performed.
 - Documentation-only follow-up branch: docs/scaling-modes-merge-record-2026-11-27. Safety branch: backup/after-scaling-modes-merge-2026-11-27, created from verified main commit 9c6acd8915f71a991802979ad27862f78a771370.
+
+
+## 12. STL conversion memory guards — 27 November 2026
+
+### Pre-flight
+- Re-read this handbook and the README conversion section. Inspected actual `main` head `9edf7c70503b3cc7787f6097c54a4326c88b30f8`, recent history, open PRs, relevant backup branches, current conversion implementation in `app.js`, conversion UI in `index.html`, model-workspace tests and the Cloudflare asset proxy.
+- Existing open PR #17 is unrelated documentation work and was left untouched. Its required process-attestation check is currently failing because its final checkbox wording does not match the current workflow's required wording; see the PR check rather than treating it as passed.
+- Created `backup/before-conversion-memory-guards-2026-11-27` and `fix/conversion-memory-guards-2026-11-27` from the inspected `main` commit above.
+
+### Findings and implementation
+- The existing 75 MB local-file and Worker response limits applied to compressed GZIP STEP bytes, but decompression used `Response.arrayBuffer()` without bounding the expanded output. A highly compressed STEP package could therefore expand far beyond the documented browser memory limit.
+- STL conversion checked the 75 MB output size only after `STLExporter.parse()` had allocated the complete binary STL. The 5-million-triangle limit alone permits an estimated binary STL of about 250 MB, so the output guard did not prevent the allocation it was intended to protect.
+- Added bounded stream collection for GZIP decompression. The reader cancels as soon as uncompressed bytes exceed 75 MB; uncompressed STEP buffers are also checked against the same limit.
+- Added a binary STL size estimator (`84 + 50 × triangle count`) and a mesh triangle counter. The converter now rejects scenes over the triangle limit or estimated 75 MB output limit before calling `STLExporter`; the actual output size remains checked after export as a final guard.
+- Existing supported formats, loader selection, conversion action placement, browser-local processing and conversion workflow are unchanged.
+
+### Documentation and verification
+- Updated `README.md` conversion safeguards section and added regression tests for bounded stream reads, overflow cancellation, binary STL size thresholds and pre-export guard ordering.
+- Automated validation is pending the pull request. No local Node runtime or browser interaction was available through the GitHub repository tools in this task; do not claim these new tests passed until CI reports success.
+- Manual testing of representative FBX, 3DS, LWO, BLEND, STEP and GZIP STEP files remains separate from automated checks. No live desktop/mobile browser review is claimed.
+- Safety branch: `backup/before-conversion-memory-guards-2026-11-27` at inspected `main` commit `9edf7c70503b3cc7787f6097c54a4326c88b30f8`.
+- Implementation branch: `fix/conversion-memory-guards-2026-11-27`.
