@@ -3162,7 +3162,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/EVA%20suit.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3176,7 +3176,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/External%20tank.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3190,7 +3190,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Orbiter%20Docking%20System.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3204,7 +3204,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Payload.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3218,7 +3218,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Parts: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Parts/Solid%20Rocket%20Booster.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-parts/",
       "changed": "Source repository"
     },
     {
@@ -3232,7 +3232,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Shuttle Remote Manipulator System (Canadarm): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm)/Space%20Shuttle%20Remote%20Manipulator%20System%20(Canadarm).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-shuttle-remote-manipulator-system-canadarm/",
       "changed": "Source repository"
     },
     {
@@ -3246,7 +3246,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Space Systems Loral (SSL-1300): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Space%20Systems%20Loral%20(SSL-1300)/Space%20Systems%20Loral%20(SSL-1300).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/space-systems-loral-ssl-1300/",
       "changed": "Source repository"
     },
     {
@@ -3260,7 +3260,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Spartan 201: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Spartan%20201/Spartan%20201.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/spartan-201/",
       "changed": "Source repository"
     },
     {
@@ -3274,7 +3274,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Spitzer Space Telescope: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Spitzer%20Space%20Telescope/Spitzer%20Space%20Telescope.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/spitzer-space-telescope/",
       "changed": "Source repository"
     },
     {
@@ -3288,7 +3288,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20capsule%20closed.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3302,7 +3302,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20capsule.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3316,7 +3316,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust%20without%20capsule.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3330,7 +3330,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Stardust: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Stardust/Stardust.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/stardust/",
       "changed": "Source repository"
     },
     {
@@ -3344,7 +3344,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Station Explorer for X-Ray Timing and Navigation (SEXTANT): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Station%20Explorer%20for%20X-Ray%20Timing%20and%20Navigation%20(SEXTANT)/Station%20Explorer%20for%20X-Ray%20Timing%20and%20Navigation%20(SEXTANT).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/station-explorer-for-x-ray-timing-and-navigation-sextant/",
       "changed": "Source repository"
     },
     {
@@ -3358,7 +3358,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Submillimeter Wave Astronomy Satellite (SWAS): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Submillimeter%20Wave%20Astronomy%20Satellite%20(SWAS)/Submillimeter%20Wave%20Astronomy%20Satellite%20(SWAS).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/submillimeter-wave-astronomy-satellite-swas/",
       "changed": "Source repository"
     },
     {
@@ -3372,7 +3372,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Suomi National Polar-orbiting Partnership (Suomi NPP): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP)/Suomi%20National%20Polar-orbiting%20Partnership%20(Suomi%20NPP).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/suomi-national-polar-orbiting-partnership-suomi-npp/",
       "changed": "Source repository"
     },
     {
@@ -3386,7 +3386,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Super Lightweight Interchangeable: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Super%20Lightweight%20Interchangeable/Super%20Lightweight%20Interchangeable.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/super-lightweight-interchangeable/",
       "changed": "Source repository"
     },
     {
