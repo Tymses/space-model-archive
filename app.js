@@ -249,6 +249,14 @@ function renderCollection(){
  modelGroup.hidden=!models.length;archiveGroup.hidden=!archives.length;remoteModelGroup.hidden=!remoteCandidates.length;sourceGroup.hidden=!sources.length;generatorGroup.hidden=!generators.length;
  const escapeCardText=value=>String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
  const canConvertModelFormat=value=>["FBX","3DS","LWO","BLEND","STEP","STP"].includes(String(value||"").toUpperCase())||/\bSTEP\b.*\b(?:GZIP|GZ)\b/i.test(String(value||""));
+ const archiveCardNote=data=>{
+  const format=String(data.format||"").toUpperCase();
+  if(format==="7Z")return "7Z package · "+data.size+" · extract a mesh file from the archive before preview or STL conversion";
+  if(format==="ZIP")return "ZIP package · "+data.size+" · may contain multiple models; select a mesh file before STL conversion";
+  if(format==="VSP3")return "OpenVSP project · "+data.size+" · export a mesh from OpenVSP before browser scaling";
+  if(/STEP/.test(format))return "Compressed STEP model · "+data.size+" · convert to STL in the browser";
+  return data.format+" · "+data.size+" · "+data.license;
+ };
  const renderModelCard=data=>{
   const convert=canConvertModelFormat(data.format)?'<button class="card-action" data-convert-model="'+escapeCardText(data.id)+'">Convert to STL</button>':"";
   return '<article class="result-card model-card"><div class="result-meta"><span class="result-type model-type">Individual model · '+escapeCardText(data.format)+'</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' model · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>Individual model file · source credited</small><span><button class="card-action" data-model="'+escapeCardText(data.id)+'">View details →</button>'+convert+'</span></div></article>';
@@ -275,7 +283,10 @@ function renderCollection(){
   folderMarkup.push('<details class="model-folder"><summary class="model-folder-summary"><div class="result-meta"><span class="result-type model-type">Model folder</span><span class="result-source">'+escapeCardText(items[0].source)+'</span></div><h2>'+escapeCardText(folderName)+'</h2><p>'+items.length+' related model files, variants or components</p><div class="card-bottom"><small>Grouped by their original source directory or parent object</small><span class="card-action">Open folder ↓</span></div></summary><div class="model-folder-grid">'+items.map(renderModelCard).join("")+'</div></details>');
  }
  modelGrid.innerHTML=[...folderMarkup,...individualModels.map(renderModelCard)].join("");
- archiveGrid.innerHTML=archives.map(data=>'<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(data.format+' · '+data.size+' · '+data.license)+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><span><button class="card-action" data-archive-model="'+escapeCardText(data.id)+'">View details →</button>'+(canConvertModelFormat(data.format)?'<button class="card-action" data-convert-archive="'+escapeCardText(data.id)+'">Convert to STL</button>':'')+'</span></div></article>').join("");
+ archiveGrid.innerHTML=archives.map(data=>{
+  const counterpart=String(data.format||"").toUpperCase()==="VSP3"?MODELS.find(item=>item.id!==data.id&&item.name===data.name&&item.format==="GLB"):null;
+  return '<article class="result-card model-card archive-card"><div class="result-meta"><span class="result-type model-type">Archive / compressed CAD</span><span class="result-source">'+escapeCardText(data.source)+'</span></div><h2>'+escapeCardText(data.name)+'</h2><p>'+escapeCardText(archiveCardNote(data))+'</p><div class="card-bottom"><small>'+escapeCardText(data.kind||"Scientific data package")+'</small><span><button class="card-action" data-archive-model="'+escapeCardText(data.id)+'">View details →</button>'+(canConvertModelFormat(data.format)?'<button class="card-action" data-convert-archive="'+escapeCardText(data.id)+'">Convert to STL</button>':counterpart?'<button class="card-action" data-open-counterpart="'+escapeCardText(counterpart.id)+'">Open GLB preview</button>':'')+'</span></div></article>';
+ }).join("");
  remoteModelGrid.innerHTML=remoteCandidates.map(data=>'<article class="result-card model-card remote-model-card"><div class="result-meta"><span class="result-type model-type">Remote · on demand</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>Original model page. SPACEMESHER checks for reachable OBJ/PLY files only when you open it.</p><div class="card-bottom"><small>No local copy is stored</small><button class="card-action" data-remote-model="'+data.id+'">Find model files →</button></div></article>').join("");
  const renderEntry=data=>'<article class="result-card source-card source-card-'+(data.entryType||'catalogue')+'"><div class="result-meta"><span class="result-type source-kind">'+({catalogue:'Model catalogue page',data:'Scientific dataset archive',viewer:'Viewer',generator:'Generator'}[data.entryType]||'Source')+'</span><span class="result-source">'+data.source+'</span></div><h2>'+data.name+'</h2><p>'+data.description+'</p><div class="card-bottom"><small>'+(data.entryType==='generator'?'Creates a model from your settings':data.entryType==='data'?'Download archive package; inspect included files':data.entryType==='viewer'?'Explore source visualisation':'Browse original model page and available variants')+'</small><span><a class="card-action" href="'+data.url+'" target="_blank" rel="noopener">'+(data.entryType==='generator'?'Open generator ↗':data.entryType==='viewer'?'Open viewer ↗':data.entryType==='data'?'Download dataset archive ↗':'Open model page ↗')+'</a>'+(data.creditsUrl?' <a class="card-action source-credit-link" href="'+data.creditsUrl+'" target="_blank" rel="noopener">Credits & attribution ↗</a>':'')+'</span></div></article>';
  sourceGrid.innerHTML=sources.map(renderEntry).join("");generatorGrid.innerHTML=generators.map(renderEntry).join("");
@@ -393,6 +404,8 @@ $("#model-grid").addEventListener("click",e=>{
 $("#archive-grid").addEventListener("click",e=>{
  const convert=e.target.closest("[data-convert-archive]");
  if(convert){const model=MODELS.find(item=>item.id===convert.dataset.convertArchive);if(model)routeScaling({...model,convertToStl:true});return;}
+ const counterpart=e.target.closest("[data-open-counterpart]");
+ if(counterpart){const model=MODELS.find(item=>item.id===counterpart.dataset.openCounterpart);if(model)routeScaling(model);return;}
  const b=e.target.closest("[data-archive-model]");if(!b)return;routeModel(b.dataset.archiveModel);
 });
 $("#remote-model-grid").addEventListener("click",e=>{const b=e.target.closest("[data-remote-model]");if(!b)return;routeModel(b.dataset.remoteModel);});
