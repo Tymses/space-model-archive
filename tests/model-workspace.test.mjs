@@ -265,9 +265,9 @@ test("STL conversion performs triangle and estimated-byte checks before calling 
 
 
 test("Blender modern meshes select only canonical position and corner-vertex layers",()=>{
- const source=read("vendor/blend-importer.js"),start=source.indexOf("function findLayerData("),end=source.indexOf("\\nfunction countLegacyTriangleIndices",start);
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("function findLayerData("),end=source.indexOf("\nfunction countLegacyTriangleIndices",start);
  assert.ok(start>=0&&end>start);
- const find=new Function(source.slice(start,end)+"\\nreturn findLayerData;")();
+ const find=new Function(source.slice(start,end)+"\nreturn findLayerData;")();
  const position=[{x:1,y:2,z:3},{x:4,y:5,z:6},{x:7,y:8,z:9}];
  const layers=[{name:"orig_index",data:[{i:7},{i:8},{i:9}]},{name:"position",data:position}];
  assert.equal(find(layers,["position"],3,"vertex position"),position);
@@ -275,9 +275,9 @@ test("Blender modern meshes select only canonical position and corner-vertex lay
  assert.throws(()=>find([{name:".corner_edge",data:[{i:0},{i:1},{i:2}]}],[".corner_vert"],3,"loop vertex-index"),/missing its loop vertex-index attribute/);
 });
 test("legacy Blender polygons allocate exactly three indices per triangle",()=>{
- const source=read("vendor/blend-importer.js"),start=source.indexOf("function countLegacyTriangleIndices("),end=source.indexOf("\\nexport function createBufferGeometry",start);
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("function countLegacyTriangleIndices("),end=source.indexOf("\nexport function createBufferGeometry",start);
  assert.ok(start>=0&&end>start);
- const count=new Function(source.slice(start,end)+"\\nreturn countLegacyTriangleIndices;")();
+ const count=new Function(source.slice(start,end)+"\nreturn countLegacyTriangleIndices;")();
  assert.equal(count([{totloop:3}]),3);assert.equal(count([{totloop:4}]),6);assert.equal(count([{totloop:5}]),9);
  assert.equal(count([{totloop:3},{totloop:4},{totloop:6}]),21);
 });
