@@ -302,7 +302,10 @@ function safeVec(v, fallback) {
 }
 
 function safeQuat(v) {
-    return safeNumericVector(v, 4, null)
+    const values = safeNumericVector(v, 4, null)
+    if (!values) return null
+    const length = Math.hypot(...values)
+    return length > 1e-8 && Number.isFinite(length) ? values.map(value => value / length) : null
 }
 
 function setTransform(object, obj) {
