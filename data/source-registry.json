@@ -47,8 +47,8 @@
           ],
           "status": "indexed",
           "priority": 1,
-          "knownCoverage": "Repository index contains 311 assets across spacecraft, small bodies and moons: 234 have a verified model-specific source page (Space Radar or the original PDS record); 77 map/composite assets currently have no verified individual source page and therefore remain without a source-page URL in their model records.",
-          "nextAction": "Reconcile the 77 map/composite asset credits against their original NASA/PDS records; add a model source link only when the exact original object page is verified."
+          "knownCoverage": "Repository index contains 311 assets across spacecraft, small bodies and moons: 233 have a verified model-specific source page or source bundle (Space Radar, PDS, or USGS); 78 map/composite assets currently have no verified individual source page and therefore remain without a source-page URL in their model records.",
+          "nextAction": "Reconcile the 78 map/composite asset credits against their original NASA/PDS records; add a model source link only when the exact original object page or its specific data bundle is verified."
         },
         {
           "id": "codelove-space",
