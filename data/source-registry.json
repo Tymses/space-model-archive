@@ -32,8 +32,8 @@
           ],
           "status": "indexed",
           "priority": 1,
-          "knownCoverage": "Repository index currently contains 650 NASA source files; NASA's live catalogue is filterable by model type, 3D-printable assets, topic and format.",
-          "nextAction": "Refresh the complete Git-backed source listing and classify all files by object and collection."
+          "knownCoverage": "Repository index contains 650 unique NASA source files (679 index placements including 29 cross-listed planetary STL records). Of 226 NASA 3D Models folders, 221 now have verified individual NASA detail pages; five remain unresolved.",
+          "nextAction": "Recheck the five unresolved model folders for official individual detail pages and keep source-page URLs separate from direct file URLs."
         },
         {
           "id": "space-radar",
