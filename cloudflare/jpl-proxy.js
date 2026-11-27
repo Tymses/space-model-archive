@@ -632,7 +632,7 @@ function canonicalSmallBodyQuery(value) {
   // the numbered designation or the proper name of the physical body.
   for (let i = 0; i < 4; i++) {
     const previous = text;
-    text = text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|moonlets?)\s*$/i, "").trim();
+    text = text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|moonlets?|primary|secondary)\s*$/i, "").trim();
     if (text === previous) break;
   }
   return norm(text);
