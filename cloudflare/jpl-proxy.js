@@ -457,7 +457,7 @@ function parseDimensionNumber(token) {
   return Number.isFinite(number) ? number : null;
 }
 
-function extractAxes(text) {
+function extractAxes(text, unitContext = "") {
   const source = decode(text).replace(/\u00d7/g, " x ").replace(/[–—]/g, "-");
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
@@ -469,7 +469,7 @@ function extractAxes(text) {
     + "z(?:\\s*[- ]?axis)?\\s*[:=]\\s*(" + axisNumber + ")(?:\\s*(?:±|\\+\\/-)\\s*" + axisNumber + ")?\\s*(" + axisUnit + ")?", "i"
   ));
   if (labelled) {
-    const sharedUnit = (source.match(/\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\)/i) || [])[1];
+    const sharedUnit = ((source + " " + unitContext).match(/\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\)/i) || [])[1];
     const units = [labelled[3], labelled[6], labelled[9]].map(unitValue => unitValue || sharedUnit);
     if (units.every(Boolean)) {
       const factors = units.map(unitValue =>
@@ -673,9 +673,9 @@ function buildResearchSearchTerms(query, category) {
 }
 function categoryContextMatches(text, category) {
   const value = norm(text);
-  if (category === "small-bodies") return /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies|comet|comets|dwarf planet)( |$)/.test(value);
-  if (category === "spacecraft") return /(^| )(spacecraft|satellite|probe|orbiter|lander|rover|space telescope|space station)( |$)/.test(value);
-  if (category === "moons") return /(^| )(moon|moons|natural satellite|natural satellites)( |$)/.test(value);
+  if (category === "small-bodies") return /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies|comet|comets|dwarf planet|near earth object|near earth asteroid|nea|trans neptunian object|tno)( |$)/.test(value);
+  if (category === "spacecraft") return /(^| )(spacecraft|space vehicle|space probe|satellite|probe|orbiter|lander|rover|space telescope|space station|flyby vehicle)( |$)/.test(value);
+  if (category === "moons") return /(^| )(moon|moons|moonlet|moonlets|natural satellite|natural satellites)( |$)/.test(value);
   if (category === "planetary" || category === "height-maps") return /(^| )(crater|mountain|volcano|valley|canyon|surface feature|terrain|elevation|topography)( |$)/.test(value);
   return true;
 }
@@ -687,6 +687,16 @@ function researchTextBlocks(value) {
   const lineBlocks = source.split(/\r?\n/).map(plain).filter(Boolean);
   if (lineBlocks.length > 1) return lineBlocks;
   return plain(source).split(/(?<=[.!?])\s+/).map(value => value.trim()).filter(Boolean);
+}
+function researchTableHeaderContext(rawHtml, rowText) {
+  const tables = String(rawHtml || "").match(/<table\b[\s\S]*?<\/table>/gi) || [];
+  for (const table of tables) {
+    if (!plain(table).includes(rowText)) continue;
+    const headers = [...table.matchAll(/<(?:th|caption)\b[^>]*>([\s\S]*?)<\/(?:th|caption)>/gi)]
+      .map(match => plain(match[1])).filter(Boolean);
+    return headers.join(" ");
+  }
+  return "";
 }
 function blockMatchesResearchIdentity(block, query, category, pageContext = "") {
   const normalized = normalizeResearchQuery(query, category);
@@ -717,7 +727,8 @@ function extractIdentityScopedMeasurement(rawHtml, query, category, title = "", 
   const pageContext = [title, snippet, ...pageBlocks.filter(block => categoryContextMatches(block, category))].join(" ");
   for (const block of blocks) {
     if (!blockMatchesResearchIdentity(block, query, category, pageContext)) continue;
-    const axesKm = category === "spacecraft" ? extractSpacecraftAxes(block) : extractAxes(block);
+    const tableContext = researchTableHeaderContext(rawHtml, block);
+    const axesKm = category === "spacecraft" ? extractSpacecraftAxes(block) : extractAxes(block, tableContext);
     if (axesKm) return { axesKm, uncertaintyKm: extractUncertainty(block) };
   }
   return { axesKm: null, uncertaintyKm: null };
