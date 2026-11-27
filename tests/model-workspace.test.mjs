@@ -453,6 +453,7 @@ test("automatic printer-bed fit chooses a safe axis orientation and proportional
  assert.ok(result.printDimensions.every((value,index)=>value<=result.usableBed[index]+1e-9));
  assert.equal(result.usableBed[0],246);
  assert.equal(fit([100,100,100],[256,256,256],200,100).valid,false);
- assert.equal(fit([100,100,100],[256,256,256],5,110).fits,true);
+ assert.equal(fit([100,100,100],[256,256,256],5,90).fits,true);
+ assert.equal(fit([100,100,100],[256,256,256],5,110).fits,false);
  assert.equal(fit([100,100,100],[256,256,256],5,300).fits,false);
 });
