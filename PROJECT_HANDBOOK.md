@@ -62,4 +62,11 @@ The **Convert to STL** button belongs in the model **View details** card, in the
 ### Verification status
 - Static repository inspection completed.
 - Regression tests have been added to `tests/model-workspace.test.mjs`.
-- Automated test execution is pending the GitHub Actions run for this branch. Live browser verification is not available through the GitHub repository connector and must not be inferred from a successful commit.
+- Pull request #10 was merged into `main` as commit `01a399cbd48ba1a41bfa00c544f97693ea6ca14c`.
+- Pull-request validation run `46009390809` completed successfully, including `node --test tests/model-workspace.test.mjs`, catalogue validation, catalogue tests, dimension tests and audit generation.
+- Post-merge model-workspace test run `46009498873` completed successfully.
+- Post-merge catalogue validation run `46009498863` completed successfully.
+- Post-merge catalogue link audit run `46009499003` completed successfully.
+- GitHub Pages build and deployment run `46009499817` completed successfully.
+- Live interaction in a desktop browser was not performed through the GitHub connector; CI success and deployment success do not replace a manual browser check.
+- The separate BOGY project diary in the personal Library was read during the initial review but was not edited or synchronized. This repository handbook and the repository README are the documentation locations updated and verified in this task.
