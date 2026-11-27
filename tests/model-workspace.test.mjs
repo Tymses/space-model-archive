@@ -333,7 +333,8 @@ test("all button-like controls receive a short click acknowledgement animation",
 test("Blender annotation meshes are excluded by conservative whole-name matching",()=>{
  const source=read("vendor/blend-importer.js"),start=source.indexOf("const ANNOTATION_OBJECT_NAME"),end=source.indexOf("\nexport function createObjects",start);
  assert.ok(start>=0&&end>start,"annotation classifier must be defined before scene construction");
- const classify=new Function(source.slice(start,end)+"\nreturn isLikelyAnnotationObject;")();
+ const helper=source.slice(start,end).replace("export function isLikelyAnnotationObject","function isLikelyAnnotationObject");
+ const classify=new Function(helper+"\nreturn isLikelyAnnotationObject;")();
  assert.equal(classify({aname:"Text",data:{aname:"Text"}}),true);
  assert.equal(classify({aname:"Text.001",data:{aname:"Text.001"}}),true);
  assert.equal(classify({aname:"Mission label",data:{aname:"Mission label"}}),false);
