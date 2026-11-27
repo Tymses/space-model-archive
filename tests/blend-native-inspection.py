@@ -62,7 +62,7 @@ native_totals = {
     "polygons": sum(len(obj.data.polygons) for obj in printable_objects),
     "loop_triangles": sum(len(obj.data.loop_triangles) for obj in printable_objects),
 }
-target_names = {"deck","panel_l_root","Cube.046","arm_03.001","cable_02","arm_01_b","logo_NASA_JPL","ground_and_sky_dome","roll_pressure_inlet","roll_grapple","roll_RISE Antenna","roll_solar_panels"}
+target_names = {"deck","panel_l_root","Cube.046","Cube.059","arm_03.001","cable_02","arm_01_b","logo_NASA_JPL","ground_and_sky_dome","roll_pressure_inlet","roll_grapple","roll_RISE Antenna","roll_solar_panels"}
 selected_details = []
 for obj in mesh_objects:
     if obj.name in target_names:
@@ -71,6 +71,9 @@ for obj in mesh_objects:
             "dimensions": list(obj.dimensions),
             "scale": list(obj.scale),
             "location": list(obj.location),
+            "rotation_mode": obj.rotation_mode,
+            "rotation_euler": list(obj.rotation_euler),
+            "rotation_quaternion": list(obj.rotation_quaternion),
             "matrix_world": [list(row) for row in obj.evaluated_get(depsgraph).matrix_world],
             "matrix_parent_inverse": [list(row) for row in obj.matrix_parent_inverse],
             "parent": obj.parent.name if obj.parent else None,
