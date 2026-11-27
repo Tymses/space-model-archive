@@ -62,6 +62,8 @@ test("archive cards and print workspace expose the new conversion and descriptio
   const html = read("index.html");
   assert.match(app, /data-convert-model/);
   assert.match(app, /data-convert-archive/);
+  assert.match(app, /archiveCardNote/);
+  assert.match(app, /data-open-counterpart/);
   assert.match(app, /async function convertActiveModelToStl/);
   assert.match(app, /action","describe"/);
   assert.match(html, /id="scaling-convert-stl"/);
