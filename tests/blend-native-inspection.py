@@ -54,7 +54,7 @@ native_transforms = [{
     "matrix_world": [list(row) for row in obj.matrix_world],
     "local_min": [min(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
     "local_max": [max(vertex.co[axis] for vertex in obj.data.vertices) for axis in range(3)],
-    "positions": [list(vertex.co) for vertex in obj.data.vertices],
+    "positions": [float(component) for vertex in obj.data.vertices for component in vertex.co],
     "vertices": len(obj.data.vertices),
     "polygons": len(obj.data.polygons)
 } for obj in printable_objects if len(obj.data.polygons) > 0]
