@@ -5,7 +5,7 @@
  * SDNA entries store the compiled structure size; field offsets alone are
  * not sufficient to advance through nested struct arrays safely.
  */
-export function getBlenderStructByteLength(schemas, type) {
+function getBlenderStructByteLength(schemas, type) {
     const byteLength = schemas?.[type]?.length
     if (!Number.isSafeInteger(byteLength) || byteLength <= 0) {
         throw new Error(`BLEND_INVALID_DNA_SIZE: Blender structure "${type}" has no valid compiled byte size.`)
