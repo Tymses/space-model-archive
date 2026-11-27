@@ -27,12 +27,19 @@
     "spaceradar-map-asteroid-didymos": {
       "longestAxisKm": 0.851,
       "dimensionsKm": [
-        0.851,
         0.849,
+        0.851,
         0.62
       ],
-      "source": "Ren et al., A&A 692, A62 (2024)",
-      "sourceUrl": "https://www.aanda.org/articles/aa/pdf/2024/12/aa51407-24.pdf"
+      "source": "Daly et al. (2023), Nature 616, 443 — DART DRACO shape-model extents",
+      "sourceUrl": "https://www.nature.com/articles/s41586-023-05810-5",
+      "uncertaintyKm": 0.015,
+      "axisUncertaintiesKm": [
+        0.015,
+        0.015,
+        0.015
+      ],
+      "measurement": "Pre-impact DART DRACO shape-model X/Y/Z extents; values converted from metres to kilometres"
     },
     "spaceradar-map-asteroid-eros": {
       "longestAxisKm": 33,
