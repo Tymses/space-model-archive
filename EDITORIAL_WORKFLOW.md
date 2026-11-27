@@ -103,11 +103,11 @@ SPACEMESHER ist kein Slicer. Eine positive Bauraumprüfung garantiert keine Druc
 
 **P0 – fachliche Fehler und Quellen:** Satelliten umsortieren; NASA-Links korrigieren; fehlende individuelle NASA-Seiten auf den offiziellen NASA-Katalog verweisen.
 
-**P1 – Kategorien:** Height maps umbenennen; sichtbares Cross-Listing ergänzen; Begriffe für Modell, Archiv, Kandidat, Datensatz und Generator vereinheitlichen.
+**P1 – Kategorien: umgesetzt.** Die öffentliche Sammlung heißt „Terrain data & printable terrain“; der interne Routenschlüssel `height-maps` und bestehende Modell-IDs bleiben stabil. NASA-Terrain-Cross-Listings werden auf Karten und Detailseiten sichtbar ausgewiesen.
 
-**P2 – Maßstab und Texte:** Prozentuale Größenabweichung ergänzen; Einsteiger-Workflow verdichten; Modellbeschreibungen systematisch auf Objektbezug prüfen.
+**P2 – Maßstab und Texte: umgesetzt.** Die Maßstabsanzeige benennt die prozentuale Abweichung des Quelldatei-Modells von der realen Referenz. Der Einsteigerablauf beginnt beim Finden eines Archiveintrags und endet mit der Prüfung im eigenen Slicer.
 
-**P3 – Qualitätssicherung:** Kategorie- und Quellenregeln in CI ergänzen; Änderungen protokollieren; externe Erreichbarkeit regelmäßig prüfen und von inhaltlicher Korrektheit unterscheiden.
+**P3 – Qualitätssicherung: erweitert.** Diese Änderung ergänzt Regressionstests für Terrain-Namensgebung, Cross-Listing-Sichtbarkeit, Maßstabsformulierung und Einsteiger-Workflow. Pull-Request-CI wird so konfiguriert, dass auch reine UI-/Teständerungen die Node-Regressionssuite auslösen. Externe Erreichbarkeit bleibt von inhaltlicher Richtigkeit getrennt.
 
 ## 10. Definition of Done
 
