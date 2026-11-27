@@ -364,7 +364,7 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Inspected main commit: `9630b37c07ba7d06bda42e7c4132fabe5080b922`.
 - Safety branch: `backup/before-blend-parser-struct-length-fix-2026-11-27`.
 - Implementation branch: `fix/blend-parser-struct-length-2026-11-27`.
-- Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `README.md`, `PROJECT_HANDBOOK.md`.
+- Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `tests/blend-fixture.integration.mjs`, `.github/workflows/test-model-workspace.yml`, `README.md`, `PROJECT_HANDBOOK.md`.
 - The user screenshot is visual evidence of incorrect output, but it does not by itself prove which Blender datablock is malformed. This parser bug is confirmed by source inspection and is a credible cause of corrupted geometry; the exact InSight binary still needs a real end-to-end conversion after CI.
 - Do not claim that the screenshot model is fixed until the exact NASA `.blend` file has been converted and its preview/bounds checked. Browser/Blender manual verification is not available through the GitHub source connector.
 - Rollback: `backup/before-blend-parser-struct-length-fix-2026-11-27` at `9630b37c07ba7d06bda42e7c4132fabe5080b922`.
@@ -387,7 +387,7 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - User reported repeatable `BLEND_INVALID_DNA_SIZE` for Blender structure `ID` after PR #28. The cause is confirmed: `getBlenderStructByteLength` read `SDNA[type].length`, but the schema builder never assigned a compiled structure size there. Its `length` members are per-field lengths and are not the structure's total size.
 - SDNA's `TLEN` table already contains the compiled size for each type, including C alignment padding. The DNA parser now retains the TLEN entry for each STRC type as `SDNA[type].byteLength`; nested traversal reads that exact value.
 - Regression tests cover TLEN retention and rejection of an invalid/missing byteLength, including the reported `ID` case.
-- This addresses the reported error at source level. End-to-end verification against NASA's 21,801,160-byte BLEND binary and geometry comparison are still pending until the binary can be run through the actual converter runtime. Do not claim STL quality until the binary imports and output geometry/bounds are checked.
+- Added a dedicated GitHub Actions integration test that downloads the exact public NASA InSight Cruise Stage (final).blend fixture, checks the BLENDER header and complete byte count, and parses the actual file through the bundled parser. This validates the real binary parser path on every relevant PR/push. The test does not yet execute Three.js scene construction or STL export, so geometry fidelity and output bounds remain separate acceptance checks.
 - Backup: `backup/before-blend-dna-struct-size-fix-2026-11-27` at `9ff3b0af5d1b6e356ae856ca08a306055bf15457`.
 - Implementation branch: `fix/blend-dna-struct-size-2026-11-27`.
 - Changed files: `vendor/blend-parser.js`, `tests/model-workspace.test.mjs`, `README.md`, `PROJECT_HANDBOOK.md`.
