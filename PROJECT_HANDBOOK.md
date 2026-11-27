@@ -101,3 +101,14 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 
 - Follow-up PR #13 merged as `ba569586cee16d089ec12e954d62ad437f6b03e9`: both Pahrump Hills terrain cross-listing records now use the official NASA 3D Resources catalogue, matching their primary records. No individual NASA model detail page was verified for these variants.
 - PR #13 catalogue validation, model-workspace regression tests and catalogue link audit passed (runs `46025511805`, `46025511713`, `46025511571`). Post-merge catalogue validation, model-workspace tests and link audit passed (runs `46025590825`, `46025590882`, `46025590943`). The post-merge Pages build completed successfully; the deploy job was still running when this handbook entry was written (run `46025590626`).
+
+
+## 7. Editorial finish — 27 November 2026
+
+- Created safety branch `backup/before-editorial-finish-2026-11-27` from inspected `main` commit `6a6cc9fd644baf8e9941c976c052556920967293`.
+- Implemented the public collection name **Terrain data & printable terrain** while preserving the internal `height-maps` route key and existing record IDs.
+- Added explicit cross-listing cues to catalogue cards and model detail pages for paired NASA terrain records; no records or download relationships were duplicated or rewritten.
+- Replaced ambiguous scale-factor wording with a source-file comparison against the verified real-world reference, expressed as a percentage larger/smaller and the calculated original scale.
+- Rewrote the beginner workflow around the actual archive journey: find a model, check source/preview, prepare scale/build-volume, finish in the users slicer.
+- Added regression tests for collection naming, cross-listing detection/display, percentage wording and workflow copy. Expanded pull-request validation path filters so UI-only changes run the Node regression suite.
+- CI and deployment status will be recorded after GitHub Actions completes; no browser interaction or deployment is claimed before confirmation.
