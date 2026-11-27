@@ -1,4 +1,18 @@
 /* eslint-disable camelcase, no-unused-vars, no-empty, no-constant-condition */
+
+/**
+ * Return the byte size of one SDNA structure.
+ * SDNA entries store the compiled structure size; field offsets alone are
+ * not sufficient to advance through nested struct arrays safely.
+ */
+export function getBlenderStructByteLength(schemas, type) {
+    const byteLength = schemas?.[type]?.length
+    if (!Number.isSafeInteger(byteLength) || byteLength <= 0) {
+        throw new Error(`BLEND_INVALID_DNA_SIZE: Blender structure "${type}" has no valid compiled byte size.`)
+    }
+    return byteLength
+}
+
 const DNA1 = 826363460;
 const ENDB = 1111772741;
 
@@ -553,7 +567,7 @@ function worker_code () {
     }
 
     BLENDER_STRUCTURE.prototype = {
-        setData: function (pointer, _data_offset, data_block_length, BLENDER_FILE) {
+        setData: function (pointer, _data_offset, data_block_end, BLENDER_FILE) {
             if (this.__list__ === null) return this;
             BLENDER_FILE.addObject(this);
 
@@ -563,11 +577,9 @@ function worker_code () {
             let j = 0,
                 i = 0,
                 obj, name = '',
-                type, length, Blender_Array_Length, Pointer_Match, offset, constructor;
+                type, Blender_Array_Length, Pointer_Match, offset, constructor;
 
             this.__data_address__ = _data_offset;
-
-            // if(this.blender_name === 'CustomDataLayer') /* upstream debug trap removed */
 
             if (struct === null) return this;
 
@@ -579,22 +591,29 @@ function worker_code () {
                 Pointer_Match = struct[i + 5];
                 offset = this.__data_address__ + struct[i + 3];
 
+                constructor = current_SDNA_template.getSDNAStructureConstructor(type);
+                if (!constructor) {
+                    this[name] = Blender_Array_Length > 1 ? new Array(Blender_Array_Length).fill(null) : null;
+                    continue;
+                }
+
+                // Nested DNA structs are stored inline. Advance by the compiled
+                // SDNA size for this type, never by an undefined or inferred stride.
+                const memberByteLength = getBlenderStructByteLength(current_SDNA_template.SDNA, type);
+                const totalByteLength = memberByteLength * Blender_Array_Length;
+                const memberEnd = offset + totalByteLength;
+                if (!Number.isSafeInteger(memberEnd) || offset < _data_offset || memberEnd > data_block_end) {
+                    throw new Error(`BLEND_INVALID_DNA_LAYOUT: Nested Blender structure "${type}" exceeds its parent data block.`);
+                }
+
                 if (Blender_Array_Length > 1) {
                     this[name] = [];
-                    j = 0;
-                    while (j < Blender_Array_Length) {
-                        if (current_SDNA_template.getSDNAStructureConstructor(type)) {
-                            constructor = current_SDNA_template.getSDNAStructureConstructor(type);
-                            this[name].push((new constructor()).setData(0, offset, offset + length / Blender_Array_Length, BLENDER_FILE));
-                        } else this[name].push(null);
-                        offset += length / Blender_Array_Length;
-                        j++;
+                    for (j = 0; j < Blender_Array_Length; j++) {
+                        const memberStart = offset + j * memberByteLength;
+                        this[name].push((new constructor()).setData(0, memberStart, memberStart + memberByteLength, BLENDER_FILE));
                     }
                 } else {
-                    if (current_SDNA_template.getSDNAStructureConstructor(type)) {
-                        constructor = current_SDNA_template.getSDNAStructureConstructor(type);
-                        this[name] = (new constructor()).setData(0, offset, length + offset, BLENDER_FILE);
-                    } else this[name] = null;
+                    this[name] = (new constructor()).setData(0, offset, memberEnd, BLENDER_FILE);
                 }
             }
             // break connection to configuration list
