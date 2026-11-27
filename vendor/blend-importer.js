@@ -316,7 +316,7 @@ function setTransform(object, obj) {
     obj.updateMatrix()
 }
 
-const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|watermark|copyright)(?:[._ -]?\\d+)?$/i
+const ANNOTATION_OBJECT_NAME = /^(?:text|3d[._ -]?text|label|annotation|caption|title|legend|dimension(?:s)?|scale(?:[._ -]?bar)?|watermark|copyright)(?:[._ -]?\d+)?$/i
 
 /**
  * Blender scenes often contain extruded text meshes for titles and labels.
