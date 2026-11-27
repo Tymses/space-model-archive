@@ -21,6 +21,10 @@
  * @property {string} snippet
  * @property {number[]|null} [axesKm]
  * @property {number|null} [uncertaintyKm]
+ * @property {number[]|null} [axisUncertaintiesKm]
+ * @property {string} [measurement]
+ * @property {string} [sourceLabel]
+ * @property {string} [note]
  * @property {boolean} [pageChecked]
  * @property {boolean} [sourceTextHasName]
  * @property {boolean} [identityStrong]
@@ -457,6 +461,31 @@ function extractAxes(text) {
   const source = decode(text).replace(/\u00d7/g, " x ").replace(/[–—]/g, "-");
   const unit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
   const number = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
+  const axisNumber = "(?:\\d{1,3}(?:[,.]\\d{3})+(?:[,.]\\d+)?|\\d+(?:[,.]\\d+)?|[,.]\\d+)";
+  const axisUnit = "(km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)";
+  const labelled = source.match(new RegExp(
+    "(?:^|\\\\b)x(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?[\\\\s,;]+"
+    + "y(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?[\\\\s,;]+"
+    + "z(?:\\\\s*[- ]?axis)?\\\\s*[:=]\\\\s*(" + axisNumber + ")(?:\\\\s*(?:±|\\\\+\\\\/-)\\\\s*" + axisNumber + ")?\\\\s*(" + axisUnit + ")?", "i"
+  ));
+  if (labelled) {
+    const sharedUnit = (source.match(/\\((km|kilomet(?:er|re)s?|m|met(?:er|re)s?|cm|mm|ft|feet)\\)/i) || [])[1];
+    const units = [labelled[2], labelled[4], labelled[6]].map(unitValue => unitValue || sharedUnit);
+    if (units.every(Boolean)) {
+      const factors = units.map(unitValue =>
+        /^(km|kilometer|kilometre)/i.test(unitValue) ? 1 :
+        /^cm/i.test(unitValue) ? 0.00001 :
+        /^mm/i.test(unitValue) ? 0.000001 :
+        /^(ft|feet)/i.test(unitValue) ? 0.0003048 :
+        /^(m|meter|metre)/i.test(unitValue) ? 0.001 : null
+      );
+      const values = [labelled[1], labelled[3], labelled[5]].map((value, index) => {
+        const numeric = parseDimensionNumber(value);
+        return numeric == null || factors[index] == null ? null : numeric * factors[index];
+      });
+      if (values.every(value => Number.isFinite(value) && value > 0)) return values;
+    }
+  }
   const patterns = [
     new RegExp("(" + number + ")\\s*(?:x|by)\\s*(" + number + ")(?:\\s*(?:x|by)\\s*(" + number + "))?\\s*" + unit, "i"),
     new RegExp("(" + number + ")\\s*" + unit + "\\s*(?:x|by)\\s*(" + number + ")\\s*" + unit + "(?:\\s*(?:x|by)\\s*(" + number + ")\\s*" + unit + ")?", "i"),
@@ -597,13 +626,42 @@ function canonicalSmallBodyQuery(value) {
   let text = String(value || "").normalize("NFKC").replace(/\.[^.]+$/, "").trim();
   text = text.replace(/^\s*(?:asteroid|minor planet|minor planet no\.?)\s+/i, "");
   text = text.replace(/^\s*\(\s*(\d+)\s*\)\s*/, "$1 ");
-  // Parenthetical text after a numbered body name is a catalogue/model variant,
-  // not part of the physical object's identity.
+  // Parenthetical text after a numbered body name is a catalogue/mesh variant.
   text = text.replace(/\s+\([^)]*\).*$/, "");
+  // Remove generic suffixes such as "asteroid shape model" without dropping
+  // the numbered designation or the proper name of the physical body.
+  for (let i = 0; i < 4; i++) {
+    const previous = text;
+    text = text.replace(/(?:\s+(?:near[- ]earth|main[- ]belt))?\s+(?:asteroids?|minor planets?|small bodies?|shape models?|3d models?|mesh models?|models?|meshes?|shapes?|moonlets?)\s*$/i, "").trim();
+    if (text === previous) break;
+  }
   return norm(text);
 }
 function normalizeResearchQuery(value, category) {
   return category === "small-bodies" ? canonicalSmallBodyQuery(value) : norm(value);
+}
+function buildResearchSearchTerms(query, category) {
+  const q = normalizeResearchQuery(query, category);
+  if (!q) return [];
+  const categoryTerm = ({
+    spacecraft: "spacecraft physical dimensions",
+    moons: "natural moon physical dimensions axes",
+    planetary: "planetary surface feature measured dimensions",
+    "height-maps": "planetary terrain elevation footprint",
+    "small-bodies": "asteroid minor planet triaxial axes dimensions"
+  }[category] || "scientific physical dimensions axes");
+  const terms = [
+    '"' + q + '" ' + categoryTerm,
+    '"' + q + '" measured physical dimensions',
+    '"' + q + '" triaxial axes shape model extents',
+    q + " " + categoryTerm + " x y z",
+    q + " published dimensions shape model"
+  ];
+  if (category === "small-bodies") {
+    terms.push('"' + q + '" asteroid dimensions km');
+    terms.push('"' + q + '" physical extent minor planet');
+  }
+  return [...new Set(terms)].slice(0, 6);
 }
 function categoryContextMatches(text, category) {
   const value = norm(text);
@@ -622,9 +680,14 @@ function researchTextBlocks(value) {
   if (lineBlocks.length > 1) return lineBlocks;
   return plain(source).split(/(?<=[.!?])\s+/).map(value => value.trim()).filter(Boolean);
 }
-function blockMatchesResearchIdentity(block, query, category) {
+function blockMatchesResearchIdentity(block, query, category, pageContext = "") {
   const normalized = normalizeResearchQuery(query, category);
-  if (!normalized || !hasWholePhrase(block, normalized) || !categoryContextMatches(block, category)) return false;
+  if (!normalized || !hasWholePhrase(block, normalized)) return false;
+  // Scientific tables often place the object name and its measured row in one
+  // <tr>, while the word "asteroid" appears in the page title or section heading.
+  // Allow category evidence from that page context, but keep the object name and
+  // numeric measurement in the same row/paragraph.
+  if (!categoryContextMatches(block, category) && !categoryContextMatches(pageContext, category)) return false;
   if (category === "small-bodies") {
     const designation = normalized.match(/^(\d{1,7})\s+(.+)$/);
     if (designation && (!hasWholePhrase(block, designation[1]) || !hasWholePhrase(block, designation[2]))) return false;
@@ -637,12 +700,15 @@ function exactResearchIdentity(candidate, query, category) {
     candidate.snippet || "",
     ...researchTextBlocks(candidate.sourceText || "")
   ];
-  return blocks.some(block => blockMatchesResearchIdentity(block, query, category));
+  const pageContext = [candidate.title || "", candidate.snippet || "", ...blocks.filter(block => categoryContextMatches(block, category))].join(" ");
+  return blocks.some(block => blockMatchesResearchIdentity(block, query, category, pageContext));
 }
 function extractIdentityScopedMeasurement(rawHtml, query, category, title = "", snippet = "") {
-  const blocks = [title, snippet, ...researchTextBlocks(rawHtml)];
+  const pageBlocks = researchTextBlocks(rawHtml);
+  const blocks = [title, snippet, ...pageBlocks];
+  const pageContext = [title, snippet, ...pageBlocks.filter(block => categoryContextMatches(block, category))].join(" ");
   for (const block of blocks) {
-    if (!blockMatchesResearchIdentity(block, query, category)) continue;
+    if (!blockMatchesResearchIdentity(block, query, category, pageContext)) continue;
     const axesKm = category === "spacecraft" ? extractSpacecraftAxes(block) : extractAxes(block);
     if (axesKm) return { axesKm, uncertaintyKm: extractUncertainty(block) };
   }
@@ -651,12 +717,7 @@ function extractIdentityScopedMeasurement(rawHtml, query, category, title = "", 
 async function searchWeb(query, category) {
   query = normalizeResearchQuery(query, category);
   if (!query) return [];
-  const categoryTerm = ({spacecraft:"spacecraft physical dimensions",moons:"moon physical dimensions axes",planetary:"planetary surface feature measured dimensions","height-maps":"planetary terrain elevation footprint","small-bodies":"asteroid minor planet triaxial axes dimensions"}[category] || "scientific physical dimensions axes");
-  const searches = [
-    '"' + query + '" ' + categoryTerm,
-    '"' + query + '" measured dimensions ' + (category === "small-bodies" ? "asteroid minor planet km" : categoryTerm),
-    '"' + query + '" physical extent scientific ' + categoryTerm
-  ];
+  const searches = buildResearchSearchTerms(query, category);
   const headers = { "User-Agent":"Mozilla/5.0 (compatible; SpaceMesherResearch/1.2; +https://tymses.github.io/space-model-archive/)", "Accept":"text/html,application/rss+xml,application/xml;q=0.9,*/*;q=0.8" };
   const pages = [];
   for (const term of searches) {
@@ -665,9 +726,9 @@ async function searchWeb(query, category) {
       fetch("https://html.duckduckgo.com/html/?q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseDuckDuckGoResults(await response.text(), pages); }).catch(() => {}),
       fetch("https://www.bing.com/search?format=rss&q=" + encoded, { headers, cf:{cacheTtl:1800} }).then(async response => { if (response.ok) parseBingRssResults(await response.text(), pages); }).catch(() => {})
     ]);
-    if (pages.length >= 16) break;
+    if (pages.length >= 20) break;
   }
-  const checked = await Promise.all(pages.slice(0, 18).map(async item => {
+  const checked = await Promise.all(pages.slice(0, 20).map(async item => {
     try {
       const response = await fetch(item.url, { headers, redirect:"follow", cf:{cacheTtl:3600} });
       if (!response.ok) return {...item, axesKm:extractIdentityScopedMeasurement("",query,category,item.title,item.snippet).axesKm, pageChecked:false, sourceText:""};
@@ -695,6 +756,54 @@ async function searchWeb(query, category) {
   }
   relevantCandidates.sort((a,b)=>b.score-a.score);
   return relevantCandidates.slice(0, 7);
+}
+const CURATED_DIMENSIONS_URL = "https://raw.githubusercontent.com/Tymses/space-model-archive/main/data/object-dimensions-index.json";
+async function lookupCuratedDimensions(query, category) {
+  const normalized = normalizeResearchQuery(query, category);
+  if (!normalized || !category) return null;
+  try {
+    const response = await fetch(CURATED_DIMENSIONS_URL, {
+      headers: { "Accept": "application/json" },
+      cf: { cacheTtl: 1800 }
+    });
+    if (!response.ok) return null;
+    const index = await response.json();
+    const matches = (index.records || []).filter(record => {
+      if (record.category !== category && !(record.categoryAliases || []).includes(category)) return false;
+      const aliases = [record.name, ...(record.aliases || [])].filter(Boolean);
+      return aliases.some(alias => normalizeResearchQuery(alias, category) === normalized);
+    });
+    if (matches.length !== 1) return null;
+    const record = matches[0];
+    const axesKm = Array.isArray(record.axesKm) ? record.axesKm.map(Number) : [];
+    if (axesKm.length < 2 || axesKm.length > 3 || !axesKm.every(value => Number.isFinite(value) && value > 0) || !/^https:\\/\\//i.test(record.sourceUrl || "")) return null;
+    const candidate = {
+      url: record.sourceUrl,
+      title: record.name + " — " + (record.measurement || "published physical dimensions"),
+      snippet: [record.measurement, record.configuration, record.note].filter(Boolean).join(". "),
+      axesKm,
+      uncertaintyKm: Number.isFinite(record.uncertaintyKm) ? record.uncertaintyKm : null,
+      axisUncertaintiesKm: Array.isArray(record.axisUncertaintiesKm) ? record.axisUncertaintiesKm : null,
+      measurement: record.measurement || "Published physical dimensions; measurement type not further specified in this record",
+      sourceLabel: record.sourceLabel || hostOf(record.sourceUrl),
+      note: record.note || "",
+      pageChecked: true,
+      sourceTextHasName: true,
+      identityStrong: true,
+      source: hostOf(record.sourceUrl),
+      score: 99,
+      quality: "high"
+    };
+    return {
+      query: normalized, category, searched: true,
+      engine: "Curated source-backed dimensions index",
+      candidates: [candidate], best: candidate, autoAccept: true,
+      conflictingStrong: false, agreementCount: 0,
+      note: "A matching source-backed record was found in the archive's curated dimensions index."
+    };
+  } catch {
+    return null;
+  }
 }
 const ASTEROID_OCCULTATION_URL = "https://www.asteroidoccultation.com/observations/Asteroid_Dimensions_from_Occultations.html";
 function cleanAsteroidQuery(value) {
@@ -756,6 +865,8 @@ async function lookupOccultationDimensions(query) {
 async function research(query, category) {
   query = normalizeResearchQuery(query, category);
   if (!query) return { query: "", category: category || "general", searched: false, candidates: [], best: null, autoAccept: false, note: "No usable physical-object identity was supplied." };
+  const curated = await lookupCuratedDimensions(query, category);
+  if (curated) return curated;
   // A peer-reviewed axis measurement for (6) Hebe. The catalogue page itself
   // reports only a mean diameter, so use this published triaxial estimate
   // rather than incorrectly treating the mean diameter as the longest axis.
