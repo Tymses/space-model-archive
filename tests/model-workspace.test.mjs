@@ -381,3 +381,12 @@ test("BLEND parse failures offer independent converter fallbacks with upload dis
  assert.ok(app.includes("Shapeweld uploads the file to its server"));
  assert.ok(app.includes("fallback.append(heading,note,local,server,privacy)"));
 });
+
+test("Blender object transforms apply the transposed parent-inverse matrix",()=>{
+ const source=read("vendor/blend-importer.js");
+ assert.ok(source.includes("const parentInverse = object.parentinv"));
+ assert.ok(source.includes("value(column, row)"));
+ assert.ok(source.includes("parentInverseThree = basis.clone().multiply(blenderMatrix).multiply(basis.clone().invert())"));
+ assert.ok(source.includes("obj.matrix.premultiply(parentInverseThree)"));
+ assert.ok(source.includes("obj.matrixAutoUpdate = false"));
+});
