@@ -1052,9 +1052,8 @@ async function describeArchiveModel(input) {
   const sourceSummary = await fetchModelSourceDescription(sourceUrl);
   const metadata = name + " is catalogued in the " + categoryLabel + " collection" +
     (kind ? " as " + kind : "") + ". The archive provides a " + format + " model from " + source + ".";
-  const description = sourceSummary
-    ? sourceSummary.summary + " " + metadata
-    : metadata + " The file format does not establish the object's real-world scale; use a separately cited physical measurement when calculating print scale.";
+  const scaleNote = " The file format does not establish the object's real-world scale; use a separately cited physical measurement when calculating print scale.";
+  const description = (sourceSummary ? sourceSummary.summary + " " + metadata : metadata) + scaleNote;
   return {
     name, description, provenance: sourceSummary ? "Original source page summary plus archive metadata" : "Automatically generated from archive metadata",
     sourceTitle: sourceSummary?.title || "", sourceUrl: sourceSummary?.url || sourceUrl || "",
