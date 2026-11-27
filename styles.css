@@ -430,3 +430,9 @@
 .scaling-custom-dimension-panel .field-hint,.scaling-fit-options .field-hint{margin:0}
 
 .scaling-object-search[hidden],.scaling-object-result[hidden],.scaling-custom-dimension-panel[hidden],.scaling-fit-options[hidden]{display:none!important}
+
+
+/* Small, consistent acknowledgement animation for every clickable button. */
+.is-click-feedback{animation:spacemesher-button-press 240ms cubic-bezier(.2,.8,.2,1) both;transform-origin:center}
+@keyframes spacemesher-button-press{0%{transform:scale(1)}35%{transform:scale(.965)}68%{transform:scale(1.018)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.is-click-feedback{animation:none!important}}
