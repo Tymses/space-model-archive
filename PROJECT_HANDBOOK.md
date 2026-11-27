@@ -178,7 +178,7 @@ The binding editorial rules and release checklist live in [EDITORIAL_WORKFLOW.md
 - Regression coverage is added for fit factors, safety margins, proportional adjustment, custom axis mapping and mode UI. The bounding-box result still does not certify wall thickness, supports, bed adhesion or printability.
 - Implementation branch: feat/scaling-modes-2026-11-27; safety branch: backup/before-scaling-modes-2026-11-27, both based on inspected main commit ab9508c82bf77f178ca7a794be5c352d79daf13e.
 
-- Pull request #18: https://github.com/Tymses/space-model-archive/pull/18. Latest implementation commit before this verification record: 3550cc6c32f82550226eb8d9c8090d5d796a1355.
-- Final PR-head checks on that commit passed: model-workspace regression suite (24/24 tests; run 46051825819), catalogue/application validation (run 46051825826), full source/model URL audit (run 46051825956), and Enforce project workflow (run 46051825868).
+- Pull request #18: https://github.com/Tymses/space-model-archive/pull/18. Implementation commit before this verification-record update: 7e65787c7f2ccce8da113388f69a53bae38a0d62.
+- PR-head checks on that implementation commit passed: model-workspace regression suite (24/24 tests; run 46052035631), catalogue/application validation (run 46052035623), full source/model URL audit (run 46052035624), and Enforce project workflow (run 46052035629).
 - An earlier test attempt exposed incorrectly escaped newline delimiters in the two helper-extraction tests. The tests were corrected; the final model-workspace run passed all 24 tests.
-- No manual desktop/mobile browser review was performed. Automated tests verify the calculation helpers and UI hooks, not interactive rendering or slicer behavior.
+- The README paragraph break was corrected and verified before these final checks. No manual desktop/mobile browser review was performed. Automated tests verify the calculation helpers and UI hooks, not interactive rendering or slicer behavior.
