@@ -765,7 +765,7 @@ async function searchWeb(query, category) {
   relevantCandidates.sort((a,b)=>b.score-a.score);
   return relevantCandidates.slice(0, 7);
 }
-const CURATED_DIMENSIONS_URL = "https://raw.githubusercontent.com/Tymses/space-model-archive/main/data/object-dimensions-index.json";
+const CURATED_DIMENSIONS_URL = "https://raw.githubusercontent.com/Tymses/space-model-archive/main/data/object-dimensions-index.json?v=20261127-dimension-research-2";
 async function lookupCuratedDimensions(query, category) {
   const normalized = normalizeResearchQuery(query, category);
   if (!normalized || !category) return null;
