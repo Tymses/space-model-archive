@@ -233,6 +233,10 @@ function calculateFitToBuildPlate(sourceMm,bedMm,marginMm=5,adjustmentPercent=10
  const factor=maxFactor*adjustmentPercent/100,printDimensions=sourceMm.map(v=>v*factor),fits=rotations.some(rotation=>rotation.every((v,i)=>v*factor<=usableBed[i]+1e-9));
  return {valid:true,maxFactor,factor,orientation,usableBed,printDimensions,fits,adjustmentPercent,marginMm};
 }
+function convertCustomDimensionToMm(value,unit){
+ const factors={mm:1,m:1000,km:1000000},number=Number(value);
+ return Number.isFinite(number)&&number>0&&Object.prototype.hasOwnProperty.call(factors,unit)?number*factors[unit]:null;
+}
 function calculateCustomScaleDenominator(sourceMm,realDimensionMm,axis="longest"){
  if(!Array.isArray(sourceMm)||sourceMm.length!==3||!sourceMm.every(v=>Number.isFinite(v)&&v>0)||!Number.isFinite(realDimensionMm)||realDimensionMm<=0)return null;
  const index=axis==="longest"?sourceMm.indexOf(Math.max(...sourceMm)):Number(axis);if(!Number.isInteger(index)||index<0||index>2)return null;
@@ -1039,8 +1043,8 @@ restoreRouteFromHash();
   let referenceDimensionMm=null,referenceAxis="longest",referenceLabel="";
   if(mode==="custom"){
    setGauge("reliability",null,"User-supplied dimension · not source-rated");
-   const value=Number($id("scaling-custom-dimension").value),unit=$id("scaling-custom-unit").value,unitFactor={mm:1,m:1000,km:1000000}[unit]||1;
-   referenceDimensionMm=value*unitFactor;referenceAxis=$id("scaling-custom-axis").value;referenceLabel=$id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension";
+   const value=Number($id("scaling-custom-dimension").value),unit=$id("scaling-custom-unit").value;
+   referenceDimensionMm=convertCustomDimensionToMm(value,unit);referenceAxis=$id("scaling-custom-axis").value;referenceLabel=$id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension";
    if(!$id("scaling-custom-dimension").value.trim()||!Number.isFinite(referenceDimensionMm)||referenceDimensionMm<=0){
     $id("scaling-original-scale").textContent="Custom dimension required";$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Enter a positive real-world dimension and select the matching model axis.</p>";renderFit("Enter a custom original dimension","This mode uses your own real-world measurement; no astronomical lookup is required.",null);setGauge("printability",null,"Awaiting custom dimension");$id("scaling-orientation").textContent=validBed?"Build volume: "+dims(bed):"Enter valid printer dimensions";updatePreview(1);return;
    }
@@ -1066,8 +1070,8 @@ restoreRouteFromHash();
  function openAssessment(){
   const dialog=$id("assessment-dialog");if(!dialog)return;
   const mode=$id("scaling-mode").value,title=$id("scaling-printer-profile")?.selectedOptions?.[0]?.textContent||"Selected printer",bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
-  const source=active?active.raw.map(v=>v*active.unitFactor):null,customValue=Number($id("scaling-custom-dimension").value),customUnit=$id("scaling-custom-unit").value,customFactor={mm:1,m:1000,km:1000000}[customUnit]||1,customAxis=$id("scaling-custom-axis").value;
-  const customDenominator=mode==="custom"&&source?calculateCustomScaleDenominator(source,customValue*customFactor,customAxis):null;
+  const source=active?active.raw.map(v=>v*active.unitFactor):null,customValue=Number($id("scaling-custom-dimension").value),customUnit=$id("scaling-custom-unit").value,customDimensionMm=convertCustomDimensionToMm(customValue,customUnit),customAxis=$id("scaling-custom-axis").value;
+  const customDenominator=mode==="custom"&&source?calculateCustomScaleDenominator(source,customDimensionMm,customAxis):null;
   const originalDenominator=mode==="original"&&source&&realLongestKm>0?realLongestKm*1e6/Math.max(...source):null;
   const denominator=mode==="custom"?customDenominator:originalDenominator,hasScale=mode!=="fit"&&Number.isFinite(denominator)&&denominator>0&&Number.isFinite(selectedDenominator)&&selectedDenominator>0;
   assessmentText("assessment-printer",title);assessmentText("assessment-bed",validBed?dims(bed):"Invalid or incomplete build volume");assessmentText("assessment-model",source?dims(source):"No model loaded");
