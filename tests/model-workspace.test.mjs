@@ -331,9 +331,9 @@ test("all button-like controls receive a short click acknowledgement animation",
 });
 
 test("Blender annotation meshes are excluded by conservative whole-name matching",()=>{
- const source=read("vendor/blend-importer.js"),start=source.indexOf("const ANNOTATION_OBJECT_NAME"),end=source.indexOf("\nexport function createObjects",start);
+ const source=read("vendor/blend-importer.js"),start=source.indexOf("const ANNOTATION_OBJECT_NAME"),end=source.indexOf("\\nexport function createObjects",start);
  assert.ok(start>=0&&end>start,"annotation classifier must be defined before scene construction");
- const classify=new Function(source.slice(start,end)+"\nreturn isLikelyAnnotationObject;")();
+ const classify=new Function(source.slice(start,end)+"\\nreturn isLikelyAnnotationObject;")();
  assert.equal(classify({aname:"Text",data:{aname:"Text"}}),true);
  assert.equal(classify({aname:"Text.001",data:{aname:"Text.001"}}),true);
  assert.equal(classify({aname:"Mission label",data:{aname:"Mission label"}}),false);
@@ -342,9 +342,9 @@ test("Blender annotation meshes are excluded by conservative whole-name matching
 });
 test("Blender scene builder can explicitly retain annotation meshes when requested",()=>{
  const source=read("vendor/blend-importer.js");
- assert.match(source,/options\.excludeAnnotations !== false && isLikelyAnnotationObject\\(object\\)/);
- assert.match(source,/options\.onAnnotationExcluded\\?\.\\(diagnostic\\)/);
+ assert.ok(source.includes("options.excludeAnnotations !== false && isLikelyAnnotationObject(object)"));
+ assert.ok(source.includes("options.onAnnotationExcluded?.(diagnostic)"));
  const app=read("app.js");
- assert.match(app,/onAnnotationExcluded:diagnostic=>annotationDiagnostics\.push\\(diagnostic\\)/);
- assert.match(app,/Excluded .* likely text\/label mesh\\(es\\)/);
+ assert.ok(app.includes("onAnnotationExcluded:diagnostic=>annotationDiagnostics.push(diagnostic)"));
+ assert.ok(app.includes("likely text/label mesh(es)"));
 });
