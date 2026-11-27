@@ -9,6 +9,7 @@ on:
       - "vendor/blend-importer.js"
       - "vendor/blend-parser.js"
       - "tests/model-workspace.test.mjs"
+      - "tests/blend-fixture.integration.mjs"
       - ".github/workflows/test-model-workspace.yml"
   pull_request:
     paths:
@@ -35,3 +36,5 @@ jobs:
           node-version: "20"
       - name: Run model workspace regression tests
         run: node --test tests/model-workspace.test.mjs
+      - name: Parse official NASA InSight BLEND fixture
+        run: node tests/blend-fixture.integration.mjs
