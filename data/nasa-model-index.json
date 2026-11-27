@@ -166,7 +166,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Apollo Soyuz: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Apollo%20Soyuz/Apollo%20Soyuz.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/apollo-soyuz/",
       "changed": "Source repository"
     },
     {
@@ -180,7 +180,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aqua (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(A)/Aqua%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aqua-a/",
       "changed": "Source repository"
     },
     {
@@ -194,7 +194,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aqua (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aqua%20(B)/Aqua%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aqua-b/",
       "changed": "Source repository"
     },
     {
@@ -222,7 +222,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aquarius (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aquarius%20(A)/Aquarius%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aquarius-a/",
       "changed": "Source repository"
     },
     {
@@ -236,7 +236,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aquarius (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aquarius%20(B)/Aquarius%20(B)%20(compact).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aquarius-b/",
       "changed": "Source repository"
     },
     {
@@ -250,7 +250,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aquarius (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aquarius%20(B)/Aquarius%20(B)%20(unfurled).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aquarius-b/",
       "changed": "Source repository"
     },
     {
@@ -264,7 +264,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ares 1 (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ares%201%20(A)/Ares%201%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ares-1-a/",
       "changed": "Source repository"
     },
     {
@@ -278,7 +278,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ares 1 (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ares%201%20(B)/Ares%201%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ares-1-b/",
       "changed": "Source repository"
     },
     {
@@ -292,7 +292,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Argo: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Argo/Argo.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/argo/",
       "changed": "Source repository"
     },
     {
@@ -306,7 +306,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Astronaut Glove: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Astronaut%20Glove/Astronaut%20Glove.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/astronaut-glove/",
       "changed": "Source repository"
     },
     {
@@ -334,7 +334,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Atlas 6 (Friendship 7): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atlas%206%20(Friendship%207)/Atlas%206%20(Friendship%207).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/atlas-6-friendship-7/",
       "changed": "Source repository"
     },
     {
@@ -376,7 +376,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Atmosphere-Space Transition Region Explorer (ASTRE): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Atmosphere-Space%20Transition%20Region%20Explorer%20(ASTRE)/Atmosphere-Space%20Transition%20Region%20Explorer%20(ASTRE).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/atmosphere-space-transition-region-explorer-astre/",
       "changed": "Source repository"
     },
     {
@@ -390,7 +390,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aura (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(A)/Aura%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aura-a/",
       "changed": "Source repository"
     },
     {
@@ -404,7 +404,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aura (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(B)/Aura%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aura-b/",
       "changed": "Source repository"
     },
     {
@@ -418,7 +418,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aura (C): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(C)/Aura%20(C).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aura-c/",
       "changed": "Source repository"
     },
     {
@@ -432,7 +432,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Aura (D): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Aura%20(D)/Aura%20(D).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/aura-d/",
       "changed": "Source repository"
     },
     {
@@ -446,7 +446,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "BP Tauri: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/BP%20Tauri/BP%20Tauri.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/bp-tauri/",
       "changed": "Source repository"
     },
     {
@@ -460,7 +460,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Base Station: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Base%20Station/Base%20Station.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/base-station/",
       "changed": "Source repository"
     },
     {
@@ -474,7 +474,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ben Franklin: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ben%20Franklin/Ben%20Franklin.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ben-franklin/",
       "changed": "Source repository"
     },
     {
@@ -488,7 +488,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Ben Franklin: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Ben%20Franklin/Ben%20Franklin.lwo",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/ben-franklin/",
       "changed": "Source repository"
     },
     {
@@ -502,7 +502,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini Assembly: NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini%20Assembly/Cassini%20Assembly.glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-assembly/",
       "changed": "Source repository"
     },
     {
@@ -516,7 +516,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A)%20(without%20Cassini).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -530,7 +530,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A)%20(without%20Hyugens).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -544,7 +544,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (A): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(A)/Cassini-Huygens%20(A).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-a/",
       "changed": "Source repository"
     },
     {
@@ -558,7 +558,7 @@
       "license": "NASA usage guidelines; check asset-specific notes",
       "credit": "Cassini-Huygens (B): NASA 3D Resources",
       "file": "https://raw.githubusercontent.com/nasa/NASA-3D-Resources/master/3D%20Models/Cassini-Huygens%20(B)/Cassini-Huygens%20(B).glb",
-      "sourceUrl": null,
+      "sourceUrl": "https://science.nasa.gov/3d-resources/cassini-huygens-b/",
       "changed": "Source repository"
     },
     {
