@@ -676,13 +676,16 @@ function buildResearchSearchTerms(query, category) {
   } else if (category === "spacecraft") {
     terms.push('site:nasa.gov "' + q + '" spacecraft dimensions');
     terms.push('site:esa.int "' + q + '" spacecraft dimensions');
+    terms.push('"' + q + '" "overall dimensions" length width height');
+    terms.push('"' + q + '" "cruise stage" dimensions');
+    terms.push('site:jpl.nasa.gov "' + q + '" dimensions');
   }
-  return [...new Set(terms)].slice(0, 8);
+  return [...new Set(terms)].slice(0, category === "spacecraft" ? 10 : 8);
 }
 function categoryContextMatches(text, category) {
   const value = norm(text);
   if (category === "small-bodies") return /(^| )(asteroid|asteroids|minor planet|minor planets|small body|small bodies|comet|comets|dwarf planet|near earth object|near earth asteroid|nea|trans neptunian object|tno)( |$)/.test(value);
-  if (category === "spacecraft") return /(^| )(spacecraft|space vehicle|space probe|satellite|probe|orbiter|lander|rover|space telescope|space station|flyby vehicle)( |$)/.test(value);
+  if (category === "spacecraft") return /(^| )(spacecraft|space vehicle|space probe|satellite|probe|orbiter|lander|rover|space telescope|space station|flyby vehicle|cruise stage|cruise module)( |$)/.test(value);
   if (category === "moons") return /(^| )(moon|moons|moonlet|moonlets|natural satellite|natural satellites)( |$)/.test(value);
   if (category === "planetary" || category === "height-maps") return /(^| )(crater|mountain|volcano|valley|canyon|surface feature|terrain|elevation|topography)( |$)/.test(value);
   return true;
