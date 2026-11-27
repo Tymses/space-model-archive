@@ -1024,8 +1024,9 @@ restoreRouteFromHash();
   if(!active)return;
   const mode=$id("scaling-mode").value,source=active.raw.map(v=>v*active.unitFactor),longest=Math.max(...source),bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
   $id("scaling-source-dimensions").textContent=dims(source);$id("scaling-original-dimensions").textContent=dims(source);currentExportReady=false;currentExportFactor=1;
+  $id("scaling-mode-hint").setAttribute("data-mode",mode);
   if(mode==="fit"){
-   selectedDenominator=null;$id("scaling-original-scale").textContent="Astronomical scale ignored";
+   setGauge("reliability",null,"Not used in fit mode");selectedDenominator=null;$id("scaling-original-scale").textContent="Astronomical scale ignored";
    if(!validBed){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Enter valid printer dimensions before fitting the model.</p>";setGauge("printability",null,"Invalid build volume");renderFit("Invalid build volume","All three printer dimensions must be greater than zero.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
    const margin=Number($id("scaling-fit-margin").value),adjustment=Number($id("scaling-fit-adjustment").value),fit=calculateFitToBuildPlate(source,bed,margin,adjustment);
    if(!fit.valid){$id("scaling-selected-scale").textContent="—";$id("scaling-print-dimensions").textContent="—";$id("scaling-recommendations").innerHTML="<p>Safety margin must be non-negative and leave a positive usable volume on all axes.</p>";setGauge("printability",null,"Invalid safety margin");renderFit("Check safety margin","The selected safety margin leaves no usable space on at least one printer axis.",false);$id("scaling-orientation").textContent="—";updatePreview(1);return;}
@@ -1037,6 +1038,7 @@ restoreRouteFromHash();
   }
   let referenceDimensionMm=null,referenceAxis="longest",referenceLabel="";
   if(mode==="custom"){
+   setGauge("reliability",null,"User-supplied dimension · not source-rated");
    const value=Number($id("scaling-custom-dimension").value),unit=$id("scaling-custom-unit").value,unitFactor={mm:1,m:1000,km:1000000}[unit]||1;
    referenceDimensionMm=value*unitFactor;referenceAxis=$id("scaling-custom-axis").value;referenceLabel=$id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension";
    if(!$id("scaling-custom-dimension").value.trim()||!Number.isFinite(referenceDimensionMm)||referenceDimensionMm<=0){
@@ -1489,7 +1491,7 @@ restoreRouteFromHash();
  }
  function resetWorkspace(){
   clear();descriptionToken++;$id("scaling-model-description").hidden=true;realAxesKm=null;realLongestKm=null;realSourceUrl="";realObjectName="";realConfidenceScore=null;selectedDenominator=null;
-  $id("scaling-mode").value="original";$id("scaling-custom-dimension").value="";$id("scaling-custom-unit").value="mm";$id("scaling-custom-axis").value="longest";$id("scaling-custom-kind").value="diameter";$id("scaling-fit-margin").value="5";$id("scaling-fit-adjustment").value="100";$id("scaling-fit-adjustment-value").textContent="100%";syncScalingModeUI();$id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, identify its real-world dimensions and find a printable scale.";$id("scaling-archive-context").hidden=true;
+  $id("scaling-mode").value="original";$id("scaling-custom-dimension").value="";$id("scaling-custom-unit").value="mm";$id("scaling-custom-axis").value="longest";$id("scaling-custom-kind").value="diameter";$id("scaling-fit-margin").value="5";$id("scaling-fit-adjustment").value="100";$id("scaling-fit-adjustment-value").textContent="100%";syncScalingModeUI();$id("scaling-page-overline").textContent="PRINT WORKSPACE";$id("scaling-page-title").textContent="Model scaling";$id("scaling-page-subtitle").textContent="Load a model, choose how to scale it and check the selected build volume.";$id("scaling-archive-context").hidden=true;
   $id("scaling-object-result").hidden=true;$id("scaling-object-query").value="";$id("scaling-printer-profile").value="p2s";$id("scaling-custom-volume").hidden=true;
   $id("scaling-model-name").textContent="No model selected";$id("scaling-format").textContent="UPLOAD A MODEL";$id("scaling-file-state").textContent="No model loaded";
   $id("scaling-measurement-state").textContent="Waiting for model";$id("scaling-source-dimensions").textContent="—";$id("scaling-model-description").hidden=true;$id("scaling-convert-stl").hidden=true;$id("scaling-convert-beta").hidden=true;
