@@ -1063,55 +1063,44 @@ restoreRouteFromHash();
  function assessmentText(id,value){const el=$id(id);if(el)el.textContent=value;}
  function openAssessment(){
   const dialog=$id("assessment-dialog");if(!dialog)return;
-  const title=$id("scaling-printer-profile")?.selectedOptions?.[0]?.textContent||"Selected printer";
-  const bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
-  const source=active?active.raw.map(v=>v*active.unitFactor):null;
-  const longest=source?Math.max(...source):null;
-  const hasPhysical=Number.isFinite(realLongestKm)&&realLongestKm>0;
-  const hasScale=hasPhysical&&Number.isFinite(selectedDenominator)&&selectedDenominator>0;
-  assessmentText("assessment-printer",title);
-  assessmentText("assessment-bed",validBed?dims(bed):"Invalid or incomplete build volume");
-  assessmentText("assessment-model",source?dims(source):"No model loaded");
-  assessmentText("assessment-object",hasPhysical?realObjectName+" · "+fmt(realLongestKm)+" km longest axis":"No verified real-world dimensions linked");
-  assessmentText("assessment-source",hasPhysical?(realSourceUrl?"Verified dimension source linked":"Dimension source not recorded"):"Not available");
-  assessmentText("assessment-scale",hasScale?"1:"+fmt(selectedDenominator):"Cannot calculate without verified physical dimensions");
-  const confidence=Number.isFinite(realConfidenceScore)?Math.round(realConfidenceScore)+" / 100 · evidence indicator":"Not rated";
-  assessmentText("assessment-confidence",confidence);
-  let verdict="Insufficient data for a print assessment",summary="Load a model and link verified real-world dimensions to calculate its intended scale.";
+  const mode=$id("scaling-mode").value,title=$id("scaling-printer-profile")?.selectedOptions?.[0]?.textContent||"Selected printer",bed=volume(),validBed=bed.every(v=>Number.isFinite(v)&&v>0);
+  const source=active?active.raw.map(v=>v*active.unitFactor):null,customValue=Number($id("scaling-custom-dimension").value),customUnit=$id("scaling-custom-unit").value,customFactor={mm:1,m:1000,km:1000000}[customUnit]||1,customAxis=$id("scaling-custom-axis").value;
+  const customDenominator=mode==="custom"&&source?calculateCustomScaleDenominator(source,customValue*customFactor,customAxis):null;
+  const originalDenominator=mode==="original"&&source&&realLongestKm>0?realLongestKm*1e6/Math.max(...source):null;
+  const denominator=mode==="custom"?customDenominator:originalDenominator,hasScale=mode!=="fit"&&Number.isFinite(denominator)&&denominator>0&&Number.isFinite(selectedDenominator)&&selectedDenominator>0;
+  assessmentText("assessment-printer",title);assessmentText("assessment-bed",validBed?dims(bed):"Invalid or incomplete build volume");assessmentText("assessment-model",source?dims(source):"No model loaded");
+  assessmentText("assessment-object",mode==="fit"?"No physical reference used (fit mode)":mode==="custom"?($id("scaling-custom-kind").selectedOptions[0]?.textContent||"Custom dimension")+" · "+fmt(customValue)+" "+customUnit+" · model axis "+(customAxis==="longest"?"longest":"XYZ"[Number(customAxis)]):realLongestKm>0?realObjectName+" · "+fmt(realLongestKm)+" km longest axis":"No verified real-world dimensions linked");
+  assessmentText("assessment-source",mode==="fit"?"Not required":mode==="custom"?"User-entered dimension · not source-verified":realLongestKm>0?(realSourceUrl?"Verified dimension source linked":"Dimension source not recorded"):"Not available");
+  assessmentText("assessment-scale",mode==="fit"?"Fit to build plate · "+fmt(currentExportFactor)+"×":hasScale?"Original scale 1:"+fmt(denominator)+" · selected 1:"+fmt(selectedDenominator):"Cannot calculate without a valid reference dimension");
+  assessmentText("assessment-confidence",mode==="custom"?"User supplied · not source-rated":mode==="fit"?"Not applicable":Number.isFinite(realConfidenceScore)?Math.round(realConfidenceScore)+" / 100 · evidence indicator":"Not rated");
+  let verdict="Insufficient data for a print assessment",summary="Load a model and select a scaling mode to calculate its print dimensions.";
   let orientation="—",printDims="—",clearance="—",occupancy="—",fitIndex="—",axisRows="<p>Axis-by-axis clearance is unavailable until a model and valid build volume are loaded.</p>";
-  if(source&&validBed){
-   const rawFit=best(source,bed);
-   if(!hasScale){
-    verdict="Geometry loaded; real-world scale unknown";
-    summary="The model can be checked at its current file dimensions, but no physical reference dimension is available to establish the intended scale.";
-    const fits=rawFit.factor>=1-1e-9;
-    fitIndex=fits?"100 / 100 · geometric fit at file size":Math.round(Math.max(0,rawFit.factor)*100)+" / 100 · scale-down factor";
-    orientation=rawFit.orientation?dims(rawFit.orientation):"—";
-    clearance="Not applicable to an intended scale";
-    const volumeRatio=source.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;
-    occupancy=Number.isFinite(volumeRatio)?Math.max(0,volumeRatio).toFixed(3)+"% of printer bounding volume":"—";
-   }else{
-    const factor=realLongestKm*1e6/longest/selectedDenominator;
-    const print=source.map(v=>v*factor),fit=best(print,bed),fits=fit.factor>=1-1e-9;
-    const margins=fit.orientation?fit.orientation.map((v,i)=>bed[i]-v):[];
-    const util=fit.orientation?fit.orientation.map((v,i)=>v/bed[i]*100):[];
-    const limiting=Math.max(...util);
-    const volumeRatio=print.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;
-    printDims=dims(print);orientation=fit.orientation?dims(fit.orientation):"—";
-    clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on axis "+["X","Y","Z"][i]).join(" · "):"—";
-    occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
-    fitIndex=Math.round(Math.min(100,fit.factor*100))+" / 100 · geometric scale-down index";
-    verdict=fits?"Fits the selected build volume":"Does not fit at the selected scale";
-    summary=fits?"The selected scale fits within the selected build volume in an axis-aligned 90° orientation. This is a geometric fit result, not a prediction of print success.":"At least one dimension exceeds the build volume. Increase the scale denominator or split the model.";
-    axisRows=fit.orientation?fit.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(bed[i])+' mm</strong><small>'+fmt(margins[i])+' mm clearance · '+fmt(util[i])+'% used</small></div>').join(""):"<p>Orientation unavailable.</p>";
+  if(source&&validBed&&mode==="fit"){
+   const fit=calculateFitToBuildPlate(source,bed,Number($id("scaling-fit-margin").value),Number($id("scaling-fit-adjustment").value));
+   if(!fit.valid){verdict="Invalid fit settings";summary="Check the build volume and safety margin. The safety margin must leave positive usable dimensions."; }
+   else{
+    const actual=best(fit.printDimensions,fit.usableBed),fits=fit.fits,margins=actual.orientation?actual.orientation.map((v,i)=>bed[i]-v):[],util=actual.orientation?actual.orientation.map((v,i)=>v/fit.usableBed[i]*100):[];
+    printDims=dims(fit.printDimensions);orientation=actual.orientation?dims(actual.orientation):"—";clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on printer axis "+["X","Y","Z"][i]).join(" · "):"—";
+    const volumeRatio=fit.printDimensions.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
+    fitIndex=Math.round(Math.min(100,actual.factor*100))+" / 100 · safe-volume fit index";
+    verdict=fits?"Fits the selected build plate":"Exceeds the safety-adjusted build volume";summary="Astronomical scale is ignored. Maximum fit factor "+fmt(fit.maxFactor)+"×; adjustment "+fmt(fit.adjustmentPercent)+"%; safety margin "+fmt(fit.marginMm)+" mm on every side.";
+    axisRows=actual.orientation?actual.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(fit.usableBed[i])+' mm usable</strong><small>'+fmt(margins[i])+' mm to physical bed edge · '+fmt(util[i])+'% of safe width</small></div>').join(""):"<p>Orientation unavailable.</p>";
    }
+  }else if(source&&validBed&&!hasScale){
+   const rawFit=best(source,bed),fits=rawFit.factor>=1-1e-9;verdict="Geometry loaded; original scale unavailable";summary="The model can be checked at its current file dimensions, but no usable physical reference dimension is available.";
+   fitIndex=fits?"100 / 100 · geometric fit at file size":Math.round(Math.max(0,rawFit.factor)*100)+" / 100 · scale-down factor";orientation=rawFit.orientation?dims(rawFit.orientation):"—";
+   const volumeRatio=source.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;occupancy=Number.isFinite(volumeRatio)?Math.max(0,volumeRatio).toFixed(3)+"% of printer bounding volume":"—";
+  }else if(source&&validBed&&hasScale){
+   const factor=denominator/selectedDenominator,print=source.map(v=>v*factor),fit=best(print,bed),fits=fit.factor>=1-1e-9,margins=fit.orientation?fit.orientation.map((v,i)=>bed[i]-v):[],util=fit.orientation?fit.orientation.map((v,i)=>v/bed[i]*100):[];
+   const volumeRatio=print.reduce((a,v)=>a*v,1)/(bed.reduce((a,v)=>a*v,1))*100;printDims=dims(print);orientation=fit.orientation?dims(fit.orientation):"—";
+   clearance=margins.length?margins.map((v,i)=>fmt(v)+" mm on axis "+["X","Y","Z"][i]).join(" · "):"—";occupancy=Number.isFinite(volumeRatio)?volumeRatio.toFixed(3)+"% of printer bounding volume":"—";
+   fitIndex=Math.round(Math.min(100,fit.factor*100))+" / 100 · geometric scale-down index";verdict=fits?"Fits the selected build volume":"Does not fit at the selected scale";
+   summary=fits?"The selected scale fits within the selected build volume in an axis-aligned 90° orientation. This is a geometric fit result, not a prediction of print success.":"At least one dimension exceeds the build volume. Increase the scale denominator or split the model.";
+   axisRows=fit.orientation?fit.orientation.map((v,i)=>'<div class="assessment-axis"><span>Printer '+["X","Y","Z"][i]+'</span><strong>'+fmt(v)+' / '+fmt(bed[i])+' mm</strong><small>'+fmt(margins[i])+' mm clearance · '+fmt(util[i])+'% used</small></div>').join(""):"<p>Orientation unavailable.</p>";
   }else if(source&&!validBed){verdict="Printer dimensions need attention";summary="Enter positive width, depth and height values before relying on a fit result.";}
-  assessmentText("assessment-verdict",verdict);assessmentText("assessment-summary",summary);
-  assessmentText("assessment-print-dimensions",printDims);assessmentText("assessment-orientation",orientation);
-  assessmentText("assessment-clearance",clearance);assessmentText("assessment-occupancy",occupancy);
-  assessmentText("assessment-fit-index",fitIndex);
-  const axes=$id("assessment-axis-breakdown");if(axes)axes.innerHTML=axisRows;
-  dialog.showModal();
+  assessmentText("assessment-verdict",verdict);assessmentText("assessment-summary",summary);assessmentText("assessment-print-dimensions",printDims);assessmentText("assessment-orientation",orientation);
+  assessmentText("assessment-clearance",clearance);assessmentText("assessment-occupancy",occupancy);assessmentText("assessment-fit-index",fitIndex);
+  const axes=$id("assessment-axis-breakdown");if(axes)axes.innerHTML=axisRows;dialog.showModal();
  }
  ["reliability","printability"].forEach(key=>{
   const card=$id("scaling-gauge-"+key);if(!card)return;
