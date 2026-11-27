@@ -68,7 +68,8 @@ result = {
     "mesh_objects": len(mesh_objects),
     "scene_units": scene_units,
     "bounds": [maximum[i] - minimum[i] for i in range(3)],
-    "largest_objects": details[:20],\n    "selected_objects": selected_details,
+    "largest_objects": details[:20],
+    "selected_objects": selected_details,
     "stl_bytes": os.path.getsize(output_path),
 }
 print("SPACEMESHER_NATIVE_BLENDER_RESULT=" + json.dumps(result, sort_keys=True))
