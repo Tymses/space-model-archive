@@ -297,3 +297,16 @@ This standing policy does not authorize merging when checks fail, the diff is un
 - Safety branch: `backup/before-auto-publish-policy-2026-11-27`, created from inspected `main` commit `5d936894bcd3b357b3ee0ab553c4a57dbca2eb16`.
 - Documentation branch: `docs/automatic-merge-and-publication-policy-2026-11-27`, created from the same commit.
 - This change documents the workflow only; it does not change application code. CI and Pages deployment for this documentation PR must be checked before reporting it as merged or published.
+
+
+## 16. CI checkbox matcher correction — 27 November 2026
+
+- Root cause: `.github/workflows/enforce-project-workflow.yml` searched for attestation strings containing literal backslashes before Markdown backticks. The pull-request template and correctly completed PR bodies contain ordinary Markdown backticks without those backslashes. Therefore the attestation step failed even when all five required boxes were checked. This was introduced by the new workflow-enforcement CI; it was not a pre-existing application or Blender test failure.
+- Fixed the five required attestation strings to match the exact Markdown text in `.github/pull_request_template.md`; the workflow still requires all five checked boxes and a same-PR `PROJECT_HANDBOOK.md` change.
+- No application code, Blender importer, converter behavior, or unrelated CI jobs were changed.
+- Backup branch: `backup/before-workflow-checkbox-ci-fix-2026-11-27`, created from inspected `main` commit `524263a57f3327eafb796dde2e665bd9006e943a`.
+- Implementation branch: `fix/workflow-checkbox-matching-2026-11-27`.
+- Changed files: `.github/workflows/enforce-project-workflow.yml`, `PROJECT_HANDBOOK.md`.
+- Previous failing run: `46068626601` on PR #24; the **Require the process attestation** step failed and checkout/handbook check were skipped.
+- Verification: PR-head workflow run `46070228527` passed. The **Require the process attestation** step and **Require handbook update in the same PR** step both completed successfully. The run covered the corrected matcher and same-PR handbook requirement; no application test suite was triggered because this PR changes only the workflow and handbook. GitHub Pages deployment remains pending until merge.
+- Rollback reference: `backup/before-workflow-checkbox-ci-fix-2026-11-27` at `524263a57f3327eafb796dde2e665bd9006e943a`.
