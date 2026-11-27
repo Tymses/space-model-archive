@@ -90,7 +90,9 @@ if not os.path.isfile(output_path) or os.path.getsize(output_path) <= 84:
 result = {
     "status": "NATIVE_BLENDER_STL_OK",
     "version": bpy.app.version_string,
-    "mesh_objects": len(mesh_objects),\n    "visible_mesh_objects": len(visible_mesh_objects),\n    "visibility_samples": visible_details[:50],
+    "mesh_objects": len(mesh_objects),
+    "visible_mesh_objects": len(visible_mesh_objects),
+    "visibility_samples": visible_details[:50],
     "native_totals": native_totals,
     "printable_objects": len(printable_objects),
     "excluded_presentation_objects": len(mesh_objects) - len(printable_objects),
