@@ -52,12 +52,12 @@ const ASSET_HOSTS = new Set([
   "www.3d-asteroids.space"
 ]);
 const CATALOGUE_HOSTS = new Set(["3d-asteroids.space", "www.3d-asteroids.space"]);
-const MODEL_EXTENSIONS = new Set(["glb","gltf","stl","obj","ply"]);
+const MODEL_EXTENSIONS = new Set(["glb","gltf","stl","obj","ply","fbx","3ds","lwo","blend","step","stp","gz","gzip"]);
 const MAX_ASSET_BYTES = 75 * 1024 * 1024;
 const MODEL_TYPES = new Map([
   ["glb", "model/gltf-binary"], ["gltf", "model/gltf+json"],
   ["stl", "model/stl"], ["obj", "text/plain; charset=utf-8"],
-  ["ply", "model/ply"], ["bin", "application/octet-stream"],
+  ["ply", "model/ply"], ["fbx", "application/octet-stream"], ["3ds", "application/octet-stream"], ["lwo", "application/octet-stream"], ["blend", "application/octet-stream"], ["step", "application/step"], ["stp", "application/step"], ["gz", "application/gzip"], ["gzip", "application/gzip"], ["bin", "application/octet-stream"],
   ["mtl", "text/plain; charset=utf-8"], ["png", "image/png"],
   ["jpg", "image/jpeg"], ["jpeg", "image/jpeg"], ["webp", "image/webp"]
 ]);
@@ -978,6 +978,89 @@ async function research(query, category) {
   };
 }
 
+
+const DESCRIPTION_HOSTS = new Set([
+  "science.nasa.gov","www.nasa.gov","nasa.gov","github.com",
+  "www.spaceradar.ai","spaceradar.ai","models.spaceradar.ai",
+  "3d-asteroids.space","www.3d-asteroids.space",
+  "echo.jpl.nasa.gov","ssd.jpl.nasa.gov","pds.nasa.gov",
+  "sbn.psi.edu","sbnarchive.psi.edu","pdssbn.astro.umd.edu",
+  "astrogeology.usgs.gov","usgs.gov","www.usgs.gov",
+  "esa.int","www.esa.int","opensourcerobotics.dev",
+  "models.opensourcerobotics.dev","zenodo.org","www.zenodo.org",
+  "sketchfab.com","www.sketchfab.com"
+]);
+function readHtmlAttribute(tag, name) {
+  const match = String(tag || "").match(new RegExp("\\b" + name + "\\s*=\\s*(['\"])(.*?)\\1", "i"));
+  return match ? decode(match[2]) : "";
+}
+async function fetchModelSourceDescription(value) {
+  let current;
+  try { current = new URL(value); } catch { return null; }
+  if (current.protocol !== "https:" || !DESCRIPTION_HOSTS.has(current.hostname.toLowerCase()) || current.username || current.password || (current.port && current.port !== "443")) return null;
+  for (let hop = 0; hop <= 3; hop++) {
+    let response;
+    try {
+      response = await fetch(current.toString(), {
+        headers: { Accept: "text/html,application/xhtml+xml", "User-Agent": "Mozilla/5.0 (compatible; SPACEMESHER-ModelDescription/1.0)" },
+        redirect: "manual",
+        cf: { cacheTtl: 86400, cacheEverything: true }
+      });
+    } catch { return null; }
+    if ([301,302,303,307,308].includes(response.status)) {
+      const location = response.headers.get("Location");
+      if (!location || hop === 3) return null;
+      const next = new URL(location, current);
+      if (next.protocol !== "https:" || !DESCRIPTION_HOSTS.has(next.hostname.toLowerCase())) return null;
+      current = next;
+      continue;
+    }
+    if (!response.ok) return null;
+    let html = "";
+    try { html = (await response.text()).slice(0, 1200000); } catch { return null; }
+    const meta = [...html.matchAll(/<meta\b[^>]*>/gi)].map(match => match[0]);
+    const descriptions = meta.map(tag => ({
+      key: (readHtmlAttribute(tag, "name") || readHtmlAttribute(tag, "property")).toLowerCase(),
+      value: readHtmlAttribute(tag, "content")
+    })).filter(item => item.value && ["description","og:description","twitter:description"].includes(item.key));
+    const preferred = descriptions.find(item => item.key === "og:description") || descriptions.find(item => item.key === "description") || descriptions[0];
+    if (preferred?.value) {
+      const summary = plain(preferred.value).slice(0, 620);
+      if (summary.length >= 35) return { summary, url: current.toString(), title: plain((html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "").slice(0, 160) };
+    }
+    const main = (html.match(/<(?:main|article)\b[\s\S]*?<\/(?:main|article)>/i) || [])[0] || html;
+    const paragraphs = [...main.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map(match => plain(match[1])).filter(text => text.length >= 60);
+    if (paragraphs.length) return { summary: paragraphs[0].slice(0, 620), url: current.toString(), title: plain((html.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || "").slice(0, 160) };
+    return null;
+  }
+  return null;
+}
+async function describeArchiveModel(input) {
+  const name = String(input.name || "").trim().slice(0, 180) || "Untitled model";
+  const kind = String(input.kind || "").trim().slice(0, 140);
+  const source = String(input.source || "").trim().slice(0, 120) || "archive source";
+  const format = String(input.format || "").trim().slice(0, 30).toUpperCase() || "3D";
+  const category = String(input.category || "").trim().slice(0, 50);
+  const categoryLabel = ({
+    spacecraft: "spacecraft and mission hardware",
+    "small-bodies": "asteroids, comets and small bodies",
+    moons: "natural satellites",
+    planetary: "planetary surfaces and terrain",
+    "height-maps": "surface elevation data"
+  })[category] || "space-related models";
+  const sourceUrl = String(input.sourceUrl || "").slice(0, 2048);
+  const sourceSummary = await fetchModelSourceDescription(sourceUrl);
+  const metadata = name + " is catalogued in the " + categoryLabel + " collection" +
+    (kind ? " as " + kind : "") + ". The archive provides a " + format + " model from " + source + ".";
+  const scaleNote = " The file format does not establish the object's real-world scale; use a separately cited physical measurement when calculating print scale.";
+  const description = (sourceSummary ? sourceSummary.summary + " " + metadata : metadata) + scaleNote;
+  return {
+    name, description, provenance: sourceSummary ? "Original source page summary plus archive metadata" : "Automatically generated from archive metadata",
+    sourceTitle: sourceSummary?.title || "", sourceUrl: sourceSummary?.url || sourceUrl || "",
+    generated: !sourceSummary, format, source
+  };
+}
+
 export default {
   async fetch(request, env) {
     const incoming = new URL(request.url);
@@ -1018,6 +1101,23 @@ export default {
         return new Response(assetResponse.body,{status:assetResponse.status,headers:assetHeaders});
       } catch (error) {
         return new Response(String(error.message || "Asset proxy request failed."), {status:400,headers:{...headers,"X-Asset-Proxy-Error":"The Worker could not retrieve this model source.","Cache-Control":"no-store"}});
+      }
+    }
+    if (incoming.searchParams.get("action") === "describe") {
+      const name = (incoming.searchParams.get("name") || "").trim();
+      if (!name || name.length > 180) return json({ error: "Provide a model name (max. 180 characters)." }, 400, headers);
+      try {
+        const result = await describeArchiveModel({
+          name,
+          kind: incoming.searchParams.get("kind") || "",
+          source: incoming.searchParams.get("source") || "",
+          category: incoming.searchParams.get("category") || "",
+          format: incoming.searchParams.get("format") || "",
+          sourceUrl: incoming.searchParams.get("sourceUrl") || ""
+        });
+        return json(result, 200, { ...headers, "Cache-Control": "public, max-age=86400" });
+      } catch (error) {
+        return json({ error: "Model description generation failed", detail: String(error.message || error) }, 502, headers);
       }
     }
     const query = (incoming.searchParams.get("sstr") || incoming.searchParams.get("q") || "").trim();

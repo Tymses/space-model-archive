@@ -9,7 +9,10 @@ class DimensionScannerTests(unittest.TestCase):
         self.assertIsNone(asteroid_number("Bennu"))
 
     def test_parses_three_axes(self):
-        self.assertEqual(parse_axes_km("565 x 535 x 508", "m"), [0.565, 0.535, 0.508])
+        axes = parse_axes_km("565 x 535 x 508", "m")
+        self.assertEqual(len(axes), 3)
+        for actual, expected in zip(axes, [0.565, 0.535, 0.508]):
+            self.assertAlmostEqual(actual, expected, places=12)
 
     def test_does_not_treat_diameter_as_longest_axis(self):
         model = {"id": "3dac-asteroid-101955", "name": "(101955) Bennu"}

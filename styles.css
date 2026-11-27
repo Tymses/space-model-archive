@@ -6,6 +6,8 @@
 .scaling-geometry-line strong{color:var(--ink);font-size:12px;font-variant-numeric:tabular-nums}
 .scaling-geometry-line label{display:flex;align-items:center;gap:7px}
 .scaling-geometry-line select{width:76px;min-height:32px;padding:5px 8px}
+
+.scaling-model-description{margin:0;padding:18px 18px 20px;border-top:1px solid var(--line);background:var(--surface)}.scaling-description-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.scaling-description-heading .overline{margin:0;color:var(--accent);font-size:10px;font-weight:750;letter-spacing:.09em}.scaling-description-heading span{color:var(--muted);font-size:10px}.scaling-description-text{margin:10px 0 0}.scaling-model-description>p{margin:10px 0 0;max-width:78ch;color:var(--ink);font-size:13px;line-height:1.65}.scaling-description-footer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}.scaling-description-footer a{font-size:11px;font-weight:650;color:var(--accent)}.scaling-description-footer small{color:var(--muted);font-size:10px}
 .scaling-settings-panel{display:flex;flex-direction:column;gap:14px}
 .scaling-settings-panel .scaling-model-name{margin:0}
 .scaling-object-search{display:grid;gap:8px}

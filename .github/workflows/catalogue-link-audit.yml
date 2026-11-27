@@ -1,0 +1,48 @@
+name: Catalogue link audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "app.js"
+      - "tools/catalogue/check_links.py"
+      - ".github/workflows/catalogue-link-audit.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "app.js"
+      - "tools/catalogue/check_links.py"
+      - ".github/workflows/catalogue-link-audit.yml"
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run application and Worker regression tests
+        run: node --test cloudflare/tests/*.test.mjs tests/*.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check every indexed source and model URL
+        run: python tools/catalogue/check_links.py --output link-audit.json --workers 24 --fail-on-broken
+      - name: Upload link audit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogue-link-audit
+          path: link-audit.json
+          retention-days: 30
